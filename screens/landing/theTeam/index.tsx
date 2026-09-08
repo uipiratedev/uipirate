@@ -60,31 +60,29 @@ const TheTeam = () => {
 
   // Animation variants for Framer Motion
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: {},
     visible: {
-      opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.07,
       },
     },
   };
 
   const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        duration: 0.5,
-        ease: "easeOut" as const,
+        duration: 0.45,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
 
   return (
     <div className="section-container relative">
-      <div className="autoShowBottom">
+      <div>
         {/* Team Grid */}
         <motion.div
           className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 max-md:gap-4 relative "

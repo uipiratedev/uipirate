@@ -48,9 +48,7 @@ function LandingTestimonials() {
       <SectionHeader chip="testimonials" className="autoShow">
         What <span className="text-brand-orange">Clients Say</span>
       </SectionHeader>
-      <div className="autoShowBottom">
-        <TestimonialCards />
-      </div>
+      <TestimonialCards />
     </div>
   );
 }

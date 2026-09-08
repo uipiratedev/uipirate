@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Link } from "@heroui/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { JoinButtonIcon } from "./JoinButtonIcon";
 import ProPirateFooterSection from "./proPirate";
@@ -55,6 +55,12 @@ export const Footer: React.FC = () => {
   const [isPressed, setIsPressed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const playClickSound = useClickSound();
+
+  // The background "SAAS WEB APP" strip is an infinite marquee. A plain
+  // Framer `animate` loop keeps running (and compositing) even when the
+  // footer is scrolled out of view — gate it to on-screen only.
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeInView = useInView(marqueeRef, { margin: "200px" });
 
   const handleClick = () => {
     playClickSound();
@@ -127,6 +133,7 @@ export const Footer: React.FC = () => {
 
           {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
           <div
+            ref={marqueeRef}
             className="absolute top-[27%] max-md:top-[19%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
             style={{
               WebkitMaskImage:
@@ -136,9 +143,7 @@ export const Footer: React.FC = () => {
             }}
           >
             <motion.div
-              animate={{
-                x: ["0%", "-50%"],
-              }}
+              animate={marqueeInView ? { x: ["0%", "-50%"] } : { x: "0%" }}
               className="flex whitespace-nowrap"
               transition={{
                 x: {
@@ -325,13 +330,13 @@ export const Footer: React.FC = () => {
                 <Link
                   key={link.name}
                   isExternal
-                  className="group relative transition-all duration-300"
+                  className="group relative"
                   href={link.url}
                 >
-                  <div className=" flex items-center p-3 max-md:p-2 justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                  <div className=" flex items-center p-3 max-md:p-2 justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-[background-color,border-color] duration-300">
                     <img
                       alt={link.name}
-                      className="w-4 h-4 max-md:w-5 max-md:h-5 brightness-100 group-hover:invert transition-all duration-300"
+                      className="w-4 h-4 max-md:w-5 max-md:h-5 brightness-100 group-hover:invert transition-[filter] duration-300"
                       src={link.icon}
                     />
                   </div>

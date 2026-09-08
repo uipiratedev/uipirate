@@ -46,7 +46,7 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="hero-wrapper">
+      <div className="hero-wrapper max-md:!pt-14 max-md:gap-y-0">
         {/* Subtle Grid Background Pattern */}
         <div
           className="absolute pointer-events-none -mt-20 "
@@ -66,7 +66,7 @@ const LandingHero = () => {
         />
         {/* Layered gradient with gentle mist animation */}
         <div
-          className="absolute pointer-events-none -mt-20 "
+          className="hero-mist absolute pointer-events-none -mt-20 "
           style={{
             backgroundImage: `
               linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
@@ -209,7 +209,7 @@ const LandingHero = () => {
                       >
                         <img
                           alt={`${testimonial.name} - Client testimonial`}
-                          className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+                          className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-[transform,filter] duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
                           src={testimonial.image}
                           style={{
                             animation:
@@ -235,7 +235,7 @@ const LandingHero = () => {
           <div className="relative z-10">
             <AnimatedHeadline />
           </div>
-          <p className="sub-header">
+          <p className="sub-header max-md:!text-[12px]">
             You have a product to build. You need someone who can think through
             it, design it, and ship it - not hand you a Figma file and walk
             away. That&apos;s what we do.
@@ -246,7 +246,7 @@ const LandingHero = () => {
           >
             <Link className="relative z-10" href="/contact">
               <div
-                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
+                className="bg-black text-white h-auto group transition-[background-color,box-shadow] duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
                 style={{
                   borderRadius: "11.889px",
                   background: "#000",

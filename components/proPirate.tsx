@@ -81,13 +81,9 @@ const ProPirateFooterSection = () => {
       >
         {/* Dark text - simple and static */}
         <motion.div
-          animate={
-            isInView
-              ? { opacity: 1, y: 0, scale: 1 }
-              : { opacity: 0, y: 50, scale: 0.9 }
-          }
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           className="absolute inset-0 flex items-center justify-center filter  contrast-125"
-          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          initial={{ opacity: 0, y: 50 }}
           transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
           <img

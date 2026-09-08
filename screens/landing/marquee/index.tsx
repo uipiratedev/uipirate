@@ -43,7 +43,7 @@ const LandingMarquee = () => {
           <motion.div
             initial="hidden"
             variants={headingVariants}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.5 }}
             whileInView="visible"
           >
             <h2 className="heading-center">

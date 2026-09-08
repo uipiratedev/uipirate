@@ -244,14 +244,14 @@ const PricingFlip = () => {
     <div className="w-full">
       {/* Tabs */}
       <div className="mb-8 flex justify-center max-md:mb-6">
-        <div className="flex items-center gap-1.5 rounded-[22px] border border-black/[0.08] bg-[#EFEFEF] p-1.5 dark:border-white/10 dark:bg-[#1C1C1C]">
+        <div className="flex items-center gap-1.5 rounded-[22px] border border-black/[0.08] bg-[#EFEFEF] p-1.5 dark:border-white/10 dark:bg-[#1C1C1C] max-md:max-w-full max-md:gap-1 max-md:rounded-[18px] max-md:p-1">
           {TABS.map((tab) => {
             const isActive = tab.id === active;
 
             return (
               <button
                 key={tab.id}
-                className="relative rounded-[16px] px-6 py-2.5 outline-none transition-colors sm:px-8 sm:py-3"
+                className="relative rounded-[16px] px-6 py-2.5 outline-none transition-colors max-md:rounded-[13px] max-md:px-3 max-md:py-2 sm:px-8 sm:py-3"
                 type="button"
                 onClick={() => setActive(tab.id)}
               >
@@ -262,9 +262,9 @@ const PricingFlip = () => {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                <span className="relative z-10 flex items-center gap-2 whitespace-nowrap">
+                <span className="relative z-10 flex items-center gap-2 whitespace-nowrap max-md:gap-1">
                   <span
-                    className={`font-jakarta text-[15px] sm:text-[16px] ${
+                    className={`font-jakarta text-[15px] max-md:text-[12px] sm:text-[16px] ${
                       isActive
                         ? "font-semibold text-gray-950 dark:text-white"
                         : "font-medium text-gray-700 dark:text-gray-300"
@@ -273,7 +273,7 @@ const PricingFlip = () => {
                     {tab.label}
                   </span>
                   <span
-                    className={`font-jakarta text-[15px] sm:text-[16px] ${
+                    className={`font-jakarta text-[15px] max-md:text-[12px] sm:text-[16px] ${
                       isActive
                         ? "font-normal text-gray-500 dark:text-gray-400"
                         : "font-normal text-gray-400 dark:text-gray-500"

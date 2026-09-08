@@ -12,7 +12,10 @@ const AnimatedAnalyticsChart = () => {
   const chartRef = useRef<SVGSVGElement>(null);
   const [lineLength, setLineLength] = useState(0);
   const linePathRef = useRef<SVGPathElement>(null);
-  const isInView = useInView(chartRef, { once: false, amount: 0.3 });
+  // once:true — re-running the stroke-dash draw + blur glow every time the
+  // card scrolls back into view was compounding with the card's own slide
+  // animation and causing visible jank.
+  const isInView = useInView(chartRef, { once: true, amount: 0.3 });
 
   // Data points for the chart
   const dataPoints: DataPoint[] = [
@@ -84,6 +87,9 @@ const AnimatedAnalyticsChart = () => {
       strokeDashoffset: 0,
       transition: {
         duration: 1.8,
+        // Wait for the bento card's slide-in to settle before the
+        // stroke-dash draw starts, so the two repaints don't overlap.
+        delay: 0.45,
         ease: [0.42, 0, 0.58, 1], // power1.inOut equivalent
       },
     },
@@ -125,47 +131,17 @@ const AnimatedAnalyticsChart = () => {
           <stop offset="100%" stopColor="#FF7B34" stopOpacity="0.02" />
         </linearGradient>
 
-        {/* Glow gradient for the line */}
-        <linearGradient id="glowGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-          <stop offset="0%" stopColor="#FF5B04" stopOpacity="0.4" />
-          <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#FF7B34" stopOpacity="0.4" />
-        </linearGradient>
-
-        {/* Blur filter for glow effect */}
-        <filter height="200%" id="glow" width="200%" x="-50%" y="-50%">
-          <feGaussianBlur result="coloredBlur" stdDeviation="2" />
-          <feMerge>
-            <feMergeNode in="coloredBlur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
       </defs>
 
-      {/* Area fill */}
+      {/* Area fill — no mix-blend-mode: blend modes break layer isolation
+          and force a repaint of everything behind the chart every frame
+          while the bento card is sliding in. */}
       <motion.path
         animate={isInView ? "visible" : "hidden"}
         d={areaPath}
         fill="url(#areaGradient)"
         initial="hidden"
-        style={{ mixBlendMode: "multiply" }}
         variants={areaVariants}
-      />
-
-      {/* Glow line (behind main line) */}
-      <motion.path
-        animate={isInView ? "visible" : "hidden"}
-        d={linePath}
-        fill="none"
-        filter="url(#glow)"
-        initial="hidden"
-        opacity="0.6"
-        stroke="url(#glowGradient)"
-        strokeDasharray={lineLength}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="4"
-        variants={lineVariants}
       />
 
       {/* Main line - invisible reference for measuring length */}

@@ -12,9 +12,7 @@ const LandingFaqs = () => {
       </SectionHeader>
 
       {/* Accordion section */}
-      <div className="autoShowBottom">
-        <FaqsAccordion />
-      </div>
+      <FaqsAccordion />
     </div>
   );
 };

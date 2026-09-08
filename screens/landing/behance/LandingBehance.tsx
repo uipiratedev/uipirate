@@ -142,6 +142,65 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
     return () => window.removeEventListener("resize", updateVisibleData);
   }, [updateVisibleData]);
 
+  // MOBILE (<=768px): the absolute-overlay "images bloom away to reveal the
+  // centred CTA" mechanic doesn't work without the scroll transforms — the
+  // stacked images just sit on top of the CTA and hide it. Render a plain
+  // document-flow layout instead, with a lightweight in-view entrance
+  // animation per element. Web/tablet is untouched (the `else` branch is the
+  // original markup verbatim).
+  if (isMobile) {
+    return (
+      <div className="flex flex-col items-center px-4 py-10 text-center">
+        <motion.h2
+          className="heading-center mb-3 text-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          Recent <span className="text-brand-orange">Works</span>
+        </motion.h2>
+
+        <motion.p
+          className="mb-8 max-w-md text-base font-[500]"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          Explore our diverse portfolio of projects that highlight our
+          creativity and craftsmanship.
+        </motion.p>
+
+        <div className="mb-8 grid w-full grid-cols-1 gap-4">
+          {visibleData.map((item, index) => (
+            <motion.img
+              key={index}
+              alt={item.heading}
+              className="w-full h-auto object-cover rounded-[20px] grayscale-[25%] box-shadow"
+              initial={{ opacity: 0, y: 30 }}
+              src={item.img}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, amount: 0.2 }}
+              whileInView={{ opacity: 1, y: 0 }}
+            />
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <LetsTalkButton fullWidth href="/case-studies" variant="dark">
+            Explore All Work
+          </LetsTalkButton>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative 3xl:container 3xl:mx-auto">
       {/* Centered Info - absolutely centered on both mobile and desktop */}
