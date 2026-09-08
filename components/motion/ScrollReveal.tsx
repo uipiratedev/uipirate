@@ -75,8 +75,18 @@ export function ScrollReveal({
   }
 
   if (isMobile) {
+    // A persistent scrubbed `translateY` keeps a GPU layer alive and makes
+    // text render blurry on mobile — so here it's a one-shot opacity fade
+    // with no lingering transform.
     return (
-      <Comp ref={ref} className={className} style={{ opacity, y: ty }}>
+      <Comp
+        ref={ref}
+        className={className}
+        initial={{ opacity: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.15 }}
+        whileInView={{ opacity: 1 }}
+      >
         {children}
       </Comp>
     );
