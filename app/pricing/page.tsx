@@ -68,11 +68,9 @@ const pricingSchema = {
       url: "https://uipirate.com/pricing",
     },
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5.0",
-    reviewCount: "50",
-  },
+  // No aggregateRating: self-serving review markup on our own service page is
+  // ineligible for rich results and a policy risk. Ratings belong on
+  // third-party platforms (Clutch, G2, Google Business Profile).
 };
 
 const PricingPage = () => {
