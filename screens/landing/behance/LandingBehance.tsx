@@ -157,12 +157,9 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
           creativity and craftsmanship.
         </p>
         <div className="autoShow">
-          <LetsTalkButton
-            children="Explore All Work"
-            fullWidth
-            href="/case-studies"
-            variant="dark"
-          />
+          <LetsTalkButton fullWidth href="/case-studies" variant="dark">
+            Explore All Work
+          </LetsTalkButton>
         </div>
       </div>
 

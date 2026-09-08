@@ -93,7 +93,6 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
   // For gradient variant, use GlassSurface with decorative dots
   if (variant === "gradient") {
     const isWhiteText = className.includes("text-white");
-    const textColorClass = isWhiteText ? "!text-white" : "text-black";
 
     return (
       <div className={`relative z-10 inline-block ${className}`}>

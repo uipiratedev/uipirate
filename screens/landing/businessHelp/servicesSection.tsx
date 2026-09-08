@@ -109,26 +109,6 @@ const ServicesSection = () => {
       viewport={{ once: true, amount: 0.1 }}
       whileInView="show"
     >
-      {/* top card  */}
-      {/* <div>
-        <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
-          <CardBody className="p-5 max-md:p-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-2xl max-md:text-lg font-semibold tracking-[-1px]">
-                Check Suite of Products Ready for Sale
-              </h3>
-              <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-              
-
-    
-                 <LetsTalkButton fullWidth variant="dark" children="See Products In Action" href="/contact"/>
-           
-               
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      </div> */}
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 my-6">
         {/* Left Card - Apps, SaaS, Websites & More */}
@@ -239,12 +219,9 @@ const ServicesSection = () => {
                 Need Something Custom ?
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <LetsTalkButton
-                  children="Tell Us What You Need →"
-                  fullWidth
-                  href="/contact"
-                  variant="light"
-                />
+                <LetsTalkButton fullWidth href="/contact" variant="light">
+                  Tell Us What You Need →
+                </LetsTalkButton>
               </div>
             </div>
           </CardBody>

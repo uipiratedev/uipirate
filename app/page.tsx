@@ -39,10 +39,6 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-function isDataUri(url?: string) {
-  return !!url && url.startsWith("data:");
-}
-
 async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
   return {
     slug: "xperiti",

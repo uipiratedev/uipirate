@@ -233,12 +233,9 @@ export default function FaqsAccordion() {
           whileInView="visible"
         >
           <div className="flex flex-row items-center justify-center mt-6">
-            <LetsTalkButton
-              children="See all FAQ’s"
-              href="/faqs"
-              target="_self"
-              variant="light"
-            />
+            <LetsTalkButton href="/faqs" target="_self" variant="light">
+              See all FAQ’s
+            </LetsTalkButton>
           </div>
         </motion.div>
       </div>

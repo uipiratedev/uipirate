@@ -21,33 +21,6 @@ const Pricing = () => {
     },
   };
 
-  const monthlyRetainerFeatures = [
-    "Full design & development stack",
-    "1 active request at a time",
-    "Weekly progress sync",
-    "Fast turnaround",
-    "Unlimited requests within scope",
-    "Mon–Fri, < 2hr response",
-  ];
-
-  const customProjectFeatures = [
-    "Access to all services",
-    "Priority support & Fully custom scope",
-    "No hidden costs",
-    "Working with your team",
-    "Mon–Fri, < 2hr response",
-  ];
-
-  const customQuoteFeatures = [
-    "Full design, development & product support",
-    "Priority handling for complex scopes",
-    "Custom project scope & delivery plan",
-    "Flexible engagement based on your needs",
-    "Close collaboration with stakeholders",
-    "Dedicated project ownership",
-    "Mon–Fri, < 2hr response",
-  ];
-
   const benefits = [
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/pause_nod3oq.svg",
