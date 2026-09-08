@@ -1,7 +1,7 @@
 "use client";
-import { motion } from "framer-motion";
 
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal, RevealGroup } from "@/components/motion";
 
 const PERFECT_FOR = [
   {
@@ -44,95 +44,79 @@ const NOT_FOR = [
 
 const PricingPerfectFor = () => {
   return (
-    <motion.div
-      className="section-container"
-      initial={{ opacity: 0, y: 30 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true, amount: 0.2 }}
-      whileInView={{ opacity: 1, y: 0 }}
-    >
-      {/* Header */}
-      <SectionHeader chip="WHO IT'S FOR">
-        Is This Right For <span className="text-brand-orange">You?</span>
-      </SectionHeader>
+    <div className="section-container">
+      <Reveal variant="up">
+        <SectionHeader chip="WHO IT'S FOR">
+          Is This Right For <span className="text-brand-orange">You?</span>
+        </SectionHeader>
+      </Reveal>
 
       {/* Perfect For Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        {PERFECT_FOR.map((item, index) => (
-          <motion.div
+      <RevealGroup className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {PERFECT_FOR.map((item) => (
+          <Reveal
             key={item.title}
-            className="group relative h-[240px] md:h-[280px] w-full [perspective:1000px]"
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            viewport={{ once: true }}
-            whileInView={{ opacity: 1, y: 0 }}
+            as="article"
+            className="group relative h-[240px] w-full [perspective:1000px] md:h-[280px]"
+            variant="up"
           >
-            <div className="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
+            <div className="relative h-full w-full rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-transform duration-500 [transform-style:preserve-3d] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] group-hover:[transform:rotateY(180deg)] dark:group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
               {/* FRONT FACE */}
-              <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10">
-                <div className="relative w-full h-[180px] md:h-[220px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
+              <div className="absolute inset-0 flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-gray-200/80 bg-white [backface-visibility:hidden] dark:border-white/10 dark:bg-[#1A1A1A]">
+                <div className="relative flex h-[180px] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white md:h-[220px] dark:from-[#26201D] dark:to-[#1A1A1A]">
                   <img
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     src={item.image}
                   />
                 </div>
-                <div className="flex flex-1 flex-col justify-start items-center p-3 pb-8">
-                  <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight">
+                <div className="flex flex-1 flex-col items-center justify-start p-3 pb-8">
+                  <h3 className="text-lg font-bold uppercase tracking-tight text-slate-900 md:text-[19px] dark:text-white">
                     {item.title}
                   </h3>
                 </div>
               </div>
 
               {/* BACK FACE */}
-              <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-start items-start p-8 rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10 text-left">
-                <h3 className="text-lg md:text-[20px] font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-4 mt-2">
+              <div className="absolute inset-0 flex h-full w-full flex-col items-start justify-start rounded-[24px] border border-gray-200/80 bg-white p-8 text-left [backface-visibility:hidden] [transform:rotateY(180deg)] dark:border-white/10 dark:bg-[#1A1A1A]">
+                <h3 className="mb-4 mt-2 text-lg font-bold uppercase tracking-tight text-slate-900 md:text-[20px] dark:text-white">
                   {item.title}
                 </h3>
-                <p className="text-sm md:text-[14.5px] text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
+                <p className="text-sm font-normal leading-relaxed text-slate-500 md:text-[14.5px] dark:text-slate-400">
                   {item.description}
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         ))}
-      </div>
+      </RevealGroup>
 
       {/* Not The Right Fit Section */}
-      <motion.div
+      <Reveal
         className="relative w-full overflow-hidden rounded-[20px] border border-slate-200/70 dark:border-white/[0.05]"
-        initial={{ opacity: 0, y: 30 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        viewport={{ once: true }}
-        whileInView={{ opacity: 1, y: 0 }}
+        variant="up"
+        distance="lg"
       >
-        <div className="relative z-10 flex flex-col lg:flex-row p-8 md:p-10 gap-10 lg:gap-16 items-start lg:items-center">
+        <div className="relative z-10 flex flex-col items-start gap-10 p-8 md:p-10 lg:flex-row lg:items-center lg:gap-16">
           {/* Left Side: Title */}
-          <div className="lg:w-2/5 shrink-0">
+          <div className="shrink-0 lg:w-2/5">
             <img
               alt=""
               src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348516/not_sysbyc.svg"
             />
-            <h3 className="text-[26px] md:text-[30px] leading-tight font-semibold tracking-tight text-slate-900 dark:text-white mt-8">
-              <span style={{ color: NOT_RIGHT_FIT_RED }}>NOT</span> the right
-              fit
+            <h3 className="mt-8 text-[26px] font-semibold leading-tight tracking-tight text-slate-900 md:text-[30px] dark:text-white">
+              <span style={{ color: NOT_RIGHT_FIT_RED }}>NOT</span> the right fit
             </h3>
-            <p className="mt-3 max-w-[340px] text-[#777777] dark:text-slate-400 text-[15px] font-normal leading-relaxed">
-              We're a highly specialized team, not a generalist agency. If you
-              need any of these, we recommend looking elsewhere.
+            <p className="mt-3 max-w-[340px] text-[15px] font-normal leading-relaxed text-[#777777] dark:text-slate-400">
+              We&apos;re a highly specialized team, not a generalist agency. If
+              you need any of these, we recommend looking elsewhere.
             </p>
           </div>
 
           {/* Right Side: List */}
-          <div className="flex-1 w-full">
+          <RevealGroup className="w-full flex-1" stagger="base">
             {NOT_FOR.map((item, index) => (
-              <motion.div
-                key={item.text}
-                initial={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
-              >
+              <Reveal key={item.text} distance="sm" variant="up">
                 {index > 0 && (
                   <div
                     className="h-px w-full"
@@ -146,27 +130,27 @@ const PricingPerfectFor = () => {
                 )}
                 <div className="flex items-center gap-4 py-3">
                   <span
-                    className="shrink-0 flex items-center justify-center text-base md:text-lg font-bold"
+                    className="flex shrink-0 items-center justify-center text-base font-bold md:text-lg"
                     style={{ color: NOT_RIGHT_FIT_RED }}
                   >
                     <i className="ti ti-x" />
                   </span>
-                  <span className="flex-1 text-slate-700 dark:text-slate-200 text-[15px] md:text-base font-medium tracking-tight">
+                  <span className="flex-1 text-[15px] font-medium tracking-tight text-slate-700 md:text-base dark:text-slate-200">
                     {item.text}
                   </span>
                   <span
-                    className="shrink-0 inline-flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-white dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.04)] text-lg md:text-xl"
+                    className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200/80 bg-white text-lg shadow-[0_1px_2px_rgba(0,0,0,0.04)] md:h-10 md:w-10 md:text-xl dark:border-white/10 dark:bg-white/[0.03]"
                     style={{ color: NOT_RIGHT_FIT_RED }}
                   >
                     <i className={item.icon} />
                   </span>
                 </div>
-              </motion.div>
+              </Reveal>
             ))}
-          </div>
+          </RevealGroup>
         </div>
-      </motion.div>
-    </motion.div>
+      </Reveal>
+    </div>
   );
 };
 

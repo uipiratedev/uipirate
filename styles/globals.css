@@ -1948,6 +1948,13 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   animation-play-state: paused !important;
 }
 
+/* Offscreen landing sections skip layout/paint until near the viewport.
+   The intrinsic size is a rough placeholder so the scrollbar stays stable. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+
 .page-content-wrapper.is-loaded {
   opacity: 1;
   pointer-events: auto;

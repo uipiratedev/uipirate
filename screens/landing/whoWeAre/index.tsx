@@ -1,42 +1,48 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
 import Image from "next/image";
 
 import TheTeam from "../theTeam";
 
 import SectionHeader from "@/components/SectionHeader";
-
-// Animation variants
-const cardVariant = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] },
-  },
-};
+import { Reveal, useSectionProgress } from "@/components/motion";
 
 const LandingWhoWeAre = () => {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const progress = useSectionProgress(stageRef);
+
+  // Scroll-linked: the card lifts a touch and rotates back to flat as the
+  // composition transits the viewport — a slow "presenting" tilt.
+  const cardY = useTransform(progress, [0, 0.5, 1], ["4%", "0%", "-4%"]);
+  const cardRotateX = useTransform(progress, [0, 0.5], [7, 0]);
+
   return (
     <section className="relative overflow-hidden bg-black py-20">
       <div className="section-container relative z-10 flex flex-col items-center">
-        {/* Title */}
-        <SectionHeader className="autoShow" headingClassName="text-white">
-          Who We Are.
-        </SectionHeader>
+        <Reveal variant="up">
+          <SectionHeader headingClassName="text-white">
+            Who We Are.
+          </SectionHeader>
+        </Reveal>
 
         {/* Hand + Card composition */}
-        <div className="relative w-full max-w-2xl mx-auto flex flex-col items-center">
-          {/* The white card */}
-          <motion.div
-            className="relative z-10 w-full max-w-[480px] mx-auto"
-            initial="hidden"
-            variants={cardVariant}
-            viewport={{ once: true, amount: 0.2 }}
-            whileInView="visible"
+        <div
+          ref={stageRef}
+          className="relative mx-auto flex w-full max-w-2xl flex-col items-center [perspective:1200px]"
+        >
+          {/* The white card — <Reveal> owns the entrance, the inner
+              motion.div owns the scroll-linked "presenting" tilt. */}
+          <Reveal
+            className="relative z-10 mx-auto w-full max-w-[480px]"
+            distance="lg"
+            variant="up"
           >
+            <motion.div
+              style={reduced ? undefined : { y: cardY, rotateX: cardRotateX }}
+            >
             {/* Card shadow */}
             <div
               className="absolute inset-0 rounded-md"
@@ -110,7 +116,8 @@ const LandingWhoWeAre = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </Reveal>
 
           {/* Hand image — overlaps the bottom of the card */}
           <motion.div

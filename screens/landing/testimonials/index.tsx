@@ -4,6 +4,7 @@ import React from "react";
 import TestimonialCards from "./testimonialCards";
 
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 import testimonialData from "@/data/testimonials.json";
 
 // Build Review + AggregateRating JSON-LD from real testimonial data
@@ -45,9 +46,11 @@ function LandingTestimonials() {
         type="application/ld+json"
       />
 
-      <SectionHeader chip="testimonials" className="autoShow">
-        What <span className="text-brand-orange">Clients Say</span>
-      </SectionHeader>
+      <Reveal variant="up">
+        <SectionHeader chip="testimonials">
+          What <span className="text-brand-orange">Clients Say</span>
+        </SectionHeader>
+      </Reveal>
       <TestimonialCards />
     </div>
   );

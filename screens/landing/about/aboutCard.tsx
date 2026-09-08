@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 import { useIsMobile } from "@/hooks";
+import { CountUp } from "@/components/motion";
 
 const data = [
   {
@@ -94,25 +95,11 @@ const AboutCardItem = ({
     >
       <div className="flex flex-col justify-between h-full">
         <div>
-          <p className="text-7xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500]">
-            {item.heading.split("").map((letter, i) => (
-              <motion.span
-                key={`${index}-${i}`}
-                animate={isHovered ? { y: [0, -10, 0] } : { y: 0 }}
-                className="inline-block"
-                initial={{ y: 0 }}
-                style={{
-                  color: isHovered ? item.textHover : "#FF5B04",
-                }}
-                transition={{
-                  delay: i * 0.03,
-                  duration: 0.4,
-                  ease: [0.33, 1, 0.68, 1],
-                }}
-              >
-                {letter}
-              </motion.span>
-            ))}
+          <p
+            className="text-7xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500] transition-colors duration-500"
+            style={{ color: isHovered ? item.textHover : "#FF5B04" }}
+          >
+            <CountUp className="inline-block" value={item.heading} />
           </p>
         </div>
         <div className="flex flex-row items-end justify-between">

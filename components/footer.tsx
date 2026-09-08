@@ -9,6 +9,7 @@ import ProPirateFooterSection from "./proPirate";
 import LeadCaptureModal from "./LeadCaptureModal";
 
 import { useClickSound } from "@/hooks/useClickSound";
+import { Magnetic, TextReveal } from "@/components/motion";
 
 const footerSocialLinks = [
   {
@@ -88,14 +89,18 @@ export const Footer: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
         >
           {/* Heading */}
-          <h2 className="footer-heading">If you scrolled this far,</h2>
+          <TextReveal
+            as="h2"
+            className="footer-heading justify-center"
+            text="If you scrolled this far,"
+          />
           <h2 className="footer-heading">
             It’s time to{" "}
             <span className="text-orange-500">Build Something Together</span>
           </h2>
 
           {/* "Lets Venture" button — opens lead capture modal */}
-          <div className="flex justify-center">
+          <Magnetic className="flex justify-center" radius={220} strength={22}>
             <motion.div
               className="flex flex-col items-center mb-16 max-md:mb-0 mt-6 relative group cursor-pointer w-fit"
               style={{ perspective: "1000px" }}
@@ -123,7 +128,7 @@ export const Footer: React.FC = () => {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </Magnetic>
 
           {/* Lead Capture Modal */}
           <LeadCaptureModal

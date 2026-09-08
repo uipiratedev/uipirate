@@ -1,9 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 import GlassBadge from "@/components/GlassBadge";
 import LetsTalkButton from "@/components/LetsTalkButton";
+import { Parallax, ScrollReveal, Tilt } from "@/components/motion";
 
 export interface FeaturedCaseStudyData {
   slug: string;
@@ -29,17 +28,18 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
 
   return (
     <div className="section-container">
-      <motion.div
-        className="relative overflow-hidden rounded-[20px] sm:rounded-[20px] bg-white border border-2 border-gray-200/80 dark:border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] dark:bg-[#141414] dark:shadow-none"
-        initial={{ opacity: 0, y: 30 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true, amount: 0.3 }}
-        whileInView={{ opacity: 1, y: 0 }}
+      <ScrollReveal
+        className="relative overflow-hidden rounded-[20px] border border-2 border-gray-200/80 bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] sm:rounded-[20px] dark:border-white/10 dark:bg-[#141414] dark:shadow-none"
+        scale={0.94}
       >
         {/* Subtle peachy ambient glow in the top-left corner of the card */}
         <div className="pointer-events-none absolute -left-10 -top-10 h-52 w-72 rounded-full bg-brand-orange/20 blur-[70px] dark:bg-brand-orange/15" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-stretch">
+        <Tilt
+          className="relative z-10 flex flex-col lg:flex-row lg:items-stretch"
+          lift={0}
+          max={4}
+        >
           {/* Left Side Content - 50% width */}
           <div className="relative z-10 w-full shrink-0 text-left lg:w-1/2 p-6 sm:p-10 lg:p-12 xl:p-14 flex flex-col justify-between">
             <div>
@@ -96,16 +96,19 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
           </div>
 
           {/* Right Side Image - 50% width, seamless blend */}
-          <div className="relative w-full lg:w-1/2 self-stretch flex items-center justify-end overflow-hidden min-h-[340px] sm:min-h-[420px] lg:min-h-full">
-            <img
-              alt={`${study.client} — ${study.title}`}
-              className="w-full h-full object-cover object-left select-none"
-              loading="lazy"
-              src={study.heroImage}
-            />
+          <div className="relative flex min-h-[340px] w-full items-center justify-end self-stretch overflow-hidden sm:min-h-[420px] lg:min-h-full lg:w-1/2">
+            <Parallax className="h-full w-full" speed={0.08}>
+              {/* slight overscale so the parallax shift never reveals an edge */}
+              <img
+                alt={`${study.client} — ${study.title}`}
+                className="h-full w-full scale-[1.12] select-none object-cover object-left"
+                loading="lazy"
+                src={study.heroImage}
+              />
+            </Parallax>
           </div>
-        </div>
-      </motion.div>
+        </Tilt>
+      </ScrollReveal>
     </div>
   );
 };

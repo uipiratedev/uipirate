@@ -1,25 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";
 import LetsTalkButton from "@/components/LetsTalkButton";
-
-// Smooth animation variants for testimonial cards
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.05,
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  }),
-};
+import { Reveal, RevealGroup } from "@/components/motion";
 
 export default function TestimonialCards() {
   const [isMobile, setIsMobile] = useState(false);
@@ -52,10 +38,9 @@ export default function TestimonialCards() {
           <div className="absolute bottom-0 left-0 w-full h-[240px] bg-gradient-to-t from-white via-white/80 to-transparent z-20 pointer-events-none" />
         )}
 
-        <motion.div
-          animate={isExpanded ? { y: 0 } : {}}
-          className="columns-1 md:columns-2 lg:columns-3 gap-5 [column-fill:_balance]"
-          initial={{ y: 0 }}
+        <RevealGroup
+          className="columns-1 gap-5 [column-fill:_balance] md:columns-2 lg:columns-3"
+          stagger="tight"
         >
           {displayedTestimonials.map((item, idx) => {
             // Clean occupation title
@@ -65,14 +50,11 @@ export default function TestimonialCards() {
               : "";
 
             return (
-              <motion.div
+              <Reveal
                 key={idx}
-                className="break-inside-avoid mb-5 inline-block w-full"
-                custom={idx}
-                initial="hidden"
-                variants={cardVariants}
-                viewport={{ once: true, amount: 0.2 }}
-                whileInView="visible"
+                className="mb-5 inline-block w-full break-inside-avoid"
+                distance="sm"
+                variant="bloom"
               >
                 <div className="group relative bg-white border border-[#E5E7EB] rounded-[20px] p-5 px-7 pt-12 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-[border-color,box-shadow] duration-300 flex flex-col justify-start gap-3.5 overflow-hidden">
                   {/* Top Hanging Stars Badge */}
@@ -146,10 +128,10 @@ export default function TestimonialCards() {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </Reveal>
             );
           })}
-        </motion.div>
+        </RevealGroup>
       </div>
 
       {/* See More Button */}
