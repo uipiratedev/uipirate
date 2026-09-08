@@ -41,11 +41,31 @@ const STATIC_PAGES: {
   { path: "/componentlab", priority: 0.9, changeFrequency: "weekly" },
   { path: "/components", priority: 0.9, changeFrequency: "weekly" },
   { path: "/buttons", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/buttons/tactile-pill-button", priority: 0.85, changeFrequency: "weekly" },
-  { path: "/buttons/scaling-capsule-button", priority: 0.85, changeFrequency: "weekly" },
-  { path: "/buttons/smash-tactile-button", priority: 0.85, changeFrequency: "weekly" },
-  { path: "/buttons/animated-slide-button", priority: 0.8, changeFrequency: "weekly" },
-  { path: "/buttons/magnetic-pulse-cta", priority: 0.8, changeFrequency: "weekly" },
+  {
+    path: "/buttons/tactile-pill-button",
+    priority: 0.85,
+    changeFrequency: "weekly",
+  },
+  {
+    path: "/buttons/scaling-capsule-button",
+    priority: 0.85,
+    changeFrequency: "weekly",
+  },
+  {
+    path: "/buttons/smash-tactile-button",
+    priority: 0.85,
+    changeFrequency: "weekly",
+  },
+  {
+    path: "/buttons/animated-slide-button",
+    priority: 0.8,
+    changeFrequency: "weekly",
+  },
+  {
+    path: "/buttons/magnetic-pulse-cta",
+    priority: 0.8,
+    changeFrequency: "weekly",
+  },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
 
@@ -59,41 +79,157 @@ const STATIC_PAGES: {
   { path: "/tools/ai", priority: 0.9, changeFrequency: "weekly" as const },
 
   // ── 1. SaaS & Product UX (Core Agency Expertise)
-  { path: "/tools/saas/saas-ux-audit", priority: 0.9, changeFrequency: "monthly" as const },
-  { path: "/tools/saas/pricing-page-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/saas/dashboard-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/saas/saas-onboarding-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/saas/saas-ux-audit",
+    priority: 0.9,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/saas/pricing-page-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/saas/dashboard-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/saas/saas-onboarding-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 
   // ── 2. Website & Conversion Tools (Commercial CRO)
-  { path: "/tools/website/landing-page-analyzer", priority: 0.9, changeFrequency: "monthly" as const },
-  { path: "/tools/website/saas-website-audit", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/cta-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/website-readability-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/homepage-seo-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/website-performance-score", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/ux-audit", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/website/landing-page-analyzer",
+    priority: 0.9,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/saas-website-audit",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/cta-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/website-readability-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/homepage-seo-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/website-performance-score",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/ux-audit",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 
   // ── 3. Design Systems & Code
-  { path: "/tools/design/design-tokens", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/color-palette-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/contrast-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/figma-spacing-calculator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/css-shadow-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/border-radius-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/typography-scale-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/css-to-tailwind-converter", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/svg-optimizer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/breakpoint-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/design/design-tokens",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/color-palette-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/contrast-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/figma-spacing-calculator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/css-shadow-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/border-radius-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/typography-scale-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/css-to-tailwind-converter",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/svg-optimizer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/breakpoint-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 
   // ── 4. AI & GEO Visibility Toolkit
-  { path: "/tools/ai/ai-bot-checker", priority: 0.9, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/llms-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/robots-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/robots-txt-validator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/schema-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/batch-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/geo-competitor-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/bot-directory", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/ai/ai-bot-checker",
+    priority: 0.9,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/llms-txt-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/robots-txt-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/robots-txt-validator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/schema-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/batch-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/geo-competitor-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/bot-directory",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 ];
 
 // Service detail pages (from sericesDetailsList.json slugs)

@@ -73,11 +73,19 @@ const ServicesSection = () => {
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
-      title: "Landing Pages & Websites",
+      title: "Landing Pages",
+    },
+    {
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
+      title: "Landing Websites",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
-      title: "UX Audits & Consultation",
+      title: "UX Audits ",
+    },
+    {
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
+      title: "UX Consultation",
     },
   ];
 
@@ -96,7 +104,6 @@ const ServicesSection = () => {
 
   return (
     <motion.div
-      className="pt-6 max-md:pt-4"
       initial="hidden"
       variants={containerVariants}
       viewport={{ once: true, amount: 0.1 }}

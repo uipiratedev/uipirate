@@ -34,7 +34,8 @@ export const metadata: Metadata = {
   keywords:
     "uipirate, uipirates, UI Pirate, product design agency, product development agency, SaaS development agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, Angular development, React development, Next.js development, full stack agency, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
+    title:
+      "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
     description:
       "Not just designs — we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
     url: "https://uipirate.com",
@@ -365,7 +366,12 @@ export default async function RootLayout({
         {/* AI Data Reference (kept for AI crawlers that do follow links) */}
         <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
         <link href="/llms.txt" rel="alternate" type="text/plain" />
-        <link href="/llms-full.txt" rel="alternate" type="text/plain" title="Full AI Context" />
+        <link
+          href="/llms-full.txt"
+          rel="alternate"
+          title="Full AI Context"
+          type="text/plain"
+        />
 
         {/* Hreflang for international targeting — self-referential per page,
             since every locale variant serves the same URL/content. */}
@@ -407,27 +413,72 @@ export default async function RootLayout({
       >
         {/* noscript fallback — ensures AI crawlers that don't execute JS see real content */}
         <noscript>
-          <div style={{ padding: "2rem", fontFamily: "sans-serif", maxWidth: "900px", margin: "0 auto" }}>
+          <div
+            style={{
+              padding: "2rem",
+              fontFamily: "sans-serif",
+              maxWidth: "900px",
+              margin: "0 auto",
+            }}
+          >
             <h1>UI Pirate | SaaS &amp; AI Product Design Agency</h1>
-            <p>Product design &amp; development agency. We turn SaaS and AI ideas into shipped products. UX/UI design, Angular &amp; React development. Serving clients in USA, UK, Singapore, India, and Australia.</p>
+            <p>
+              Product design &amp; development agency. We turn SaaS and AI ideas
+              into shipped products. UX/UI design, Angular &amp; React
+              development. Serving clients in USA, UK, Singapore, India, and
+              Australia.
+            </p>
             <h2>Services</h2>
             <ul>
-              <li><a href="/services/SaaS-Web-&amp;-Mobile-Apps">SaaS Web &amp; Mobile App Design &amp; Development</a></li>
-              <li><a href="/services/Landing-Pages-&amp;-Business-Websites">Landing Pages &amp; Business Websites</a></li>
-              <li><a href="/services/Design-System-&amp;-Component-Library">Design Systems &amp; Component Libraries</a></li>
-              <li><a href="/services/UX-Audits-&amp;-Consultation">UX Audits &amp; Consultation</a></li>
+              <li>
+                <a href="/services/SaaS-Web-&amp;-Mobile-Apps">
+                  SaaS Web &amp; Mobile App Design &amp; Development
+                </a>
+              </li>
+              <li>
+                <a href="/services/Landing-Pages-&amp;-Business-Websites">
+                  Landing Pages &amp; Business Websites
+                </a>
+              </li>
+              <li>
+                <a href="/services/Design-System-&amp;-Component-Library">
+                  Design Systems &amp; Component Libraries
+                </a>
+              </li>
+              <li>
+                <a href="/services/UX-Audits-&amp;-Consultation">
+                  UX Audits &amp; Consultation
+                </a>
+              </li>
             </ul>
             <h2>Navigation</h2>
             <ul>
-              <li><a href="/case-studies">Case Studies &amp; Portfolio</a></li>
-              <li><a href="/pricing">Pricing</a></li>
-              <li><a href="/blogs">Blog</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/faqs">FAQs</a></li>
-              <li><a href="/tools">Free Tools</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li>
+                <a href="/case-studies">Case Studies &amp; Portfolio</a>
+              </li>
+              <li>
+                <a href="/pricing">Pricing</a>
+              </li>
+              <li>
+                <a href="/blogs">Blog</a>
+              </li>
+              <li>
+                <a href="/about">About</a>
+              </li>
+              <li>
+                <a href="/faqs">FAQs</a>
+              </li>
+              <li>
+                <a href="/tools">Free Tools</a>
+              </li>
+              <li>
+                <a href="/contact">Contact</a>
+              </li>
             </ul>
-            <p>Founded by Vishal Anand. 50+ products shipped. 5.0 rating. <a href="/contact">Contact us</a></p>
+            <p>
+              Founded by Vishal Anand. 50+ products shipped. 5.0 rating.{" "}
+              <a href="/contact">Contact us</a>
+            </p>
           </div>
         </noscript>
 

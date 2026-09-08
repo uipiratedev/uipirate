@@ -348,20 +348,20 @@ const ProjectEstimate = ({
 
     const message = encodeURIComponent(
       `🏴‍☠️ *NEW PROJECT ESTIMATE & CALL* 🏴‍☠️\n\n` +
-      `*CLIENT DETAILS*\n` +
-      `👤 *Name:* ${name}\n` +
-      `📧 *Email:* ${email}\n` +
-      `📞 *Phone:* +${phone}\n\n` +
-      `*PROJECT SCOPE*\n` +
-      `🚀 *Building:* ${projectTypesList}\n` +
-      `🛠️ *Needs:* ${selectedRequirement}\n` +
-      `🎯 *Priorities:* ${prioritiesList}\n\n` +
-      `*BALLPARK ESTIMATE*\n` +
-      `${estimate.isInvalid ? "⚠️ _Invalid Combination_" : `💰 *Budget:* ${estimate.budget}\n⏳ *Timeline:* ${estimate.timeline}`}\n\n` +
-      `*📅 PREFERRED CALL SLOT*\n` +
-      `⏰ *Time:* ${slotText}\n\n` +
-      `--- \n` +
-      `_I'm interested in moving forward. Let's talk!_`,
+        `*CLIENT DETAILS*\n` +
+        `👤 *Name:* ${name}\n` +
+        `📧 *Email:* ${email}\n` +
+        `📞 *Phone:* +${phone}\n\n` +
+        `*PROJECT SCOPE*\n` +
+        `🚀 *Building:* ${projectTypesList}\n` +
+        `🛠️ *Needs:* ${selectedRequirement}\n` +
+        `🎯 *Priorities:* ${prioritiesList}\n\n` +
+        `*BALLPARK ESTIMATE*\n` +
+        `${estimate.isInvalid ? "⚠️ _Invalid Combination_" : `💰 *Budget:* ${estimate.budget}\n⏳ *Timeline:* ${estimate.timeline}`}\n\n` +
+        `*📅 PREFERRED CALL SLOT*\n` +
+        `⏰ *Time:* ${slotText}\n\n` +
+        `--- \n` +
+        `_I'm interested in moving forward. Let's talk!_`,
     );
 
     // Using the provided wa.link and appending the text parameter
@@ -452,7 +452,8 @@ const ProjectEstimate = ({
 
                 {/* Description */}
                 <p className="text-[#555555] mb-6 text-base max-md:text-sm">
-                  Pick your priorities, tell us what you need, and get a realistic estimate in seconds.
+                  Pick your priorities, tell us what you need, and get a
+                  realistic estimate in seconds.
                 </p>
 
                 {/* Features List */}
@@ -898,10 +899,11 @@ const ProjectEstimate = ({
                           return (
                             <button
                               key={priority.id}
-                              className={`w-full p-4 rounded-[20px] transition-all text-left relative group border-2 ${isSelected
+                              className={`w-full p-4 rounded-[20px] transition-all text-left relative group border-2 ${
+                                isSelected
                                   ? "bg-black text-white border-black shadow-lg noise-texture"
                                   : "bg-white text-gray-700 border-gray-100 hover:border-gray-200 hover:bg-gray-50"
-                                }`}
+                              }`}
                               onClick={() => togglePriority(priority.id)}
                             >
                               <div className="flex items-center justify-between pointer-events-none">
@@ -927,14 +929,16 @@ const ProjectEstimate = ({
                                   </div>
                                 </div>
                                 <div
-                                  className={`w-12 h-6  min-w-12 min-h-6 rounded-full transition-all flex items-center px-1 ${isSelected ? "bg-[#FF5B04]" : "bg-gray-200"
-                                    }`}
+                                  className={`w-12 h-6  min-w-12 min-h-6 rounded-full transition-all flex items-center px-1 ${
+                                    isSelected ? "bg-[#FF5B04]" : "bg-gray-200"
+                                  }`}
                                 >
                                   <div
-                                    className={`w-4 h-4 bg-white rounded-full transition-transform ${isSelected
+                                    className={`w-4 h-4 bg-white rounded-full transition-transform ${
+                                      isSelected
                                         ? "translate-x-6"
                                         : "translate-x-0"
-                                      }`}
+                                    }`}
                                   />
                                 </div>
                               </div>
@@ -1014,10 +1018,11 @@ const ProjectEstimate = ({
                           return (
                             <button
                               key={date.id}
-                              className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${isSelected
+                              className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
+                                isSelected
                                   ? "border-[#FF5B04] bg-[#FF5B04]/5 text-black font-bold"
                                   : "border-gray-100 hover:border-gray-200 bg-white text-gray-700"
-                                }`}
+                              }`}
                               type="button"
                               onClick={() => setSelectedDate(date.id)}
                             >
@@ -1054,10 +1059,11 @@ const ProjectEstimate = ({
                           return (
                             <button
                               key={time}
-                              className={`py-3 px-2 text-center rounded-xl border-2 transition-all text-sm font-medium ${isSelected
+                              className={`py-3 px-2 text-center rounded-xl border-2 transition-all text-sm font-medium ${
+                                isSelected
                                   ? "border-[#FF5B04] bg-[#FF5B04] text-white font-bold"
                                   : "border-gray-100 hover:border-gray-200 bg-white text-gray-700"
-                                }`}
+                              }`}
                               type="button"
                               onClick={() => setSelectedTimeSlot(time)}
                             >

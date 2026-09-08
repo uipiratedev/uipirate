@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+
 import {
   ElevatedUnderglowCTA,
   ElevatedUnderglowTheme,
@@ -135,12 +135,15 @@ export function ElevatedUnderglowCTA({
 export default function ElevatedUnderglowScreen() {
   const [theme, setTheme] = useState<ElevatedUnderglowTheme>("default");
   const [size, setSize] = useState<ElevatedUnderglowSize>("md");
-  const [stateMode, setStateMode] = useState<ElevatedUnderglowStateMode>("interactive");
+  const [stateMode, setStateMode] =
+    useState<ElevatedUnderglowStateMode>("interactive");
   const [iconType, setIconType] = useState<ElevatedUnderglowIconType>("phone");
   const [labelText, setLabelText] = useState("Book A Call");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [activeCodeTab, setActiveCodeTab] = useState<
+    "component" | "usage" | "css"
+  >("component");
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
@@ -150,7 +153,9 @@ export default function ElevatedUnderglowScreen() {
   };
 
   const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx lucide-react");
+    navigator.clipboard.writeText(
+      "npm install framer-motion clsx lucide-react",
+    );
     setCopiedInstall(true);
     setTimeout(() => setCopiedInstall(false), 2000);
   };
@@ -236,395 +241,520 @@ export default function Example() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-              Elevated Underglow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">3D CTA Button</span>
+              Elevated Underglow{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+                3D CTA Button
+              </span>
             </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Multi-tier 3D CTA button featuring 13px spring elevation, dynamic base underglow flare, and specular reflection bottom insets.
-          </p>
-        </div>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Multi-tier 3D CTA button featuring 13px spring elevation, dynamic
+              base underglow flare, and specular reflection bottom insets.
+            </p>
+          </div>
 
-        {/* Live Interactive Studio / Sandbox */}
-        <div className="bg-neutral-900/80 backdrop-blur-xl border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-          <StudioCanvas>
-            <ElevatedUnderglowCTA
-              label={labelText}
-              theme={theme}
-              size={size}
-              stateMode={stateMode}
-              icon={iconType}
-              onClick={() => setClickCount((c) => c + 1)}
-            />
-
-            <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-black/10 px-3 py-1 rounded-full border border-black/5">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-              <span>Interactions:</span>
-              <span className="text-gray-900 font-semibold">{clickCount}</span>
-            </div>
-          </StudioCanvas>
-        </div>
-
-        {/* Customizer */}
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                Button Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+          {/* Live Interactive Studio / Sandbox */}
+          <div className="bg-neutral-900/80 backdrop-blur-xl border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+            <StudioCanvas>
+              <ElevatedUnderglowCTA
+                icon={iconType}
+                label={labelText}
+                size={size}
+                stateMode={stateMode}
+                theme={theme}
+                onClick={() => setClickCount((c) => c + 1)}
               />
-            </div>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                Theme Color
-              </label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as ElevatedUnderglowTheme)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                {(Object.keys(UNDERGLOW_THEMES) as ElevatedUnderglowTheme[]).map((key) => (
-                  <option key={key} value={key} className="bg-neutral-900">
-                    {UNDERGLOW_THEMES[key]?.name || key}
+              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-black/10 px-3 py-1 rounded-full border border-black/5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                <span>Interactions:</span>
+                <span className="text-gray-900 font-semibold">
+                  {clickCount}
+                </span>
+              </div>
+            </StudioCanvas>
+          </div>
+
+          {/* Customizer */}
+          <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
+              Customizer
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Button Label
+                </label>
+                <input
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+                  type="text"
+                  value={labelText}
+                  onChange={(e) => setLabelText(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Theme Color
+                </label>
+                <select
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+                  value={theme}
+                  onChange={(e) =>
+                    setTheme(e.target.value as ElevatedUnderglowTheme)
+                  }
+                >
+                  {(
+                    Object.keys(UNDERGLOW_THEMES) as ElevatedUnderglowTheme[]
+                  ).map((key) => (
+                    <option key={key} className="bg-neutral-900" value={key}>
+                      {UNDERGLOW_THEMES[key]?.name || key}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Scale Size
+                </label>
+                <select
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as typeof size)}
+                >
+                  <option className="bg-[#151518] text-white" value="xs">
+                    Extra Small
                   </option>
-                ))}
-              </select>
-            </div>
+                  <option className="bg-[#151518] text-white" value="sm">
+                    Small
+                  </option>
+                  <option className="bg-[#151518] text-white" value="md">
+                    Medium
+                  </option>
+                  <option className="bg-[#151518] text-white" value="lg">
+                    Large
+                  </option>
+                  <option className="bg-[#151518] text-white" value="xl">
+                    Extra Large
+                  </option>
+                </select>
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                Scale Size
-              </label>
-                            <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as typeof size)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
-              </select>
-            </div>
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  State Preview
+                </label>
+                <select
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+                  value={stateMode}
+                  onChange={(e) =>
+                    setStateMode(e.target.value as ElevatedUnderglowStateMode)
+                  }
+                >
+                  <option value="interactive">Interactive</option>
+                  <option value="standerd">Standard</option>
+                  <option value="hover">Hover</option>
+                </select>
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                State Preview
-              </label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as ElevatedUnderglowStateMode)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="interactive">Interactive</option>
-                <option value="standerd">Standard</option>
-                <option value="hover">Hover</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                Icon
-              </label>
-              <select
-                value={iconType}
-                onChange={(e) => setIconType(e.target.value as ElevatedUnderglowIconType)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="phone">Phone</option>
-                <option value="calendar">Calendar</option>
-                <option value="arrow">Arrow</option>
-                <option value="sparkle">Sparkle</option>
-                <option value="mail">Mail</option>
-                <option value="none">None</option>
-              </select>
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Icon
+                </label>
+                <select
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+                  value={iconType}
+                  onChange={(e) =>
+                    setIconType(e.target.value as ElevatedUnderglowIconType)
+                  }
+                >
+                  <option value="phone">Phone</option>
+                  <option value="calendar">Calendar</option>
+                  <option value="arrow">Arrow</option>
+                  <option value="sparkle">Sparkle</option>
+                  <option value="mail">Mail</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             ALL VARIANTS & THEMES PREVIEW CARD
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#0077FF] mb-1.5">
-                <span>PRESETS &amp; VARIATIONS</span>
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#0077FF] mb-1.5">
+                  <span>PRESETS &amp; VARIATIONS</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">
+                  All Variants Preview
+                </h2>
               </div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+              <p className="text-xs text-gray-400 font-mono">
+                Hover over each button to trigger realistic 13px 3D lift physics
+              </p>
             </div>
-            <p className="text-xs text-gray-400 font-mono">
-              Hover over each button to trigger realistic 13px 3D lift physics
-            </p>
+
+            <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Default Electric Blue */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Default Electric Blue
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">
+                      theme=&quot;default&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <ElevatedUnderglowCTA
+                      icon="phone"
+                      label="Book A Call"
+                      size="md"
+                      theme="default"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    1:1 reference design with blue extruded sub-chassis
+                  </span>
+                </div>
+
+                {/* UI Pirate Orange */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      UI Pirate Magma
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">
+                      theme=&quot;uipirate&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <ElevatedUnderglowCTA
+                      icon="sparkle"
+                      label="Get Started"
+                      size="md"
+                      theme="uipirate"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Vibrant signature brand magma orange glow
+                  </span>
+                </div>
+
+                {/* Neon Emerald */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Neon Emerald
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">
+                      theme=&quot;emerald&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <ElevatedUnderglowCTA
+                      icon="arrow"
+                      label="Deploy Code"
+                      size="md"
+                      theme="emerald"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    High-tech reactor matrix green elevation chassis
+                  </span>
+                </div>
+
+                {/* Cyber Violet */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Cyber Violet
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">
+                      theme=&quot;violet&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <ElevatedUnderglowCTA
+                      icon="sparkle"
+                      label="Upgrade Pro"
+                      size="md"
+                      theme="violet"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Sleek neon ultraviolet sub-chassis underglow
+                  </span>
+                </div>
+
+                {/* Crimson Ember */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Crimson Ember
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">
+                      theme=&quot;crimson&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <ElevatedUnderglowCTA
+                      icon="calendar"
+                      label="Schedule Demo"
+                      size="md"
+                      theme="crimson"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Punchy ruby red extruded sub-surface illumination
+                  </span>
+                </div>
+
+                {/* Dark Obsidian */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Dark Obsidian
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">
+                      theme=&quot;dark&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <ElevatedUnderglowCTA
+                      icon="mail"
+                      label="Contact Us"
+                      size="md"
+                      theme="dark"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Monochrome stealth obsidian cap with pure white glow
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Default Electric Blue */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Default Electric Blue</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;default&quot;</span>
-                </div>
-                <div className="my-3">
-                  <ElevatedUnderglowCTA
-                    theme="default"
-                    label="Book A Call"
-                    icon="phone"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with blue extruded sub-chassis</span>
-              </div>
-
-              {/* UI Pirate Orange */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">UI Pirate Magma</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
-                </div>
-                <div className="my-3">
-                  <ElevatedUnderglowCTA
-                    theme="uipirate"
-                    label="Get Started"
-                    icon="sparkle"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Vibrant signature brand magma orange glow</span>
-              </div>
-
-              {/* Neon Emerald */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Neon Emerald</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald&quot;</span>
-                </div>
-                <div className="my-3">
-                  <ElevatedUnderglowCTA
-                    theme="emerald"
-                    label="Deploy Code"
-                    icon="arrow"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">High-tech reactor matrix green elevation chassis</span>
-              </div>
-
-              {/* Cyber Violet */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Cyber Violet</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;violet&quot;</span>
-                </div>
-                <div className="my-3">
-                  <ElevatedUnderglowCTA
-                    theme="violet"
-                    label="Upgrade Pro"
-                    icon="sparkle"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Sleek neon ultraviolet sub-chassis underglow</span>
-              </div>
-
-              {/* Crimson Ember */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Crimson Ember</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">theme=&quot;crimson&quot;</span>
-                </div>
-                <div className="my-3">
-                  <ElevatedUnderglowCTA
-                    theme="crimson"
-                    label="Schedule Demo"
-                    icon="calendar"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Punchy ruby red extruded sub-surface illumination</span>
-              </div>
-
-              {/* Dark Obsidian */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Dark Obsidian</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark&quot;</span>
-                </div>
-                <div className="my-3">
-                  <ElevatedUnderglowCTA
-                    theme="dark"
-                    label="Contact Us"
-                    icon="mail"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Monochrome stealth obsidian cap with pure white glow</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
-          <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl p-6 sm:p-8 space-y-6">
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Install the required dependencies for Framer Motion spring physics and Lucide icons:
-            </p>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Installation &amp; Setup
+            </h2>
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl p-6 sm:p-8 space-y-6">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Install the required dependencies for Framer Motion spring
+                physics and Lucide icons:
+              </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-neutral-800 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
-              <span>npm install framer-motion clsx lucide-react</span>
-              <button
-                onClick={handleCopyInstall}
-                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
-              >
-                {copiedInstall ? "Copied Command!" : "Copy Command"}
-              </button>
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-neutral-800 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+                <span>npm install framer-motion clsx lucide-react</span>
+                <button
+                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+                  onClick={handleCopyInstall}
+                >
+                  {copiedInstall ? "Copied Command!" : "Copy Command"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             CODE EXPORTER TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
-            <button
-              onClick={() =>
-                handleCopy(
-                  activeCodeTab === "component"
-                    ? componentSourceCode
-                    : activeCodeTab === "usage"
-                    ? usageCode
-                    : cssOnlyCode,
-                  activeCodeTab
-                )
-              }
-              className="text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
-            </button>
-          </div>
-
-          <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-neutral-800 bg-white/[0.02]">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-white font-mono">
-                  {activeCodeTab === "component" ? "ElevatedUnderglowCTA.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
-                </span>
-                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
-              </div>
-
-              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
-                <button
-                  onClick={() => setActiveCodeTab("component")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "component" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Component.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("usage")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "usage" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Usage.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("css")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "css" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Tokens.css
-                </button>
-              </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white tracking-tight">
+                Code &amp; Integration
+              </h2>
+              <button
+                className="text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors"
+                onClick={() =>
+                  handleCopy(
+                    activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : cssOnlyCode,
+                    activeCodeTab,
+                  )
+                }
+              >
+                {copiedCode === activeCodeTab
+                  ? "✓ Copied to Clipboard"
+                  : "Copy Active Tab Code"}
+              </button>
             </div>
 
-            <div className="p-6 bg-[#0a0c10] overflow-x-auto max-h-[550px]">
-              <pre className="text-xs sm:text-sm font-mono text-neutral-300 leading-relaxed">
-                <code>
-                  {activeCodeTab === "component"
-                    ? componentSourceCode
-                    : activeCodeTab === "usage"
-                    ? usageCode
-                    : cssOnlyCode}
-                </code>
-              </pre>
+            <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-neutral-800 bg-white/[0.02]">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-white font-mono">
+                    {activeCodeTab === "component"
+                      ? "ElevatedUnderglowCTA.tsx"
+                      : activeCodeTab === "usage"
+                        ? "Usage.tsx"
+                        : "Tokens.css"}
+                  </span>
+                  <span className="text-xs text-gray-500 font-mono">
+                    • Production Ready
+                  </span>
+                </div>
+
+                <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                  <button
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                      activeCodeTab === "component"
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    onClick={() => setActiveCodeTab("component")}
+                  >
+                    Component.tsx
+                  </button>
+                  <button
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                      activeCodeTab === "usage"
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    onClick={() => setActiveCodeTab("usage")}
+                  >
+                    Usage.tsx
+                  </button>
+                  <button
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                      activeCodeTab === "css"
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    onClick={() => setActiveCodeTab("css")}
+                  >
+                    Tokens.css
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 bg-[#0a0c10] overflow-x-auto max-h-[550px]">
+                <pre className="text-xs sm:text-sm font-mono text-neutral-300 leading-relaxed">
+                  <code>
+                    {activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : cssOnlyCode}
+                  </code>
+                </pre>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             PROPS & API REFERENCE TABLE
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
-          <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-xl">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-neutral-800 bg-white/[0.02] text-gray-400 font-mono">
-                    <th className="py-3.5 px-6 font-semibold">Prop</th>
-                    <th className="py-3.5 px-6 font-semibold">Type</th>
-                    <th className="py-3.5 px-6 font-semibold">Default</th>
-                    <th className="py-3.5 px-6 font-semibold">Description</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-neutral-800 text-gray-300 font-mono text-xs">
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">label</td>
-                    <td className="py-3 px-6 text-blue-300">string</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;Book A Call&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed inside the button</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">icon</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;phone&quot; | &quot;calendar&quot; | &quot;arrow&quot; | &quot;sparkle&quot; | &quot;mail&quot; | ReactNode</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;phone&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Leading icon glyph or custom React node</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">theme</td>
-                    <td className="py-3 px-6 text-blue-300">ElevatedUnderglowTheme</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;default&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Colorway theme preset (Electric Blue, Orange, Cyan, etc.)</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">onClick</td>
-                    <td className="py-3 px-6 text-blue-300">(e) =&gt; void</td>
-                    <td className="py-3 px-6 text-gray-400">undefined</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Component API Reference
+            </h2>
+            <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-xl">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead>
+                    <tr className="border-b border-neutral-800 bg-white/[0.02] text-gray-400 font-mono">
+                      <th className="py-3.5 px-6 font-semibold">Prop</th>
+                      <th className="py-3.5 px-6 font-semibold">Type</th>
+                      <th className="py-3.5 px-6 font-semibold">Default</th>
+                      <th className="py-3.5 px-6 font-semibold">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-neutral-800 text-gray-300 font-mono text-xs">
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">
+                        label
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">string</td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;Book A Call&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Text displayed inside the button
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">
+                        icon
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        &quot;phone&quot; | &quot;calendar&quot; |
+                        &quot;arrow&quot; | &quot;sparkle&quot; |
+                        &quot;mail&quot; | ReactNode
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;phone&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Leading icon glyph or custom React node
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">
+                        theme
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        ElevatedUnderglowTheme
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;default&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Colorway theme preset (Electric Blue, Orange, Cyan,
+                        etc.)
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">
+                        size
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        &quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; |
+                        &quot;lg&quot; | &quot;xl&quot;
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;md&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Scale multiplier
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">
+                        onClick
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        (e) =&gt; void
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">undefined</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Click callback event handler
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Website Global CTA */}
-        <GlobalCTA topic="elevated 3D underglow buttons or interactive UI controls" />
+          {/* Website Global CTA */}
+          <GlobalCTA topic="elevated 3D underglow buttons or interactive UI controls" />
+        </div>
       </div>
-    </div>
-  </PageWrapper>
+    </PageWrapper>
   );
 }

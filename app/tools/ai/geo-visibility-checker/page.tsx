@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import AIBotCheckerClient from "@/components/AIBotChecker/AIBotCheckerClient";
 
 export const metadata: Metadata = {

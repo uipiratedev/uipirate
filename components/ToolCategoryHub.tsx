@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+
 import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
@@ -32,9 +33,18 @@ export const CATEGORY_METADATA: Record<
     path: "/tools/ai",
     name: "AI & GEO Visibility Tools",
     shortName: "AI & GEO Visibility",
-    description: "Inspect AI crawler accessibility, build llms.txt knowledge graphs, and optimize for ChatGPT & Perplexity.",
+    description:
+      "Inspect AI crawler accessibility, build llms.txt knowledge graphs, and optimize for ChatGPT & Perplexity.",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+        viewBox="0 0 24 24"
+      >
         <path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
         <path d="M9 12h.01" />
         <path d="M15 12h.01" />
@@ -47,9 +57,18 @@ export const CATEGORY_METADATA: Record<
     path: "/tools/website",
     name: "Website & Conversion Tools",
     shortName: "Website & Conversion",
-    description: "Audit visual hierarchy, CTA clarity, copy readability, and conversion friction.",
+    description:
+      "Audit visual hierarchy, CTA clarity, copy readability, and conversion friction.",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+        viewBox="0 0 24 24"
+      >
         <circle cx="12" cy="12" r="1" />
         <path d="M12 7a5 5 0 1 0 5 5" />
         <path d="M13 3.055a9 9 0 1 0 7.941 7.945" />
@@ -62,10 +81,19 @@ export const CATEGORY_METADATA: Record<
     path: "/tools/saas",
     name: "SaaS & Product Design Tools",
     shortName: "SaaS & Product UX",
-    description: "Score onboarding friction, dashboard complexity, information architecture, and pricing psychology.",
+    description:
+      "Score onboarding friction, dashboard complexity, information architecture, and pricing psychology.",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="4" width="18" height="12" rx="2" />
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+        viewBox="0 0 24 24"
+      >
+        <rect height="12" rx="2" width="18" x="3" y="4" />
         <path d="M7 20h10" />
         <path d="M9 16v4" />
         <path d="M15 16v4" />
@@ -77,9 +105,18 @@ export const CATEGORY_METADATA: Record<
     path: "/tools/design",
     name: "Design Systems & Code Tools",
     shortName: "Design Systems & Code",
-    description: "Generate Tailwind design tokens, 8pt spacing scales, typography ramps, and WCAG contrast checks.",
+    description:
+      "Generate Tailwind design tokens, 8pt spacing scales, typography ramps, and WCAG contrast checks.",
     icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+        viewBox="0 0 24 24"
+      >
         <path d="M12 21a9 9 0 0 1 0-18c4.97 0 9 3.582 9 8c0 1.06-.474 2.078-1.318 2.828c-.844.75-1.989 1.172-3.182 1.172h-2.5a2 2 0 0 0-1 3.732v.268a2 2 0 0 1-1 2z" />
         <circle cx="7.5" cy="10.5" r="1" />
         <circle cx="12" cy="7.5" r="1" />
@@ -102,36 +139,37 @@ export default function ToolCategoryHub({
 }: CategoryHubProps) {
   const categoryTools = useMemo(
     () => ALL_TOOLS_REGISTRY.filter((t) => t.category === categoryId),
-    [categoryId]
+    [categoryId],
   );
 
   const otherCategories = useMemo(
     () =>
-      Object.entries(CATEGORY_METADATA).filter(
-        ([id]) => id !== categoryId
-      ) as [ToolCategory, (typeof CATEGORY_METADATA)[ToolCategory]][],
-    [categoryId]
+      Object.entries(CATEGORY_METADATA).filter(([id]) => id !== categoryId) as [
+        ToolCategory,
+        (typeof CATEGORY_METADATA)[ToolCategory],
+      ][],
+    [categoryId],
   );
 
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": `${title} | UI Pirate Tools`,
-    "description": subtitle,
-    "url": `https://uipirate.com${CATEGORY_METADATA[categoryId].path}`,
-    "publisher": {
+    name: `${title} | UI Pirate Tools`,
+    description: subtitle,
+    url: `https://uipirate.com${CATEGORY_METADATA[categoryId].path}`,
+    publisher: {
       "@type": "Organization",
-      "name": "UI Pirate",
-      "url": "https://uipirate.com",
+      name: "UI Pirate",
+      url: "https://uipirate.com",
     },
-    "mainEntity": {
+    mainEntity: {
       "@type": "ItemList",
-      "itemListElement": categoryTools.map((tool, idx) => ({
+      itemListElement: categoryTools.map((tool, idx) => ({
         "@type": "ListItem",
-        "position": idx + 1,
-        "name": tool.title,
-        "description": tool.description,
-        "url": `https://uipirate.com${tool.href}`,
+        position: idx + 1,
+        name: tool.title,
+        description: tool.description,
+        url: `https://uipirate.com${tool.href}`,
       })),
     },
   };
@@ -141,12 +179,12 @@ export default function ToolCategoryHub({
       ? {
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "mainEntity": faqs.map((f) => ({
+          mainEntity: faqs.map((f) => ({
             "@type": "Question",
-            "name": f.q,
-            "acceptedAnswer": {
+            name: f.q,
+            acceptedAnswer: {
               "@type": "Answer",
-              "text": f.a,
+              text: f.a,
             },
           })),
         }
@@ -163,28 +201,30 @@ export default function ToolCategoryHub({
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
 
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+        type="application/ld+json"
       />
       {faqSchema && (
         <script
-          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          type="application/ld+json"
         />
       )}
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Category Hero */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center w-full max-w-5xl mx-auto mb-14"
+          initial={{ opacity: 0, y: -10 }}
         >
           <div className="mb-6 flex flex-row items-center justify-center">
             <GlassBadge variant="gradient">{badgeText}</GlassBadge>
@@ -218,12 +258,14 @@ export default function ToolCategoryHub({
                 Tools in this Suite ({categoryTools.length})
               </h2>
             </div>
-            <span className="text-xs text-gray-400 font-mono">100% Free · No Sign-up Required</span>
+            <span className="text-xs text-gray-400 font-mono">
+              100% Free · No Sign-up Required
+            </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {categoryTools.map((tool) => (
-              <Link key={tool.id} href={tool.href} className="h-full block">
+              <Link key={tool.id} className="h-full block" href={tool.href}>
                 <div className="group bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/50 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300">
                   <div>
                     <div className="flex items-center justify-between mb-4">
@@ -236,10 +278,10 @@ export default function ToolCategoryHub({
                             tool.badge === "Popular"
                               ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
                               : tool.badge === "Live"
-                              ? "text-emerald-700 bg-emerald-50 border-emerald-200"
-                              : tool.badge === "Preview Available"
-                              ? "text-amber-700 bg-amber-50 border-amber-200"
-                              : "text-blue-700 bg-blue-50 border-blue-200"
+                                ? "text-emerald-700 bg-emerald-50 border-emerald-200"
+                                : tool.badge === "Preview Available"
+                                  ? "text-amber-700 bg-amber-50 border-amber-200"
+                                  : "text-blue-700 bg-blue-50 border-blue-200"
                           }`}
                         >
                           {tool.badge}
@@ -250,15 +292,29 @@ export default function ToolCategoryHub({
                     <h3 className="text-base font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-2 leading-snug">
                       {tool.title}
                     </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed">{tool.description}</p>
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      {tool.description}
+                    </p>
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                    <span className="text-[11px] text-gray-400 font-mono">
+                      {tool.categoryLabel}
+                    </span>
                     <span className="text-xs font-bold text-[#FF5B04] group-hover:translate-x-1 transition-transform flex items-center gap-1">
                       {tool.ctaLabel}
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2.5"
+                        />
                       </svg>
                     </span>
                   </div>
@@ -281,11 +337,20 @@ export default function ToolCategoryHub({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {methodology.map((m, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-gray-50/80 border border-gray-100 flex flex-col justify-between">
+              <div
+                key={idx}
+                className="p-6 rounded-2xl bg-gray-50/80 border border-gray-100 flex flex-col justify-between"
+              >
                 <div>
-                  <span className="text-xs font-mono font-bold text-[#FF5B04] block mb-2">{m.step}</span>
-                  <h3 className="text-sm font-bold text-gray-900 font-jakarta mb-2">{m.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{m.desc}</p>
+                  <span className="text-xs font-mono font-bold text-[#FF5B04] block mb-2">
+                    {m.step}
+                  </span>
+                  <h3 className="text-sm font-bold text-gray-900 font-jakarta mb-2">
+                    {m.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {m.desc}
+                  </p>
                 </div>
               </div>
             ))}
@@ -301,11 +366,13 @@ export default function ToolCategoryHub({
             <h3 className="text-2xl sm:text-3xl font-bold font-jakarta mt-4">
               Turn diagnostic findings into market-leading products.
             </h3>
-            <p className="text-xs text-gray-300 mt-2 leading-relaxed">{agencyDescription}</p>
+            <p className="text-xs text-gray-300 mt-2 leading-relaxed">
+              {agencyDescription}
+            </p>
           </div>
           <Link
-            href="/contact"
             className="px-7 py-4 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-sm font-bold transition-all shadow-lg shadow-[#FF5B04]/30 whitespace-nowrap flex-shrink-0"
+            href="/contact"
           >
             Book a Strategy Call →
           </Link>
@@ -325,9 +392,16 @@ export default function ToolCategoryHub({
 
             <div className="max-w-3xl mx-auto space-y-4">
               {faqs.map((faq, idx) => (
-                <div key={idx} className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-2xs">
-                  <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">{faq.q}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{faq.a}</p>
+                <div
+                  key={idx}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-2xs"
+                >
+                  <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                    {faq.q}
+                  </h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {faq.a}
+                  </p>
                 </div>
               ))}
             </div>
@@ -340,7 +414,10 @@ export default function ToolCategoryHub({
             <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
               Explore Other Agency Pillars
             </h3>
-            <Link href="/tools" className="text-xs text-[#FF5B04] hover:underline font-bold">
+            <Link
+              className="text-xs text-[#FF5B04] hover:underline font-bold"
+              href="/tools"
+            >
               View All 28 Tools →
             </Link>
           </div>
@@ -349,8 +426,8 @@ export default function ToolCategoryHub({
             {otherCategories.map(([id, cat]) => (
               <Link
                 key={id}
-                href={cat.path}
                 className="group bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-2xl p-5 transition-all shadow-2xs hover:shadow-md"
+                href={cat.path}
               >
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-8 h-8 rounded-xl bg-gray-100 group-hover:bg-[#FF5B04]/10 group-hover:text-[#FF5B04] flex items-center justify-center text-gray-600 transition-colors">
@@ -360,7 +437,9 @@ export default function ToolCategoryHub({
                     {cat.shortName}
                   </h4>
                 </div>
-                <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">{cat.description}</p>
+                <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">
+                  {cat.description}
+                </p>
               </Link>
             ))}
           </div>

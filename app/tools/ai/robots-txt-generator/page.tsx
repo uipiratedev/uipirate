@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import RobotsTxtGeneratorClient from "@/components/RobotsTxtGenerator/RobotsTxtGeneratorClient";
 
 export const metadata: Metadata = {

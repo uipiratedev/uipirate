@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import PricingFlip from "../pricingFlip";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 
 const Pricing = () => {
   // Subtle animation for the main container
@@ -78,15 +78,10 @@ const Pricing = () => {
       whileInView="show"
     >
       {/* Header */}
-      <div className=" autoShow text-center mb-6 max-md:mb-4">
-        <div className="flex justify-center mb-6">
-          <GlassBadge variant="gradient">PRICING</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          Transparent Pricing for{" "}
-          <span className="text-brand-orange">SaaS Teams</span>{" "}
-        </h2>
-      </div>
+      <SectionHeader chip="PRICING" className="autoShow">
+        Transparent Pricing for{" "}
+        <span className="text-brand-orange">SaaS Teams</span>{" "}
+      </SectionHeader>
 
       <PricingFlip />
       {/* Benefits Section */}

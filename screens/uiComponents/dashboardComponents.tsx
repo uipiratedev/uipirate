@@ -1,10 +1,10 @@
 import React from "react";
+
 import { AnimatedButton } from "@/components/AnimatedButton";
 import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
 import GlassBadge from "@/components/GlassBadge";
-import GlassSurface from "@/components/GlassSurface";
 import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
@@ -127,12 +127,12 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
     ],
     previewLight: (
       <div className="py-12 flex items-center justify-center">
-        <IsometricReviveButton label="Revive Now" theme="default" size="md" />
+        <IsometricReviveButton label="Revive Now" size="md" theme="default" />
       </div>
     ),
     previewDark: (
       <div className="py-12 flex items-center justify-center">
-        <IsometricReviveButton label="Revive Now" theme="default" size="md" />
+        <IsometricReviveButton label="Revive Now" size="md" theme="default" />
       </div>
     ),
     jsxCode: `import { IsometricReviveButton } from "@/components/IsometricReviveButton";
@@ -159,10 +159,30 @@ export default function Example() {
   --iso-glow: 0 0 28px rgba(245, 158, 11, 0.4);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Revive Now"', description: "Text rendered on the isometric faceplate." },
-      { name: "theme", type: '"default" | "amber" | "cyan" | "violet" | "uipirate" | "gold-luxury" | "emerald" | "crimson"', defaultValue: '"default"', description: "Color theme for the isometric bevel extrusion." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls scale matrix factor." },
-      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Action callback on 3D button press." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Revive Now"',
+        description: "Text rendered on the isometric faceplate.",
+      },
+      {
+        name: "theme",
+        type: '"default" | "amber" | "cyan" | "violet" | "uipirate" | "gold-luxury" | "emerald" | "crimson"',
+        defaultValue: '"default"',
+        description: "Color theme for the isometric bevel extrusion.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Controls scale matrix factor.",
+      },
+      {
+        name: "onClick",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Action callback on 3D button press.",
+      },
     ],
     variantsList: [
       {
@@ -170,8 +190,11 @@ export default function Example() {
         themeValue: "default",
         themeProp: 'theme="default"',
         badgeColor: "#FFA000",
-        description: "1:1 spec extruded obsidian bevels with amber indicator flare.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="default" label="Revive" size={sz} />,
+        description:
+          "1:1 spec extruded obsidian bevels with amber indicator flare.",
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Revive" size={sz} theme="default" />
+        ),
       },
       {
         title: "Amber Solar Flare",
@@ -179,15 +202,20 @@ export default function Example() {
         themeProp: 'theme="amber"',
         badgeColor: "#F59E0B",
         description: "Warm golden amber underglow with dual bevel highlights.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="amber" label="Ignite" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Ignite" size={sz} theme="amber" />
+        ),
       },
       {
         title: "Electric Cyan",
         themeValue: "cyan",
         themeProp: 'theme="cyan"',
         badgeColor: "#06B6D4",
-        description: "Laser cyan neon underlayer with high-contrast obsidian slab.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="cyan" label="Deploy" size={sz} />,
+        description:
+          "Laser cyan neon underlayer with high-contrast obsidian slab.",
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Deploy" size={sz} theme="cyan" />
+        ),
       },
       {
         title: "Cyber Violet",
@@ -195,7 +223,9 @@ export default function Example() {
         themeProp: 'theme="violet"',
         badgeColor: "#A855F7",
         description: "Ultraviolet neon underglow with cybernetic 3D extrusion.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="violet" label="Upgrade" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Upgrade" size={sz} theme="violet" />
+        ),
       },
       {
         title: "UI Pirate Magma",
@@ -203,7 +233,9 @@ export default function Example() {
         themeProp: 'theme="uipirate"',
         badgeColor: "#FF5B04",
         description: "Signature brand magma orange 3D isometric bevel slab.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="uipirate" label="Launch" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Launch" size={sz} theme="uipirate" />
+        ),
       },
       {
         title: "Gold Luxury",
@@ -211,23 +243,31 @@ export default function Example() {
         themeProp: 'theme="gold-luxury"',
         badgeColor: "#EAB308",
         description: "Prestige champagne gold walls with golden beacon flare.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="gold-luxury" label="Unlock" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Unlock" size={sz} theme="gold-luxury" />
+        ),
       },
       {
         title: "Emerald Pulse",
         themeValue: "emerald",
         themeProp: 'theme="emerald"',
         badgeColor: "#10B981",
-        description: "Toxic phosphor emerald underglow with high-precision bevel.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="emerald" label="Activate" size={sz} />,
+        description:
+          "Toxic phosphor emerald underglow with high-precision bevel.",
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Activate" size={sz} theme="emerald" />
+        ),
       },
       {
         title: "Crimson Reactor",
         themeValue: "crimson",
         themeProp: 'theme="crimson"',
         badgeColor: "#EF4444",
-        description: "High-alert crimson red reactor bloom with dark obsidian walls.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="crimson" label="Engage" size={sz} />,
+        description:
+          "High-alert crimson red reactor bloom with dark obsidian walls.",
+        renderPreview: (sz = "sm") => (
+          <IsometricReviveButton label="Engage" size={sz} theme="crimson" />
+        ),
       },
     ],
   },
@@ -263,12 +303,20 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <TactilePillButton label="Get Started" dotColor="#00E5BE" variant="default" />
+        <TactilePillButton
+          dotColor="#00E5BE"
+          label="Get Started"
+          variant="default"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <TactilePillButton label="Get Started" dotColor="#00E5BE" variant="default" />
+        <TactilePillButton
+          dotColor="#00E5BE"
+          label="Get Started"
+          variant="default"
+        />
       </div>
     ),
     jsxCode: `import TactilePillButton from "@/components/TactilePillButton";
@@ -297,10 +345,30 @@ export default function Example() {
   --pill-shadow-3d: 0 8px 24px -4px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Get Started"', description: "Primary button call-to-action text." },
-      { name: "dotColor", type: "string", defaultValue: '"#00E5BE"', description: "Hex color code for the radiant glowing beacon indicator." },
-      { name: "variant", type: '"default" | "dark" | "orange" | "cyberpunk" | "minimal"', defaultValue: '"default"', description: "Theme style variant matching light or dark surfaces." },
-      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Optional click handler event." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Get Started"',
+        description: "Primary button call-to-action text.",
+      },
+      {
+        name: "dotColor",
+        type: "string",
+        defaultValue: '"#00E5BE"',
+        description: "Hex color code for the radiant glowing beacon indicator.",
+      },
+      {
+        name: "variant",
+        type: '"default" | "dark" | "orange" | "cyberpunk" | "minimal"',
+        defaultValue: '"default"',
+        description: "Theme style variant matching light or dark surfaces.",
+      },
+      {
+        name: "onClick",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Optional click handler event.",
+      },
     ],
     variantsList: [
       {
@@ -309,15 +377,30 @@ export default function Example() {
         themeProp: 'variant="default"',
         badgeColor: "#54EAD8",
         description: "1:1 reference design with turquoise indicator dot.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="default" dotColor="#54EAD8" label="Get Started" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactilePillButton
+            dotColor="#54EAD8"
+            label="Get Started"
+            size={sz}
+            variant="default"
+          />
+        ),
       },
       {
         title: "UI Pirate Magma",
         themeValue: "orange",
         themeProp: 'variant="orange"',
         badgeColor: "#FF5B04",
-        description: "Signature magma orange pill cap with glowing amber beacon.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="orange" dotColor="#FF5B04" label="Join Waitlist" size={sz} />,
+        description:
+          "Signature magma orange pill cap with glowing amber beacon.",
+        renderPreview: (sz = "sm") => (
+          <TactilePillButton
+            dotColor="#FF5B04"
+            label="Join Waitlist"
+            size={sz}
+            variant="orange"
+          />
+        ),
       },
       {
         title: "Dark Obsidian",
@@ -325,7 +408,14 @@ export default function Example() {
         themeProp: 'variant="dark"',
         badgeColor: "#A78BFA",
         description: "Stealth midnight pill with violet status indicator.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="dark" dotColor="#A78BFA" label="Explore Tech" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactilePillButton
+            dotColor="#A78BFA"
+            label="Explore Tech"
+            size={sz}
+            variant="dark"
+          />
+        ),
       },
       {
         title: "Cyberpunk Matrix",
@@ -333,7 +423,14 @@ export default function Example() {
         themeProp: 'variant="cyberpunk"',
         badgeColor: "#10B981",
         description: "Neon reactor green beacon with tactile recessed tray.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="cyberpunk" dotColor="#10B981" label="Deploy Matrix" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactilePillButton
+            dotColor="#10B981"
+            label="Deploy Matrix"
+            size={sz}
+            variant="cyberpunk"
+          />
+        ),
       },
       {
         title: "Minimal Clean",
@@ -341,7 +438,14 @@ export default function Example() {
         themeProp: 'variant="minimal"',
         badgeColor: "#3B82F6",
         description: "Crisp clean tactile pill with sapphire status beacon.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="minimal" dotColor="#3B82F6" label="Learn More" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactilePillButton
+            dotColor="#3B82F6"
+            label="Learn More"
+            size={sz}
+            variant="minimal"
+          />
+        ),
       },
       {
         title: "Tilted State Preview",
@@ -349,7 +453,15 @@ export default function Example() {
         themeProp: 'stateMode="tilted"',
         badgeColor: "#EC4899",
         description: "Fixed mechanical spring tilt position (-9.23° angle).",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="default" dotColor="#EC4899" label="Active Tilt" stateMode="tilted" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactilePillButton
+            dotColor="#EC4899"
+            label="Active Tilt"
+            size={sz}
+            stateMode="tilted"
+            variant="default"
+          />
+        ),
       },
     ],
   },
@@ -397,12 +509,20 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <FrostedGelDownloadButton label="Download now" theme="default-blue" size="md" />
+        <FrostedGelDownloadButton
+          label="Download now"
+          size="md"
+          theme="default-blue"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <FrostedGelDownloadButton label="Download now" theme="default-blue" size="md" />
+        <FrostedGelDownloadButton
+          label="Download now"
+          size="md"
+          theme="default-blue"
+        />
       </div>
     ),
     jsxCode: `import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
@@ -432,10 +552,31 @@ export default function Example() {
   --gel-border-sheen: 1px solid rgba(255, 255, 255, 0.15);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Download now"', description: "Text label displayed inside the elevated ceramic pill." },
-      { name: "theme", type: '"default-blue" | "cyber-violet" | "emerald-matrix" | "magma-orange" | "dark-obsidian" | "titanium-gold"', defaultValue: '"default-blue"', description: "Color palette theme for the frosted gel tile and underglow." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls dimensions and padding scale." },
-      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Triggered on clicking the gel download button." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Download now"',
+        description: "Text label displayed inside the elevated ceramic pill.",
+      },
+      {
+        name: "theme",
+        type: '"default-blue" | "cyber-violet" | "emerald-matrix" | "magma-orange" | "dark-obsidian" | "titanium-gold"',
+        defaultValue: '"default-blue"',
+        description:
+          "Color palette theme for the frosted gel tile and underglow.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Controls dimensions and padding scale.",
+      },
+      {
+        name: "onClick",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Triggered on clicking the gel download button.",
+      },
     ],
     variantsList: [
       {
@@ -444,7 +585,13 @@ export default function Example() {
         themeProp: 'theme="default-blue"',
         badgeColor: "#38BDF8",
         description: "1:1 spec ceramic pill with volumetric blue flare.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="default-blue" label="Download Package" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <FrostedGelDownloadButton
+            label="Download Package"
+            size={sz}
+            theme="default-blue"
+          />
+        ),
       },
       {
         title: "Cyber Violet",
@@ -452,15 +599,28 @@ export default function Example() {
         themeProp: 'theme="cyber-violet"',
         badgeColor: "#A855F7",
         description: "Ultraviolet refraction glow with tinted frosted gel.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="cyber-violet" label="Install Assets" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <FrostedGelDownloadButton
+            label="Install Assets"
+            size={sz}
+            theme="cyber-violet"
+          />
+        ),
       },
       {
         title: "Emerald Matrix",
         themeValue: "emerald-matrix",
         themeProp: 'theme="emerald-matrix"',
         badgeColor: "#10B981",
-        description: "Cyberpunk reactor green glow with translucent glass tile.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="emerald-matrix" label="Fetch Source" size={sz} />,
+        description:
+          "Cyberpunk reactor green glow with translucent glass tile.",
+        renderPreview: (sz = "sm") => (
+          <FrostedGelDownloadButton
+            label="Fetch Source"
+            size={sz}
+            theme="emerald-matrix"
+          />
+        ),
       },
       {
         title: "Magma Orange",
@@ -468,7 +628,13 @@ export default function Example() {
         themeProp: 'theme="magma-orange"',
         badgeColor: "#FF5B04",
         description: "UI Pirate signature brand magma orange illumination.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="magma-orange" label="Get Bundle" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <FrostedGelDownloadButton
+            label="Get Bundle"
+            size={sz}
+            theme="magma-orange"
+          />
+        ),
       },
       {
         title: "Dark Obsidian",
@@ -476,7 +642,13 @@ export default function Example() {
         themeProp: 'theme="dark-obsidian"',
         badgeColor: "#64748B",
         description: "Stealth midnight pill with smoked dark glass cloud tile.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="dark-obsidian" label="Download Code" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <FrostedGelDownloadButton
+            label="Download Code"
+            size={sz}
+            theme="dark-obsidian"
+          />
+        ),
       },
       {
         title: "Titanium Gold",
@@ -484,7 +656,13 @@ export default function Example() {
         themeProp: 'theme="titanium-gold"',
         badgeColor: "#EAB308",
         description: "Luxury warm gold underglow with champagne ceramic pill.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="titanium-gold" label="Export Pro" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <FrostedGelDownloadButton
+            label="Export Pro"
+            size={sz}
+            theme="titanium-gold"
+          />
+        ),
       },
     ],
   },
@@ -531,12 +709,22 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <ElevatedUnderglowCTA label="Book A Call" icon="phone" theme="default" size="md" />
+        <ElevatedUnderglowCTA
+          icon="phone"
+          label="Book A Call"
+          size="md"
+          theme="default"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <ElevatedUnderglowCTA label="Book A Call" icon="phone" theme="default" size="md" />
+        <ElevatedUnderglowCTA
+          icon="phone"
+          label="Book A Call"
+          size="md"
+          theme="default"
+        />
       </div>
     ),
     jsxCode: `import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
@@ -565,11 +753,37 @@ export default function Example() {
   --elevation-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Book A Call"', description: "Text displayed on the elevated button face." },
-      { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
-      { name: "liftAmount", type: "number", defaultValue: "13", description: "Optional lift distance in pixels on hover (default: 13 matching spec 55:40)." },
-      { name: "theme", type: '"default" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"default"', description: "Color theme for the underglow beam and reflection rim." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions of the pill." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Book A Call"',
+        description: "Text displayed on the elevated button face.",
+      },
+      {
+        name: "icon",
+        type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none"',
+        defaultValue: '"phone"',
+        description: "Leading icon displayed next to the label.",
+      },
+      {
+        name: "liftAmount",
+        type: "number",
+        defaultValue: "13",
+        description:
+          "Optional lift distance in pixels on hover (default: 13 matching spec 55:40).",
+      },
+      {
+        name: "theme",
+        type: '"default" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"',
+        defaultValue: '"default"',
+        description: "Color theme for the underglow beam and reflection rim.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Size dimensions of the pill.",
+      },
     ],
     variantsList: [
       {
@@ -578,7 +792,14 @@ export default function Example() {
         themeProp: 'theme="default"',
         badgeColor: "#38BDF8",
         description: "1:1 reference design with blue extruded sub-chassis.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="default" label="Book A Call" icon="phone" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ElevatedUnderglowCTA
+            icon="phone"
+            label="Book A Call"
+            size={sz}
+            theme="default"
+          />
+        ),
       },
       {
         title: "UI Pirate Magma",
@@ -586,7 +807,14 @@ export default function Example() {
         themeProp: 'theme="uipirate"',
         badgeColor: "#FF5B04",
         description: "Vibrant signature brand magma orange glow.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="uipirate" label="Get Started" icon="sparkle" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ElevatedUnderglowCTA
+            icon="sparkle"
+            label="Get Started"
+            size={sz}
+            theme="uipirate"
+          />
+        ),
       },
       {
         title: "Neon Emerald",
@@ -594,7 +822,14 @@ export default function Example() {
         themeProp: 'theme="emerald"',
         badgeColor: "#10B981",
         description: "High-tech reactor matrix green elevation chassis.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="emerald" label="Deploy Code" icon="arrow" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ElevatedUnderglowCTA
+            icon="arrow"
+            label="Deploy Code"
+            size={sz}
+            theme="emerald"
+          />
+        ),
       },
       {
         title: "Cyber Violet",
@@ -602,7 +837,14 @@ export default function Example() {
         themeProp: 'theme="violet"',
         badgeColor: "#A855F7",
         description: "Sleek neon ultraviolet sub-chassis underglow.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="violet" label="Upgrade Pro" icon="sparkle" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ElevatedUnderglowCTA
+            icon="sparkle"
+            label="Upgrade Pro"
+            size={sz}
+            theme="violet"
+          />
+        ),
       },
       {
         title: "Crimson Ember",
@@ -610,7 +852,14 @@ export default function Example() {
         themeProp: 'theme="crimson"',
         badgeColor: "#EF4444",
         description: "Punchy ruby red extruded sub-surface illumination.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="crimson" label="Schedule Demo" icon="calendar" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ElevatedUnderglowCTA
+            icon="calendar"
+            label="Schedule Demo"
+            size={sz}
+            theme="crimson"
+          />
+        ),
       },
       {
         title: "Dark Obsidian",
@@ -618,7 +867,14 @@ export default function Example() {
         themeProp: 'theme="dark"',
         badgeColor: "#64748B",
         description: "Monochrome stealth obsidian cap with pure white glow.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="dark" label="Contact Us" icon="mail" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ElevatedUnderglowCTA
+            icon="mail"
+            label="Contact Us"
+            size={sz}
+            theme="dark"
+          />
+        ),
       },
     ],
   },
@@ -657,12 +913,12 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <LedMatrixChevronButton theme="monochrome" size="md" />
+        <LedMatrixChevronButton size="md" theme="monochrome" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <LedMatrixChevronButton theme="monochrome" size="md" />
+        <LedMatrixChevronButton size="md" theme="monochrome" />
       </div>
     ),
     jsxCode: `import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
@@ -692,12 +948,43 @@ export default function Example() {
   --matrix-bg: #0d0d11;
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"See Plans"', description: "Button label in resting state." },
-      { name: "theme", type: '"monochrome" | "uipirate" | "emerald" | "cyan" | "amber" | "crimson"', defaultValue: '"monochrome"', description: "Phosphor color for the LED dot grid." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls pixel scale and chassis padding." },
-      { name: "interactionMode", type: '"hover" | "click" | "both"', defaultValue: '"hover"', description: "Interaction trigger mode: expands LED screen on hover, click, or both." },
-      { name: "stepSpeedMs", type: "number", defaultValue: "110", description: "LED shift speed in milliseconds per column step." },
-      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Click event handler." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"See Plans"',
+        description: "Button label in resting state.",
+      },
+      {
+        name: "theme",
+        type: '"monochrome" | "uipirate" | "emerald" | "cyan" | "amber" | "crimson"',
+        defaultValue: '"monochrome"',
+        description: "Phosphor color for the LED dot grid.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Controls pixel scale and chassis padding.",
+      },
+      {
+        name: "interactionMode",
+        type: '"hover" | "click" | "both"',
+        defaultValue: '"hover"',
+        description:
+          "Interaction trigger mode: expands LED screen on hover, click, or both.",
+      },
+      {
+        name: "stepSpeedMs",
+        type: "number",
+        defaultValue: "110",
+        description: "LED shift speed in milliseconds per column step.",
+      },
+      {
+        name: "onClick",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Click event handler.",
+      },
     ],
     variantsList: [
       {
@@ -706,7 +993,13 @@ export default function Example() {
         themeProp: 'theme="monochrome"',
         badgeColor: "#F8FAFC",
         description: "1:1 reference design with white LED grid pixels.",
-        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="monochrome" label="See Plans" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <LedMatrixChevronButton
+            label="See Plans"
+            size={sz}
+            theme="monochrome"
+          />
+        ),
       },
       {
         title: "UI Pirate Magma",
@@ -714,7 +1007,13 @@ export default function Example() {
         themeProp: 'theme="uipirate"',
         badgeColor: "#FF5B04",
         description: "Signature magma orange LED illumination wave.",
-        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="uipirate" label="Get Started" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <LedMatrixChevronButton
+            label="Get Started"
+            size={sz}
+            theme="uipirate"
+          />
+        ),
       },
       {
         title: "Neon Emerald",
@@ -722,7 +1021,13 @@ export default function Example() {
         themeProp: 'theme="emerald"',
         badgeColor: "#10B981",
         description: "Cyberpunk reactor green LED matrix screen.",
-        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="emerald" label="Deploy App" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <LedMatrixChevronButton
+            label="Deploy App"
+            size={sz}
+            theme="emerald"
+          />
+        ),
       },
       {
         title: "Electric Cyan",
@@ -730,7 +1035,9 @@ export default function Example() {
         themeProp: 'theme="cyan"',
         badgeColor: "#06B6D4",
         description: "Laser cyan glowing pixel chevrons.",
-        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="cyan" label="Explore Tech" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <LedMatrixChevronButton label="Explore Tech" size={sz} theme="cyan" />
+        ),
       },
       {
         title: "Amber Solar",
@@ -738,7 +1045,9 @@ export default function Example() {
         themeProp: 'theme="amber"',
         badgeColor: "#F59E0B",
         description: "Warm golden amber retro terminal LED display.",
-        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="amber" label="View Matrix" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <LedMatrixChevronButton label="View Matrix" size={sz} theme="amber" />
+        ),
       },
       {
         title: "Crimson Laser",
@@ -746,7 +1055,9 @@ export default function Example() {
         themeProp: 'theme="crimson"',
         badgeColor: "#EF4444",
         description: "High-intensity ruby red cascading chevron pulse.",
-        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="crimson" label="Execute" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <LedMatrixChevronButton label="Execute" size={sz} theme="crimson" />
+        ),
       },
     ],
   },
@@ -785,12 +1096,12 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <SlideGrowButton theme="silver" size="md" />
+        <SlideGrowButton size="md" theme="silver" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <SlideGrowButton theme="silver" size="md" />
+        <SlideGrowButton size="md" theme="silver" />
       </div>
     ),
     jsxCode: `import { SlideGrowButton } from "@/components/SlideGrowButton";
@@ -822,12 +1133,42 @@ export default function Example() {
   --slider-fill-color: #38bdf8;
 }`,
     props: [
-      { name: "startLabel", type: "string", defaultValue: '"Get Started"', description: "Resting text before slider interaction." },
-      { name: "activeLabel", type: "string", defaultValue: '"Lets Grow!"', description: "Revealed label when slid to completion." },
-      { name: "theme", type: '"silver" | "dark" | "uipirate" | "cyberpunk" | "emerald" | "orange"', defaultValue: '"silver"', description: "Metallic finish for the capsule track." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Width and height scaling dimensions." },
-      { name: "interactionMode", type: '"both" | "drag" | "click" | "hover"', defaultValue: '"both"', description: "Interaction trigger mode: drag, click, hover, or both." },
-      { name: "onComplete", type: "() => void", defaultValue: "undefined", description: "Called when swipe reaches 100% threshold." },
+      {
+        name: "startLabel",
+        type: "string",
+        defaultValue: '"Get Started"',
+        description: "Resting text before slider interaction.",
+      },
+      {
+        name: "activeLabel",
+        type: "string",
+        defaultValue: '"Lets Grow!"',
+        description: "Revealed label when slid to completion.",
+      },
+      {
+        name: "theme",
+        type: '"silver" | "dark" | "uipirate" | "cyberpunk" | "emerald" | "orange"',
+        defaultValue: '"silver"',
+        description: "Metallic finish for the capsule track.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Width and height scaling dimensions.",
+      },
+      {
+        name: "interactionMode",
+        type: '"both" | "drag" | "click" | "hover"',
+        defaultValue: '"both"',
+        description: "Interaction trigger mode: drag, click, hover, or both.",
+      },
+      {
+        name: "onComplete",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Called when swipe reaches 100% threshold.",
+      },
     ],
     variantsList: [
       {
@@ -835,32 +1176,44 @@ export default function Example() {
         themeValue: "silver",
         themeProp: 'theme="silver"',
         badgeColor: "#CBD5E1",
-        description: "Brushed aluminium capsule track with glowing electric blue slider knob.",
-        renderPreview: (sz = "sm") => <SlideGrowButton theme="silver" size={sz} />,
+        description:
+          "Brushed aluminium capsule track with glowing electric blue slider knob.",
+        renderPreview: (sz = "sm") => (
+          <SlideGrowButton size={sz} theme="silver" />
+        ),
       },
       {
         title: "Dark Metal Edition",
         themeValue: "dark",
         themeProp: 'theme="dark"',
         badgeColor: "#3B82F6",
-        description: "Dark titanium chassis with bright neon blue photon channel fill.",
-        renderPreview: (sz = "sm") => <SlideGrowButton theme="dark" size={sz} />,
+        description:
+          "Dark titanium chassis with bright neon blue photon channel fill.",
+        renderPreview: (sz = "sm") => (
+          <SlideGrowButton size={sz} theme="dark" />
+        ),
       },
       {
         title: "UI Pirate Magma",
         themeValue: "uipirate",
         themeProp: 'theme="uipirate"',
         badgeColor: "#FF5B04",
-        description: "Signature molten orange glow track with high-energy sliding physics.",
-        renderPreview: (sz = "sm") => <SlideGrowButton theme="uipirate" size={sz} />,
+        description:
+          "Signature molten orange glow track with high-energy sliding physics.",
+        renderPreview: (sz = "sm") => (
+          <SlideGrowButton size={sz} theme="uipirate" />
+        ),
       },
       {
         title: "Emerald Matrix",
         themeValue: "emerald",
         themeProp: 'theme="emerald"',
         badgeColor: "#10B981",
-        description: "Vibrant emerald photon illumination channel with smooth slider snap.",
-        renderPreview: (sz = "sm") => <SlideGrowButton theme="emerald" size={sz} />,
+        description:
+          "Vibrant emerald photon illumination channel with smooth slider snap.",
+        renderPreview: (sz = "sm") => (
+          <SlideGrowButton size={sz} theme="emerald" />
+        ),
       },
     ],
   },
@@ -897,12 +1250,12 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <VintageLeatherCTA theme="heritage" size="md" label="Shop ties" />
+        <VintageLeatherCTA label="Shop ties" size="md" theme="heritage" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <VintageLeatherCTA theme="heritage" size="md" label="Shop ties" />
+        <VintageLeatherCTA label="Shop ties" size="md" theme="heritage" />
       </div>
     ),
     jsxCode: `import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
@@ -928,10 +1281,31 @@ export default function Example() {
   --leather-shadow: 0 6px 0 #3a1d07;
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Shop ties"', description: "Artisanal CTA label." },
-      { name: "theme", type: '"heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver"', defaultValue: '"heritage"', description: "Leather color palette." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions." },
-      { name: "showOrnaments", type: "boolean", defaultValue: "true", description: "Whether to display the decorative filigree scrollwork corner flourishes." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Shop ties"',
+        description: "Artisanal CTA label.",
+      },
+      {
+        name: "theme",
+        type: '"heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver"',
+        defaultValue: '"heritage"',
+        description: "Leather color palette.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Size dimensions.",
+      },
+      {
+        name: "showOrnaments",
+        type: "boolean",
+        defaultValue: "true",
+        description:
+          "Whether to display the decorative filigree scrollwork corner flourishes.",
+      },
     ],
     variantsList: [
       {
@@ -939,48 +1313,66 @@ export default function Example() {
         themeValue: "heritage",
         themeProp: 'theme="heritage"',
         badgeColor: "#D97706",
-        description: "1:1 reference design with embossed cowhide leather & brass lip.",
-        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="heritage" label="Contact Sales" size={sz} />,
+        description:
+          "1:1 reference design with embossed cowhide leather & brass lip.",
+        renderPreview: (sz = "sm") => (
+          <VintageLeatherCTA label="Contact Sales" size={sz} theme="heritage" />
+        ),
       },
       {
         title: "UI Pirate Bronze",
         themeValue: "uipirate",
         themeProp: 'theme="uipirate"',
         badgeColor: "#FF5B04",
-        description: "Signature magma orange leather with filigree corner ornaments.",
-        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="uipirate" label="Explore Ship" size={sz} />,
+        description:
+          "Signature magma orange leather with filigree corner ornaments.",
+        renderPreview: (sz = "sm") => (
+          <VintageLeatherCTA label="Explore Ship" size={sz} theme="uipirate" />
+        ),
       },
       {
         title: "Obsidian Platinum",
         themeValue: "obsidian",
         themeProp: 'theme="obsidian"',
         badgeColor: "#64748B",
-        description: "Stealth midnight black leather with platinum bevel edging.",
-        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="obsidian" label="Schedule Call" size={sz} />,
+        description:
+          "Stealth midnight black leather with platinum bevel edging.",
+        renderPreview: (sz = "sm") => (
+          <VintageLeatherCTA label="Schedule Call" size={sz} theme="obsidian" />
+        ),
       },
       {
         title: "Emerald Imperial",
         themeValue: "emerald",
         themeProp: 'theme="emerald"',
         badgeColor: "#10B981",
-        description: "Royal jade leather with golden scrollwork corner flourishes.",
-        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="emerald" label="Claim Throne" size={sz} />,
+        description:
+          "Royal jade leather with golden scrollwork corner flourishes.",
+        renderPreview: (sz = "sm") => (
+          <VintageLeatherCTA label="Claim Throne" size={sz} theme="emerald" />
+        ),
       },
       {
         title: "Ruby Royalty",
         themeValue: "ruby",
         themeProp: 'theme="ruby"',
         badgeColor: "#BE123C",
-        description: "Deep burgundy wine leather with gilded golden tactile bevel.",
-        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="ruby" label="Join Order" size={sz} />,
+        description:
+          "Deep burgundy wine leather with gilded golden tactile bevel.",
+        renderPreview: (sz = "sm") => (
+          <VintageLeatherCTA label="Join Order" size={sz} theme="ruby" />
+        ),
       },
       {
         title: "Silver Armour",
         themeValue: "silver",
         themeProp: 'theme="silver"',
         badgeColor: "#CBD5E1",
-        description: "Medieval steel & silver chassis with filigree corner ornaments.",
-        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="silver" label="View Armoury" size={sz} />,
+        description:
+          "Medieval steel & silver chassis with filigree corner ornaments.",
+        renderPreview: (sz = "sm") => (
+          <VintageLeatherCTA label="View Armoury" size={sz} theme="silver" />
+        ),
       },
     ],
   },
@@ -1000,14 +1392,34 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "emerald-pill",
     availableThemes: [
-      { value: "emerald-pill", label: "Default Emerald Pill", color: "#10B981" },
-      { value: "squircle-emerald", label: "Default Emerald Squircle", color: "#10B981" },
+      {
+        value: "emerald-pill",
+        label: "Default Emerald Pill",
+        color: "#10B981",
+      },
+      {
+        value: "squircle-emerald",
+        label: "Default Emerald Squircle",
+        color: "#10B981",
+      },
       { value: "uipirate", label: "UI Pirate Magma (Pill)", color: "#FF5B04" },
-      { value: "squircle-uipirate", label: "UI Pirate Squircle", color: "#FF5B04" },
+      {
+        value: "squircle-uipirate",
+        label: "UI Pirate Squircle",
+        color: "#FF5B04",
+      },
       { value: "cyan-pill", label: "Electric Cyan (Pill)", color: "#06B6D4" },
-      { value: "magenta-squircle", label: "Neon Magenta Squircle", color: "#EC4899" },
+      {
+        value: "magenta-squircle",
+        label: "Neon Magenta Squircle",
+        color: "#EC4899",
+      },
       { value: "amber-pill", label: "Cyber Amber (Pill)", color: "#F59E0B" },
-      { value: "violet-squircle", label: "Neon Violet Squircle", color: "#8B5CF6" },
+      {
+        value: "violet-squircle",
+        label: "Neon Violet Squircle",
+        color: "#8B5CF6",
+      },
     ],
     features: [
       "Authentic claymorphic multi-tier drop shadow stacks",
@@ -1017,12 +1429,22 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <NeumorphicGlowCTA variant="pill" theme="default" neonPreset="emerald" label="Learn more" />
+        <NeumorphicGlowCTA
+          label="Learn more"
+          neonPreset="emerald"
+          theme="default"
+          variant="pill"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <NeumorphicGlowCTA variant="pill" theme="default" neonPreset="emerald" label="Learn more" />
+        <NeumorphicGlowCTA
+          label="Learn more"
+          neonPreset="emerald"
+          theme="default"
+          variant="pill"
+        />
       </div>
     ),
     jsxCode: `import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
@@ -1057,12 +1479,44 @@ export default function Example() {
   --neon-badge-inner: inset 2.6px 5.2px 6.5px 0px rgba(51, 217, 37, 0.35);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Learn more"', description: "Primary button call-to-action text displayed on the cap." },
-      { name: "variant", type: '"pill" | "squircle"', defaultValue: '"pill"', description: "Physical rounded contour geometry (Node 14:642 vs 14:669)." },
-      { name: "theme", type: '"default" | "uipirate" | "dark" | "orange" | "cyberpunk" | "minimal"', defaultValue: '"default"', description: "Color palette and clay surface lighting theme preset." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls button padding, font scale, and indicator dimensions." },
-      { name: "neonPreset", type: '"emerald" | "uipirate" | "cyan" | "magenta" | "amber" | "violet" | "crimson"', defaultValue: '"emerald"', description: "Neon glow preset for glowing indicator arrow circle." },
-      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Interactive click callback event handler." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Learn more"',
+        description: "Primary button call-to-action text displayed on the cap.",
+      },
+      {
+        name: "variant",
+        type: '"pill" | "squircle"',
+        defaultValue: '"pill"',
+        description:
+          "Physical rounded contour geometry (Node 14:642 vs 14:669).",
+      },
+      {
+        name: "theme",
+        type: '"default" | "uipirate" | "dark" | "orange" | "cyberpunk" | "minimal"',
+        defaultValue: '"default"',
+        description: "Color palette and clay surface lighting theme preset.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description:
+          "Controls button padding, font scale, and indicator dimensions.",
+      },
+      {
+        name: "neonPreset",
+        type: '"emerald" | "uipirate" | "cyan" | "magenta" | "amber" | "violet" | "crimson"',
+        defaultValue: '"emerald"',
+        description: "Neon glow preset for glowing indicator arrow circle.",
+      },
+      {
+        name: "onClick",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Interactive click callback event handler.",
+      },
     ],
     variantsList: [
       {
@@ -1070,9 +1524,16 @@ export default function Example() {
         themeValue: "emerald-pill",
         themeProp: 'variant="pill" neonPreset="emerald"',
         badgeColor: "#10B981",
-        description: "1:1 reference design with glowing emerald arrow badge and clay drop shadows.",
+        description:
+          "1:1 reference design with glowing emerald arrow badge and clay drop shadows.",
         renderPreview: (sz = "sm") => (
-          <NeumorphicGlowCTA variant="pill" neonPreset="emerald" theme="default" label="Get Started" size={sz} />
+          <NeumorphicGlowCTA
+            label="Get Started"
+            neonPreset="emerald"
+            size={sz}
+            theme="default"
+            variant="pill"
+          />
         ),
       },
       {
@@ -1080,9 +1541,16 @@ export default function Example() {
         themeValue: "squircle-uipirate",
         themeProp: 'variant="squircle" neonPreset="uipirate"',
         badgeColor: "#FF5B04",
-        description: "Signature brand magma orange neumorphic clay squircle with neon glow badge.",
+        description:
+          "Signature brand magma orange neumorphic clay squircle with neon glow badge.",
         renderPreview: (sz = "sm") => (
-          <NeumorphicGlowCTA variant="squircle" neonPreset="uipirate" theme="uipirate" label="Explore Tools" size={sz} />
+          <NeumorphicGlowCTA
+            label="Explore Tools"
+            neonPreset="uipirate"
+            size={sz}
+            theme="uipirate"
+            variant="squircle"
+          />
         ),
       },
       {
@@ -1090,9 +1558,16 @@ export default function Example() {
         themeValue: "cyan-pill",
         themeProp: 'variant="pill" neonPreset="cyan"',
         badgeColor: "#06B6D4",
-        description: "Cyan optical underglow badge with specular bevel lip and obsidian chassis.",
+        description:
+          "Cyan optical underglow badge with specular bevel lip and obsidian chassis.",
         renderPreview: (sz = "sm") => (
-          <NeumorphicGlowCTA variant="pill" neonPreset="cyan" theme="dark" label="Live Preview" size={sz} />
+          <NeumorphicGlowCTA
+            label="Live Preview"
+            neonPreset="cyan"
+            size={sz}
+            theme="dark"
+            variant="pill"
+          />
         ),
       },
       {
@@ -1100,9 +1575,16 @@ export default function Example() {
         themeValue: "magenta-squircle",
         themeProp: 'variant="squircle" neonPreset="magenta"',
         badgeColor: "#EC4899",
-        description: "Vivid magenta bloom badge with dark cyberpunk clay squircle chassis.",
+        description:
+          "Vivid magenta bloom badge with dark cyberpunk clay squircle chassis.",
         renderPreview: (sz = "sm") => (
-          <NeumorphicGlowCTA variant="squircle" neonPreset="magenta" theme="cyberpunk" label="Upgrade Pro" size={sz} />
+          <NeumorphicGlowCTA
+            label="Upgrade Pro"
+            neonPreset="magenta"
+            size={sz}
+            theme="cyberpunk"
+            variant="squircle"
+          />
         ),
       },
       {
@@ -1110,9 +1592,16 @@ export default function Example() {
         themeValue: "amber-pill",
         themeProp: 'variant="pill" neonPreset="amber"',
         badgeColor: "#F59E0B",
-        description: "Warm golden amber indicator badge depth glow with dark slate body.",
+        description:
+          "Warm golden amber indicator badge depth glow with dark slate body.",
         renderPreview: (sz = "sm") => (
-          <NeumorphicGlowCTA variant="pill" neonPreset="amber" theme="dark" label="View Matrix" size={sz} />
+          <NeumorphicGlowCTA
+            label="View Matrix"
+            neonPreset="amber"
+            size={sz}
+            theme="dark"
+            variant="pill"
+          />
         ),
       },
       {
@@ -1120,9 +1609,16 @@ export default function Example() {
         themeValue: "violet-squircle",
         themeProp: 'variant="squircle" neonPreset="violet"',
         badgeColor: "#8B5CF6",
-        description: "Ultraviolet neon arrow badge with 3D drop shadows and squircle frame.",
+        description:
+          "Ultraviolet neon arrow badge with 3D drop shadows and squircle frame.",
         renderPreview: (sz = "sm") => (
-          <NeumorphicGlowCTA variant="squircle" neonPreset="violet" theme="dark" label="Deploy Code" size={sz} />
+          <NeumorphicGlowCTA
+            label="Deploy Code"
+            neonPreset="violet"
+            size={sz}
+            theme="dark"
+            variant="squircle"
+          />
         ),
       },
     ],
@@ -1156,12 +1652,20 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <SmashTactileButton label="Smash the button" variant="default" size="md" />
+        <SmashTactileButton
+          label="Smash the button"
+          size="md"
+          variant="default"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <SmashTactileButton label="Smash the button" variant="default" size="md" />
+        <SmashTactileButton
+          label="Smash the button"
+          size="md"
+          variant="default"
+        />
       </div>
     ),
     jsxCode: `import SmashTactileButton from "@/components/SmashTactileButton";
@@ -1178,8 +1682,18 @@ export default function Example() {
   --smash-shadow: 6px 6px 0 #000;
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Smash the button"', description: "Button text." },
-      { name: "variant", type: '"default" | "orange" | "dark" | "cyberpunk"', defaultValue: '"default"', description: "Industrial theme variant." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Smash the button"',
+        description: "Button text.",
+      },
+      {
+        name: "variant",
+        type: '"default" | "orange" | "dark" | "cyberpunk"',
+        defaultValue: '"default"',
+        description: "Industrial theme variant.",
+      },
     ],
     variantsList: [
       {
@@ -1187,24 +1701,45 @@ export default function Example() {
         themeValue: "default",
         themeProp: 'variant="default"',
         badgeColor: "#EC4899",
-        description: "1:1 reference design with porcelain enclosure tray & dot matrix.",
-        renderPreview: (sz = "sm") => <SmashTactileButton variant="default" label="Smash the button" size={sz} />,
+        description:
+          "1:1 reference design with porcelain enclosure tray & dot matrix.",
+        renderPreview: (sz = "sm") => (
+          <SmashTactileButton
+            label="Smash the button"
+            size={sz}
+            variant="default"
+          />
+        ),
       },
       {
         title: "UI Pirate Magma",
         themeValue: "orange",
         themeProp: 'variant="orange"',
         badgeColor: "#FF5B04",
-        description: "Signature magma orange reactor glow with dark obsidian core.",
-        renderPreview: (sz = "sm") => <SmashTactileButton variant="orange" label="Smash the button" size={sz} />,
+        description:
+          "Signature magma orange reactor glow with dark obsidian core.",
+        renderPreview: (sz = "sm") => (
+          <SmashTactileButton
+            label="Smash the button"
+            size={sz}
+            variant="orange"
+          />
+        ),
       },
       {
         title: "Dark Obsidian Core",
         themeValue: "dark",
         themeProp: 'variant="dark"',
         badgeColor: "#64748B",
-        description: "Stealth midnight enclosure with crisp white chamfer bevels.",
-        renderPreview: (sz = "sm") => <SmashTactileButton variant="dark" label="Smash the button" size={sz} />,
+        description:
+          "Stealth midnight enclosure with crisp white chamfer bevels.",
+        renderPreview: (sz = "sm") => (
+          <SmashTactileButton
+            label="Smash the button"
+            size={sz}
+            variant="dark"
+          />
+        ),
       },
       {
         title: "Cyberpunk Violet",
@@ -1212,7 +1747,13 @@ export default function Example() {
         themeProp: 'variant="cyberpunk"',
         badgeColor: "#A855F7",
         description: "High-voltage ultraviolet illumination with matrix array.",
-        renderPreview: (sz = "sm") => <SmashTactileButton variant="cyberpunk" label="Smash the button" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <SmashTactileButton
+            label="Smash the button"
+            size={sz}
+            variant="cyberpunk"
+          />
+        ),
       },
     ],
   },
@@ -1255,12 +1796,20 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <ScalingCapsuleButton label="Scaling Workshop" variant="dark" size="md" />
+        <ScalingCapsuleButton
+          label="Scaling Workshop"
+          size="md"
+          variant="dark"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <ScalingCapsuleButton label="Scaling Workshop" variant="dark" size="md" />
+        <ScalingCapsuleButton
+          label="Scaling Workshop"
+          size="md"
+          variant="dark"
+        />
       </div>
     ),
     jsxCode: `import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
@@ -1277,10 +1826,31 @@ export default function Example() {
   --capsule-border: 1px solid rgba(255, 255, 255, 0.2);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Scaling Workshop"', description: "Text label." },
-      { name: "variant", type: '"dark" | "orange" | "light" | "cyberpunk"', defaultValue: '"dark"', description: "Appearance style." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Proportional scaling dimensions." },
-      { name: "icon", type: "React.ReactNode", defaultValue: "<ApexEmblemIcon />", description: "Custom icon element displayed inside the 26px black circle." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Scaling Workshop"',
+        description: "Text label.",
+      },
+      {
+        name: "variant",
+        type: '"dark" | "orange" | "light" | "cyberpunk"',
+        defaultValue: '"dark"',
+        description: "Appearance style.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Proportional scaling dimensions.",
+      },
+      {
+        name: "icon",
+        type: "React.ReactNode",
+        defaultValue: "<ApexEmblemIcon />",
+        description:
+          "Custom icon element displayed inside the 26px black circle.",
+      },
     ],
     variantsList: [
       {
@@ -1288,8 +1858,15 @@ export default function Example() {
         themeValue: "dark",
         themeProp: 'variant="dark"',
         badgeColor: "#38BDF8",
-        description: "1:1 reference design with frosted translucent cavity tray.",
-        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="dark" label="Scaling Workshop" size={sz} />,
+        description:
+          "1:1 reference design with frosted translucent cavity tray.",
+        renderPreview: (sz = "sm") => (
+          <ScalingCapsuleButton
+            label="Scaling Workshop"
+            size={sz}
+            variant="dark"
+          />
+        ),
       },
       {
         title: "UI Pirate Magma",
@@ -1297,7 +1874,13 @@ export default function Example() {
         themeProp: 'variant="orange"',
         badgeColor: "#FF5B04",
         description: "Signature magma orange glowing capsule with apex emblem.",
-        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="orange" label="Start Building" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ScalingCapsuleButton
+            label="Start Building"
+            size={sz}
+            variant="orange"
+          />
+        ),
       },
       {
         title: "Titanium Light",
@@ -1305,7 +1888,13 @@ export default function Example() {
         themeProp: 'variant="light"',
         badgeColor: "#E2E8F0",
         description: "Clean ceramic light pill with high-contrast ladder apex.",
-        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="light" label="Join Waitlist" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ScalingCapsuleButton
+            label="Join Waitlist"
+            size={sz}
+            variant="light"
+          />
+        ),
       },
       {
         title: "Cyberpunk Neon",
@@ -1313,7 +1902,13 @@ export default function Example() {
         themeProp: 'variant="cyberpunk"',
         badgeColor: "#A855F7",
         description: "Ultraviolet neon tray with cybernetic specular insets.",
-        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="cyberpunk" label="Deploy Matrix" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <ScalingCapsuleButton
+            label="Deploy Matrix"
+            size={sz}
+            variant="cyberpunk"
+          />
+        ),
       },
     ],
   },
@@ -1372,8 +1967,18 @@ export default function Example() {
   --pulse-bloom: 0 0 24px rgba(255, 91, 4, 0.5);
 }`,
     props: [
-      { name: "label", type: "string", defaultValue: '"Let\'s Venture"', description: "Button text." },
-      { name: "pulseColor", type: "string", defaultValue: '"#FF5B04"', description: "Color for the pulsing flare." },
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"Let\'s Venture"',
+        description: "Button text.",
+      },
+      {
+        name: "pulseColor",
+        type: "string",
+        defaultValue: '"#FF5B04"',
+        description: "Color for the pulsing flare.",
+      },
     ],
     variantsList: [
       {
@@ -1381,32 +1986,44 @@ export default function Example() {
         themeValue: "#FF5B04",
         themeProp: 'pulseColor="#FF5B04"',
         badgeColor: "#FF5B04",
-        description: "Signature glowing orange radiant pulse bloom for high-conversion CTAs.",
-        renderPreview: (sz = "sm") => <MagneticPulseCTA label="Let's Venture" pulseColor="#FF5B04" />,
+        description:
+          "Signature glowing orange radiant pulse bloom for high-conversion CTAs.",
+        renderPreview: (sz = "sm") => (
+          <MagneticPulseCTA label="Let's Venture" pulseColor="#FF5B04" />
+        ),
       },
       {
         title: "Emerald Pulse",
         themeValue: "#00E5BE",
         themeProp: 'pulseColor="#00E5BE"',
         badgeColor: "#00E5BE",
-        description: "Electric teal-emerald ambient pulse wave with responsive press damping.",
-        renderPreview: (sz = "sm") => <MagneticPulseCTA label="Active Beam" pulseColor="#00E5BE" />,
+        description:
+          "Electric teal-emerald ambient pulse wave with responsive press damping.",
+        renderPreview: (sz = "sm") => (
+          <MagneticPulseCTA label="Active Beam" pulseColor="#00E5BE" />
+        ),
       },
       {
         title: "Laser Sky Cyan",
         themeValue: "#38BDF8",
         themeProp: 'pulseColor="#38BDF8"',
         badgeColor: "#38BDF8",
-        description: "High-voltage sky cyan beacon wave with audio trigger click listener.",
-        renderPreview: (sz = "sm") => <MagneticPulseCTA label="Launch Now" pulseColor="#38BDF8" />,
+        description:
+          "High-voltage sky cyan beacon wave with audio trigger click listener.",
+        renderPreview: (sz = "sm") => (
+          <MagneticPulseCTA label="Launch Now" pulseColor="#38BDF8" />
+        ),
       },
       {
         title: "Electric Purple",
         themeValue: "#8B5CF6",
         themeProp: 'pulseColor="#8B5CF6"',
         badgeColor: "#8B5CF6",
-        description: "Deep violet ambient glow aura for creative studio and agency actions.",
-        renderPreview: (sz = "sm") => <MagneticPulseCTA label="Explore Lab" pulseColor="#8B5CF6" />,
+        description:
+          "Deep violet ambient glow aura for creative studio and agency actions.",
+        renderPreview: (sz = "sm") => (
+          <MagneticPulseCTA label="Explore Lab" pulseColor="#8B5CF6" />
+        ),
       },
     ],
   },
@@ -1439,12 +2056,22 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-8 flex items-center justify-center w-full max-w-[240px] mx-auto">
-        <AnimatedButton primaryText="Explore Services" hoverText="See More →" variant="primary" className="!mt-0" />
+        <AnimatedButton
+          className="!mt-0"
+          hoverText="See More →"
+          primaryText="Explore Services"
+          variant="primary"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-8 flex items-center justify-center w-full max-w-[240px] mx-auto">
-        <AnimatedButton primaryText="Explore Services" hoverText="See More →" variant="primary" className="!mt-0" />
+        <AnimatedButton
+          className="!mt-0"
+          hoverText="See More →"
+          primaryText="Explore Services"
+          variant="primary"
+        />
       </div>
     ),
     jsxCode: `import { AnimatedButton } from "@/components/AnimatedButton";
@@ -1468,9 +2095,24 @@ export default function Example() {
   --slide-roll-ease: cubic-bezier(0.4, 0, 0.2, 1);
 }`,
     props: [
-      { name: "primaryText", type: "string", defaultValue: "—", description: "Label shown in the resting state." },
-      { name: "hoverText", type: "string", defaultValue: '"See More"', description: "Label rolled in on hover." },
-      { name: "variant", type: '"primary" | "secondary"', defaultValue: '"primary"', description: "Colour style of the pill." },
+      {
+        name: "primaryText",
+        type: "string",
+        defaultValue: "—",
+        description: "Label shown in the resting state.",
+      },
+      {
+        name: "hoverText",
+        type: "string",
+        defaultValue: '"See More"',
+        description: "Label rolled in on hover.",
+      },
+      {
+        name: "variant",
+        type: '"primary" | "secondary"',
+        defaultValue: '"primary"',
+        description: "Colour style of the pill.",
+      },
     ],
     variantsList: [
       {
@@ -1478,16 +2120,34 @@ export default function Example() {
         themeValue: "primary",
         themeProp: 'variant="primary"',
         badgeColor: "#8B5CF6",
-        description: "Solid high-contrast obsidian button with seamless vertical text roll on hover.",
-        renderPreview: () => <AnimatedButton primaryText="Explore Services" hoverText="See More →" variant="primary" className="!mt-0" fullWidth={false} />,
+        description:
+          "Solid high-contrast obsidian button with seamless vertical text roll on hover.",
+        renderPreview: () => (
+          <AnimatedButton
+            className="!mt-0"
+            fullWidth={false}
+            hoverText="See More →"
+            primaryText="Explore Services"
+            variant="primary"
+          />
+        ),
       },
       {
         title: "Secondary Outline",
         themeValue: "secondary",
         themeProp: 'variant="secondary"',
         badgeColor: "#64748B",
-        description: "Clean bordered ghost button with inverse slide-up text reveal effect.",
-        renderPreview: () => <AnimatedButton primaryText="Read Docs" hoverText="Open API →" variant="secondary" className="!mt-0" fullWidth={false} />,
+        description:
+          "Clean bordered ghost button with inverse slide-up text reveal effect.",
+        renderPreview: () => (
+          <AnimatedButton
+            className="!mt-0"
+            fullWidth={false}
+            hoverText="Open API →"
+            primaryText="Read Docs"
+            variant="secondary"
+          />
+        ),
       },
     ],
   },
@@ -1549,11 +2209,36 @@ export default function Example() {
   --arc-laser-glow: 0 0 16px rgba(192, 132, 252, 0.7);
 }`,
     props: [
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Named size preset." },
-      { name: "themeMode", type: '"auto" | "light" | "dark"', defaultValue: '"auto"', description: "Force specific theme or let state dictate." },
-      { name: "duration", type: "number", defaultValue: "0.65", description: "Animation duration in seconds." },
-      { name: "scale", type: "number", defaultValue: "1", description: "CSS transform scale multiplier for responsive fitting." },
-      { name: "onToggle", type: "(state: boolean) => void", defaultValue: "undefined", description: "State change listener." },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Named size preset.",
+      },
+      {
+        name: "themeMode",
+        type: '"auto" | "light" | "dark"',
+        defaultValue: '"auto"',
+        description: "Force specific theme or let state dictate.",
+      },
+      {
+        name: "duration",
+        type: "number",
+        defaultValue: "0.65",
+        description: "Animation duration in seconds.",
+      },
+      {
+        name: "scale",
+        type: "number",
+        defaultValue: "1",
+        description: "CSS transform scale multiplier for responsive fitting.",
+      },
+      {
+        name: "onToggle",
+        type: "(state: boolean) => void",
+        defaultValue: "undefined",
+        description: "State change listener.",
+      },
     ],
     variantsList: [
       {
@@ -1561,7 +2246,8 @@ export default function Example() {
         themeValue: "default",
         themeProp: 'themeMode="auto"',
         badgeColor: "#C084FC",
-        description: "90° circular corner arc track with rotating capsule knob and laser beam flare.",
+        description:
+          "90° circular corner arc track with rotating capsule knob and laser beam flare.",
         renderPreview: () => <ArcCornerToggle scale={0.75} />,
       },
       {
@@ -1569,7 +2255,8 @@ export default function Example() {
         themeValue: "light",
         themeProp: 'themeMode="light"',
         badgeColor: "#E2E8F0",
-        description: "Clay light surface with matte dark track contour and sunburst dial.",
+        description:
+          "Clay light surface with matte dark track contour and sunburst dial.",
         renderPreview: () => <ArcCornerToggle scale={0.75} themeMode="light" />,
       },
       {
@@ -1577,10 +2264,10 @@ export default function Example() {
         themeValue: "snappy",
         themeProp: "duration={0.35}",
         badgeColor: "#F59E0B",
-        description: "High-velocity snap transition for instant tactile feedback.",
-        renderPreview: () => <ArcCornerToggle scale={0.75} duration={0.35} />,
+        description:
+          "High-velocity snap transition for instant tactile feedback.",
+        renderPreview: () => <ArcCornerToggle duration={0.35} scale={0.75} />,
       },
-
     ],
   },
   {
@@ -1611,12 +2298,16 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <GlassBadge variant="gradient" size="md">PROPRIETARY COMPONENT</GlassBadge>
+        <GlassBadge size="md" variant="gradient">
+          PROPRIETARY COMPONENT
+        </GlassBadge>
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <GlassBadge variant="gradient" size="md">PROPRIETARY COMPONENT</GlassBadge>
+        <GlassBadge size="md" variant="gradient">
+          PROPRIETARY COMPONENT
+        </GlassBadge>
       </div>
     ),
     jsxCode: `import GlassBadge from "@/components/GlassBadge";
@@ -1633,8 +2324,18 @@ export default function Example() {
   --badge-border: 1px solid rgba(255, 255, 255, 0.18);
 }`,
     props: [
-      { name: "variant", type: '"gradient" | "cyan" | "solid"', defaultValue: '"gradient"', description: "Visual style variant." },
-      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Padding scale." },
+      {
+        name: "variant",
+        type: '"gradient" | "cyan" | "solid"',
+        defaultValue: '"gradient"',
+        description: "Visual style variant.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Padding scale.",
+      },
     ],
     variantsList: [
       {
@@ -1642,24 +2343,39 @@ export default function Example() {
         themeValue: "gradient",
         themeProp: 'variant="gradient"',
         badgeColor: "#8B5CF6",
-        description: "Multi-layer backdrop blur with glowing purple-indigo specular gradient sheen.",
-        renderPreview: (sz = "sm") => <GlassBadge variant="gradient" size={sz}>FEATURED</GlassBadge>,
+        description:
+          "Multi-layer backdrop blur with glowing purple-indigo specular gradient sheen.",
+        renderPreview: (sz = "sm") => (
+          <GlassBadge size={sz} variant="gradient">
+            FEATURED
+          </GlassBadge>
+        ),
       },
       {
         title: "Laser Cyan",
         themeValue: "cyan",
         themeProp: 'variant="cyan"',
         badgeColor: "#06B6D4",
-        description: "Electric cyan status badge with frosted glass diffusion and glowing beacon.",
-        renderPreview: (sz = "sm") => <GlassBadge variant="cyan" size={sz}>1:1 SPEC</GlassBadge>,
+        description:
+          "Electric cyan status badge with frosted glass diffusion and glowing beacon.",
+        renderPreview: (sz = "sm") => (
+          <GlassBadge size={sz} variant="cyan">
+            1:1 SPEC
+          </GlassBadge>
+        ),
       },
       {
         title: "Obsidian Solid",
         themeValue: "solid",
         themeProp: 'variant="solid"',
         badgeColor: "#64748B",
-        description: "Minimalist dark translucent glass pill for clean technical documentation headers.",
-        renderPreview: (sz = "sm") => <GlassBadge variant="solid" size={sz}>PRODUCTION READY</GlassBadge>,
+        description:
+          "Minimalist dark translucent glass pill for clean technical documentation headers.",
+        renderPreview: (sz = "sm") => (
+          <GlassBadge size={sz} variant="solid">
+            PRODUCTION READY
+          </GlassBadge>
+        ),
       },
     ],
   },
@@ -1687,16 +2403,24 @@ export default function Example() {
     previewLight: (
       <div className="py-6 flex items-center justify-center w-full max-w-sm mx-auto">
         <div className="p-6 rounded-3xl bg-black/5 border border-black/10 backdrop-blur-xl shadow-xl w-full text-center">
-          <div className="text-xs font-mono font-bold text-gray-800">Glass Container Surface</div>
-          <div className="text-xs text-gray-600 mt-1">Light Theme Reflection</div>
+          <div className="text-xs font-mono font-bold text-gray-800">
+            Glass Container Surface
+          </div>
+          <div className="text-xs text-gray-600 mt-1">
+            Light Theme Reflection
+          </div>
         </div>
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center w-full max-w-sm mx-auto">
         <div className="p-6 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-xl shadow-2xl w-full text-center">
-          <div className="text-xs font-mono font-bold text-cyan-400">Glass Container Surface</div>
-          <div className="text-xs text-gray-400 mt-1">Dark Theme Reflection</div>
+          <div className="text-xs font-mono font-bold text-cyan-400">
+            Glass Container Surface
+          </div>
+          <div className="text-xs text-gray-400 mt-1">
+            Dark Theme Reflection
+          </div>
         </div>
       </div>
     ),
@@ -1719,8 +2443,18 @@ export default function Example() {
   --glass-surface-border: 1px solid rgba(255, 255, 255, 0.1);
 }`,
     props: [
-      { name: "borderRadius", type: "number", defaultValue: "24", description: "Border radius in px." },
-      { name: "blur", type: "number", defaultValue: "20", description: "Backdrop blur radius in px." },
+      {
+        name: "borderRadius",
+        type: "number",
+        defaultValue: "24",
+        description: "Border radius in px.",
+      },
+      {
+        name: "blur",
+        type: "number",
+        defaultValue: "20",
+        description: "Backdrop blur radius in px.",
+      },
     ],
     variantsList: [
       {
@@ -1728,11 +2462,16 @@ export default function Example() {
         themeValue: "default",
         themeProp: "blur={20}",
         badgeColor: "#3B82F6",
-        description: "Deep frosted glassmorphic card container with specular highlight rim and hardware blur.",
+        description:
+          "Deep frosted glassmorphic card container with specular highlight rim and hardware blur.",
         renderPreview: () => (
           <div className="p-4 rounded-2xl bg-white/[0.05] border border-white/10 backdrop-blur-xl shadow-lg text-center w-full max-w-[200px]">
-            <div className="text-[11px] font-mono font-bold text-cyan-400">Glass Surface</div>
-            <div className="text-[10px] text-gray-400 mt-0.5">Gaussian Blur 20px</div>
+            <div className="text-[11px] font-mono font-bold text-cyan-400">
+              Glass Surface
+            </div>
+            <div className="text-[10px] text-gray-400 mt-0.5">
+              Gaussian Blur 20px
+            </div>
           </div>
         ),
       },
@@ -1771,12 +2510,22 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-8 flex items-center justify-center">
-        <TactileNeumorphicToggle theme="brushed-silver" size="md" defaultChecked={true} label="Active Setting" />
+        <TactileNeumorphicToggle
+          defaultChecked={true}
+          label="Active Setting"
+          size="md"
+          theme="brushed-silver"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-8 flex items-center justify-center">
-        <TactileNeumorphicToggle theme="brushed-silver" size="md" defaultChecked={true} label="Active Setting" />
+        <TactileNeumorphicToggle
+          defaultChecked={true}
+          label="Active Setting"
+          size="md"
+          theme="brushed-silver"
+        />
       </div>
     ),
     jsxCode: `import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
@@ -1805,10 +2554,30 @@ export default function Example() {
     inset 8.31px 6.14px 5.42px -7.23px rgba(215, 222, 230, 1);
 }`,
     props: [
-      { name: "checked", type: "boolean", defaultValue: "false", description: "Controlled boolean checked state." },
-      { name: "theme", type: '"brushed-silver" | "dark-obsidian" | "cyber-cyan" | "emerald-glow" | "magma-orange" | "hyper-violet"', defaultValue: '"brushed-silver"', description: "Color theme palette." },
-      { name: "size", type: '"sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Button dimensions scale." },
-      { name: "showIcons", type: "boolean", defaultValue: "true", description: "Whether to show etched 0 / I glyphs." },
+      {
+        name: "checked",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Controlled boolean checked state.",
+      },
+      {
+        name: "theme",
+        type: '"brushed-silver" | "dark-obsidian" | "cyber-cyan" | "emerald-glow" | "magma-orange" | "hyper-violet"',
+        defaultValue: '"brushed-silver"',
+        description: "Color theme palette.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Button dimensions scale.",
+      },
+      {
+        name: "showIcons",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Whether to show etched 0 / I glyphs.",
+      },
     ],
     variantsList: [
       {
@@ -1816,48 +2585,90 @@ export default function Example() {
         themeValue: "brushed-silver",
         themeProp: 'theme="brushed-silver"',
         badgeColor: "#94A3B8",
-        description: "Photorealistic debossed silver track with a brushed metallic slider knob.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="brushed-silver" size={sz} defaultChecked={true} />,
+        description:
+          "Photorealistic debossed silver track with a brushed metallic slider knob.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicToggle
+            defaultChecked={true}
+            size={sz}
+            theme="brushed-silver"
+          />
+        ),
       },
       {
         title: "Dark Obsidian",
         themeValue: "dark-obsidian",
         themeProp: 'theme="dark-obsidian"',
         badgeColor: "#94A3B8",
-        description: "Midnight dark clay chassis with deep carved shadow trench and illuminated LED.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="dark-obsidian" size={sz} defaultChecked={true} />,
+        description:
+          "Midnight dark clay chassis with deep carved shadow trench and illuminated LED.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicToggle
+            defaultChecked={true}
+            size={sz}
+            theme="dark-obsidian"
+          />
+        ),
       },
       {
         title: "Cyber Cyan",
         themeValue: "cyber-cyan",
         themeProp: 'theme="cyber-cyan"',
         badgeColor: "#06B6D4",
-        description: "High-voltage laser cyan glowing groove with specular bevel highlights.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="cyber-cyan" size={sz} defaultChecked={true} />,
+        description:
+          "High-voltage laser cyan glowing groove with specular bevel highlights.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicToggle
+            defaultChecked={true}
+            size={sz}
+            theme="cyber-cyan"
+          />
+        ),
       },
       {
         title: "Emerald Matrix",
         themeValue: "emerald-glow",
         themeProp: 'theme="emerald-glow"',
         badgeColor: "#10B981",
-        description: "Vibrant emerald photon illumination channel with smooth spring sliding.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="emerald-glow" size={sz} defaultChecked={true} />,
+        description:
+          "Vibrant emerald photon illumination channel with smooth spring sliding.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicToggle
+            defaultChecked={true}
+            size={sz}
+            theme="emerald-glow"
+          />
+        ),
       },
       {
         title: "Magma Orange",
         themeValue: "magma-orange",
         themeProp: 'theme="magma-orange"',
         badgeColor: "#FF5B04",
-        description: "Signature molten orange glow track with etched 0 / I state indicators.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="magma-orange" size={sz} defaultChecked={true} />,
+        description:
+          "Signature molten orange glow track with etched 0 / I state indicators.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicToggle
+            defaultChecked={true}
+            size={sz}
+            theme="magma-orange"
+          />
+        ),
       },
       {
         title: "Hyper Violet",
         themeValue: "hyper-violet",
         themeProp: 'theme="hyper-violet"',
         badgeColor: "#A855F7",
-        description: "Deep ultraviolet neon glow channel with multi-tier optical drop shadow.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="hyper-violet" size={sz} defaultChecked={true} />,
+        description:
+          "Deep ultraviolet neon glow channel with multi-tier optical drop shadow.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicToggle
+            defaultChecked={true}
+            size={sz}
+            theme="hyper-violet"
+          />
+        ),
       },
     ],
   },
@@ -1881,7 +2692,11 @@ export default function Example() {
       { value: "cyan-gel", label: "Electric Cyan", color: "#38BDF8" },
       { value: "violet-gel", label: "Cyber Violet", color: "#C084FC" },
       { value: "magma-gel", label: "Magma Amber", color: "#FB923C" },
-      { value: "silver-glass", label: "Frosted Silver Glass", color: "#E2E8F0" },
+      {
+        value: "silver-glass",
+        label: "Frosted Silver Glass",
+        color: "#E2E8F0",
+      },
       { value: "obsidian-glass", label: "Dark Obsidian", color: "#1E293B" },
     ],
     features: [
@@ -1892,12 +2707,16 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-8 flex items-center justify-center">
-        <GlossyGelButton theme="emerald-gel" size="md">Get Started</GlossyGelButton>
+        <GlossyGelButton size="md" theme="emerald-gel">
+          Get Started
+        </GlossyGelButton>
       </div>
     ),
     previewDark: (
       <div className="py-8 flex items-center justify-center">
-        <GlossyGelButton theme="emerald-gel" size="md">Get Started</GlossyGelButton>
+        <GlossyGelButton size="md" theme="emerald-gel">
+          Get Started
+        </GlossyGelButton>
       </div>
     ),
     jsxCode: `import { GlossyGelButton } from "@/components/GlossyGelButton";
@@ -1923,10 +2742,30 @@ export default function Example() {
     inset 0 -1px 3px rgba(255, 255, 255, 0.45);
 }`,
     props: [
-      { name: "children", type: "ReactNode", defaultValue: '"Get Started"', description: "Button text or custom children." },
-      { name: "theme", type: '"emerald-gel" | "cyan-gel" | "violet-gel" | "magma-gel" | "silver-glass" | "obsidian-glass"', defaultValue: '"emerald-gel"', description: "Color theme preset." },
-      { name: "size", type: '"sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Button size scale." },
-      { name: "isLoading", type: "boolean", defaultValue: "false", description: "Displays loading spinner." },
+      {
+        name: "children",
+        type: "ReactNode",
+        defaultValue: '"Get Started"',
+        description: "Button text or custom children.",
+      },
+      {
+        name: "theme",
+        type: '"emerald-gel" | "cyan-gel" | "violet-gel" | "magma-gel" | "silver-glass" | "obsidian-glass"',
+        defaultValue: '"emerald-gel"',
+        description: "Color theme preset.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Button size scale.",
+      },
+      {
+        name: "isLoading",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Displays loading spinner.",
+      },
     ],
     variantsList: [
       {
@@ -1934,48 +2773,78 @@ export default function Example() {
         themeValue: "emerald-gel",
         themeProp: 'theme="emerald-gel"',
         badgeColor: "#32E49D",
-        description: "1:1 spec fidelity skeuomorphic gel glass button with curved top specular highlight.",
-        renderPreview: (sz = "sm") => <GlossyGelButton theme="emerald-gel" size={sz}>Get Started</GlossyGelButton>,
+        description:
+          "1:1 spec fidelity skeuomorphic gel glass button with curved top specular highlight.",
+        renderPreview: (sz = "sm") => (
+          <GlossyGelButton size={sz} theme="emerald-gel">
+            Get Started
+          </GlossyGelButton>
+        ),
       },
       {
         title: "Electric Cyan Gel",
         themeValue: "cyan-gel",
         themeProp: 'theme="cyan-gel"',
         badgeColor: "#38BDF8",
-        description: "Vibrant liquid cyan glass with multi-layer inner shadow depth and spring click bounce.",
-        renderPreview: (sz = "sm") => <GlossyGelButton theme="cyan-gel" size={sz}>Download</GlossyGelButton>,
+        description:
+          "Vibrant liquid cyan glass with multi-layer inner shadow depth and spring click bounce.",
+        renderPreview: (sz = "sm") => (
+          <GlossyGelButton size={sz} theme="cyan-gel">
+            Download
+          </GlossyGelButton>
+        ),
       },
       {
         title: "Cyber Violet Gel",
         themeValue: "violet-gel",
         themeProp: 'theme="violet-gel"',
         badgeColor: "#C084FC",
-        description: "Rich purple glass finish with specular blurred highlight capsule and crisp drop shadow.",
-        renderPreview: (sz = "sm") => <GlossyGelButton theme="violet-gel" size={sz}>Upgrade Pro</GlossyGelButton>,
+        description:
+          "Rich purple glass finish with specular blurred highlight capsule and crisp drop shadow.",
+        renderPreview: (sz = "sm") => (
+          <GlossyGelButton size={sz} theme="violet-gel">
+            Upgrade Pro
+          </GlossyGelButton>
+        ),
       },
       {
         title: "Magma Amber Gel",
         themeValue: "magma-gel",
         themeProp: 'theme="magma-gel"',
         badgeColor: "#FB923C",
-        description: "Warm amber-gold liquid gel with tactile spring depression physics.",
-        renderPreview: (sz = "sm") => <GlossyGelButton theme="magma-gel" size={sz}>Claim Access</GlossyGelButton>,
+        description:
+          "Warm amber-gold liquid gel with tactile spring depression physics.",
+        renderPreview: (sz = "sm") => (
+          <GlossyGelButton size={sz} theme="magma-gel">
+            Claim Access
+          </GlossyGelButton>
+        ),
       },
       {
         title: "Frosted Silver Glass",
         themeValue: "silver-glass",
         themeProp: 'theme="silver-glass"',
         badgeColor: "#E2E8F0",
-        description: "Translucent frosted silver glass with optical refraction rim and clean typography.",
-        renderPreview: (sz = "sm") => <GlossyGelButton theme="silver-glass" size={sz}>Explore</GlossyGelButton>,
+        description:
+          "Translucent frosted silver glass with optical refraction rim and clean typography.",
+        renderPreview: (sz = "sm") => (
+          <GlossyGelButton size={sz} theme="silver-glass">
+            Explore
+          </GlossyGelButton>
+        ),
       },
       {
         title: "Dark Obsidian Glass",
         themeValue: "obsidian-glass",
         themeProp: 'theme="obsidian-glass"',
         badgeColor: "#94A3B8",
-        description: "Stealth obsidian glass with glowing cyan accent text and specular shine.",
-        renderPreview: (sz = "sm") => <GlossyGelButton theme="obsidian-glass" size={sz}>Start Free</GlossyGelButton>,
+        description:
+          "Stealth obsidian glass with glowing cyan accent text and specular shine.",
+        renderPreview: (sz = "sm") => (
+          <GlossyGelButton size={sz} theme="obsidian-glass">
+            Start Free
+          </GlossyGelButton>
+        ),
       },
     ],
   },
@@ -1998,7 +2867,11 @@ export default function Example() {
       { value: "emerald-photon", label: "Emerald Photon", color: "#10E599" },
       { value: "cyber-cyan", label: "Cyber Laser Cyan", color: "#00E5FF" },
       { value: "magma-orange", label: "UI Pirate Magma", color: "#FF5B04" },
-      { value: "dark-obsidian", label: "Dark Obsidian Stealth", color: "#38BDF8" },
+      {
+        value: "dark-obsidian",
+        label: "Dark Obsidian Stealth",
+        color: "#38BDF8",
+      },
       { value: "hyper-violet", label: "Hyper Ultraviolet", color: "#C084FC" },
       { value: "amber-crt", label: "Amber CRT Gold", color: "#FBBF24" },
     ],
@@ -2011,12 +2884,20 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-8 flex items-center justify-center">
-        <TactileNeumorphicSwitch theme="emerald-photon" size="md" defaultChecked={true} />
+        <TactileNeumorphicSwitch
+          defaultChecked={true}
+          size="md"
+          theme="emerald-photon"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-8 flex items-center justify-center">
-        <TactileNeumorphicSwitch theme="emerald-photon" size="md" defaultChecked={true} />
+        <TactileNeumorphicSwitch
+          defaultChecked={true}
+          size="md"
+          theme="emerald-photon"
+        />
       </div>
     ),
     jsxCode: `import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
@@ -2048,11 +2929,36 @@ export default function Example() {
   --switch-knob-shadow: 0 16px 28px -3px rgba(35, 48, 70, 0.32), 0 8px 14px -2px rgba(35, 48, 70, 0.22);
 }`,
     props: [
-      { name: "checked", type: "boolean", defaultValue: "false", description: "Controlled boolean state." },
-      { name: "stateMode", type: '"interactive" | "off" | "on"', defaultValue: '"interactive"', description: "Force a static OFF, static ON, or live toggle." },
-      { name: "theme", type: '"emerald-photon" | "cyber-cyan" | "magma-orange" | "dark-obsidian" | "hyper-violet" | "amber-crt"', defaultValue: '"emerald-photon"', description: "Illumination theme palette." },
-      { name: "size", type: '"sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Proportional scale size preset." },
-      { name: "showGrid", type: "boolean", defaultValue: "true", description: "Shows fine mesh canvas grid." },
+      {
+        name: "checked",
+        type: "boolean",
+        defaultValue: "false",
+        description: "Controlled boolean state.",
+      },
+      {
+        name: "stateMode",
+        type: '"interactive" | "off" | "on"',
+        defaultValue: '"interactive"',
+        description: "Force a static OFF, static ON, or live toggle.",
+      },
+      {
+        name: "theme",
+        type: '"emerald-photon" | "cyber-cyan" | "magma-orange" | "dark-obsidian" | "hyper-violet" | "amber-crt"',
+        defaultValue: '"emerald-photon"',
+        description: "Illumination theme palette.",
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg" | "xl"',
+        defaultValue: '"md"',
+        description: "Proportional scale size preset.",
+      },
+      {
+        name: "showGrid",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Shows fine mesh canvas grid.",
+      },
     ],
     variantsList: [
       {
@@ -2060,24 +2966,45 @@ export default function Example() {
         themeValue: "emerald-photon",
         themeProp: 'stateMode="off"',
         badgeColor: "#94A3B8",
-        description: "Resting neutral clay trench with dual-dome sculpted knob.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="emerald-photon" stateMode="off" size={sz} />,
+        description:
+          "Resting neutral clay trench with dual-dome sculpted knob.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicSwitch
+            size={sz}
+            stateMode="off"
+            theme="emerald-photon"
+          />
+        ),
       },
       {
         title: "On State",
         themeValue: "emerald-photon",
         themeProp: 'stateMode="on"',
         badgeColor: "#10E599",
-        description: "Glowing emerald photon illumination channel with right dock.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="emerald-photon" stateMode="on" size={sz} />,
+        description:
+          "Glowing emerald photon illumination channel with right dock.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicSwitch
+            size={sz}
+            stateMode="on"
+            theme="emerald-photon"
+          />
+        ),
       },
       {
         title: "Interactive Spring",
         themeValue: "emerald-photon",
         themeProp: 'theme="emerald-photon"',
         badgeColor: "#10E599",
-        description: "Interactive 60fps spring toggle with dynamic channel fill.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="emerald-photon" stateMode="interactive" size={sz} />,
+        description:
+          "Interactive 60fps spring toggle with dynamic channel fill.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicSwitch
+            size={sz}
+            stateMode="interactive"
+            theme="emerald-photon"
+          />
+        ),
       },
       {
         title: "Cyber Laser Cyan",
@@ -2085,7 +3012,13 @@ export default function Example() {
         themeProp: 'theme="cyber-cyan"',
         badgeColor: "#00E5FF",
         description: "High-voltage laser cyan glowing optical underlayer.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="cyber-cyan" stateMode="interactive" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicSwitch
+            size={sz}
+            stateMode="interactive"
+            theme="cyber-cyan"
+          />
+        ),
       },
       {
         title: "UI Pirate Magma",
@@ -2093,15 +3026,28 @@ export default function Example() {
         themeProp: 'theme="magma-orange"',
         badgeColor: "#FF5B04",
         description: "Signature magma orange molten photon illumination.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="magma-orange" stateMode="interactive" size={sz} />,
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicSwitch
+            size={sz}
+            stateMode="interactive"
+            theme="magma-orange"
+          />
+        ),
       },
       {
         title: "Dark Obsidian Stealth",
         themeValue: "dark-obsidian",
         themeProp: 'theme="dark-obsidian"',
         badgeColor: "#38BDF8",
-        description: "Midnight dark clay chassis with glowing sapphire channel.",
-        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="dark-obsidian" stateMode="interactive" size={sz} />,
+        description:
+          "Midnight dark clay chassis with glowing sapphire channel.",
+        renderPreview: (sz = "sm") => (
+          <TactileNeumorphicSwitch
+            size={sz}
+            stateMode="interactive"
+            theme="dark-obsidian"
+          />
+        ),
       },
     ],
   },
@@ -2136,12 +3082,20 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-8 flex items-center justify-center">
-        <LuminousShelfCard title="Light Work" subtitle="Life life on easy mode." stateMode="interactive" />
+        <LuminousShelfCard
+          stateMode="interactive"
+          subtitle="Life life on easy mode."
+          title="Light Work"
+        />
       </div>
     ),
     previewDark: (
       <div className="py-8 flex items-center justify-center">
-        <LuminousShelfCard title="Light Work" subtitle="Life life on easy mode." stateMode="interactive" />
+        <LuminousShelfCard
+          stateMode="interactive"
+          subtitle="Life life on easy mode."
+          title="Light Work"
+        />
       </div>
     ),
     jsxCode: `import { LuminousShelfCard } from "@/components/LuminousShelfCard";
@@ -2248,16 +3202,68 @@ export default function Example() {
               inset 0 9px 16px rgba(0, 0, 0, 0.32);
 }`,
     props: [
-      { name: "title", type: "string", defaultValue: '"Light Work"', description: "Large heading, bottom-left." },
-      { name: "subtitle", type: "string", defaultValue: '"Life life on easy mode by UI Pirate"', description: "One-line sub-text; clips at the card edge like the reference." },
-      { name: "stateMode", type: '"interactive" | "standerd" | "hover"', defaultValue: '"interactive"', description: '"standerd" = light off · "hover" = light on · "interactive" = follows pointer / focus.' },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Uniform scale of the whole card." },
-      { name: "theme", type: '"white" | "warm" | "arctic" | "amber" | "emerald" | "magenta"', defaultValue: '"white"', description: "Colour of the light that strikes on hover." },
-      { name: "icon", type: "React.ReactNode", defaultValue: "<Feather />", description: "Glyph inside the pin." },
-      { name: "showDeviceFrame", type: "boolean", defaultValue: "true", description: "Faint blueprint frame + corner brackets behind the card." },
-      { name: "showPeekPill", type: "boolean", defaultValue: "true", description: "White pill peeking up from the bottom-right edge." },
-      { name: "flicker", type: "boolean", defaultValue: "true", description: "Fluorescent-tube strike flicker when the light turns on." },
-      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Fired on click / Enter / Space when set." },
+      {
+        name: "title",
+        type: "string",
+        defaultValue: '"Light Work"',
+        description: "Large heading, bottom-left.",
+      },
+      {
+        name: "subtitle",
+        type: "string",
+        defaultValue: '"Life life on easy mode by UI Pirate"',
+        description:
+          "One-line sub-text; clips at the card edge like the reference.",
+      },
+      {
+        name: "stateMode",
+        type: '"interactive" | "standerd" | "hover"',
+        defaultValue: '"interactive"',
+        description:
+          '"standerd" = light off · "hover" = light on · "interactive" = follows pointer / focus.',
+      },
+      {
+        name: "size",
+        type: '"sm" | "md" | "lg"',
+        defaultValue: '"md"',
+        description: "Uniform scale of the whole card.",
+      },
+      {
+        name: "theme",
+        type: '"white" | "warm" | "arctic" | "amber" | "emerald" | "magenta"',
+        defaultValue: '"white"',
+        description: "Colour of the light that strikes on hover.",
+      },
+      {
+        name: "icon",
+        type: "React.ReactNode",
+        defaultValue: "<Feather />",
+        description: "Glyph inside the pin.",
+      },
+      {
+        name: "showDeviceFrame",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Faint blueprint frame + corner brackets behind the card.",
+      },
+      {
+        name: "showPeekPill",
+        type: "boolean",
+        defaultValue: "true",
+        description: "White pill peeking up from the bottom-right edge.",
+      },
+      {
+        name: "flicker",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Fluorescent-tube strike flicker when the light turns on.",
+      },
+      {
+        name: "onClick",
+        type: "() => void",
+        defaultValue: "undefined",
+        description: "Fired on click / Enter / Space when set.",
+      },
     ],
     variantsList: [
       {
@@ -2266,7 +3272,14 @@ export default function Example() {
         themeProp: 'theme="white"',
         badgeColor: "#E6E8F5",
         description: "Neutral broadcast key-light — the reference look.",
-        renderPreview: (sz = "sm") => <LuminousShelfCard theme="white" size={sz} stateMode="hover" subtitle="Life life on easy mode." />,
+        renderPreview: (sz = "sm") => (
+          <LuminousShelfCard
+            size={sz}
+            stateMode="hover"
+            subtitle="Life life on easy mode."
+            theme="white"
+          />
+        ),
       },
       {
         title: "Incandescent",
@@ -2274,7 +3287,14 @@ export default function Example() {
         themeProp: 'theme="warm"',
         badgeColor: "#FFD69E",
         description: "Tungsten bulb warmth pooling up the wall.",
-        renderPreview: (sz = "sm") => <LuminousShelfCard theme="warm" size={sz} stateMode="hover" subtitle="Warm tungsten glow." />,
+        renderPreview: (sz = "sm") => (
+          <LuminousShelfCard
+            size={sz}
+            stateMode="hover"
+            subtitle="Warm tungsten glow."
+            theme="warm"
+          />
+        ),
       },
       {
         title: "Arctic Cyan",
@@ -2282,7 +3302,14 @@ export default function Example() {
         themeProp: 'theme="arctic"',
         badgeColor: "#AAE2FF",
         description: "Cold clean-room strip lighting.",
-        renderPreview: (sz = "sm") => <LuminousShelfCard theme="arctic" size={sz} stateMode="hover" subtitle="Cold clean-room light." />,
+        renderPreview: (sz = "sm") => (
+          <LuminousShelfCard
+            size={sz}
+            stateMode="hover"
+            subtitle="Cold clean-room light."
+            theme="arctic"
+          />
+        ),
       },
       {
         title: "Amber Sodium",
@@ -2290,7 +3317,14 @@ export default function Example() {
         themeProp: 'theme="amber"',
         badgeColor: "#FFBE70",
         description: "Street-lamp sodium orange bloom.",
-        renderPreview: (sz = "sm") => <LuminousShelfCard theme="amber" size={sz} stateMode="hover" subtitle="Sodium street glow." />,
+        renderPreview: (sz = "sm") => (
+          <LuminousShelfCard
+            size={sz}
+            stateMode="hover"
+            subtitle="Sodium street glow."
+            theme="amber"
+          />
+        ),
       },
       {
         title: "Emerald Lab",
@@ -2298,7 +3332,14 @@ export default function Example() {
         themeProp: 'theme="emerald"',
         badgeColor: "#A2F0CA",
         description: "Phosphor reactor green wash.",
-        renderPreview: (sz = "sm") => <LuminousShelfCard theme="emerald" size={sz} stateMode="hover" subtitle="Phosphor reactor wash." />,
+        renderPreview: (sz = "sm") => (
+          <LuminousShelfCard
+            size={sz}
+            stateMode="hover"
+            subtitle="Phosphor reactor wash."
+            theme="emerald"
+          />
+        ),
       },
       {
         title: "Neon Magenta",
@@ -2306,9 +3347,15 @@ export default function Example() {
         themeProp: 'theme="magenta"',
         badgeColor: "#FFB0E2",
         description: "Nightclub magenta tube strike.",
-        renderPreview: (sz = "sm") => <LuminousShelfCard theme="magenta" size={sz} stateMode="hover" subtitle="Nightclub tube strike." />,
+        renderPreview: (sz = "sm") => (
+          <LuminousShelfCard
+            size={sz}
+            stateMode="hover"
+            subtitle="Nightclub tube strike."
+            theme="magenta"
+          />
+        ),
       },
     ],
   },
 ];
-

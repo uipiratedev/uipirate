@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 
 const GROUPS = [
   {
@@ -32,15 +32,10 @@ const GROUPS = [
 const MiniProcess = () => {
   return (
     <div className="section-container">
-      <div className="text-center mb-12 max-md:mb-8">
-        <div className="flex justify-center mb-4">
-          <GlassBadge variant="gradient">how it works</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          From Idea to Shipped,{" "}
-          <span className="text-brand-orange">in 3 Steps</span>
-        </h2>
-      </div>
+      <SectionHeader chip="how it works">
+        From Idea to Shipped,{" "}
+        <span className="text-brand-orange">in 3 Steps</span>
+      </SectionHeader>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {GROUPS.map((group, i) => (

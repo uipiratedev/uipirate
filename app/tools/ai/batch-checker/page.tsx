@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import BatchCheckerClient from "@/components/BatchChecker/BatchCheckerClient";
 
 export const metadata: Metadata = {

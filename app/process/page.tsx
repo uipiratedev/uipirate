@@ -71,7 +71,9 @@ export default function ProcessPage() {
 
             <h1 className="hero-header max-w-4xl">
               <span className="text-black">Here&apos;s Exactly What </span>
-              <span className="text-brand-orange">Working With Us Looks Like</span>
+              <span className="text-brand-orange">
+                Working With Us Looks Like
+              </span>
             </h1>
 
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">

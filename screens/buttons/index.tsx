@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+
 import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
@@ -47,7 +47,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Photorealistic 3D neumorphic toggle switch directly from Figma (Nodes 1:7 & 1:8). Features outer recessed cavity, deep shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
     href: "/buttons/tactile-neumorphic-switch",
-    features: ["Dual-dome sculpted knob", "Deep carved trench", "Illuminated emerald fill", "60fps Spring physics"],
+    features: [
+      "Dual-dome sculpted knob",
+      "Deep carved trench",
+      "Illuminated emerald fill",
+      "60fps Spring physics",
+    ],
   },
   {
     id: "glossy-gel",
@@ -58,7 +63,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "High-gloss skeuomorphic gel glass CTA button directly from Figma (Node 2:2). Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
     href: "/buttons/glossy-gel-button",
-    features: ["1:1 Figma fidelity", "4-layer optical shadows", "Top specular capsule", "Interactive spring bounce"],
+    features: [
+      "1:1 Figma fidelity",
+      "4-layer optical shadows",
+      "Top specular capsule",
+      "Interactive spring bounce",
+    ],
   },
   {
     id: "frosted-gel-download",
@@ -69,7 +79,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass cloud download tile, internal optical refraction rings, and volumetric blue underglow flare.",
     href: "/buttons/frosted-gel-download-button",
-    features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "Interactive hover lift"],
+    features: [
+      "Elevated ceramic pill",
+      "Frosted glass cloud tile",
+      "Volumetric blue underglow",
+      "Interactive hover lift",
+    ],
   },
   {
     id: "isometric-revive",
@@ -80,7 +95,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
     href: "/buttons/isometric-revive-button",
-    features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "Dynamic spring physics"],
+    features: [
+      "30° Isometric matrix",
+      "Multi-layer 3D extrusion",
+      "Optical neon underglow",
+      "Dynamic spring physics",
+    ],
   },
   {
     id: "elevated-underglow",
@@ -91,7 +111,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
     href: "/buttons/elevated-underglow-cta",
-    features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
+    features: [
+      "13px Spring lift",
+      "Electric blue 3D underlayer",
+      "Interactive states",
+      "Phone call icon",
+    ],
   },
   {
     id: "led-matrix-chevron",
@@ -102,7 +127,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.",
     href: "/buttons/led-matrix-chevron",
-    features: ["Expandable LED screen", "7x7 Dot matrix chevrons", "Cascading marquee wave", "Carbon squircle chassis"],
+    features: [
+      "Expandable LED screen",
+      "7x7 Dot matrix chevrons",
+      "Cascading marquee wave",
+      "Carbon squircle chassis",
+    ],
   },
   {
     id: "slide-grow",
@@ -113,7 +143,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
     href: "/buttons/slide-grow-button",
-    features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "Smooth slider snap"],
+    features: [
+      "Draggable knob physics",
+      "Neon channel beam fill",
+      "Masked text reveal",
+      "Smooth slider snap",
+    ],
   },
   {
     id: "vintage-leather",
@@ -124,7 +159,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.",
     href: "/buttons/vintage-leather-cta",
-    features: ["3D Tactile bevel lip", "Filigree corner ornaments", "Recessed enclosure tray", "5 Luxury themes"],
+    features: [
+      "3D Tactile bevel lip",
+      "Filigree corner ornaments",
+      "Recessed enclosure tray",
+      "5 Luxury themes",
+    ],
   },
   {
     id: "neumorphic-glow",
@@ -135,7 +175,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Authentic claymorphic and neumorphic elevated CTA button pair with glowing neon green badge depth, multi-tier elevation drop shadows, and plus-lighter bloom.",
     href: "/buttons/neumorphic-glow-cta",
-    features: ["Pill & Squircle variants", "Neon green glow badge", "Multi-tier clay shadows", "Plus-lighter bloom"],
+    features: [
+      "Pill & Squircle variants",
+      "Neon green glow badge",
+      "Multi-tier clay shadows",
+      "Plus-lighter bloom",
+    ],
   },
   {
     id: "arc-corner-toggle",
@@ -146,7 +191,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
     href: "/buttons/arc-corner-toggle",
-    features: ["90° Corner arc track", "Sunburst dial loader", "Light & Dark dual mode", "Laser beam flare"],
+    features: [
+      "90° Corner arc track",
+      "Sunburst dial loader",
+      "Light & Dark dual mode",
+      "Laser beam flare",
+    ],
   },
   {
     id: "smash-button",
@@ -157,7 +207,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Cyberpunk neo-brutalist tactile button with outer tech enclosure frame, porcelain cushion cooling tray, deep midnight obsidian slab, and glowing neon reactor underglow bloom.",
     href: "/buttons/smash-tactile-button",
-    features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
+    features: [
+      "Tech enclosure frame",
+      "Cushion cooling tray",
+      "Obsidian core slab",
+      "Reactor underglow",
+    ],
   },
   {
     id: "tactile-pill",
@@ -168,7 +223,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Interactive 3D tactile button featuring spring tilt physics (-9.23° rotation), recessed cavity slot depth shadows, specular bevels, and glowing status beacon.",
     href: "/buttons/tactile-pill-button",
-    features: ["Recessed tray depth", "Spring lift & tilt", "Status beacon", "5 Themes"],
+    features: [
+      "Recessed tray depth",
+      "Spring lift & tilt",
+      "Status beacon",
+      "5 Themes",
+    ],
   },
   {
     id: "scaling-capsule",
@@ -179,7 +239,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Pixel-perfect capsule button with frosted translucent glass cavity tray, multi-tier elevation drop shadows, specular bevel insets, and 26px black circle with ladder-rung apex emblem.",
     href: "/buttons/scaling-capsule-button",
-    features: ["Frosted glass tray", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
+    features: [
+      "Frosted glass tray",
+      "Multi-tier shadow stack",
+      "26px Black circle",
+      "Ladder-rung icon",
+    ],
   },
   {
     id: "animated-slide",
@@ -190,7 +255,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "Dual-text roll CTA button that smoothly translates labels vertically on hover with overflow clipping. Optimized for high-conversion service cards.",
     href: "/buttons/animated-slide-button",
-    features: ["Dual text roll", "Smooth translateY", "Primary & secondary styles", "Zero layout shift"],
+    features: [
+      "Dual text roll",
+      "Smooth translateY",
+      "Primary & secondary styles",
+      "Zero layout shift",
+    ],
   },
   {
     id: "magnetic-pulse",
@@ -201,7 +271,12 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     description:
       "High-energy lead capture CTA button featuring pulsing ambient radiant bloom, click sound trigger, and dynamic 3D depth press feedback.",
     href: "/buttons/magnetic-pulse-cta",
-    features: ["Ambient radiant pulse", "Sound effects", "Spring depth press", "Lead modal trigger"],
+    features: [
+      "Ambient radiant pulse",
+      "Sound effects",
+      "Spring depth press",
+      "Lead modal trigger",
+    ],
   },
 ];
 
@@ -262,7 +337,9 @@ export default function ButtonHubScreen() {
             </div>
 
             <p className="sub-header text-[#11181C] mx-auto">
-              Each button component below features its own interactive studio page with full customization sandboxes, props reference, design tokens, and copy-ready React &amp; Tailwind code.
+              Each button component below features its own interactive studio
+              page with full customization sandboxes, props reference, design
+              tokens, and copy-ready React &amp; Tailwind code.
             </p>
           </div>
 
@@ -307,7 +384,8 @@ export default function ButtonHubScreen() {
                   <div
                     className="absolute inset-0 opacity-40 pointer-events-none"
                     style={{
-                      backgroundImage: "radial-gradient(#94A3B8 1px, transparent 1px)",
+                      backgroundImage:
+                        "radial-gradient(#94A3B8 1px, transparent 1px)",
                       backgroundSize: "16px 16px",
                     }}
                   />
@@ -316,16 +394,16 @@ export default function ButtonHubScreen() {
                     {btn.id === "tactile-neumorphic-switch" && (
                       <div className="scale-75 sm:scale-85 py-1">
                         <TactileNeumorphicSwitch
-                          theme="emerald-photon"
-                          size="sm"
                           defaultChecked={true}
+                          size="sm"
+                          theme="emerald-photon"
                         />
                       </div>
                     )}
 
                     {btn.id === "glossy-gel" && (
                       <div className="scale-90 sm:scale-100 py-1">
-                        <GlossyGelButton theme="emerald-gel" size="md">
+                        <GlossyGelButton size="md" theme="emerald-gel">
                           Get Started
                         </GlossyGelButton>
                       </div>
@@ -335,9 +413,9 @@ export default function ButtonHubScreen() {
                       <div className="scale-85 sm:scale-95 py-2">
                         <FrostedGelDownloadButton
                           label="Download now"
-                          theme="default-blue"
                           size="md"
                           stateMode="interactive"
+                          theme="default-blue"
                         />
                       </div>
                     )}
@@ -346,10 +424,10 @@ export default function ButtonHubScreen() {
                       <div className="scale-75 sm:scale-85 py-1">
                         <IsometricReviveButton
                           label="Revive Now"
-                          theme="default"
+                          showGrid={false}
                           size="sm"
                           stateMode="interactive"
-                          showGrid={false}
+                          theme="default"
                         />
                       </div>
                     )}
@@ -357,11 +435,11 @@ export default function ButtonHubScreen() {
                     {btn.id === "elevated-underglow" && (
                       <div className="scale-90 sm:scale-100 py-2">
                         <ElevatedUnderglowCTA
-                          label="Book A Call"
                           icon="phone"
-                          theme="default"
+                          label="Book A Call"
                           size="md"
                           stateMode="interactive"
+                          theme="default"
                         />
                       </div>
                     )}
@@ -369,9 +447,9 @@ export default function ButtonHubScreen() {
                     {btn.id === "led-matrix-chevron" && (
                       <div className="scale-85 sm:scale-95">
                         <LedMatrixChevronButton
-                          theme="monochrome"
                           size="md"
                           stateMode="interactive"
+                          theme="monochrome"
                         />
                       </div>
                     )}
@@ -379,9 +457,9 @@ export default function ButtonHubScreen() {
                     {btn.id === "slide-grow" && (
                       <div className="scale-85 sm:scale-90">
                         <SlideGrowButton
-                          theme="silver"
                           size="md"
                           stateMode="interactive"
+                          theme="silver"
                         />
                       </div>
                     )}
@@ -389,19 +467,16 @@ export default function ButtonHubScreen() {
                     {btn.id === "vintage-leather" && (
                       <div className="scale-90 sm:scale-95">
                         <VintageLeatherCTA
-                          theme="heritage"
-                          size="md"
                           label="Shop ties"
+                          size="md"
+                          theme="heritage"
                         />
                       </div>
                     )}
 
                     {btn.id === "neumorphic-glow" && (
                       <div className="flex items-center gap-4 scale-90 sm:scale-95">
-                        <NeumorphicGlowCTA
-                          variant="pill"
-                          label="Learn more"
-                        />
+                        <NeumorphicGlowCTA label="Learn more" variant="pill" />
                       </div>
                     )}
 
@@ -415,8 +490,8 @@ export default function ButtonHubScreen() {
                       <div className="scale-90 sm:scale-95">
                         <SmashTactileButton
                           label="Smash the button"
-                          variant="default"
                           size="sm"
+                          variant="default"
                         />
                       </div>
                     )}
@@ -424,11 +499,11 @@ export default function ButtonHubScreen() {
                     {btn.id === "tactile-pill" && (
                       <div className="scale-110">
                         <TactilePillButton
-                          label="Get Started"
                           dotColor="#00B894"
-                          variant="default"
+                          label="Get Started"
                           size="md"
                           tiltAngle={-9.23}
+                          variant="default"
                         />
                       </div>
                     )}
@@ -437,8 +512,8 @@ export default function ButtonHubScreen() {
                       <div className="scale-100">
                         <ScalingCapsuleButton
                           label="Scaling Workshop"
-                          variant="dark"
                           size="md"
+                          variant="dark"
                         />
                       </div>
                     )}
@@ -446,10 +521,10 @@ export default function ButtonHubScreen() {
                     {btn.id === "animated-slide" && (
                       <div className="w-full max-w-[240px]">
                         <AnimatedButton
-                          primaryText="Explore Services"
-                          hoverText="See More →"
-                          variant="primary"
                           className="!mt-0"
+                          hoverText="See More →"
+                          primaryText="Explore Services"
+                          variant="primary"
                         />
                       </div>
                     )}
@@ -480,17 +555,22 @@ export default function ButtonHubScreen() {
                 {/* Action Button Link to Dedicated Page */}
                 <div className="pt-4 border-t border-gray-100">
                   <Link
-                    href={btn.href}
                     className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gray-950 hover:bg-[#FF5B04] text-white text-xs sm:text-sm font-bold transition-all shadow-md group/link"
+                    href={btn.href}
                   >
                     <span>Open {btn.name} Page</span>
                     <svg
                       className="w-4 h-4 group-hover/link:translate-x-1 transition-transform"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      <path
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                      />
                     </svg>
                   </Link>
                 </div>

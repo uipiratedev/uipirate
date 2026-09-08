@@ -1,10 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import {
-  getPostBySlug,
-  listPostSlugs,
-} from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";
 
@@ -42,8 +39,7 @@ export async function generateMetadata({
   }
 
   const url = `https://uipirate.com/case-studies/${study.slug}`;
-  const description =
-    study.seo?.metaDescription || study.excerpt || undefined;
+  const description = study.seo?.metaDescription || study.excerpt || undefined;
 
   return {
     title: study.seo?.metaTitle || `${study.title} | Case Study`,

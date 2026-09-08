@@ -126,8 +126,9 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
 
           {/* Text on top */}
           <span
-            className={`relative z-10 font-jetbrains-mono font-medium text-black ${uppercase ? "uppercase" : ""
-              } ${className}`}
+            className={`relative z-10 font-jetbrains-mono font-medium text-black ${
+              uppercase ? "uppercase" : ""
+            } ${className}`}
             style={{
               fontVariantNumeric: "slashed-zero",
               color: textColor || undefined,
@@ -156,12 +157,12 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           transition-all duration-300 ease-in-out
           ${className}
         `}
-        style={{
-          color: textColor || undefined,
-        }}
         height="auto"
         opacity={0.93}
         saturation={1.5}
+        style={{
+          color: textColor || undefined,
+        }}
         width="auto"
       >
         {children}

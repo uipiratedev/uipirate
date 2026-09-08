@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import DesignTokensClient from "@/components/DesignTokens/DesignTokensClient";
 
 export const metadata: Metadata = {
@@ -21,16 +22,16 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "SaaS Design Token & Theme Generator",
-  "url": "https://uipirate.com/tools/design/design-tokens",
-  "description":
+  name: "SaaS Design Token & Theme Generator",
+  url: "https://uipirate.com/tools/design/design-tokens",
+  description:
     "Generate production-ready design tokens, 8pt spacing scales, typography ramps, and Tailwind CSS config objects in seconds.",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "All",
-  "offers": {
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  offers: {
     "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD",
+    price: "0",
+    priceCurrency: "USD",
   },
 };
 
@@ -38,8 +39,8 @@ export default function DesignTokensNestedPage() {
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <DesignTokensClient />
     </>

@@ -3,7 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-export type LedMatrixTheme = "uipirate" | "pirate" | "monochrome" | "emerald" | "cyan" | "amber" | "crimson";
+export type LedMatrixTheme =
+  | "uipirate"
+  | "pirate"
+  | "monochrome"
+  | "emerald"
+  | "cyan"
+  | "amber"
+  | "crimson";
 export type LedMatrixStateMode = "interactive" | "standerd" | "hover";
 export type LedMatrixInteractionMode = "hover" | "click" | "both";
 export type LedMatrixSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -56,20 +63,28 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     stateMode === "hover"
       ? true
       : stateMode === "standerd"
-      ? false
-      : interactionMode === "click"
-      ? isToggled
-      : interactionMode === "hover"
-      ? isHovered
-      : isHovered || isToggled;
+        ? false
+        : interactionMode === "click"
+          ? isToggled
+          : interactionMode === "hover"
+            ? isHovered
+            : isHovered || isToggled;
 
   // Scaled dimensions matching exact spec 236x71px enclosure & 224x59px slab
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -128,7 +143,9 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     },
   }[__baseSize];
 
-  const totalCols = isExpanded ? sizeConfig.expandedCols : sizeConfig.compactCols;
+  const totalCols = isExpanded
+    ? sizeConfig.expandedCols
+    : sizeConfig.compactCols;
 
   // Continuous left-to-right LED column shift timer (seamless periodic cycle of 6)
   useEffect(() => {
@@ -136,6 +153,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     const timer = setInterval(() => {
       setFrame((prev) => (prev + 1) % 6);
     }, stepSpeedMs);
+
     return () => clearInterval(timer);
   }, [enableMovingLoop, stepSpeedMs]);
 
@@ -145,7 +163,8 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       ledColor: "#FF5B04",
       ledDimColor: "rgba(255, 91, 4, 0.12)",
       ledGlow: "#FF7A00",
-      screenBg: "linear-gradient(180deg, #3A1808 0%, #250E04 60%, #160702 100%)",
+      screenBg:
+        "linear-gradient(180deg, #3A1808 0%, #250E04 60%, #160702 100%)",
       screenInnerBevel:
         "inset 0px 1px 1px 0px rgba(255, 122, 0, 0.45), inset 0px -1px 1px 0px rgba(0, 0, 0, 0.8)",
       slabBg: "linear-gradient(180deg, #2D1408 0%, #1A0B04 50%, #0D0502 100%)",
@@ -160,7 +179,8 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       ledColor: "#FF5B04",
       ledDimColor: "rgba(255, 91, 4, 0.12)",
       ledGlow: "#FF7A00",
-      screenBg: "linear-gradient(180deg, #3A1808 0%, #250E04 60%, #160702 100%)",
+      screenBg:
+        "linear-gradient(180deg, #3A1808 0%, #250E04 60%, #160702 100%)",
       screenInnerBevel:
         "inset 0px 1px 1px 0px rgba(255, 122, 0, 0.45), inset 0px -1px 1px 0px rgba(0, 0, 0, 0.8)",
       slabBg: "linear-gradient(180deg, #2D1408 0%, #1A0B04 50%, #0D0502 100%)",
@@ -175,7 +195,8 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       ledColor: "#FFFFFF",
       ledDimColor: "rgba(255, 255, 255, 0.08)", // Subtle dim dark square
       ledGlow: "rgba(255, 255, 255, 0.85)",
-      screenBg: "linear-gradient(180deg, #3A3E42 0%, #26292C 60%, #1A1C1E 100%)", // Sleek dark smoked graphite plate
+      screenBg:
+        "linear-gradient(180deg, #3A3E42 0%, #26292C 60%, #1A1C1E 100%)", // Sleek dark smoked graphite plate
       screenInnerBevel:
         "inset 0px 1px 1px 0px rgba(255, 255, 255, 0.2), inset 0px -1px 1px 0px rgba(0, 0, 0, 0.6)",
       slabBg: "linear-gradient(180deg, #4A5157 0%, #2A2D30 50%, #1A1C1E 100%)",
@@ -254,7 +275,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     if (row === 0 || row === 6) return false;
 
     // Relative column position inside the continuous 6-column periodic cell
-    const cellCol = ((col - frame) % 6 + 6) % 6;
+    const cellCol = (((col - frame) % 6) + 6) % 6;
 
     // 1:1 Pixel Chevron shape (3 pixels thick, pointing right):
     // Row 1: cellCol 0, 1, 2
@@ -271,6 +292,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     if (row === 3) {
       return cellCol >= 2 && cellCol <= 4;
     }
+
     return false;
   };
 
@@ -283,24 +305,24 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
 
   return __wrapSize(
     <motion.button
-      type="button"
-      onClick={handleButtonClick}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => {
-        setIsHovered(false);
-        setIsToggled(false);
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setIsToggled(false);
-      }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.975, y: 1.5 }}
-      transition={{ type: "spring", stiffness: 450, damping: 28 }}
       className={`relative inline-flex items-center justify-center select-none cursor-pointer outline-none ${className}`}
       style={{
         transform: scale !== 1 ? `scale(${scale})` : undefined,
         transformOrigin: "center center",
+      }}
+      transition={{ type: "spring", stiffness: 450, damping: 28 }}
+      type="button"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.975, y: 1.5 }}
+      onClick={handleButtonClick}
+      onHoverEnd={() => {
+        setIsHovered(false);
+        setIsToggled(false);
+      }}
+      onHoverStart={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsToggled(false);
       }}
     >
       {/* ─────────────────────────────────────────────────────────────
@@ -312,7 +334,8 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
           minWidth: sizeConfig.enclosureW,
           width: "auto",
           backgroundColor: themeStyles.enclosureBg,
-          boxShadow: "0px 1.5px 0px rgba(255, 255, 255, 0.1), inset 0px 0px 2px 0px rgba(0, 0, 0, 0.08)",
+          boxShadow:
+            "0px 1.5px 0px rgba(255, 255, 255, 0.1), inset 0px 0px 2px 0px rgba(0, 0, 0, 0.08)",
         }}
       >
         {/* ─────────────────────────────────────────────────────────────
@@ -344,7 +367,6 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
              ───────────────────────────────────────────────────────────── */}
           <motion.div
             layout
-            transition={{ type: "spring", stiffness: 400, damping: 28 }}
             className={`relative z-20 flex items-center justify-center overflow-hidden shrink-0 ${sizeConfig.badgeRadius}`}
             style={{
               height: sizeConfig.badgeH,
@@ -353,6 +375,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
               boxShadow: themeStyles.screenInnerBevel,
               padding: "0px",
             }}
+            transition={{ type: "spring", stiffness: 400, damping: 28 }}
           >
             {/* Ambient Inner Glow Beam */}
             <div
@@ -380,6 +403,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
                 >
                   {Array.from({ length: totalCols }).map((_, col) => {
                     const isLit = checkIsPixelLit(row, col);
+
                     return (
                       <div
                         key={`${row}-${col}`}
@@ -409,23 +433,23 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
              ───────────────────────────────────────────────────────────── */}
           {!isExpanded && (
             <motion.span
-              initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -6 }}
-              transition={{ duration: 0.18 }}
               className={`relative z-10 flex-1 text-center font-normal whitespace-nowrap px-4 select-none ${sizeConfig.fontSize}`}
+              exit={{ opacity: 0, x: -6 }}
+              initial={{ opacity: 0, x: -6 }}
               style={{
                 fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
                 color: themeStyles.textColor,
                 letterSpacing: "-0.2px",
               }}
+              transition={{ duration: 0.18 }}
             >
               {label}
             </motion.span>
           )}
         </div>
       </div>
-    </motion.button>
+    </motion.button>,
   );
 };
 

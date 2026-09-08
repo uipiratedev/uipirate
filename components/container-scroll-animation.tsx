@@ -47,12 +47,8 @@ export const ContainerScroll = ({
   };
 
   const isMobile = deviceType === "mobile";
-  const rotateValues =
-    deviceType === "mobile" ? [0, 0] : [18, 0];
-  const translateValues =
-    deviceType === "mobile"
-      ? [0, 0]
-      : [0, -100];
+  const rotateValues = deviceType === "mobile" ? [0, 0] : [18, 0];
+  const translateValues = deviceType === "mobile" ? [0, 0] : [0, -100];
 
   const rotate = useTransform(scrollYProgress, [0, 1], rotateValues);
   const scale = useTransform(scrollYProgress, [0, 1], scaleDimensions());

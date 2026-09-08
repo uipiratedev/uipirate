@@ -1,4 +1,9 @@
-export type BotCategory = "ai-training" | "ai-search" | "search-engine" | "seo-tool" | "social";
+export type BotCategory =
+  | "ai-training"
+  | "ai-search"
+  | "search-engine"
+  | "seo-tool"
+  | "social";
 
 export interface BotInfo {
   id: string;
@@ -38,7 +43,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "GPTBot",
     company: "OpenAI",
     userAgent: "GPTBot",
-    description: "Crawls web pages to train ChatGPT, GPT-4o, and OpenAI foundation models.",
+    description:
+      "Crawls web pages to train ChatGPT, GPT-4o, and OpenAI foundation models.",
     color: "#10A37F",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -49,7 +55,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "ClaudeBot",
     company: "Anthropic",
     userAgent: "ClaudeBot",
-    description: "Indexes web content to train Claude 3.5 Sonnet, Opus, and Haiku models.",
+    description:
+      "Indexes web content to train Claude 3.5 Sonnet, Opus, and Haiku models.",
     color: "#CC785C",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -60,7 +67,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "anthropic-ai",
     company: "Anthropic",
     userAgent: "anthropic-ai",
-    description: "Legacy Anthropic training crawler for AI model data collection.",
+    description:
+      "Legacy Anthropic training crawler for AI model data collection.",
     color: "#CC785C",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -71,7 +79,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Google-Extended",
     company: "Google",
     userAgent: "Google-Extended",
-    description: "Controls training data collection for Gemini, Vertex AI, and Google Search generative AI.",
+    description:
+      "Controls training data collection for Gemini, Vertex AI, and Google Search generative AI.",
     color: "#4285F4",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -82,7 +91,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Meta-ExternalAgent",
     company: "Meta AI",
     userAgent: "meta-externalagent",
-    description: "Collects training datasets for Meta Llama open-source models and Meta AI.",
+    description:
+      "Collects training datasets for Meta Llama open-source models and Meta AI.",
     color: "#0866FF",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -93,7 +103,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Applebot-Extended",
     company: "Apple",
     userAgent: "Applebot-Extended",
-    description: "Trains Apple Intelligence foundation models for Siri and iOS features.",
+    description:
+      "Trains Apple Intelligence foundation models for Siri and iOS features.",
     color: "#555555",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -104,7 +115,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Bytespider",
     company: "ByteDance (TikTok)",
     userAgent: "Bytespider",
-    description: "ByteDance AI crawler collecting data for Doubao and TikTok AI algorithms.",
+    description:
+      "ByteDance AI crawler collecting data for Doubao and TikTok AI algorithms.",
     color: "#EE1D52",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -115,7 +127,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "CCBot",
     company: "Common Crawl",
     userAgent: "CCBot",
-    description: "Massive open web crawl repository that feeds training sets for 80%+ of open LLMs.",
+    description:
+      "Massive open web crawl repository that feeds training sets for 80%+ of open LLMs.",
     color: "#7C3AED",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -126,7 +139,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Amazonbot",
     company: "Amazon",
     userAgent: "Amazonbot",
-    description: "Crawls web pages for Amazon Bedrock AI, Titan LLMs, and Alexa intelligence.",
+    description:
+      "Crawls web pages for Amazon Bedrock AI, Titan LLMs, and Alexa intelligence.",
     color: "#FF9900",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -137,7 +151,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "cohere-ai",
     company: "Cohere",
     userAgent: "cohere-ai",
-    description: "Collects data for Cohere enterprise Command R+ and embedding models.",
+    description:
+      "Collects data for Cohere enterprise Command R+ and embedding models.",
     color: "#39594D",
     category: "ai-training",
     categoryLabel: "AI Training",
@@ -148,7 +163,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "ChatGPT-User",
     company: "OpenAI",
     userAgent: "ChatGPT-User",
-    description: "Executes real-time live browsing when a ChatGPT user asks for fresh web info.",
+    description:
+      "Executes real-time live browsing when a ChatGPT user asks for fresh web info.",
     color: "#10A37F",
     category: "ai-search",
     categoryLabel: "AI Search",
@@ -159,7 +175,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "PerplexityBot",
     company: "Perplexity AI",
     userAgent: "PerplexityBot",
-    description: "Retrieves live web content to cite sources directly in Perplexity conversational search.",
+    description:
+      "Retrieves live web content to cite sources directly in Perplexity conversational search.",
     color: "#20808D",
     category: "ai-search",
     categoryLabel: "AI Search",
@@ -170,7 +187,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "OAI-SearchBot",
     company: "OpenAI",
     userAgent: "OAI-SearchBot",
-    description: "Dedicated OpenAI search crawler designed to surface websites directly in ChatGPT Search.",
+    description:
+      "Dedicated OpenAI search crawler designed to surface websites directly in ChatGPT Search.",
     color: "#10A37F",
     category: "ai-search",
     categoryLabel: "AI Search",
@@ -181,7 +199,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Googlebot",
     company: "Google",
     userAgent: "Googlebot",
-    description: "Main Google search crawler. Powers Google Search, Discover, and AI Overviews.",
+    description:
+      "Main Google search crawler. Powers Google Search, Discover, and AI Overviews.",
     color: "#4285F4",
     category: "search-engine",
     categoryLabel: "Search Engine",
@@ -192,7 +211,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "Bingbot",
     company: "Microsoft",
     userAgent: "bingbot",
-    description: "Powers Microsoft Bing and Microsoft Copilot live web answers.",
+    description:
+      "Powers Microsoft Bing and Microsoft Copilot live web answers.",
     color: "#008373",
     category: "search-engine",
     categoryLabel: "Search Engine",
@@ -203,7 +223,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "AhrefsBot",
     company: "Ahrefs",
     userAgent: "AhrefsBot",
-    description: "Crawls the web to build SEO backlinks and competitor intelligence databases.",
+    description:
+      "Crawls the web to build SEO backlinks and competitor intelligence databases.",
     color: "#0058EA",
     category: "seo-tool",
     categoryLabel: "SEO Tool",
@@ -236,7 +257,8 @@ export const AI_BOTS: BotInfo[] = [
     name: "facebookexternalhit",
     company: "Meta",
     userAgent: "facebookexternalhit",
-    description: "Fetches OpenGraph title, image, and description cards for Facebook & Instagram shares.",
+    description:
+      "Fetches OpenGraph title, image, and description cards for Facebook & Instagram shares.",
     color: "#0866FF",
     category: "social",
     categoryLabel: "Social Preview",
@@ -250,7 +272,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "GPTBot",
     company: "OpenAI",
     userAgent: "GPTBot",
-    description: "Crawls web pages to train ChatGPT, GPT-4o, and OpenAI foundation models.",
+    description:
+      "Crawls web pages to train ChatGPT, GPT-4o, and OpenAI foundation models.",
     fullOverview:
       "GPTBot is OpenAI's web crawler used to collect public web data for training foundation AI models, including ChatGPT and GPT-4o. Crawling by GPTBot does not directly power live ChatGPT web search citations (which is handled by ChatGPT-User or OAI-SearchBot), but directly feeds training datasets.",
     color: "#10A37F",
@@ -286,7 +309,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "ChatGPT-User",
     company: "OpenAI",
     userAgent: "ChatGPT-User",
-    description: "Executes real-time live browsing when a ChatGPT user asks for fresh web info.",
+    description:
+      "Executes real-time live browsing when a ChatGPT user asks for fresh web info.",
     fullOverview:
       "ChatGPT-User is used by OpenAI to perform live, real-time web browsing on behalf of ChatGPT users. When a user asks ChatGPT a question requiring current data, ChatGPT-User fetches the page and uses it to generate citations and backlinks.",
     color: "#10A37F",
@@ -307,8 +331,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
       },
       {
         question: "How do I allow ChatGPT-User?",
-        answer:
-          "User-agent: ChatGPT-User\nAllow: /",
+        answer: "User-agent: ChatGPT-User\nAllow: /",
       },
     ],
   },
@@ -317,7 +340,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "ClaudeBot",
     company: "Anthropic",
     userAgent: "ClaudeBot",
-    description: "Indexes web content to train Claude 3.5 Sonnet, Opus, and Haiku models.",
+    description:
+      "Indexes web content to train Claude 3.5 Sonnet, Opus, and Haiku models.",
     fullOverview:
       "ClaudeBot is Anthropic's primary web crawler designed to index public websites for training future iterations of Claude AI models. It strictly honors robots.txt directives and crawls with polite request delays.",
     color: "#CC785C",
@@ -338,8 +362,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
       },
       {
         question: "How do I block ClaudeBot?",
-        answer:
-          "User-agent: ClaudeBot\nDisallow: /",
+        answer: "User-agent: ClaudeBot\nDisallow: /",
       },
     ],
   },
@@ -348,7 +371,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Google-Extended",
     company: "Google",
     userAgent: "Google-Extended",
-    description: "Controls training data collection for Gemini, Vertex AI, and Google Search generative AI.",
+    description:
+      "Controls training data collection for Gemini, Vertex AI, and Google Search generative AI.",
     fullOverview:
       "Google-Extended is a standalone token introduced by Google that allows webmasters to opt out of having their content used to train Google's Gemini generative AI models and Vertex AI without affecting regular Google Search indexation by Googlebot.",
     color: "#4285F4",
@@ -357,20 +381,21 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     weight: 5,
     safetyRating: "Safe & Legitimate",
     seoImpact: "No SEO Impact",
-    officialDocsUrl: "https://developers.google.com/search/docs/crawling-indexing/google-extended",
+    officialDocsUrl:
+      "https://developers.google.com/search/docs/crawling-indexing/google-extended",
     reverseDnsHost: "google.com",
     respectsRobotsTxt: true,
     purpose: "Google Gemini & generative AI model training opt-out",
     faqs: [
       {
-        question: "Does blocking Google-Extended hurt my Google Search rankings?",
+        question:
+          "Does blocking Google-Extended hurt my Google Search rankings?",
         answer:
           "No. Google explicitly designed Google-Extended so that blocking it does NOT impact your rankings in regular Google Search or Discover.",
       },
       {
         question: "How do I block Google-Extended?",
-        answer:
-          "User-agent: Google-Extended\nDisallow: /",
+        answer: "User-agent: Google-Extended\nDisallow: /",
       },
     ],
   },
@@ -379,7 +404,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "PerplexityBot",
     company: "Perplexity AI",
     userAgent: "PerplexityBot",
-    description: "Retrieves live web content to cite sources directly in Perplexity conversational search.",
+    description:
+      "Retrieves live web content to cite sources directly in Perplexity conversational search.",
     fullOverview:
       "PerplexityBot is the crawler for Perplexity AI, the conversational AI search engine. PerplexityBot indexes web pages to synthesize accurate answers and credit publishers with prominent numbered source citation cards.",
     color: "#20808D",
@@ -400,8 +426,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
       },
       {
         question: "How do I allow PerplexityBot?",
-        answer:
-          "User-agent: PerplexityBot\nAllow: /",
+        answer: "User-agent: PerplexityBot\nAllow: /",
       },
     ],
   },
@@ -410,7 +435,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Meta-ExternalAgent",
     company: "Meta AI",
     userAgent: "meta-externalagent",
-    description: "Collects training datasets for Meta Llama open-source models and Meta AI.",
+    description:
+      "Collects training datasets for Meta Llama open-source models and Meta AI.",
     fullOverview:
       "Meta-ExternalAgent is Meta's dedicated crawler for ingesting public web data to train Meta Llama foundation models and improve Meta AI across Instagram, WhatsApp, and Facebook.",
     color: "#0866FF",
@@ -426,8 +452,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     faqs: [
       {
         question: "How do I block Meta AI training crawler?",
-        answer:
-          "User-agent: meta-externalagent\nDisallow: /",
+        answer: "User-agent: meta-externalagent\nDisallow: /",
       },
     ],
   },
@@ -436,7 +461,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Applebot-Extended",
     company: "Apple",
     userAgent: "Applebot-Extended",
-    description: "Trains Apple Intelligence foundation models for Siri and iOS features.",
+    description:
+      "Trains Apple Intelligence foundation models for Siri and iOS features.",
     fullOverview:
       "Applebot-Extended was introduced with iOS 18 / Apple Intelligence to allow publishers to opt out of having their web content used to train Apple's on-device and server generative models, while keeping standard Applebot indexing for Spotlight search intact.",
     color: "#555555",
@@ -451,14 +477,14 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     purpose: "Apple Intelligence generative foundation training",
     faqs: [
       {
-        question: "Does blocking Applebot-Extended affect Apple Spotlight search?",
+        question:
+          "Does blocking Applebot-Extended affect Apple Spotlight search?",
         answer:
           "No. Standard Applebot handles Spotlight and Siri web lookups. Applebot-Extended only governs generative AI model training.",
       },
       {
         question: "How to block Applebot-Extended?",
-        answer:
-          "User-agent: Applebot-Extended\nDisallow: /",
+        answer: "User-agent: Applebot-Extended\nDisallow: /",
       },
     ],
   },
@@ -467,7 +493,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Bytespider",
     company: "ByteDance (TikTok)",
     userAgent: "Bytespider",
-    description: "ByteDance AI crawler collecting data for Doubao and TikTok AI algorithms.",
+    description:
+      "ByteDance AI crawler collecting data for Doubao and TikTok AI algorithms.",
     fullOverview:
       "Bytespider is operated by ByteDance (the parent company of TikTok). It crawls aggressively to gather training datasets for Doubao and ByteDance multimodal AI models. Many webmasters rate-limit or disallow this bot due to high crawl volume.",
     color: "#EE1D52",
@@ -488,8 +515,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
       },
       {
         question: "How do I block Bytespider?",
-        answer:
-          "User-agent: Bytespider\nDisallow: /",
+        answer: "User-agent: Bytespider\nDisallow: /",
       },
     ],
   },
@@ -498,7 +524,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "CCBot",
     company: "Common Crawl",
     userAgent: "CCBot",
-    description: "Massive open web crawl repository that feeds training sets for 80%+ of open LLMs.",
+    description:
+      "Massive open web crawl repository that feeds training sets for 80%+ of open LLMs.",
     fullOverview:
       "CCBot is the crawler for Common Crawl, a non-profit foundation providing open web copy archives. Common Crawl datasets are used by virtually every major open-source AI project, university, and AI research lab worldwide.",
     color: "#7C3AED",
@@ -514,8 +541,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     faqs: [
       {
         question: "How do I block Common Crawl?",
-        answer:
-          "User-agent: CCBot\nDisallow: /",
+        answer: "User-agent: CCBot\nDisallow: /",
       },
     ],
   },
@@ -524,7 +550,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Amazonbot",
     company: "Amazon",
     userAgent: "Amazonbot",
-    description: "Crawls web pages for Amazon Bedrock AI, Titan LLMs, and Alexa intelligence.",
+    description:
+      "Crawls web pages for Amazon Bedrock AI, Titan LLMs, and Alexa intelligence.",
     fullOverview:
       "Amazonbot is Amazon's general web crawler that indexes information to improve Alexa knowledge responses, search accuracy on Amazon properties, and AI datasets for AWS Titan and Amazon Bedrock.",
     color: "#FF9900",
@@ -540,8 +567,7 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     faqs: [
       {
         question: "How to allow Amazonbot in robots.txt?",
-        answer:
-          "User-agent: Amazonbot\nAllow: /",
+        answer: "User-agent: Amazonbot\nAllow: /",
       },
     ],
   },
@@ -550,7 +576,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Googlebot",
     company: "Google",
     userAgent: "Googlebot",
-    description: "Main Google search crawler. Powers Google Search, Discover, and AI Overviews.",
+    description:
+      "Main Google search crawler. Powers Google Search, Discover, and AI Overviews.",
     fullOverview:
       "Googlebot is Google's flagship search indexing crawler. It crawls billions of web pages daily to populate Google Search indexes and directly drives Google AI Overviews synthesized in search result pages.",
     color: "#4285F4",
@@ -559,7 +586,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     weight: 5,
     safetyRating: "Safe & Legitimate",
     seoImpact: "Critical for SEO",
-    officialDocsUrl: "https://developers.google.com/search/docs/crawling-indexing/googlebot",
+    officialDocsUrl:
+      "https://developers.google.com/search/docs/crawling-indexing/googlebot",
     reverseDnsHost: "googlebot.com",
     respectsRobotsTxt: true,
     purpose: "Google Organic Search, Discover, and AI Overviews indexing",
@@ -576,7 +604,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     name: "Bingbot",
     company: "Microsoft",
     userAgent: "bingbot",
-    description: "Powers Microsoft Bing and Microsoft Copilot live web answers.",
+    description:
+      "Powers Microsoft Bing and Microsoft Copilot live web answers.",
     fullOverview:
       "Bingbot is Microsoft's web search crawler that discovers, parses, and indexes web content for Bing Search, Yahoo Search (powered by Bing), and Microsoft Copilot AI synthesis.",
     color: "#008373",
@@ -585,7 +614,8 @@ export const DETAILED_BOTS: BotDetailedInfo[] = [
     weight: 4,
     safetyRating: "Safe & Legitimate",
     seoImpact: "Critical for SEO",
-    officialDocsUrl: "https://www.bing.com/webmasters/help/which-crawlers-does-bing-use-8c184ec0",
+    officialDocsUrl:
+      "https://www.bing.com/webmasters/help/which-crawlers-does-bing-use-8c184ec0",
     reverseDnsHost: "search.msn.com",
     respectsRobotsTxt: true,
     purpose: "Microsoft Bing and Copilot web indexing",

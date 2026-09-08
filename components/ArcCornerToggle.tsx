@@ -80,10 +80,10 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
     stateMode === "hover"
       ? true
       : stateMode === "standerd"
-      ? false
-      : controlledActive !== undefined
-      ? controlledActive
-      : internalActive;
+        ? false
+        : controlledActive !== undefined
+          ? controlledActive
+          : internalActive;
 
   const currentTheme: ArcToggleTheme =
     themeMode === "auto" ? (active ? "dark" : "light") : themeMode;
@@ -95,6 +95,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   const handleToggle = () => {
     if (stateMode !== "interactive") return;
     const nextState = !active;
+
     if (controlledActive === undefined) {
       setInternalActive(nextState);
     }
@@ -110,18 +111,22 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   return (
     <div
       className={`relative inline-flex flex-col select-none ${className}`}
-      style={{ zoom: effectiveScale !== 1 ? effectiveScale : undefined } as React.CSSProperties}
+      style={
+        {
+          zoom: effectiveScale !== 1 ? effectiveScale : undefined,
+        } as React.CSSProperties
+      }
     >
       {/* ─────────────────────────────────────────────────────────────
           MAIN 600×600 STAGE CONTAINER (Exact Spec Frame 1000003154 / 3155)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
-        className="relative w-[600px] h-[600px] overflow-hidden"
         animate={{
           background: isLight
             ? "linear-gradient(149.54deg, rgb(240, 240, 240) 16.26%, rgb(163, 163, 161) 183.63%)"
             : "linear-gradient(149.54deg, rgb(68, 81, 109) 16.26%, rgb(22, 27, 37) 183.63%)",
         }}
+        className="relative w-[600px] h-[600px] overflow-hidden"
         transition={{ duration: duration * 0.9, ease: "easeInOut" }}
       >
         {/* ─────────────────────────────────────────────────────────────
@@ -130,23 +135,23 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
         {showHeader && (
           <div className="absolute top-[48px] left-[50px] right-[50px] flex items-center gap-4 z-30">
             <motion.span
-              className="text-[26px] font-black tracking-tight uppercase"
               animate={{
                 color: isLight ? "#2B2B2B" : "#FFFFFF",
               }}
-              transition={{ duration: duration * 0.7 }}
+              className="text-[26px] font-black tracking-tight uppercase"
               style={{
                 fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
               }}
+              transition={{ duration: duration * 0.7 }}
             >
               {active ? "CLICK" : "STANDERD"}
             </motion.span>
             <motion.div
-              className="flex-1 h-[2px]"
               animate={{
                 backgroundColor: isLight ? "#2B2B2B" : "#FFFFFF",
                 opacity: isLight ? 0.75 : 0.85,
               }}
+              className="flex-1 h-[2px]"
               transition={{ duration: duration * 0.7 }}
             />
           </div>
@@ -157,23 +162,23 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             Left: -879px, Top: 205px, Width: 1260px, Height: 666px, Radius: 150px
            ───────────────────────────────────────────────────────────── */}
         {!isLine && (
-        <motion.div
-          className="absolute pointer-events-none z-10"
-          animate={{
-            backgroundColor: isLight ? "#DDDDDD" : "#404C66",
-            boxShadow: isLight
-              ? "0px 1px 0px 0px rgba(167,170,183,0.3), 151px 153px 60px 0px rgba(0,0,0,0.01), 97px 98px 55px 0px rgba(0,0,0,0.04), 55px 55px 46px 0px rgba(0,0,0,0.15), 24px 24px 34px 0px rgba(0,0,0,0.26), inset 0px 2px 0px 0px rgba(255,255,255,0.4)"
-              : "0px 1px 0px 0px rgba(167,170,183,0.3), 151px 153px 60px 0px rgba(0,0,0,0.01), 97px 98px 55px 0px rgba(0,0,0,0.04), 55px 55px 46px 0px rgba(0,0,0,0.15), inset 0px 2px 0px 0px rgba(255,255,255,0.18)",
-          }}
-          transition={{ duration: duration * 0.9, ease: "easeInOut" }}
-          style={{
-            left: -879,
-            top: 205,
-            width: 1260,
-            height: 666,
-            borderRadius: 150,
-          }}
-        />
+          <motion.div
+            animate={{
+              backgroundColor: isLight ? "#DDDDDD" : "#404C66",
+              boxShadow: isLight
+                ? "0px 1px 0px 0px rgba(167,170,183,0.3), 151px 153px 60px 0px rgba(0,0,0,0.01), 97px 98px 55px 0px rgba(0,0,0,0.04), 55px 55px 46px 0px rgba(0,0,0,0.15), 24px 24px 34px 0px rgba(0,0,0,0.26), inset 0px 2px 0px 0px rgba(255,255,255,0.4)"
+                : "0px 1px 0px 0px rgba(167,170,183,0.3), 151px 153px 60px 0px rgba(0,0,0,0.01), 97px 98px 55px 0px rgba(0,0,0,0.04), 55px 55px 46px 0px rgba(0,0,0,0.15), inset 0px 2px 0px 0px rgba(255,255,255,0.18)",
+            }}
+            className="absolute pointer-events-none z-10"
+            style={{
+              left: -879,
+              top: 205,
+              width: 1260,
+              height: 666,
+              borderRadius: 150,
+            }}
+            transition={{ duration: duration * 0.9, ease: "easeInOut" }}
+          />
         )}
 
         {/* ─────────────────────────────────────────────────────────────
@@ -189,12 +194,12 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
         >
           {/* TRACK SVG BASE & MATTE UNDERGLOW TRAIL */}
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={isLine ? "320" : "266"}
+            className="absolute inset-0 size-full overflow-visible pointer-events-none"
+            fill="none"
             height={isLine ? "84" : "267"}
             viewBox={isLine ? "0 0 320 84" : "0 0 266 267"}
-            fill="none"
-            className="absolute inset-0 size-full overflow-visible pointer-events-none"
+            width={isLine ? "320" : "266"}
+            xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
               <clipPath id="trackInnerClip">
@@ -202,7 +207,13 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
               </clipPath>
 
               {/* Exact spec Matte Violet/Purple Underglow Gradient */}
-              <linearGradient id="matteTrailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient
+                id="matteTrailGrad"
+                x1="0%"
+                x2="100%"
+                y1="0%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#3E2C4D" stopOpacity="0" />
                 <stop offset="35%" stopColor="#553065" stopOpacity="0.3" />
                 <stop offset="65%" stopColor="#7B3A7B" stopOpacity="0.55" />
@@ -212,59 +223,125 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
 
               {/* Light Mode Track Filter */}
               <filter
+                colorInterpolationFilters="sRGB"
+                filterUnits="userSpaceOnUse"
+                height="267"
                 id="filter0_dd_75_5088"
+                width="266"
                 x="0"
                 y="0"
-                width="266"
-                height="267"
-                filterUnits="userSpaceOnUse"
-                colorInterpolationFilters="sRGB"
               >
                 <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  result="hardAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                />
                 <feOffset dx="-4" dy="-4" />
                 <feGaussianBlur stdDeviation="2" />
                 <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
-                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_75_5088" />
-                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"
+                />
+                <feBlend
+                  in2="BackgroundImageFix"
+                  mode="normal"
+                  result="effect1_dropShadow_75_5088"
+                />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  result="hardAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                />
                 <feOffset dx="1" dy="2" />
                 <feGaussianBlur stdDeviation="2" />
                 <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                <feBlend mode="normal" in2="effect1_dropShadow_75_5088" result="effect2_dropShadow_75_5088" />
-                <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_75_5088" result="shape" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"
+                />
+                <feBlend
+                  in2="effect1_dropShadow_75_5088"
+                  mode="normal"
+                  result="effect2_dropShadow_75_5088"
+                />
+                <feBlend
+                  in="SourceGraphic"
+                  in2="effect2_dropShadow_75_5088"
+                  mode="normal"
+                  result="shape"
+                />
               </filter>
 
               {/* Dark Mode Track Filter */}
               <filter
+                colorInterpolationFilters="sRGB"
+                filterUnits="userSpaceOnUse"
+                height="267"
                 id="filter0_dd_75_5138"
+                width="266"
                 x="0"
                 y="0"
-                width="266"
-                height="267"
-                filterUnits="userSpaceOnUse"
-                colorInterpolationFilters="sRGB"
               >
                 <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  result="hardAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                />
                 <feOffset dx="-4" dy="-4" />
                 <feGaussianBlur stdDeviation="2" />
                 <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0" />
-                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_75_5138" />
-                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.08 0"
+                />
+                <feBlend
+                  in2="BackgroundImageFix"
+                  mode="normal"
+                  result="effect1_dropShadow_75_5138"
+                />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  result="hardAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                />
                 <feOffset dx="1" dy="2" />
                 <feGaussianBlur stdDeviation="2" />
                 <feComposite in2="hardAlpha" operator="out" />
-                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.17 0" />
-                <feBlend mode="normal" in2="effect1_dropShadow_75_5138" result="effect2_dropShadow_75_5138" />
-                <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_75_5138" result="shape" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.17 0"
+                />
+                <feBlend
+                  in2="effect1_dropShadow_75_5138"
+                  mode="normal"
+                  result="effect2_dropShadow_75_5138"
+                />
+                <feBlend
+                  in="SourceGraphic"
+                  in2="effect2_dropShadow_75_5138"
+                  mode="normal"
+                  result="shape"
+                />
               </filter>
             </defs>
 
             {/* 1. Base Channel Track Path */}
-            <g filter={isLine ? undefined : isLight ? "url(#filter0_dd_75_5088)" : "url(#filter0_dd_75_5138)"}>
+            <g
+              filter={
+                isLine
+                  ? undefined
+                  : isLight
+                    ? "url(#filter0_dd_75_5088)"
+                    : "url(#filter0_dd_75_5138)"
+              }
+            >
               <path
                 d={isLine ? LINE_TRACK_PILL : SPEC_TRACK_PATH}
                 fill={isLight ? "#C0C0C0" : "#404C66"}
@@ -275,7 +352,9 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                 <path
                   d={LINE_TRACK_PILL}
                   fill="none"
-                  stroke={isLight ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.14)"}
+                  stroke={
+                    isLight ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.14)"
+                  }
                   strokeWidth="2"
                 />
               )}
@@ -285,34 +364,34 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             <g clipPath="url(#trackInnerClip)">
               {/* Wide ambient matte diffusion */}
               <motion.path
-                d={centerline}
-                stroke="url(#matteTrailGrad)"
-                strokeWidth="46"
-                strokeLinecap="round"
-                fill="none"
-                initial={false}
                 animate={{
                   pathLength: active ? 1 : 0,
                   opacity: active ? 0.6 : 0,
                 }}
-                transition={effectiveTransition}
+                d={centerline}
+                fill="none"
+                initial={false}
+                stroke="url(#matteTrailGrad)"
+                strokeLinecap="round"
+                strokeWidth="46"
                 style={{ filter: "blur(18px)" }}
+                transition={effectiveTransition}
               />
 
               {/* Core matte body fill */}
               <motion.path
-                d={centerline}
-                stroke="url(#matteTrailGrad)"
-                strokeWidth="32"
-                strokeLinecap="round"
-                fill="none"
-                initial={false}
                 animate={{
                   pathLength: active ? 1 : 0,
                   opacity: active ? 0.85 : 0,
                 }}
-                transition={effectiveTransition}
+                d={centerline}
+                fill="none"
+                initial={false}
+                stroke="url(#matteTrailGrad)"
+                strokeLinecap="round"
+                strokeWidth="32"
                 style={{ filter: "blur(8px)" }}
+                transition={effectiveTransition}
               />
             </g>
           </svg>
@@ -322,13 +401,9 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
               Anchor Point: (36.47px, 35.48px) — Centers the circular dial exactly on the track end
              ───────────────────────────────────────────────────────────── */}
           <motion.div
-            onClick={handleToggle}
             animate={{
               offsetDistance: active ? "100%" : "0%",
             }}
-            transition={effectiveTransition}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.96 }}
             className="absolute cursor-pointer z-30 flex items-center justify-center"
             style={{
               width: 96,
@@ -337,6 +412,10 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
               offsetRotate: "auto 0deg",
               offsetAnchor: "36.47px 35.48px",
             }}
+            transition={effectiveTransition}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={handleToggle}
           >
             {/* ─────────────────────────────────────────────────────────────
                 EXACT SPEC NODE 75:5090 & 75:5140 GLASS PILL BUTTON
@@ -357,79 +436,186 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             >
               {/* EXACT SPEC SVG FOR BUTTON (75:5090 for Light, 75:5140 for Dark) */}
               <svg
-                width="96"
+                className="absolute inset-0 size-full overflow-visible"
+                fill="none"
                 height="71"
                 viewBox="0 0 96 71"
-                fill="none"
-                className="absolute inset-0 size-full overflow-visible"
+                width="96"
               >
                 <defs>
                   {/* Amber Flame Linear (spec paint2_linear_10020_2778 for Light Mode) */}
-                  <linearGradient id="amberFlameGrad" x1="20" y1="35.7441" x2="83" y2="35.7441" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    gradientUnits="userSpaceOnUse"
+                    id="amberFlameGrad"
+                    x1="20"
+                    x2="83"
+                    y1="35.7441"
+                    y2="35.7441"
+                  >
                     <stop stopColor="#ED45BE" stopOpacity="0" />
                     <stop offset="1" stopColor="#FFA449" />
                   </linearGradient>
 
                   {/* Magenta Flame Linear (spec paint2_linear_10016_2400 for Dark Mode) */}
-                  <linearGradient id="magentaFlameGrad" x1="20" y1="35.7441" x2="83" y2="35.7441" gradientUnits="userSpaceOnUse">
+                  <linearGradient
+                    gradientUnits="userSpaceOnUse"
+                    id="magentaFlameGrad"
+                    x1="20"
+                    x2="83"
+                    y1="35.7441"
+                    y2="35.7441"
+                  >
                     <stop stopColor="#ED45BE" stopOpacity="0" />
                     <stop offset="1" stopColor="#ED45BE" />
                   </linearGradient>
 
                   {/* Flame Blur Filter (spec filter0_f_10016_2400 / filter1_f_10020_2778) */}
-                  <filter id="filter0_f_flame" x="-2" y="-3.75586" width="107" height="79" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                  <filter
+                    colorInterpolationFilters="sRGB"
+                    filterUnits="userSpaceOnUse"
+                    height="79"
+                    id="filter0_f_flame"
+                    width="107"
+                    x="-2"
+                    y="-3.75586"
+                  >
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                    <feBlend
+                      in="SourceGraphic"
+                      in2="BackgroundImageFix"
+                      mode="normal"
+                      result="shape"
+                    />
                     <feGaussianBlur stdDeviation="11" />
                   </filter>
 
                   {/* Light Mode Soft Ambient Vector 3590 Filter */}
-                  <filter id="filter0_f_light_ambient" x="-47.948" y="-83" width="324.448" height="170.5" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                  <filter
+                    colorInterpolationFilters="sRGB"
+                    filterUnits="userSpaceOnUse"
+                    height="170.5"
+                    id="filter0_f_light_ambient"
+                    width="324.448"
+                    x="-47.948"
+                    y="-83"
+                  >
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                    <feBlend
+                      in="SourceGraphic"
+                      in2="BackgroundImageFix"
+                      mode="normal"
+                      result="shape"
+                    />
                     <feGaussianBlur stdDeviation="26.5" />
                   </filter>
 
                   {/* Sunken Cavity Dual Inner Shadow (Top-Left Shadow + Bottom-Right Specular Catch) */}
-                  <filter id="filter2_iif_dial" x="-50%" y="-50%" width="200%" height="200%" colorInterpolationFilters="sRGB">
+                  <filter
+                    colorInterpolationFilters="sRGB"
+                    height="200%"
+                    id="filter2_iif_dial"
+                    width="200%"
+                    x="-50%"
+                    y="-50%"
+                  >
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                    
+                    <feBlend
+                      in="SourceGraphic"
+                      in2="BackgroundImageFix"
+                      mode="normal"
+                      result="shape"
+                    />
+
                     {/* 1. Deep Top-Left Sunken Drop Shadow */}
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                    <feMorphology radius="1" operator="dilate" in="SourceAlpha" />
-                    <feOffset dx={isLight ? "1" : "1.5"} dy={isLight ? "1.5" : "2"} />
+                    <feColorMatrix
+                      in="SourceAlpha"
+                      result="hardAlpha"
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    />
+                    <feMorphology
+                      in="SourceAlpha"
+                      operator="dilate"
+                      radius="1"
+                    />
+                    <feOffset
+                      dx={isLight ? "1" : "1.5"}
+                      dy={isLight ? "1.5" : "2"}
+                    />
                     <feGaussianBlur stdDeviation={isLight ? "2" : "2"} />
-                    <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
-                    <feColorMatrix type="matrix" values={`0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ${isLight ? "0.22" : "0.4"} 0`} />
-                    <feBlend mode="normal" in2="shape" result="sunkenShadow" />
+                    <feComposite
+                      in2="hardAlpha"
+                      k2="-1"
+                      k3="1"
+                      operator="arithmetic"
+                    />
+                    <feColorMatrix
+                      type="matrix"
+                      values={`0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ${isLight ? "0.22" : "0.4"} 0`}
+                    />
+                    <feBlend in2="shape" mode="normal" result="sunkenShadow" />
 
                     {/* 2. Bottom-Right Inner Rim Light Catch */}
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha2" />
-                    <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" />
+                    <feColorMatrix
+                      in="SourceAlpha"
+                      result="hardAlpha2"
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    />
+                    <feMorphology
+                      in="SourceAlpha"
+                      operator="dilate"
+                      radius="0.5"
+                    />
                     <feOffset dx="-1" dy="-1.5" />
                     <feGaussianBlur stdDeviation="1.5" />
-                    <feComposite in2="hardAlpha2" operator="arithmetic" k2="-1" k3="1" />
-                    <feColorMatrix type="matrix" values={`0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 ${isLight ? "0.7" : "0.28"} 0`} />
-                    <feBlend mode="normal" in2="sunkenShadow" result="effect2_innerShadow" />
+                    <feComposite
+                      in2="hardAlpha2"
+                      k2="-1"
+                      k3="1"
+                      operator="arithmetic"
+                    />
+                    <feColorMatrix
+                      type="matrix"
+                      values={`0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 ${isLight ? "0.7" : "0.28"} 0`}
+                    />
+                    <feBlend
+                      in2="sunkenShadow"
+                      mode="normal"
+                      result="effect2_innerShadow"
+                    />
                   </filter>
 
                   {/* Frosted Glass Radial Gradient (Light - Sunken Lens) */}
-                  <radialGradient id="frostedDialRadial_light" cx="30%" cy="25%" r="75%">
+                  <radialGradient
+                    cx="30%"
+                    cy="25%"
+                    id="frostedDialRadial_light"
+                    r="75%"
+                  >
                     <stop offset="0%" stopColor="#C8C8C8" stopOpacity="0.45" />
                     <stop offset="50%" stopColor="#DFDFDF" stopOpacity="0.25" />
                     <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.6" />
                   </radialGradient>
 
                   {/* Frosted Glass Radial Gradient (Dark - Spherical Recessed Dish) */}
-                  <radialGradient id="frostedDialRadial_dark" cx="32%" cy="28%" r="75%">
+                  <radialGradient
+                    cx="32%"
+                    cy="28%"
+                    id="frostedDialRadial_dark"
+                    r="75%"
+                  >
                     <stop offset="0%" stopColor="#2E374A" stopOpacity="0.4" />
                     <stop offset="45%" stopColor="#48556F" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="#8291AF" stopOpacity="0.32" />
+                    <stop
+                      offset="100%"
+                      stopColor="#8291AF"
+                      stopOpacity="0.32"
+                    />
                   </radialGradient>
 
                   <clipPath id="knobPillClip">
-                    <rect width="96" height="71" rx="35.5" fill="white" />
+                    <rect fill="white" height="71" rx="35.5" width="96" />
                   </clipPath>
 
                   <clipPath id="dialCircleClip">
@@ -450,7 +636,11 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                   {/* 1. LED Flame (Warm Peach-Amber in Light, Vibrant Magenta in Dark) */}
                   <path
                     d="M83 35.7441C83 45.4091 78.8346 53.2441 73.6962 53.2441C68.5579 53.2441 27.2188 42.9855 20 35.7441C34 29.7097 68.5579 18.2441 73.6962 18.2441C78.8346 18.2441 83 26.0792 83 35.7441Z"
-                    fill={isLight ? "url(#amberFlameGrad)" : "url(#magentaFlameGrad)"}
+                    fill={
+                      isLight
+                        ? "url(#amberFlameGrad)"
+                        : "url(#magentaFlameGrad)"
+                    }
                     fillOpacity={isLight ? "0.85" : "0.7"}
                     filter="url(#filter0_f_flame)"
                   />
@@ -461,22 +651,74 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                     <circle
                       cx="36.4697"
                       cy="35.4844"
-                      r="23"
-                      fill={isLight ? "url(#frostedDialRadial_light)" : "url(#frostedDialRadial_dark)"}
+                      fill={
+                        isLight
+                          ? "url(#frostedDialRadial_light)"
+                          : "url(#frostedDialRadial_dark)"
+                      }
                       filter="url(#filter2_iif_dial)"
+                      r="23"
                     />
                   </g>
 
                   {/* 3. Sunburst Loader Vector Icon */}
                   <g id="loader">
-                    <path d="M26.7139 35.4844L30.7139 35.4844" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M42.7139 35.4844L46.7139 35.4844" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M29.6436 42.5543L32.4736 39.7243" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M40.9539 31.2444L43.7839 28.4144" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M36.7139 45.4844L36.7139 41.4844" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M36.7139 29.4844L36.7139 25.4844" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M43.7839 42.5544L40.9539 39.7244" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M32.4736 31.2444L29.6436 28.4144" stroke={isLight ? "#222222" : "white"} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M26.7139 35.4844L30.7139 35.4844"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M42.7139 35.4844L46.7139 35.4844"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M29.6436 42.5543L32.4736 39.7243"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M40.9539 31.2444L43.7839 28.4144"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M36.7139 45.4844L36.7139 41.4844"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M36.7139 29.4844L36.7139 25.4844"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M43.7839 42.5544L40.9539 39.7244"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                    <path
+                      d="M32.4736 31.2444L29.6436 28.4144"
+                      stroke={isLight ? "#222222" : "white"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
                   </g>
                 </g>
               </svg>
@@ -496,51 +738,66 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                 }}
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="129"
+                  className="overflow-visible"
+                  fill="none"
                   height="116"
                   viewBox="0 0 129 116"
-                  fill="none"
-                  className="overflow-visible"
+                  width="129"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <defs>
                     <filter
+                      colorInterpolationFilters="sRGB"
+                      filterUnits="userSpaceOnUse"
+                      height="37.4893"
                       id="filter0_f_75_5157"
+                      width="55.6567"
                       x="15.1328"
                       y="7.66406"
-                      width="55.6567"
-                      height="37.4893"
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
                     >
                       <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                      <feBlend
+                        in="SourceGraphic"
+                        in2="BackgroundImageFix"
+                        mode="normal"
+                        result="shape"
+                      />
                       <feGaussianBlur stdDeviation="1" />
                     </filter>
                     <filter
+                      colorInterpolationFilters="sRGB"
+                      filterUnits="userSpaceOnUse"
+                      height="37.4238"
                       id="filter1_f_75_5157"
+                      width="128.679"
                       x="0"
                       y="0"
-                      width="128.679"
-                      height="37.4238"
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
                     >
                       <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                      <feBlend
+                        in="SourceGraphic"
+                        in2="BackgroundImageFix"
+                        mode="normal"
+                        result="shape"
+                      />
                       <feGaussianBlur stdDeviation="1" />
                     </filter>
                     <filter
+                      colorInterpolationFilters="sRGB"
+                      filterUnits="userSpaceOnUse"
+                      height="58.0586"
                       id="filter2_f_75_5157"
+                      width="66.7812"
                       x="11.0933"
                       y="3.50781"
-                      width="66.7812"
-                      height="58.0586"
-                      filterUnits="userSpaceOnUse"
-                      colorInterpolationFilters="sRGB"
                     >
                       <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+                      <feBlend
+                        in="SourceGraphic"
+                        in2="BackgroundImageFix"
+                        mode="normal"
+                        result="shape"
+                      />
                       <feGaussianBlur stdDeviation="8" />
                     </filter>
                   </defs>
@@ -550,11 +807,11 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                     <ellipse
                       cx="42.9611"
                       cy="26.4088"
+                      fill="white"
+                      fillOpacity={isLight ? 0.18 : 0.1}
                       rx="30.777"
                       ry="0.5"
                       transform="rotate(-32.9487 42.9611 26.4088)"
-                      fill="white"
-                      fillOpacity={isLight ? 0.18 : 0.1}
                     />
                   </g>
 
@@ -563,11 +820,11 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                     <ellipse
                       cx="64.3394"
                       cy="18.7118"
+                      fill="white"
+                      fillOpacity={isLight ? 0.18 : 0.1}
                       rx="64.5384"
                       ry="0.532378"
                       transform="rotate(-15 64.3394 18.7118)"
-                      fill="white"
-                      fillOpacity={isLight ? 0.18 : 0.1}
                     />
                   </g>
 

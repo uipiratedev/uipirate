@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+
 import Loader from "@/components/loader";
 
 const AnimatedSlideButtonScreen = dynamic(
   () => import("@/screens/buttons/animatedSlide"),
   {
     loading: () => <Loader />,
-  }
+  },
 );
 
 export const metadata: Metadata = {
@@ -32,24 +33,24 @@ export default function Page() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
-    "name": "Animated Slide-Up Button",
-    "programmingLanguage": "TypeScript / React",
-    "runtimePlatform": "Next.js / Tailwind CSS",
-    "codeSampleType": "full snippet",
-    "description":
+    name: "Animated Slide-Up Button",
+    programmingLanguage: "TypeScript / React",
+    runtimePlatform: "Next.js / Tailwind CSS",
+    codeSampleType: "full snippet",
+    description:
       "Interactive dual-text roll CTA button that smoothly translates labels vertically on hover with zero layout shift.",
-    "author": {
+    author: {
       "@type": "Organization",
-      "name": "UI Pirate",
-      "url": "https://uipirate.com",
+      name: "UI Pirate",
+      url: "https://uipirate.com",
     },
   };
 
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <AnimatedSlideButtonScreen />
     </>

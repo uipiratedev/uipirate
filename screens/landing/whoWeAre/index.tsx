@@ -4,19 +4,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-import GlassBadge from "@/components/GlassBadge";
 import TheTeam from "../theTeam";
 
-// Animation variants
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.33, 1, 0.68, 1] },
-  },
-};
+import SectionHeader from "@/components/SectionHeader";
 
+// Animation variants
 const cardVariant = {
   hidden: { opacity: 0, y: 40 },
   visible: {
@@ -30,20 +22,10 @@ const LandingWhoWeAre = () => {
   return (
     <section className="relative overflow-hidden bg-black py-20">
       <div className="section-container relative z-10 flex flex-col items-center">
-
-
         {/* Title */}
-        <motion.div
-          className="text-center mb-14 md:mb-20 "
-          initial="hidden"
-          variants={fadeUp}
-          viewport={{ once: true, amount: 0.3 }}
-          whileInView="visible"
-        >
-          <h2 className="heading-center text-white">
-            Who We Are.
-          </h2>
-        </motion.div>
+        <SectionHeader className="autoShow" headingClassName="text-white">
+          Who We Are.
+        </SectionHeader>
 
         {/* Hand + Card composition */}
         <div className="relative w-full max-w-2xl mx-auto flex flex-col items-center">
@@ -61,7 +43,7 @@ const LandingWhoWeAre = () => {
               style={{
                 boxShadow:
                   "0 40px 80px -10px rgba(0,0,0,0.6), 0 20px 40px -8px rgba(0,0,0,0.4)",
-                borderRadius: "10px"
+                borderRadius: "10px",
               }}
             />
             {/* Card body */}
@@ -107,12 +89,10 @@ const LandingWhoWeAre = () => {
                 <p className="text-[12px] sm:text-[13px] text-gray-500 font-medium">
                   — UI Pirate Team
                 </p>
-
               </div>
 
               {/* Footer row */}
               <div className="flex items-center justify-end mt-6 pt-5 border-t border-gray-100">
-
                 {/* UI Pirate logo — asset has transparent underglow padding at the bottom,
                     so nudge it down to optically centre the icon against the wordmark */}
                 <div className="flex items-center gap-2">
@@ -141,20 +121,18 @@ const LandingWhoWeAre = () => {
             whileInView={{ opacity: 1, y: 0 }}
           >
             <Image
+              priority
+              unoptimized
               alt="Hand holding the UI Pirate card"
               className="w-full h-auto object-contain select-none pointer-events-none"
               draggable={false}
               height={480}
-              priority
               src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1788774217/Image_Hand_image_holding_something_fxwtbj.svg"
-              unoptimized
-              width={400}
               style={{ maxHeight: "400px" }}
+              width={400}
             />
           </motion.div>
         </div>
-
-
       </div>
       {/* call team section */}
       <TheTeam />

@@ -1,13 +1,11 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+
 import Loader from "@/components/loader";
 
-const ButtonShowcaseScreen = dynamic(
-  () => import("@/screens/buttons"),
-  {
-    loading: () => <Loader />,
-  }
-);
+const ButtonShowcaseScreen = dynamic(() => import("@/screens/buttons"), {
+  loading: () => <Loader />,
+});
 
 export const metadata: Metadata = {
   title: "Interactive 3D & Tactile Button Library | UI Pirate",
@@ -32,22 +30,22 @@ export default function ButtonsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Interactive 3D & Tactile Button Library",
-    "description":
+    name: "Interactive 3D & Tactile Button Library",
+    description:
       "Production-ready React, Tailwind CSS, and Framer Motion interactive button collection with live customization sandboxes, copy-paste code, and theme presets.",
-    "url": "https://uipirate.com/buttons",
-    "publisher": {
+    url: "https://uipirate.com/buttons",
+    publisher: {
       "@type": "Organization",
-      "name": "UI Pirate",
-      "url": "https://uipirate.com",
+      name: "UI Pirate",
+      url: "https://uipirate.com",
     },
   };
 
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <ButtonShowcaseScreen />
     </>

@@ -3,8 +3,18 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export type TactileButtonVariant = "default" | "dark" | "orange" | "cyberpunk" | "minimal";
-export type TactileButtonState = "interactive" | "resting" | "tilted" | "standerd" | "hover";
+export type TactileButtonVariant =
+  | "default"
+  | "dark"
+  | "orange"
+  | "cyberpunk"
+  | "minimal";
+export type TactileButtonState =
+  | "interactive"
+  | "resting"
+  | "tilted"
+  | "standerd"
+  | "hover";
 
 export interface TactilePillButtonProps {
   /** Text label inside the button */
@@ -43,8 +53,16 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -95,7 +113,8 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
   const themeStyles = {
     default: {
       slotBg: "bg-[#d0d0d0]",
-      slotShadow: "shadow-[inset_0px_2px_4px_0px_rgba(0,0,0,0.15),0px_1px_1px_0px_rgba(255,255,255,0.8)]",
+      slotShadow:
+        "shadow-[inset_0px_2px_4px_0px_rgba(0,0,0,0.15),0px_1px_1px_0px_rgba(255,255,255,0.8)]",
       capBg: "bg-[#f2f2f2]",
       capText: "text-black",
       capTextShadow: "0px 1.5px 0px white",
@@ -112,7 +131,8 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
     },
     dark: {
       slotBg: "bg-[#18181B]",
-      slotShadow: "shadow-[inset_0px_2px_5px_0px_rgba(0,0,0,0.8),0px_1px_1px_0px_rgba(255,255,255,0.06)]",
+      slotShadow:
+        "shadow-[inset_0px_2px_5px_0px_rgba(0,0,0,0.8),0px_1px_1px_0px_rgba(255,255,255,0.06)]",
       capBg: "bg-[#27272A]",
       capText: "text-white",
       capTextShadow: "0px 1px 2px rgba(0,0,0,0.8)",
@@ -129,7 +149,8 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
     },
     orange: {
       slotBg: "bg-[#5A1F00]",
-      slotShadow: "shadow-[inset_0px_2px_5px_0px_rgba(0,0,0,0.6),0px_1px_1px_0px_rgba(255,91,4,0.3)]",
+      slotShadow:
+        "shadow-[inset_0px_2px_5px_0px_rgba(0,0,0,0.6),0px_1px_1px_0px_rgba(255,91,4,0.3)]",
       capBg: "bg-[#FF5B04]",
       capText: "text-white",
       capTextShadow: "0px 1px 2px rgba(0,0,0,0.4)",
@@ -146,7 +167,8 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
     },
     cyberpunk: {
       slotBg: "bg-[#090D16]",
-      slotShadow: "shadow-[inset_0px_2px_6px_0px_rgba(0,0,0,0.9),0px_1px_1px_0px_rgba(0,229,190,0.4)]",
+      slotShadow:
+        "shadow-[inset_0px_2px_6px_0px_rgba(0,0,0,0.9),0px_1px_1px_0px_rgba(0,229,190,0.4)]",
       capBg: "bg-[#131B2E]",
       capText: "text-[#E0F2FE]",
       capTextShadow: "0px 0px 8px rgba(0,229,190,0.4)",
@@ -163,7 +185,8 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
     },
     minimal: {
       slotBg: "bg-[#E0E0E0]",
-      slotShadow: "shadow-[inset_0px_2px_4px_0px_rgba(0,0,0,0.12),0px_1px_1px_0px_rgba(255,255,255,0.9)]",
+      slotShadow:
+        "shadow-[inset_0px_2px_4px_0px_rgba(0,0,0,0.12),0px_1px_1px_0px_rgba(255,255,255,0.9)]",
       capBg: "bg-[#FFFFFF]",
       capText: "text-gray-900",
       capTextShadow: "0px 1px 0px rgba(255,255,255,0.9)",
@@ -207,7 +230,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
         animate={{
           opacity: isTilted ? 1 : 0,
         }}
-        transition={{ duration: 0.2 }}
+        aria-hidden="true"
         className={`absolute pointer-events-none ${sizeConfig.radius} ${themeStyles.slotBg} ${themeStyles.slotShadow}`}
         style={{
           top: 3,
@@ -215,23 +238,28 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
           left: 3,
           right: 3,
         }}
-        aria-hidden="true"
+        transition={{ duration: 0.2 }}
       />
 
       {/* 2. Tactile Button Cap (Frame 261 - 75:1203 & 75:1208) */}
       <motion.button
-        type="button"
-        onClick={onClick}
-        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
-        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
-        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
-        onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
-        initial={false}
         animate={{
           rotate: isPressed ? 0 : isTilted ? tiltAngle : 0,
           y: isPressed ? 2 : isTilted ? sizeConfig.liftY : 0,
           x: isPressed ? 0 : isTilted ? sizeConfig.liftX : 0,
           scale: isPressed ? 0.98 : 1,
+        }}
+        className={`relative z-10 flex items-center justify-center ${sizeConfig.gap} ${sizeConfig.capPadding} ${sizeConfig.radius} ${themeStyles.capBg} cursor-pointer focus:outline-none`}
+        initial={false}
+        style={{
+          filter: isTilted
+            ? themeStyles.tiltedFilter
+            : themeStyles.restingFilter,
+          transformOrigin: "center center",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+          WebkitFontSmoothing: "subpixel-antialiased",
+          transformStyle: "preserve-3d",
         }}
         transition={{
           type: "spring",
@@ -239,15 +267,12 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
           damping: 25,
           mass: 0.8,
         }}
-        className={`relative z-10 flex items-center justify-center ${sizeConfig.gap} ${sizeConfig.capPadding} ${sizeConfig.radius} ${themeStyles.capBg} cursor-pointer focus:outline-none`}
-        style={{
-          filter: isTilted ? themeStyles.tiltedFilter : themeStyles.restingFilter,
-          transformOrigin: "center center",
-          willChange: "transform",
-          backfaceVisibility: "hidden",
-          WebkitFontSmoothing: "subpixel-antialiased",
-          transformStyle: "preserve-3d",
-        }}
+        type="button"
+        onClick={onClick}
+        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
+        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
+        onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
+        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
       >
         {/* Specular & Bevel Highlight Insets */}
         <div
@@ -265,9 +290,9 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
               opacity: isTilted ? 0.6 : 0,
               scale: isTilted ? 1.4 : 1,
             }}
-            transition={{ duration: 0.2 }}
             className="absolute inset-0 rounded-full blur-[2.5px] pointer-events-none"
             style={{ backgroundColor: dotColor }}
+            transition={{ duration: 0.2 }}
           />
 
           {/* Crisp Dot Shape */}
@@ -295,7 +320,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
           {label}
         </p>
       </motion.button>
-    </div>
+    </div>,
   );
 };
 

@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
 import Loader from "@/components/loader";
-import { listPosts } from "@/lib/pirateCOS/public-client";
 
 // SSR-enabled dynamic import — Google can now crawl the full page content
 const Landing = dynamic(() => import("@/screens/landing"), {

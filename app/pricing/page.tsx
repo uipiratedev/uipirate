@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   keywords:
     "UI UX design pricing 2026, design subscription cost, unlimited design requests, SaaS design pricing, design agency monthly cost, hire UI designer cost, design retainer pricing, $2000 design subscription, design subscription agency, SaaS design retainer, unlimited design requests pricing, design agency vs freelancer cost",
   openGraph: {
-    title: "UI/UX Design Pricing | from $500/mo Unlimited · Save 50-70% vs Agencies",
+    title:
+      "UI/UX Design Pricing | from $500/mo Unlimited · Save 50-70% vs Agencies",
     description:
       "Unlimited design requests from $500/mo. 48hr turnaround, no contracts. Or try $350 pilot first. 100% satisfaction guarantee.",
     url: "https://uipirate.com/pricing",

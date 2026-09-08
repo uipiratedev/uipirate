@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
 import { ALL_DASHBOARD_COMPONENTS } from "@/screens/uiComponents/dashboardComponents";
 import UIComponentDashboard from "@/screens/uiComponents/UIComponentDashboard";
 
@@ -15,7 +16,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: ComponentPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ComponentPageProps): Promise<Metadata> {
   const { slug } = await params;
   const component = ALL_DASHBOARD_COMPONENTS.find((c) => c.id === slug);
 
@@ -45,7 +48,9 @@ export async function generateMetadata({ params }: ComponentPageProps): Promise<
   };
 }
 
-export default async function ComponentDetailPage({ params }: ComponentPageProps) {
+export default async function ComponentDetailPage({
+  params,
+}: ComponentPageProps) {
   const { slug } = await params;
   const component = ALL_DASHBOARD_COMPONENTS.find((c) => c.id === slug);
 
@@ -56,22 +61,22 @@ export default async function ComponentDetailPage({ params }: ComponentPageProps
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
-    "name": component.name,
-    "description": component.description,
-    "programmingLanguage": "TypeScript / React",
-    "url": `https://uipirate.com/componentlab/${slug}`,
-    "author": {
+    name: component.name,
+    description: component.description,
+    programmingLanguage: "TypeScript / React",
+    url: `https://uipirate.com/componentlab/${slug}`,
+    author: {
       "@type": "Organization",
-      "name": "UI Pirate",
-      "url": "https://uipirate.com",
+      name: "UI Pirate",
+      url: "https://uipirate.com",
     },
   };
 
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <UIComponentDashboard initialComponentId={slug} />
     </>

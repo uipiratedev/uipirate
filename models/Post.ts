@@ -29,8 +29,25 @@ export interface IPost extends Document {
   duplicateViews?: number; // Repeat visits from same IP within 24h
   totalViews?: number; // Raw total = views + duplicateViews + botViews
   readTime?: number; // in minutes
-  postType?: "blog" | "tutorial" | "case-study" | "community-insight" | "product-review" | "product-launch" | "listicle" | "comparison" | "newsletter" | "social-post" | "corporate-post";
-  contentGoal?: "traffic" | "authority" | "conversion" | "engagement" | "lead-generation" | "retention";
+  postType?:
+    | "blog"
+    | "tutorial"
+    | "case-study"
+    | "community-insight"
+    | "product-review"
+    | "product-launch"
+    | "listicle"
+    | "comparison"
+    | "newsletter"
+    | "social-post"
+    | "corporate-post";
+  contentGoal?:
+    | "traffic"
+    | "authority"
+    | "conversion"
+    | "engagement"
+    | "lead-generation"
+    | "retention";
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -75,14 +92,13 @@ export interface IPost extends Document {
   };
   // Approval workflow (enterprise)
   approvalStatus?: "draft" | "pending_review" | "approved" | "rejected";
-  approvalRequestedBy?: string;   // actor email
+  approvalRequestedBy?: string; // actor email
   approvalRequestedAt?: Date;
-  approvalReviewedBy?: string;    // actor email
+  approvalReviewedBy?: string; // actor email
   approvalReviewedAt?: Date;
-  approvalNote?: string;          // reviewer note / rejection reason
+  approvalNote?: string; // reviewer note / rejection reason
   calculateReadTime(): void;
 }
-
 
 const PostSchema: Schema = new Schema(
   {
@@ -102,7 +118,12 @@ const PostSchema: Schema = new Schema(
       name: { type: String, default: "" },
     },
     assignees: {
-      type: [{ email: { type: String, required: true }, name: { type: String, default: "" } }],
+      type: [
+        {
+          email: { type: String, required: true },
+          name: { type: String, default: "" },
+        },
+      ],
       default: [],
       index: true,
     },
@@ -183,12 +204,31 @@ const PostSchema: Schema = new Schema(
     },
     postType: {
       type: String,
-      enum: ["blog", "tutorial", "case-study", "community-insight", "product-review", "product-launch", "listicle", "comparison", "newsletter", "social-post", "corporate-post"],
+      enum: [
+        "blog",
+        "tutorial",
+        "case-study",
+        "community-insight",
+        "product-review",
+        "product-launch",
+        "listicle",
+        "comparison",
+        "newsletter",
+        "social-post",
+        "corporate-post",
+      ],
       default: "blog",
     },
     contentGoal: {
       type: String,
-      enum: ["traffic", "authority", "conversion", "engagement", "lead-generation", "retention"],
+      enum: [
+        "traffic",
+        "authority",
+        "conversion",
+        "engagement",
+        "lead-generation",
+        "retention",
+      ],
     },
     seo: {
       metaTitle: { type: String, trim: true },

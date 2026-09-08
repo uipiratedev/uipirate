@@ -2,25 +2,10 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import TactilePillButton from "@/components/TactilePillButton";
-import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
-import SmashTactileButton from "@/components/SmashTactileButton";
+
 import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
-import { AnimatedButton } from "@/components/AnimatedButton";
-import Avatar from "@/components/Avatar";
-import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
-import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
-import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
-import { SlideGrowButton } from "@/components/SlideGrowButton";
-import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
-import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
-import { ArcCornerToggle } from "@/components/ArcCornerToggle";
-import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
-import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
-import { GlossyGelButton } from "@/components/GlossyGelButton";
 import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -30,7 +15,12 @@ import {
   HERO_BADGE_ANIMATION_STYLE,
 } from "@/config/glassSurfacePresets";
 
-export type ComponentCategory = "all" | "buttons" | "badges" | "surfaces" | "controls";
+export type ComponentCategory =
+  | "all"
+  | "buttons"
+  | "badges"
+  | "surfaces"
+  | "controls";
 
 export interface CategoryOverviewCard {
   id: ComponentCategory;
@@ -68,7 +58,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass gel download tile, optical refraction rings, and volumetric blue underglow flare.",
     detailUrl: "/componentlab/frosted-gel-download-button",
-    features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "Interactive hover lift"],
+    features: [
+      "Elevated ceramic pill",
+      "Frosted glass cloud tile",
+      "Volumetric blue underglow",
+      "Interactive hover lift",
+    ],
     codeSnippet: `<FrostedGelDownloadButton\n  label="Download now"\n  theme="default-blue"\n  size="md"\n/>`,
   },
   {
@@ -81,7 +76,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
     detailUrl: "/componentlab/isometric-revive-button",
-    features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "Dynamic spring physics"],
+    features: [
+      "30° Isometric matrix",
+      "Multi-layer 3D extrusion",
+      "Optical neon underglow",
+      "Dynamic spring physics",
+    ],
     codeSnippet: `<IsometricReviveButton\n  label="Revive Now"\n  theme="default"\n  size="sm"\n/>`,
   },
   {
@@ -94,7 +94,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
     detailUrl: "/componentlab/elevated-underglow-cta",
-    features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
+    features: [
+      "13px Spring lift",
+      "Electric blue 3D underlayer",
+      "Interactive states",
+      "Phone call icon",
+    ],
     codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="default"\n  size="md"\n/>`,
   },
   {
@@ -107,7 +112,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Photorealistic 3D neumorphic toggle switch with an outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
     detailUrl: "/componentlab/tactile-neumorphic-switch",
-    features: ["Pixel-accurate OFF & ON states", "Dual-dome tactile thumb", "Illuminated emerald trench", "Outer recessed bevel cavity"],
+    features: [
+      "Pixel-accurate OFF & ON states",
+      "Dual-dome tactile thumb",
+      "Illuminated emerald trench",
+      "Outer recessed bevel cavity",
+    ],
     codeSnippet: `<TactileNeumorphicSwitch\n  theme="emerald-photon"\n  size="md"\n  defaultChecked={true}\n/>`,
   },
   {
@@ -120,7 +130,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "High-gloss skeuomorphic gel glass CTA button directly from spec node 2:2. Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
     detailUrl: "/componentlab/glossy-gel-button",
-    features: ["1:1 spec fidelity", "4-layer optical drop & inner shadow", "Curved blurred top specular capsule", "Interactive spring depression"],
+    features: [
+      "1:1 spec fidelity",
+      "4-layer optical drop & inner shadow",
+      "Curved blurred top specular capsule",
+      "Interactive spring depression",
+    ],
     codeSnippet: `<GlossyGelButton\n  theme="emerald-gel"\n  size="md"\n>\n  Get Started\n</GlossyGelButton>`,
   },
   {
@@ -133,7 +148,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Ultra-tactile debossed neumorphic pill switch with a 5-layer inset shadow groove, brushed metallic sliding thumb with specular bevels, and etched status glyphs.",
     detailUrl: "/componentlab/tactile-neumorphic-toggle",
-    features: ["Pixel-accurate debossed geometry", "5-layer optical inset groove", "Brushed metallic knob", "Spring motion physics"],
+    features: [
+      "Pixel-accurate debossed geometry",
+      "5-layer optical inset groove",
+      "Brushed metallic knob",
+      "Spring motion physics",
+    ],
     codeSnippet: `<TactileNeumorphicToggle\n  theme="brushed-silver"\n  size="md"\n  defaultChecked={true}\n/>`,
   },
   {
@@ -146,7 +166,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.",
     detailUrl: "/componentlab/led-matrix-chevron",
-    features: ["Expandable LED screen", "7x7 Dot matrix chevrons", "Cascading marquee wave", "Carbon squircle chassis"],
+    features: [
+      "Expandable LED screen",
+      "7x7 Dot matrix chevrons",
+      "Cascading marquee wave",
+      "Carbon squircle chassis",
+    ],
     codeSnippet: `<LedMatrixChevronButton\n  theme="monochrome"\n  size="md"\n/>`,
   },
   {
@@ -159,7 +184,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
     detailUrl: "/componentlab/slide-grow-button",
-    features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "Smooth slider snap"],
+    features: [
+      "Draggable knob physics",
+      "Neon channel beam fill",
+      "Masked text reveal",
+      "Smooth slider snap",
+    ],
     codeSnippet: `<SlideGrowButton\n  theme="silver"\n  size="md"\n/>`,
   },
   {
@@ -172,7 +202,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.",
     detailUrl: "/componentlab/vintage-leather-cta",
-    features: ["3D Tactile bevel lip", "Filigree corner ornaments", "Recessed enclosure tray", "5 Luxury themes"],
+    features: [
+      "3D Tactile bevel lip",
+      "Filigree corner ornaments",
+      "Recessed enclosure tray",
+      "5 Luxury themes",
+    ],
     codeSnippet: `<VintageLeatherCTA\n  theme="heritage"\n  size="md"\n  label="Shop ties"\n/>`,
   },
   {
@@ -185,7 +220,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Authentic claymorphic and neumorphic elevated CTA button pair with glowing neon green badge depth, multi-tier elevation drop shadows, and plus-lighter bloom.",
     detailUrl: "/componentlab/neumorphic-glow-cta",
-    features: ["Pill & Squircle variants", "Neon green glow badge", "Multi-tier clay shadows", "Plus-lighter bloom"],
+    features: [
+      "Pill & Squircle variants",
+      "Neon green glow badge",
+      "Multi-tier clay shadows",
+      "Plus-lighter bloom",
+    ],
     codeSnippet: `<NeumorphicGlowCTA\n  variant="pill"\n  label="Learn more"\n/>`,
   },
   {
@@ -198,7 +238,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
     detailUrl: "/componentlab/arc-corner-toggle",
-    features: ["90° Corner arc track", "Sunburst dial loader", "Light & Dark dual mode", "Laser beam flare"],
+    features: [
+      "90° Corner arc track",
+      "Sunburst dial loader",
+      "Light & Dark dual mode",
+      "Laser beam flare",
+    ],
     codeSnippet: `<ArcCornerToggle\n  scale={0.88}\n/>`,
   },
   {
@@ -211,7 +256,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Neo-brutalist tech button with outer enclosure frame, cushion cooling tray, obsidian core slab, and glowing neon reactor underglow.",
     detailUrl: "/componentlab/smash-tactile-button",
-    features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
+    features: [
+      "Tech enclosure frame",
+      "Cushion cooling tray",
+      "Obsidian core slab",
+      "Reactor underglow",
+    ],
     codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="default"\n  size="md"\n/>`,
   },
   {
@@ -224,7 +274,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Recessed capsule button featuring a frosted translucent glass tray, obsidian cap with multi-tiered elevation drop shadows, and circular apex emblem badge.",
     detailUrl: "/componentlab/scaling-capsule-button",
-    features: ["Frosted outer glass tray", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
+    features: [
+      "Frosted outer glass tray",
+      "Multi-tier shadow stack",
+      "26px Black circle",
+      "Ladder-rung icon",
+    ],
     codeSnippet: `<ScalingCapsuleButton\n  label="Scaling Workshop"\n  variant="dark"\n  size="md"\n/>`,
   },
   {
@@ -237,7 +292,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Hyper-realistic 3D tactile button with recessed cavity slot, spring tilt physics, specular bevels, and glowing status beacon.",
     detailUrl: "/componentlab/tactile-pill-button",
-    features: ["Recessed tray depth", "Spring lift & tilt", "Radiant status glow", "5 Theme variants"],
+    features: [
+      "Recessed tray depth",
+      "Spring lift & tilt",
+      "Radiant status glow",
+      "5 Theme variants",
+    ],
     codeSnippet: `<TactilePillButton\n  label="Get Started"\n  dotColor="#54EAD8"\n  variant="default"\n/>`,
   },
   {
@@ -250,7 +310,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Interactive dual-label CTA button with smooth vertical translate animations on hover. Designed for conversion cards and primary service actions.",
     detailUrl: "/componentlab/animated-slide-button",
-    features: ["Dual text roll-up", "Smooth ease transition", "Primary & secondary styles", "Auto-contained overflow"],
+    features: [
+      "Dual text roll-up",
+      "Smooth ease transition",
+      "Primary & secondary styles",
+      "Auto-contained overflow",
+    ],
     codeSnippet: `<AnimatedButton\n  primaryText="Explore Services"\n  hoverText="See More →"\n  variant="primary"\n/>`,
   },
   {
@@ -263,7 +328,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Frosted glass pill badge with multi-layer backdrop filter blur, subtle border sheen, and glowing typography for section headers and status chips.",
     detailUrl: "/componentlab/glass-badge",
-    features: ["Backdrop blur glass", "Cyan & gradient variants", "Specular top highlight", "Responsive typography"],
+    features: [
+      "Backdrop blur glass",
+      "Cyan & gradient variants",
+      "Specular top highlight",
+      "Responsive typography",
+    ],
     codeSnippet: `<GlassBadge variant="gradient" size="md">\n  PROPRIETARY COMPONENT\n</GlassBadge>`,
   },
   {
@@ -276,7 +346,12 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "Deep frosted glassmorphic card container with dynamic specular sheen, rounded corners, noise texture support, and ambient light reflection.",
     detailUrl: "/componentlab/glass-surface",
-    features: ["Gaussian blur backdrop", "Dynamic border sheen", "Hardware accelerated", "Accessible contrast"],
+    features: [
+      "Gaussian blur backdrop",
+      "Dynamic border sheen",
+      "Hardware accelerated",
+      "Accessible contrast",
+    ],
     codeSnippet: `<GlassSurface\n  width="100%"\n  height="auto"\n  borderRadius={24}\n  blur={20}\n  className="p-6"\n>\n  {children}\n</GlassSurface>`,
   },
   {
@@ -289,19 +364,27 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     description:
       "High-energy glowing action button with ambient radiant pulse effect, click audio trigger hook, and 3D depth press feedback.",
     detailUrl: "/componentlab/magnetic-pulse-cta",
-    features: ["Ambient ring pulse", "Sound effects integration", "Tactile spring scale", "Lead modal trigger"],
+    features: [
+      "Ambient ring pulse",
+      "Sound effects integration",
+      "Tactile spring scale",
+      "Lead modal trigger",
+    ],
     codeSnippet: `<MagneticPulseCTA\n  label="Let's Venture"\n  pulseColor="#FF5B04"\n/>`,
   },
 ];
 
 export default function UIComponentLibrary() {
-  const [selectedCategory, setSelectedCategory] = useState<ComponentCategory>("all");
+  const [selectedCategory, setSelectedCategory] =
+    useState<ComponentCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx lucide-react tailwind-merge");
+    navigator.clipboard.writeText(
+      "npm install framer-motion clsx lucide-react tailwind-merge",
+    );
     setCopiedInstall(true);
     setTimeout(() => setCopiedInstall(false), 2000);
   };
@@ -315,11 +398,17 @@ export default function UIComponentLibrary() {
       badgeColor: "#FF5B04",
       description:
         "High-conversion buttons engineered with 3D tactile elevation, optical underglow flares, skeuomorphic leather, liquid gel glass, and phosphor LED matrices.",
-      tags: ["3D Tactile Lift", "Liquid Gel Glass", "LED Dot Matrix", "Skeuomorphic", "Isometric 30°"],
+      tags: [
+        "3D Tactile Lift",
+        "Liquid Gel Glass",
+        "LED Dot Matrix",
+        "Skeuomorphic",
+        "Isometric 30°",
+      ],
       href: "/componentlab/tactile-pill-button",
       featuredPreview: (
         <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
-          <ElevatedUnderglowCTA label="Book A Call" theme="default" size="sm" />
+          <ElevatedUnderglowCTA label="Book A Call" size="sm" theme="default" />
         </div>
       ),
     },
@@ -331,11 +420,20 @@ export default function UIComponentLibrary() {
       badgeColor: "#00B894",
       description:
         "Photorealistic 3D neumorphic switches, 90° radial arc corner toggles, swipe-to-unlock capsule sliders, and tactile smash buttons.",
-      tags: ["Dual-Dome 3D", "5-Layer Inset Groove", "Gesture Drag", "Spring Snapping"],
+      tags: [
+        "Dual-Dome 3D",
+        "5-Layer Inset Groove",
+        "Gesture Drag",
+        "Spring Snapping",
+      ],
       href: "/componentlab/tactile-neumorphic-switch",
       featuredPreview: (
         <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
-          <TactileNeumorphicSwitch theme="emerald-photon" size="sm" defaultChecked={true} />
+          <TactileNeumorphicSwitch
+            defaultChecked={true}
+            size="sm"
+            theme="emerald-photon"
+          />
         </div>
       ),
     },
@@ -347,11 +445,16 @@ export default function UIComponentLibrary() {
       badgeColor: "#8B5CF6",
       description:
         "Multi-layer glassmorphic header badges, deterministic hash-gradient avatars, and pulsing radiant beacon indicators.",
-      tags: ["Backdrop Blur", "Hash Gradient", "Specular Border", "Live Beacon"],
+      tags: [
+        "Backdrop Blur",
+        "Hash Gradient",
+        "Specular Border",
+        "Live Beacon",
+      ],
       href: "/componentlab/glass-badge",
       featuredPreview: (
         <div className="flex flex-col items-center gap-3 py-2">
-          <GlassBadge variant="gradient" size="md">
+          <GlassBadge size="md" variant="gradient">
             PROPRIETARY COMPONENT
           </GlassBadge>
           <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
@@ -369,12 +472,21 @@ export default function UIComponentLibrary() {
       badgeColor: "#3B82F6",
       description:
         "Frosted glassmorphism container cards with hardware-accelerated Gaussian blur, specular highlight sheens, and noise overlays.",
-      tags: ["Gaussian Blur", "Specular Sheen", "Hardware Accel", "Adaptive Contrast"],
+      tags: [
+        "Gaussian Blur",
+        "Specular Sheen",
+        "Hardware Accel",
+        "Adaptive Contrast",
+      ],
       href: "/componentlab/glass-surface",
       featuredPreview: (
         <div className="w-full max-w-[220px] p-4 rounded-2xl bg-white/80 border border-gray-200/90 shadow-md backdrop-blur-md text-center">
-          <div className="text-[11px] font-mono text-blue-600 font-bold uppercase tracking-wider">Glass Surface</div>
-          <div className="text-xs text-gray-500 mt-1 font-sans">Specular Sheen &amp; Blur</div>
+          <div className="text-[11px] font-mono text-blue-600 font-bold uppercase tracking-wider">
+            Glass Surface
+          </div>
+          <div className="text-xs text-gray-500 mt-1 font-sans">
+            Specular Sheen &amp; Blur
+          </div>
         </div>
       ),
     },
@@ -382,12 +494,14 @@ export default function UIComponentLibrary() {
 
   const filteredComponents = useMemo(() => {
     return UI_COMPONENTS.filter((item) => {
-      const matchCat = selectedCategory === "all" || item.category === selectedCategory;
+      const matchCat =
+        selectedCategory === "all" || item.category === selectedCategory;
       const matchSearch =
         searchQuery.trim() === "" ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase());
+
       return matchCat && matchSearch;
     });
   }, [selectedCategory, searchQuery]);
@@ -452,7 +566,9 @@ export default function UIComponentLibrary() {
             </div>
 
             <p className="sub-header text-[#11181C] mx-auto">
-              Browse our categorized collection of handcrafted React, Tailwind CSS, and Framer Motion components. Engineered with 3D tactile physics, glassmorphism, and pixel precision.
+              Browse our categorized collection of handcrafted React, Tailwind
+              CSS, and Framer Motion components. Engineered with 3D tactile
+              physics, glassmorphism, and pixel precision.
             </p>
 
             {/* Quick Metrics Bar */}
@@ -494,17 +610,28 @@ export default function UIComponentLibrary() {
                   Explore Component Categories
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Select a category to view specialized live studios, props tables, and drop-in code.
+                  Select a category to view specialized live studios, props
+                  tables, and drop-in code.
                 </p>
               </div>
 
               <Link
-                href="/componentlab/tactile-pill-button"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-xs font-semibold text-[#FF5B04] transition-colors self-start sm:self-auto shadow-sm"
+                href="/componentlab/tactile-pill-button"
               >
                 <span>View All 18 Components</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
                 </svg>
               </Link>
             </div>
@@ -534,10 +661,14 @@ export default function UIComponentLibrary() {
                         >
                           {cat.badge}
                         </span>
-                        <span className="text-xs font-mono text-gray-500">• {cat.count}</span>
+                        <span className="text-xs font-mono text-gray-500">
+                          • {cat.count}
+                        </span>
                       </div>
 
-                      <span className="text-xs font-mono text-gray-400 font-medium">Production Ready</span>
+                      <span className="text-xs font-mono text-gray-400 font-medium">
+                        Production Ready
+                      </span>
                     </div>
 
                     <div>
@@ -555,7 +686,8 @@ export default function UIComponentLibrary() {
                       <div
                         className="absolute inset-0 opacity-40 pointer-events-none"
                         style={{
-                          backgroundImage: "radial-gradient(#94A3B8 1px, transparent 1px)",
+                          backgroundImage:
+                            "radial-gradient(#94A3B8 1px, transparent 1px)",
                           backgroundSize: "16px 16px",
                         }}
                       />
@@ -577,16 +709,28 @@ export default function UIComponentLibrary() {
 
                   <div className="pt-6 mt-6 border-t border-gray-100 flex items-center justify-between relative z-10">
                     <Link
-                      href={cat.href}
                       className="inline-flex items-center gap-2 text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors"
+                      href={cat.href}
                     >
                       <span>Explore {cat.title}</span>
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      <svg
+                        className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                        />
                       </svg>
                     </Link>
 
-                    <span className="text-xs font-mono text-gray-400">React + Tailwind</span>
+                    <span className="text-xs font-mono text-gray-400">
+                      React + Tailwind
+                    </span>
                   </div>
                 </div>
               ))}
@@ -599,36 +743,42 @@ export default function UIComponentLibrary() {
           <div className="bg-white border border-gray-200/90 rounded-3xl p-8 space-y-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-bold text-gray-900 font-jakarta">Peer Dependencies &amp; Setup</h2>
+                <h2 className="text-xl font-bold text-gray-900 font-jakarta">
+                  Peer Dependencies &amp; Setup
+                </h2>
                 <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                  Install peer dependencies to run any component in your Next.js or React application:
+                  Install peer dependencies to run any component in your Next.js
+                  or React application:
                 </p>
               </div>
 
               <button
-                onClick={handleCopyInstall}
                 className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold transition-colors cursor-pointer self-start md:self-auto shadow-sm"
+                onClick={handleCopyInstall}
               >
                 {copiedInstall ? "✓ Command Copied!" : "Copy Install Command"}
               </button>
             </div>
 
             <div className="bg-gray-950 border border-gray-800 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400 overflow-x-auto shadow-inner">
-              <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
+              <code>
+                npm install framer-motion clsx lucide-react tailwind-merge
+              </code>
             </div>
           </div>
 
           {/* ─────────────────────────────────────────────────────────────
               LIVE COMPONENT BROWSER & CODE VIEWER
              ───────────────────────────────────────────────────────────── */}
-          <div id="browser" className="space-y-8 scroll-mt-28">
+          <div className="space-y-8 scroll-mt-28" id="browser">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-950 font-jakarta">
                   Component Catalog
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Explore every individual component, inspect props, and copy drop-in snippets.
+                  Explore every individual component, inspect props, and copy
+                  drop-in snippets.
                 </p>
               </div>
 
@@ -643,12 +793,14 @@ export default function UIComponentLibrary() {
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setSelectedCategory(tab.id as ComponentCategory)}
                     className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                       selectedCategory === tab.id
                         ? "bg-[#FF5B04] text-white font-bold shadow-md shadow-[#FF5B04]/25"
                         : "text-gray-600 hover:text-gray-950 hover:bg-white/60"
                     }`}
+                    onClick={() =>
+                      setSelectedCategory(tab.id as ComponentCategory)
+                    }
                   >
                     {tab.label}
                   </button>
@@ -659,19 +811,24 @@ export default function UIComponentLibrary() {
             {/* Search Bar */}
             <div className="relative">
               <input
-                type="text"
+                className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-3.5 pl-12 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#FF5B04] focus:ring-2 focus:ring-[#FF5B04]/10 transition-all shadow-sm"
                 placeholder="Search components by name, feature, or keyword (e.g. 'isometric', 'matrix', 'glass', 'neumorphic')..."
+                type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-3.5 pl-12 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#FF5B04] focus:ring-2 focus:ring-[#FF5B04]/10 transition-all shadow-sm"
               />
               <svg
                 className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
                 fill="none"
-                viewBox="0 0 24 24"
                 stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <path
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
               </svg>
             </div>
 
@@ -706,7 +863,9 @@ export default function UIComponentLibrary() {
                     <ul className="space-y-1.5 text-xs text-gray-600">
                       {item.features.slice(0, 3).map((f) => (
                         <li key={f} className="flex items-center gap-2">
-                          <span className="text-[#00B894] font-bold text-xs">✓</span>
+                          <span className="text-[#00B894] font-bold text-xs">
+                            ✓
+                          </span>
                           <span className="text-gray-600 font-sans">{f}</span>
                         </li>
                       ))}
@@ -715,18 +874,28 @@ export default function UIComponentLibrary() {
 
                   <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
                     <Link
-                      href={item.detailUrl}
                       className="text-xs font-bold text-[#FF5B04] hover:text-orange-600 transition-colors flex items-center gap-1"
+                      href={item.detailUrl}
                     >
                       <span>Studio &amp; Code</span>
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M9 5l7 7-7 7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                        />
                       </svg>
                     </Link>
 
                     <button
-                      onClick={() => handleCopyCode(item.id, item.codeSnippet)}
                       className="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-mono text-gray-700 hover:text-gray-900 border border-gray-200 transition-colors cursor-pointer"
+                      onClick={() => handleCopyCode(item.id, item.codeSnippet)}
                     >
                       {copiedId === item.id ? "✓ Copied" : "Copy Snippet"}
                     </button>

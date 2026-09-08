@@ -1,7 +1,7 @@
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
 import Image from "next/image";
 import Link from "next/link";
-
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
 
 const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
 
@@ -42,62 +42,54 @@ const SuggestedReads = ({ posts }: SuggestedReadsProps) => {
           });
 
           return (
-                <Link
-                  key={blog._id}
-                  className="group block"
-                  href={`/${blog.slug}`}
-                >
-                  <div className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]">
-                    {/* Thumbnail */}
-                    <div className="relative h-[180px] overflow-hidden bg-[#F8F9FB]">
-                      <Image
-                        fill
-                        alt={blog.title}
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        src={image}
-                      />
-                      {tag && (
-                        <span
-                          className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-white"
-                          style={{
-                            background: "rgba(0,0,0,0.45)",
-                            backdropFilter: "blur(4px)",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      )}
-                    </div>
-                    {/* Body */}
-                    <div className="px-5 py-4">
-                      <h3 className="text-[15px] md:text-[17px] font-[700] text-[#0F172A] leading-snug tracking-tight line-clamp-2 mb-1.5">
-                        {blog.title}
-                      </h3>
-                      {blog.excerpt && (
-                        <p className="text-[12px] md:text-[13px] text-[#64748B] leading-relaxed line-clamp-2 mb-3">
-                          {blog.excerpt}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
-                        <span>{date}</span>
-                        <span>·</span>
-                        <span>{blog.readTime || 5} min read</span>
-                        <span>·</span>
-                        <span>
-                          {(
-                            blog.totalViews ||
-                            blog.views ||
-                            0
-                          ).toLocaleString()}{" "}
-                          views
-                        </span>
-                      </div>
-                    </div>
+            <Link key={blog._id} className="group block" href={`/${blog.slug}`}>
+              <div className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]">
+                {/* Thumbnail */}
+                <div className="relative h-[180px] overflow-hidden bg-[#F8F9FB]">
+                  <Image
+                    fill
+                    alt={blog.title}
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    src={image}
+                  />
+                  {tag && (
+                    <span
+                      className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-white"
+                      style={{
+                        background: "rgba(0,0,0,0.45)",
+                        backdropFilter: "blur(4px)",
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  )}
+                </div>
+                {/* Body */}
+                <div className="px-5 py-4">
+                  <h3 className="text-[15px] md:text-[17px] font-[700] text-[#0F172A] leading-snug tracking-tight line-clamp-2 mb-1.5">
+                    {blog.title}
+                  </h3>
+                  {blog.excerpt && (
+                    <p className="text-[12px] md:text-[13px] text-[#64748B] leading-relaxed line-clamp-2 mb-3">
+                      {blog.excerpt}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
+                    <span>{date}</span>
+                    <span>·</span>
+                    <span>{blog.readTime || 5} min read</span>
+                    <span>·</span>
+                    <span>
+                      {(blog.totalViews || blog.views || 0).toLocaleString()}{" "}
+                      views
+                    </span>
                   </div>
-                </Link>
-              );
-            })}
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

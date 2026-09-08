@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+
 import SuggestedTools from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
@@ -40,54 +41,70 @@ export default function SaasUxAuditClient() {
     setReport(null);
 
     setTimeout(() => {
-      let clean = url.replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
-      
+      let clean = url
+        .replace(/^https?:\/\//i, "")
+        .replace(/\/.*$/, "")
+        .toLowerCase();
+
       const isKnown = clean.length % 3 === 0;
       const score = isKnown ? 78 : Math.floor(62 + (clean.length % 25));
-      const grade = score >= 85 ? "A" : score >= 75 ? "B" : score >= 65 ? "C" : "D";
+      const grade =
+        score >= 85 ? "A" : score >= 75 ? "B" : score >= 65 ? "C" : "D";
 
       const pillars: UxPillar[] = [
         {
           name: "Navigation & Wayfinding",
           score: Math.min(95, score + 4),
           status: score + 4 >= 80 ? "good" : "warning",
-          description: "Menu hierarchy, sidebar categorization, and multi-step discoverability.",
-          details: "Users require 2-3 extra clicks to access nested views. Consider lateral sticky navigation.",
+          description:
+            "Menu hierarchy, sidebar categorization, and multi-step discoverability.",
+          details:
+            "Users require 2-3 extra clicks to access nested views. Consider lateral sticky navigation.",
         },
         {
           name: "Onboarding & Activation",
           score: Math.max(45, score - 14),
           status: score - 14 >= 75 ? "good" : "danger",
-          description: "Time-to-first-value, empty state templates, and guided feature tours.",
-          details: "Delayed time-to-first-value. First-time users face blank widgets without sample data.",
+          description:
+            "Time-to-first-value, empty state templates, and guided feature tours.",
+          details:
+            "Delayed time-to-first-value. First-time users face blank widgets without sample data.",
         },
         {
           name: "Information Architecture",
           score: Math.min(92, score + 2),
           status: score + 2 >= 75 ? "good" : "warning",
-          description: "Grouping by user intent versus technical database schema.",
-          details: "Several features appear organized by back-end tables rather than role-based workflows.",
+          description:
+            "Grouping by user intent versus technical database schema.",
+          details:
+            "Several features appear organized by back-end tables rather than role-based workflows.",
         },
         {
           name: "Visual Hierarchy & Density",
           score: Math.min(90, score + 6),
           status: "good",
-          description: "Table usability, typography scale, whitespace breathing room, and 8pt grid alignment.",
-          details: "Clean data density, but primary actions lack sufficient contrast against secondary filters.",
+          description:
+            "Table usability, typography scale, whitespace breathing room, and 8pt grid alignment.",
+          details:
+            "Clean data density, but primary actions lack sufficient contrast against secondary filters.",
         },
         {
           name: "CTA Clarity & Action Prominence",
           score: Math.max(50, score - 8),
           status: score - 8 >= 75 ? "good" : "warning",
-          description: "Primary versus destructive actions and form submission visibility.",
-          details: "Secondary export buttons compete visually with the primary 'Create New' trigger.",
+          description:
+            "Primary versus destructive actions and form submission visibility.",
+          details:
+            "Secondary export buttons compete visually with the primary 'Create New' trigger.",
         },
         {
           name: "Mobile & Responsive Usability",
           score: Math.max(40, score - 12),
           status: score - 12 >= 70 ? "good" : "danger",
-          description: "Touch target sizes (44x44px minimum) and horizontal scroll containment.",
-          details: "Complex tables trigger horizontal document overflow on mobile viewports.",
+          description:
+            "Touch target sizes (44x44px minimum) and horizontal scroll containment.",
+          details:
+            "Complex tables trigger horizontal document overflow on mobile viewports.",
         },
       ];
 
@@ -104,17 +121,20 @@ export default function SaasUxAuditClient() {
           {
             title: "Empty States Lack Interactive Previews",
             impact: "High",
-            solution: "Replace blank charts with interactive dummy templates and a 1-click 'Load Sample Project' prompt.",
+            solution:
+              "Replace blank charts with interactive dummy templates and a 1-click 'Load Sample Project' prompt.",
           },
           {
             title: "Competing Primary Action Hierarchy",
             impact: "High",
-            solution: "Standardize button hierarchy: solid brand orange for primary verbs, subtle border pills for filters.",
+            solution:
+              "Standardize button hierarchy: solid brand orange for primary verbs, subtle border pills for filters.",
           },
           {
             title: "Mobile Table Overflow on Small Viewports",
             impact: "Medium",
-            solution: "Implement responsive card-view reflow for tables on mobile instead of forcing full horizontal tables.",
+            solution:
+              "Implement responsive card-view reflow for tables on mobile instead of forcing full horizontal tables.",
           },
         ],
       });
@@ -134,8 +154,10 @@ export default function SaasUxAuditClient() {
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -143,19 +165,24 @@ export default function SaasUxAuditClient() {
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10 max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: -12 }}
         >
           <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">PRODUCT UX &amp; FRICTION AUDIT</GlassBadge>
+            <GlassBadge variant="gradient">
+              PRODUCT UX &amp; FRICTION AUDIT
+            </GlassBadge>
           </div>
 
           <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
-            SaaS Product <span className="text-[#FF5B04]">UX &amp; Friction</span> Audit
+            SaaS Product{" "}
+            <span className="text-[#FF5B04]">UX &amp; Friction</span> Audit
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Audit your SaaS app, dashboard, or portal. Get an instant 0–100 Product Experience Score across onboarding, navigation, and cognitive friction.
+            Audit your SaaS app, dashboard, or portal. Get an instant 0–100
+            Product Experience Score across onboarding, navigation, and
+            cognitive friction.
           </p>
 
           {/* Integrated Capability Badges */}
@@ -180,20 +207,31 @@ export default function SaasUxAuditClient() {
           {/* Engine Status & Consultation Callout */}
           <div className="mt-8 flex justify-center">
             <Link
-              href="/contact"
               className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+              href="/contact"
             >
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
                 V1 Engine
               </span>
               <span className="text-gray-600 font-medium">
-                Running automated heuristics. Need an in-depth multi-screen SaaS UX audit?
+                Running automated heuristics. Need an in-depth multi-screen SaaS
+                UX audit?
               </span>
               <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
                 <span>Book senior audit</span>
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M9 5l7 7-7 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                  />
                 </svg>
               </span>
             </Link>
@@ -202,32 +240,60 @@ export default function SaasUxAuditClient() {
 
         {/* Input Box */}
         <div className="w-full max-w-3xl mx-auto mb-12">
-          <form onSubmit={runAudit} className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
+          <form
+            className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all"
+            onSubmit={runAudit}
+          >
             <input
+              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta placeholder:text-gray-400"
+              placeholder="app.yourproduct.com or yourproduct.com"
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="app.yourproduct.com or yourproduct.com"
-              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta placeholder:text-gray-400"
             />
             <button
-              type="submit"
-              disabled={loading || !url.trim()}
               className="px-6 py-3 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/20"
+              disabled={loading || !url.trim()}
+              type="submit"
             >
               {loading ? (
                 <>
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <svg
+                    className="w-4 h-4 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      fill="currentColor"
+                    />
                   </svg>
                   <span>Analyzing UX…</span>
                 </>
               ) : (
                 <>
                   <span>Audit Product UX</span>
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.5"
+                    />
                   </svg>
                 </>
               )}
@@ -237,27 +303,29 @@ export default function SaasUxAuditClient() {
           {/* Quick Examples */}
           <div className="flex items-center justify-center gap-2 mt-3 text-xs text-gray-400">
             <span>Try:</span>
-            {["notion.so", "linear.app", "stripe.com", "figma.com"].map((domain) => (
-              <button
-                key={domain}
-                type="button"
-                onClick={() => {
-                  setUrl(domain);
-                }}
-                className="underline hover:text-[#FF5B04] transition-colors cursor-pointer"
-              >
-                {domain}
-              </button>
-            ))}
+            {["notion.so", "linear.app", "stripe.com", "figma.com"].map(
+              (domain) => (
+                <button
+                  key={domain}
+                  className="underline hover:text-[#FF5B04] transition-colors cursor-pointer"
+                  type="button"
+                  onClick={() => {
+                    setUrl(domain);
+                  }}
+                >
+                  {domain}
+                </button>
+              ),
+            )}
           </div>
         </div>
 
         {/* Audit Results */}
         {report && (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full space-y-8"
+            initial={{ opacity: 0, y: 16 }}
           >
             {/* Score Overview Card */}
             <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
@@ -265,8 +333,12 @@ export default function SaasUxAuditClient() {
                 <div className="flex items-center gap-6">
                   {/* Score Badge */}
                   <div className="w-24 h-24 rounded-2xl bg-gray-900 text-white flex flex-col items-center justify-center flex-shrink-0 shadow-lg">
-                    <span className="text-3xl font-extrabold font-geist">{report.overallScore}</span>
-                    <span className="text-[10px] text-gray-400 font-mono">/100 UX</span>
+                    <span className="text-3xl font-extrabold font-geist">
+                      {report.overallScore}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-mono">
+                      /100 UX
+                    </span>
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -274,7 +346,9 @@ export default function SaasUxAuditClient() {
                         Grade: {report.grade}
                       </span>
                       <span className="text-gray-300">•</span>
-                      <span className="text-xs text-gray-400 font-mono">{report.domain}</span>
+                      <span className="text-xs text-gray-400 font-mono">
+                        {report.domain}
+                      </span>
                     </div>
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 font-jakarta mt-1">
                       Product Experience Report
@@ -288,15 +362,27 @@ export default function SaasUxAuditClient() {
                 {/* Direct Agency CTA */}
                 <div className="flex flex-col gap-2 w-full md:w-auto">
                   <Link
-                    href="/contact"
                     className="px-6 py-3 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 text-center"
+                    href="/contact"
                   >
                     <span>Fix These UX Issues with UI Pirate</span>
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2.5"
+                      />
                     </svg>
                   </Link>
-                  <span className="text-[11px] text-gray-400 text-center">Senior SaaS Designers · No Obligation</span>
+                  <span className="text-[11px] text-gray-400 text-center">
+                    Senior SaaS Designers · No Obligation
+                  </span>
                 </div>
               </div>
             </div>
@@ -304,16 +390,21 @@ export default function SaasUxAuditClient() {
             {/* 6 UX Pillars Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {report.pillars.map((pillar, idx) => (
-                <div key={idx} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-3">
+                <div
+                  key={idx}
+                  className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-3"
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-gray-900 font-jakarta">{pillar.name}</span>
+                    <span className="text-sm font-bold text-gray-900 font-jakarta">
+                      {pillar.name}
+                    </span>
                     <span
                       className={`text-xs font-mono font-bold px-2 py-0.5 rounded-md ${
                         pillar.score >= 75
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           : pillar.score >= 60
-                          ? "bg-amber-50 text-amber-700 border border-amber-200"
-                          : "bg-red-50 text-red-700 border border-red-200"
+                            ? "bg-amber-50 text-amber-700 border border-amber-200"
+                            : "bg-red-50 text-red-700 border border-red-200"
                       }`}
                     >
                       {pillar.score}/100
@@ -323,15 +414,23 @@ export default function SaasUxAuditClient() {
                   <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        pillar.score >= 75 ? "bg-emerald-500" : pillar.score >= 60 ? "bg-amber-500" : "bg-red-500"
+                        pillar.score >= 75
+                          ? "bg-emerald-500"
+                          : pillar.score >= 60
+                            ? "bg-amber-500"
+                            : "bg-red-500"
                       }`}
                       style={{ width: `${pillar.score}%` }}
                     />
                   </div>
 
-                  <p className="text-xs text-gray-500 leading-relaxed">{pillar.description}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {pillar.description}
+                  </p>
                   <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-xs text-gray-700 font-medium">
-                    <span className="text-gray-400 font-bold mr-1">Finding:</span>
+                    <span className="text-gray-400 font-bold mr-1">
+                      Finding:
+                    </span>
                     {pillar.details}
                   </div>
                 </div>
@@ -341,31 +440,58 @@ export default function SaasUxAuditClient() {
             {/* Top Critical Issues Detected */}
             <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-sm">
               <h3 className="text-base font-bold text-gray-900 font-jakarta mb-4 flex items-center gap-2">
-                <svg className="w-5 h-5 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                <svg
+                  className="w-5 h-5 text-[#FF5B04]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  />
                 </svg>
                 Top Priority UX Friction Points
               </h3>
 
               <div className="space-y-3">
                 {report.criticalIssues.map((issue, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div
+                    key={i}
+                    className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  >
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-red-100 text-red-700 font-mono">
                           {issue.impact} Impact
                         </span>
-                        <span className="text-xs font-bold text-gray-900">{issue.title}</span>
+                        <span className="text-xs font-bold text-gray-900">
+                          {issue.title}
+                        </span>
                       </div>
-                      <p className="text-xs text-gray-600 leading-relaxed">{issue.solution}</p>
+                      <p className="text-xs text-gray-600 leading-relaxed">
+                        {issue.solution}
+                      </p>
                     </div>
                     <Link
-                      href="/contact"
                       className="text-xs font-bold text-[#FF5B04] hover:underline whitespace-nowrap flex items-center gap-1 self-start sm:self-center"
+                      href="/contact"
                     >
                       Request Fix
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M9 5l7 7-7 7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2.5"
+                        />
                       </svg>
                     </Link>
                   </div>
@@ -385,30 +511,46 @@ export default function SaasUxAuditClient() {
               How UI Pirate Audits SaaS & Web Applications
             </h2>
             <p className="text-xs text-gray-500 max-w-2xl mx-auto mt-2 leading-relaxed">
-              Product experience audits evaluate the gap between what users intend to achieve and the cognitive friction they encounter.
+              Product experience audits evaluate the gap between what users
+              intend to achieve and the cognitive friction they encounter.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Time-to-Value & Activation</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                01
+              </span>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">
+                Time-to-Value & Activation
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                We measure how many minutes and form fields stand between signup completion and the user’s first "Aha!" moment.
+                We measure how many minutes and form fields stand between signup
+                completion and the user’s first "Aha!" moment.
               </p>
             </div>
             <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Information Architecture</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                02
+              </span>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">
+                Information Architecture
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Organizing sidebars and multi-tenant permissions by job-to-be-done rather than back-end database schemas.
+                Organizing sidebars and multi-tenant permissions by
+                job-to-be-done rather than back-end database schemas.
               </p>
             </div>
             <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Conversion & Retention</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                03
+              </span>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">
+                Conversion & Retention
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Elevating high-impact features, standardizing interactive components, and reducing upgrade paywall friction.
+                Elevating high-impact features, standardizing interactive
+                components, and reducing upgrade paywall friction.
               </p>
             </div>
           </div>

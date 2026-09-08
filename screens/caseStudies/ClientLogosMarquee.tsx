@@ -2,44 +2,7 @@
 
 import { motion } from "framer-motion";
 
-const clientLogos = [
-  {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
-    alt: "Ipsos - Global market research firm",
-  },
-  {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp",
-    alt: "Bioptex Medical - Healthcare technology",
-  },
-  {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
-    alt: "Khaitan & Co - APAC's largest law firm",
-  },
-  {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
-    alt: "RevUp AI - AI-powered business solutions",
-  },
-  {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg",
-    alt: "SimpleO AI - Legal management platform",
-  },
-  {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
-    alt: "ArthAlpha - Quant trading platform",
-  },
-  {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg",
-    alt: "Sarge - AI business solutions",
-  },
-  {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",
-    alt: "Awesome Health Club - Fitness platform",
-  },
-  {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg",
-    alt: "Rings & I - Custom jewelry",
-  },
-];
+import { ClientLogosGrid } from "@/components/ClientLogos";
 
 const ClientLogosMarquee = () => {
   return (
@@ -55,26 +18,7 @@ const ClientLogosMarquee = () => {
           Trusted by teams at
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-8 max-md:gap-6">
-          {clientLogos.map((logo, index) => (
-            <motion.div
-              key={logo.alt}
-              className="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300"
-              initial={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              viewport={{ once: true }}
-              whileInView={{ opacity: 1, scale: 1 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={logo.alt}
-                className="h-8 max-md:h-6 w-auto object-contain"
-                loading="lazy"
-                src={logo.url}
-              />
-            </motion.div>
-          ))}
-        </div>
+        <ClientLogosGrid />
       </div>
     </motion.section>
   );

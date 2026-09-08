@@ -41,15 +41,11 @@ export default function TestimonialCards() {
     : testimonials;
 
   return (
-    <section className="w-full pt-6 max-md:pt-4 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
-      <div className="text-center mb-10 max-md:mb-8">
-        <h2 className="text-4xl max-md:text-3xl font-bold">
-          What <span className="text-brand-orange">Clients Say</span>
-        </h2>
-      </div>
+    <section className="section-container">
       <div
-        className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[580px] max-md:h-[480px] overflow-hidden"
-          }`}
+        className={`relative transition-all duration-700 ease-in-out ${
+          isExpanded ? "h-auto" : "h-[580px] max-md:h-[480px] overflow-hidden"
+        }`}
       >
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (
@@ -65,7 +61,7 @@ export default function TestimonialCards() {
             // Clean occupation title
             const role = item.occupation
               ? item.occupation.split(",").slice(0, -1).join(",").trim() ||
-              item.occupation
+                item.occupation
               : "";
 
             return (
@@ -149,8 +145,6 @@ export default function TestimonialCards() {
                       </div>
                     )}
                   </div>
-
-
                 </div>
               </motion.div>
             );

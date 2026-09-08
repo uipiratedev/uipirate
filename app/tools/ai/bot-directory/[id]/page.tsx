@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
+
 import { DETAILED_BOTS, getBotById } from "@/data/bots";
 import SuggestedTools from "@/components/SuggestedTools";
 
@@ -17,6 +19,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const bot = getBotById(id);
+
   if (!bot) return { title: "Crawler Not Found | UI Pirate" };
 
   return {
@@ -49,7 +52,9 @@ export default async function BotDetailPageNested({ params }: Props) {
   const blockSnippet = `# Block ${bot.name}\nUser-agent: ${bot.userAgent}\nDisallow: /`;
 
   const relatedBots = DETAILED_BOTS.filter(
-    (b) => b.id !== bot.id && (b.category === bot.category || b.company === bot.company)
+    (b) =>
+      b.id !== bot.id &&
+      (b.category === bot.category || b.company === bot.company),
   ).slice(0, 3);
 
   const jsonLd = {
@@ -57,26 +62,26 @@ export default async function BotDetailPageNested({ params }: Props) {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "name": bot.name,
-        "applicationCategory": bot.categoryLabel,
-        "description": bot.description,
-        "operatingSystem": "Web Server / HTTP",
-        "provider": {
+        name: bot.name,
+        applicationCategory: bot.categoryLabel,
+        description: bot.description,
+        operatingSystem: "Web Server / HTTP",
+        provider: {
           "@type": "Organization",
-          "name": bot.company,
+          name: bot.company,
         },
-        "url": `https://uipirate.com/tools/ai/bot-directory/${bot.id}`,
+        url: `https://uipirate.com/tools/ai/bot-directory/${bot.id}`,
       },
       ...(bot.faqs.length > 0
         ? [
             {
               "@type": "FAQPage",
-              "mainEntity": bot.faqs.map((faq) => ({
+              mainEntity: bot.faqs.map((faq) => ({
                 "@type": "Question",
-                "name": faq.question,
-                "acceptedAnswer": {
+                name: faq.question,
+                acceptedAnswer: {
                   "@type": "Answer",
-                  "text": faq.answer,
+                  text: faq.answer,
                 },
               })),
             },
@@ -96,15 +101,17 @@ export default async function BotDetailPageNested({ params }: Props) {
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
 
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <div className="section-container pt-32 pb-20 relative z-10">
         {/* Hero Card */}
@@ -138,12 +145,22 @@ export default async function BotDetailPageNested({ params }: Props) {
             {/* Quick Audit CTA Button */}
             <div className="flex-shrink-0">
               <Link
-                href={`/tools/ai/ai-bot-checker`}
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all shadow-md shadow-[#FF5B04]/20"
+                href={`/tools/ai/ai-bot-checker`}
               >
                 <span>Audit Your Site for {bot.name}</span>
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                  />
                 </svg>
               </Link>
             </div>
@@ -162,53 +179,93 @@ export default async function BotDetailPageNested({ params }: Props) {
 
               <div className="divide-y divide-gray-100 text-xs">
                 <div className="py-3 flex justify-between items-center">
-                  <span className="text-gray-500 font-medium">User-Agent Token</span>
+                  <span className="text-gray-500 font-medium">
+                    User-Agent Token
+                  </span>
                   <code className="font-mono bg-gray-50 border border-gray-200 px-2.5 py-1 rounded text-gray-900 font-bold">
                     {bot.userAgent}
                   </code>
                 </div>
                 <div className="py-3 flex justify-between items-center">
-                  <span className="text-gray-500 font-medium">Operator / Owner</span>
-                  <span className="font-semibold text-gray-900">{bot.company}</span>
+                  <span className="text-gray-500 font-medium">
+                    Operator / Owner
+                  </span>
+                  <span className="font-semibold text-gray-900">
+                    {bot.company}
+                  </span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
-                  <span className="text-gray-500 font-medium">Primary Purpose</span>
-                  <span className="text-gray-700 text-right max-w-xs">{bot.purpose}</span>
+                  <span className="text-gray-500 font-medium">
+                    Primary Purpose
+                  </span>
+                  <span className="text-gray-700 text-right max-w-xs">
+                    {bot.purpose}
+                  </span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
                   <span className="text-gray-500 font-medium">SEO Impact</span>
                   <span
                     className={`font-semibold ${
-                      bot.seoImpact === "Critical for SEO" ? "text-red-600" : "text-gray-700"
+                      bot.seoImpact === "Critical for SEO"
+                        ? "text-red-600"
+                        : "text-gray-700"
                     }`}
                   >
                     {bot.seoImpact}
                   </span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
-                  <span className="text-gray-500 font-medium">Respects robots.txt</span>
+                  <span className="text-gray-500 font-medium">
+                    Respects robots.txt
+                  </span>
                   <span className="text-emerald-600 font-bold flex items-center gap-1">
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M5 13l4 4L19 7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2.5"
+                      />
                     </svg>
                     Standard Compliant (RFC 9309)
                   </span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
-                  <span className="text-gray-500 font-medium">Reverse DNS Hostname</span>
-                  <span className="font-mono text-gray-600">{bot.reverseDnsHost}</span>
+                  <span className="text-gray-500 font-medium">
+                    Reverse DNS Hostname
+                  </span>
+                  <span className="font-mono text-gray-600">
+                    {bot.reverseDnsHost}
+                  </span>
                 </div>
                 <div className="py-3 flex justify-between items-center">
-                  <span className="text-gray-500 font-medium">Official Documentation</span>
+                  <span className="text-gray-500 font-medium">
+                    Official Documentation
+                  </span>
                   <a
-                    href={bot.officialDocsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="text-[#FF5B04] hover:underline font-semibold flex items-center gap-1.5"
+                    href={bot.officialDocsUrl}
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
                     Operator Docs
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2.5"
+                      />
                     </svg>
                   </a>
                 </div>
@@ -224,8 +281,13 @@ export default async function BotDetailPageNested({ params }: Props) {
 
                 <div className="space-y-4">
                   {bot.faqs.map((faq, i) => (
-                    <div key={i} className="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-1.5">
-                      <h3 className="text-xs font-bold text-gray-900">{faq.question}</h3>
+                    <div
+                      key={i}
+                      className="p-4 rounded-xl bg-gray-50 border border-gray-100 space-y-1.5"
+                    >
+                      <h3 className="text-xs font-bold text-gray-900">
+                        {faq.question}
+                      </h3>
                       <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
                         {faq.answer}
                       </p>
@@ -280,17 +342,29 @@ export default async function BotDetailPageNested({ params }: Props) {
                   {relatedBots.map((rel) => (
                     <Link
                       key={rel.id}
-                      href={`/tools/ai/bot-directory/${rel.id}`}
                       className="p-3 rounded-xl border border-gray-100 hover:border-[#FF5B04]/30 hover:bg-[#FFF9F5] transition-all flex items-center justify-between group"
+                      href={`/tools/ai/bot-directory/${rel.id}`}
                     >
                       <div>
                         <div className="text-xs font-bold text-gray-900 group-hover:text-[#FF5B04]">
                           {rel.name}
                         </div>
-                        <div className="text-[11px] text-gray-400">{rel.company}</div>
+                        <div className="text-[11px] text-gray-400">
+                          {rel.company}
+                        </div>
                       </div>
-                      <svg className="w-4 h-4 text-gray-300 group-hover:text-[#FF5B04] group-hover:translate-x-0.5 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-4 h-4 text-gray-300 group-hover:text-[#FF5B04] group-hover:translate-x-0.5 transition-all"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M9 5l7 7-7 7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
                       </svg>
                     </Link>
                   ))}
@@ -301,7 +375,7 @@ export default async function BotDetailPageNested({ params }: Props) {
         </div>
 
         {/* Suggested Tools Section */}
-        <SuggestedTools currentToolId="bot-directory" category="ai-geo" />
+        <SuggestedTools category="ai-geo" currentToolId="bot-directory" />
       </div>
     </div>
   );

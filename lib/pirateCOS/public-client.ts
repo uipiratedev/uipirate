@@ -73,7 +73,10 @@ function toReaderPost(p: any): ReaderPost {
     bannerImage: p.bannerImage,
     tags: Array.isArray(p.tags) ? p.tags : [],
     postType: p.postType,
-    author: { name: p.author?.name ?? "UI Pirate", email: p.author?.email ?? "" },
+    author: {
+      name: p.author?.name ?? "UI Pirate",
+      email: p.author?.email ?? "",
+    },
     readTime: p.readTime,
     views: p.views,
     totalViews: p.totalViews,
@@ -84,7 +87,8 @@ function toReaderPost(p: any): ReaderPost {
     metrics: Array.isArray(p.metrics) ? p.metrics : undefined,
     externalUrl: p.externalUrl,
     seo: p.seo,
-    createdAt: p.createdAt ?? p.publishedAt ?? p.updatedAt ?? new Date(0).toISOString(),
+    createdAt:
+      p.createdAt ?? p.publishedAt ?? p.updatedAt ?? new Date(0).toISOString(),
     publishedAt: p.publishedAt ?? p.createdAt ?? null,
     updatedAt: p.updatedAt ?? p.createdAt ?? new Date(0).toISOString(),
   };
@@ -162,9 +166,7 @@ export async function listPosts(opts?: {
 }
 
 /** Fetch a single published post by slug. Returns null if not found. */
-export async function getPostBySlug(
-  slug: string,
-): Promise<ReaderPost | null> {
+export async function getPostBySlug(slug: string): Promise<ReaderPost | null> {
   const json = await apiGet(`/content/${encodeURIComponent(slug)}`);
 
   if (!json?.success || !json.data) return null;

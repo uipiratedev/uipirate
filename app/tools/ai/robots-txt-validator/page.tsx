@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import RobotsTxtValidatorClient from "@/components/RobotsTxtValidator/RobotsTxtValidatorClient";
 
 export const metadata: Metadata = {

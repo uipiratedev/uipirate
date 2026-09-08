@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import UpcomingToolLandingPage, { UpcomingToolSpec } from "@/components/UpcomingToolLandingPage";
+
+import UpcomingToolLandingPage, {
+  UpcomingToolSpec,
+} from "@/components/UpcomingToolLandingPage";
 
 export const metadata: Metadata = {
   title: "Homepage SEO & Conversion Checker | UI Pirate",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import LlmsTxtGeneratorClient from "@/components/LlmsTxtGenerator/LlmsTxtGeneratorClient";
 
 export const metadata: Metadata = {

@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { Card, CardBody, Accordion, AccordionItem } from "@heroui/react";
 
 import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
 import { CheckIcon } from "@/components/icons";
+import { ClientLogosGrid } from "@/components/ClientLogos";
 import LandingWhoWeAre from "@/screens/landing/whoWeAre";
 import PricingPerfectFor from "@/screens/pricing/perfectFor";
 import {
@@ -63,95 +63,7 @@ const ABOUT_FAQS = [
   },
 ];
 
-const clientLogos = [
-  {
-    name: "Pivot Bits",
-    logo: "/assets/logos/pivotbits.png",
-    desc: "Enterprise Security Software",
-    isUS: true,
-    invertColor: true,
-  },
-  {
-    name: "Ipsos",
-    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
-    desc: "Global Market Research",
-    isUS: false,
-  },
-  {
-    name: "Biotex Medical",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp",
-    desc: "MedTech",
-    isUS: true,
-  },
-  {
-    name: "Khaitan & Co",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
-    desc: "Asia's Largest Law Firm",
-    isUS: false,
-  },
-  {
-    name: "RevUp AI",
-    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
-    desc: "AI Platform",
-    isUS: true,
-  },
-  {
-    name: "Simpleo AI",
-    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg",
-    desc: "AI Solutions",
-    isUS: true,
-  },
-  {
-    name: "Sarge",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg",
-    desc: "AI Police Tech Platform",
-    isUS: true,
-  },
-  {
-    name: "Awesome Health",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",
-    desc: "HealthTech",
-    isUS: true,
-  },
-  {
-    name: "Rings & I",
-    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg",
-    desc: "E-commerce",
-    isUS: true,
-  },
-  {
-    name: "Arth Alpha",
-    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
-    desc: "Quant Trading Startup",
-    isUS: false,
-  }
-];
-
-const logoContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const logoItemVariants: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: [0.33, 1, 0.68, 1],
-    },
-  },
-};
-
 export default function AboutPage() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
   return (
     <div className="bg-[#fafafa] overflow-hidden">
       {/* About page JSON-LD */}
@@ -310,7 +222,7 @@ export default function AboutPage() {
           }),
         }}
       />
-      
+
       {/* About FAQ JSON-LD */}
       <script
         dangerouslySetInnerHTML={{
@@ -372,9 +284,10 @@ export default function AboutPage() {
 
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
-              We are a product design and development studio. We help SaaS founders
-              and enterprise teams think through the product, design for real users,
-              and ship production-ready code. No hand-offs, no gaps.
+              We are a product design and development studio. We help SaaS
+              founders and enterprise teams think through the product, design
+              for real users, and ship production-ready code. No hand-offs, no
+              gaps.
             </p>
 
             {/* US Market Badge */}
@@ -434,15 +347,18 @@ export default function AboutPage() {
             <motion.div
               className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[160px]" />
               <div className="z-10 relative">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Strategy Before Pixels</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Strategy Before Pixels
+                </h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                  Positioning, user flows, and scope mapped before any screen is touched.
+                  Positioning, user flows, and scope mapped before any screen is
+                  touched.
                 </p>
               </div>
             </motion.div>
@@ -453,15 +369,19 @@ export default function AboutPage() {
             <motion.div
               className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[120px]" />
               <div className="z-10 relative">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Complex Made Simple</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Complex Made Simple
+                </h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed max-w-xl">
-                  We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use.
+                  We turn multi-role dashboards, data-heavy flows, and
+                  enterprise systems into interfaces that are fast to learn and
+                  easy to use.
                 </p>
               </div>
             </motion.div>
@@ -472,15 +392,18 @@ export default function AboutPage() {
             <motion.div
               className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
               <div className="z-10 relative">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Built to Convert</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Built to Convert
+                </h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                  Every flow is built to move users forward. Conversion is the brief.
+                  Every flow is built to move users forward. Conversion is the
+                  brief.
                 </p>
               </div>
             </motion.div>
@@ -491,15 +414,18 @@ export default function AboutPage() {
             <motion.div
               className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
               <div className="z-10 relative">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Design Through to Code</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Design Through to Code
+                </h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                  Wireframes to React, Angular, and Next.js. One team, no hand-offs.
+                  Wireframes to React, Angular, and Next.js. One team, no
+                  hand-offs.
                 </p>
               </div>
             </motion.div>
@@ -510,15 +436,18 @@ export default function AboutPage() {
             <motion.div
               className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
               <div className="z-10 relative">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Same Hours as Your Team</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Same Hours as Your Team
+                </h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                  US Eastern and Pacific hours. Real-time calls, no time zone gaps.
+                  US Eastern and Pacific hours. Real-time calls, no time zone
+                  gaps.
                 </p>
               </div>
             </motion.div>
@@ -529,15 +458,18 @@ export default function AboutPage() {
             <motion.div
               className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.5 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[120px]" />
               <div className="z-10 relative">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">50+ Products, Not Guesses</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  50+ Products, Not Guesses
+                </h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed max-w-xl">
-                  Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before.
+                  Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have
+                  solved this type of problem before.
                 </p>
               </div>
             </motion.div>
@@ -589,45 +521,59 @@ export default function AboutPage() {
               {/* Icon Container - Exact Reference Match (Outer gray pill, inner white pill) */}
               <div className="w-[74px] h-[50px] bg-[#F3F4F6] rounded-[20px] p-[5px] mb-6 flex-shrink-0">
                 <div className="w-full h-full bg-white rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] flex items-center justify-center">
-                  
                   {/* 3D Glossy Orange Icon */}
                   <div className="relative flex items-center justify-center">
                     {/* Blurred Drop Shadow */}
-                    <svg 
-                      viewBox="0 0 24 24" 
-                      fill="#ff7a2e" 
+                    <svg
                       className="w-[24px] h-[24px] absolute blur-[3px] opacity-60 translate-y-[2px]"
+                      fill="#ff7a2e"
+                      viewBox="0 0 24 24"
                     >
                       {item.icon()}
                     </svg>
-                    
+
                     {/* Main Glossy Icon */}
-                    <svg 
-                      viewBox="0 0 24 24" 
-                      fill="url(#orange-gloss)" 
+                    <svg
                       className="w-[24px] h-[24px] relative z-10"
+                      fill="url(#orange-gloss)"
+                      viewBox="0 0 24 24"
                     >
                       <defs>
-                        <linearGradient id="orange-gloss" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#ffb885" /> {/* Light orange top */}
-                          <stop offset="100%" stopColor="#ff5e00" /> {/* Vibrant orange bottom */}
+                        <linearGradient
+                          id="orange-gloss"
+                          x1="0%"
+                          x2="0%"
+                          y1="0%"
+                          y2="100%"
+                        >
+                          <stop offset="0%" stopColor="#ffb885" />{" "}
+                          {/* Light orange top */}
+                          <stop offset="100%" stopColor="#ff5e00" />{" "}
+                          {/* Vibrant orange bottom */}
                         </linearGradient>
                       </defs>
-                      
+
                       {/* Base Shape */}
                       {item.icon()}
-                      
+
                       {/* Inner White Highlight (Glass effect) */}
-                      <g fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.7" style={{ transform: 'translateY(0.5px)' }}>
+                      <g
+                        fill="none"
+                        stroke="white"
+                        strokeOpacity="0.7"
+                        strokeWidth="0.8"
+                        style={{ transform: "translateY(0.5px)" }}
+                      >
                         {item.icon()}
                       </g>
                     </svg>
                   </div>
-                  
                 </div>
               </div>
-              
-              <h3 className="font-semibold text-lg text-gray-900 mb-2">{item.title}</h3>
+
+              <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                {item.title}
+              </h3>
               <p className="text-gray-500 text-sm leading-relaxed flex-1">
                 {item.desc}
               </p>
@@ -653,8 +599,9 @@ export default function AboutPage() {
               "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
               "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
               "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
-              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg"
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
             ];
+
             return (
               <motion.div
                 key={step.title}
@@ -768,115 +715,8 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="w-full mt-6">
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
-            initial="hidden"
-            variants={logoContainerVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
-          >
-            {clientLogos.map((logo, index) => (
-              <motion.div
-                key={index}
-                className="logo-item group flex flex-col items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden cursor-default"
-                style={{
-                  background:
-                    "linear-gradient(142deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0.55) 100%)",
-                  backdropFilter: "blur(32px) saturate(120%) brightness(100%)",
-                  WebkitBackdropFilter:
-                    "blur(32px) saturate(120%) brightness(100%)",
-                  border: "2px solid rgba(255, 255, 255, 0.12)",
-                  boxShadow:
-                    "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
-                }}
-                variants={logoItemVariants}
-                onHoverEnd={() => setHoveredIndex(null)}
-                onHoverStart={() => setHoveredIndex(index)}
-              >
-                {/* Brand Orange Border - appears on hover */}
-                <motion.div
-                  animate={{
-                    opacity: hoveredIndex === index ? 1 : 0,
-                    boxShadow:
-                      hoveredIndex === index
-                        ? "0 0 20px rgba(255, 91, 4, 0.3), 0 0 40px rgba(255, 91, 4, 0.1)"
-                        : "0 0 0px rgba(255, 91, 4, 0)",
-                  }}
-                  className="brand-border"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    borderRadius: "0.75rem",
-                    padding: "2px",
-                    background:
-                      "linear-gradient(135deg, #FF5B04 0%, #FF7B34 50%, #FF5B04 100%)",
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                    pointerEvents: "none",
-                    zIndex: 1,
-                  }}
-                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                />
-
-                <motion.img
-                  alt={logo.name}
-                  animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
-                  className="h-[32px] max-h-[32px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
-                  loading="lazy"
-                  src={logo.logo}
-                  style={logo.invertColor ? { filter: 'invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)' } : undefined}
-                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                />
-                <span className="mt-3 text-[11px] text-gray-500 font-medium relative z-10 text-center uppercase tracking-wide leading-tight group-hover:text-gray-700 transition-colors">
-                  {logo.desc}
-                </span>
-                {logo.isUS && (
-                  <span className="mt-1 text-[10px] text-brand-orange font-bold relative z-10">
-                    🇺🇸 US
-                  </span>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+        <ClientLogosGrid />
       </section>
-
-      <style jsx>{`
-        @media (prefers-reduced-motion: reduce) {
-          .logo-item,
-          .logo-item img,
-          .brand-border {
-            transition: none !important;
-            animation: none !important;
-          }
-        }
-
-        .logo-item {
-          position: relative;
-        }
-
-        .logo-item::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          border-radius: 0.75rem;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 91, 4, 0.06),
-            rgba(255, 123, 52, 0.04)
-          );
-          opacity: 0;
-          transition: opacity 0.4s ease;
-          z-index: 0;
-        }
-
-        .logo-item:hover::before {
-          opacity: 1;
-        }
-      `}</style>
 
       {/* Who We Work Best With - Landing Page Component */}
       <PricingPerfectFor />
@@ -940,7 +780,8 @@ export default function AboutPage() {
                 <span className="text-brand-orange">Product</span>?
               </h2>
               <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-                Book a free 15-minute call. Tell us your vision — we'll bring it to life.
+                Book a free 15-minute call. Tell us your vision — we&apos;ll
+                bring it to life.
               </p>
               <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
                 <Link

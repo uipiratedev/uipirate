@@ -32,23 +32,21 @@ export const ApexEmblemIcon: React.FC<{ className?: string }> = ({
   className = "w-[16px] h-[16px]",
 }) => (
   <svg
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    xmlns="http://www.w3.org/2000/svg"
     className={className}
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
   >
     {/* Upper solid triangle apex of the "A" */}
-    <path
-      d="M12 2.2L6.2 13.5H17.8L12 2.2ZM12 6.8L14.4 11.5H9.6L12 6.8Z"
-    />
+    <path d="M12 2.2L6.2 13.5H17.8L12 2.2ZM12 6.8L14.4 11.5H9.6L12 6.8Z" />
     {/* Left and Right solid lower legs */}
     <polygon points="6.2,13.5 3,21.5 6.8,21.5 8.2,18 7.2,15.5 8.5,13.5" />
     <polygon points="17.8,13.5 21,21.5 17.2,21.5 15.8,18 16.8,15.5 15.5,13.5" />
     {/* Horizontal ladder rungs / stripes spanning the inner opening */}
-    <rect x="7.4" y="14.2" width="9.2" height="1.1" rx="0.3" />
-    <rect x="6.8" y="16.0" width="10.4" height="1.1" rx="0.3" />
-    <rect x="6.0" y="17.8" width="12.0" height="1.1" rx="0.3" />
-    <rect x="5.2" y="19.6" width="13.6" height="1.1" rx="0.3" />
+    <rect height="1.1" rx="0.3" width="9.2" x="7.4" y="14.2" />
+    <rect height="1.1" rx="0.3" width="10.4" x="6.8" y="16.0" />
+    <rect height="1.1" rx="0.3" width="12.0" x="6.0" y="17.8" />
+    <rect height="1.1" rx="0.3" width="13.6" x="5.2" y="19.6" />
   </svg>
 );
 
@@ -75,11 +73,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   const [isPressed, setIsPressed] = useState(false);
 
   const activeHover =
-    stateMode === "hover"
-      ? true
-      : stateMode === "standerd"
-      ? false
-      : isHovered;
+    stateMode === "hover" ? true : stateMode === "standerd" ? false : isHovered;
   const activePressed = stateMode === "interactive" ? isPressed : false;
 
   // Exact spec scales: Outer 223x61px, Cap 211x49px, Circle 45px, Inner Ellipse 26x26px
@@ -87,8 +81,16 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -136,7 +138,8 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   const themeStyles = {
     dark: {
       outerBg: "bg-[rgba(209,213,236,0.14)]",
-      outerShadow: "shadow-[0px_1.5px_0px_0px_white,inset_0px_0px_2px_0px_rgba(0,0,0,0.4)]",
+      outerShadow:
+        "shadow-[0px_1.5px_0px_0px_white,inset_0px_0px_2px_0px_rgba(0,0,0,0.4)]",
       capBg: "bg-[#343434]",
       textColor: "text-[#F8F8F8]",
       textShadow: "0px 1px 1px rgba(0,0,0,0.5)",
@@ -152,7 +155,8 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
     },
     orange: {
       outerBg: "bg-[rgba(255,91,4,0.15)]",
-      outerShadow: "shadow-[0px_1.5px_0px_0px_rgba(255,255,255,0.7),inset_0px_0px_3px_0px_rgba(255,91,4,0.4)]",
+      outerShadow:
+        "shadow-[0px_1.5px_0px_0px_rgba(255,255,255,0.7),inset_0px_0px_3px_0px_rgba(255,91,4,0.4)]",
       capBg: "bg-[#FF5B04]",
       textColor: "text-white",
       textShadow: "0px 1px 2px rgba(0,0,0,0.4)",
@@ -168,7 +172,8 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
     },
     light: {
       outerBg: "bg-[rgba(0,0,0,0.06)]",
-      outerShadow: "shadow-[0px_1.5px_0px_0px_white,inset_0px_0px_2px_0px_rgba(0,0,0,0.15)]",
+      outerShadow:
+        "shadow-[0px_1.5px_0px_0px_white,inset_0px_0px_2px_0px_rgba(0,0,0,0.15)]",
       capBg: "bg-[#FAFAFA]",
       textColor: "text-gray-900",
       textShadow: "0px 1px 0px rgba(255,255,255,0.8)",
@@ -184,7 +189,8 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
     },
     cyberpunk: {
       outerBg: "bg-[rgba(0,229,190,0.12)]",
-      outerShadow: "shadow-[0px_1.5px_0px_0px_rgba(0,229,190,0.5),inset_0px_0px_4px_0px_rgba(0,229,190,0.35)]",
+      outerShadow:
+        "shadow-[0px_1.5px_0px_0px_rgba(0,229,190,0.5),inset_0px_0px_4px_0px_rgba(0,229,190,0.35)]",
       capBg: "bg-[#111827]",
       textColor: "text-[#E0F2FE]",
       textShadow: "0px 0px 8px rgba(0,229,190,0.5)",
@@ -213,16 +219,18 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
     >
       {/* 1. Interactive Button Cap (Frame 11 - 118:6174) */}
       <motion.button
-        type="button"
-        disabled={disabled}
-        onClick={onClick}
-        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
-        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
-        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
-        onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
         animate={{
           y: activePressed ? 1.5 : activeHover ? sizeConfig.liftY : 0,
           scale: activePressed ? 0.985 : 1,
+        }}
+        className={`relative flex items-center ${sizeConfig.gap} ${sizeConfig.innerPadding} ${sizeConfig.innerRadius} ${themeStyles.capBg} cursor-pointer focus:outline-none overflow-hidden`}
+        disabled={disabled}
+        style={{
+          filter: activeHover
+            ? themeStyles.hoverShadow
+            : themeStyles.restingShadow,
+          willChange: "transform",
+          WebkitFontSmoothing: "subpixel-antialiased",
         }}
         transition={{
           type: "spring",
@@ -230,12 +238,12 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
           damping: 24,
           mass: 0.7,
         }}
-        className={`relative flex items-center ${sizeConfig.gap} ${sizeConfig.innerPadding} ${sizeConfig.innerRadius} ${themeStyles.capBg} cursor-pointer focus:outline-none overflow-hidden`}
-        style={{
-          filter: activeHover ? themeStyles.hoverShadow : themeStyles.restingShadow,
-          willChange: "transform",
-          WebkitFontSmoothing: "subpixel-antialiased",
-        }}
+        type="button"
+        onClick={onClick}
+        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
+        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
+        onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
+        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
       >
         {/* 2. Text Label (118:6175) */}
         <span
@@ -267,7 +275,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
           className={`absolute inset-0 pointer-events-none ${sizeConfig.innerRadius} ${themeStyles.capBevel}`}
         />
       </motion.button>
-    </div>
+    </div>,
   );
 };
 

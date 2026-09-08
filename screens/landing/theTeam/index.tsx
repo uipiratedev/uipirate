@@ -2,8 +2,6 @@ import { Card, CardBody, Tooltip } from "@heroui/react";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 
-import GlassBadge from "@/components/GlassBadge";
-
 const TheTeam = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 

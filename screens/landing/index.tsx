@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import LandingHero from "./hero";
 import LandingMarquee from "./marquee";
 import Pricing from "./pricing";
-import TheTeam from "./theTeam";
 import LandingWhoWeAre from "./whoWeAre";
 import FeaturedCaseStudy, {
   type FeaturedCaseStudyData,
@@ -99,8 +98,6 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
         <div id="pricing">
           <Pricing />
         </div>
-
-        <TheTeam />
 
         {/* <BoreYouCommit /> */}
 

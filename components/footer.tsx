@@ -215,10 +215,7 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    className="footer-text"
-                    href="https://propirates.com"
-                  >
+                  <Link className="footer-text" href="https://propirates.com">
                     ProPirates
                   </Link>
                 </li>
@@ -230,10 +227,7 @@ export const Footer: React.FC = () => {
               <h4 className="link-heading">Services</h4>
               <ul className="flex flex-col gap-1">
                 <li>
-                  <Link
-                    className="footer-text"
-                    href="/services/UX-UI-Design"
-                  >
+                  <Link className="footer-text" href="/services/UX-UI-Design">
                     UX/UI Design
                   </Link>
                 </li>

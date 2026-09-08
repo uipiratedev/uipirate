@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+
 import {
   LedMatrixChevronButton,
   LedMatrixTheme,
@@ -92,12 +92,15 @@ export default function LedMatrixChevronScreen() {
   const [theme, setTheme] = useState<LedMatrixTheme>("monochrome");
   const [size, setSize] = useState<LedMatrixSize>("md");
   const [stateMode, setStateMode] = useState<LedMatrixStateMode>("interactive");
-  const [interactionMode, setInteractionMode] = useState<LedMatrixInteractionMode>("hover");
+  const [interactionMode, setInteractionMode] =
+    useState<LedMatrixInteractionMode>("hover");
   const [label, setLabel] = useState("See Plans");
   const [enableMovingLoop, setEnableMovingLoop] = useState(true);
   const [stepSpeedMs, setStepSpeedMs] = useState(110);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [activeCodeTab, setActiveCodeTab] = useState<
+    "component" | "usage" | "css"
+  >("component");
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
@@ -156,345 +159,482 @@ export default function Example() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-              LED Matrix Chevron <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile Button</span>
+              LED Matrix Chevron{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">
+                Tactile Button
+              </span>
             </h1>
 
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-              Expandable phosphor LED dot-matrix chevron button featuring physical grid illumination, animated marquee shift loop, and specular bevel framing.
+              Expandable phosphor LED dot-matrix chevron button featuring
+              physical grid illumination, animated marquee shift loop, and
+              specular bevel framing.
             </p>
           </header>
 
-        {/* Live Interactive Studio / Sandbox */}
-        <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <StudioCanvas>
+          {/* Live Interactive Studio / Sandbox */}
+          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+            <StudioCanvas>
               <LedMatrixChevronButton
+                enableMovingLoop={enableMovingLoop}
+                interactionMode={interactionMode}
                 label={label}
-                theme={theme}
                 size={size}
                 stateMode={stateMode}
-                interactionMode={interactionMode}
-                enableMovingLoop={enableMovingLoop}
                 stepSpeedMs={stepSpeedMs}
+                theme={theme}
               />
-          </StudioCanvas>
-        </div>
+            </StudioCanvas>
+          </div>
 
-        {/* Customizer */}
-        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
-              <input
-                type="text"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              />
-            </div>
+          {/* Customizer */}
+          <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
+              Customizer
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Label
+                </label>
+                <input
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  type="text"
+                  value={label}
+                  onChange={(e) => setLabel(e.target.value)}
+                />
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as LedMatrixTheme)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="monochrome" className="bg-[#101014]">Monochrome (1:1 spec)</option>
-                <option value="uipirate" className="bg-[#101014]">UI Pirate Orange</option>
-                <option value="emerald" className="bg-[#101014]">Phosphor Emerald</option>
-                <option value="cyan" className="bg-[#101014]">Electric Cyan</option>
-                <option value="amber" className="bg-[#101014]">Vintage Amber</option>
-                <option value="crimson" className="bg-[#101014]">Cyber Crimson</option>
-              </select>
-            </div>
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Theme
+                </label>
+                <select
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value as LedMatrixTheme)}
+                >
+                  <option className="bg-[#101014]" value="monochrome">
+                    Monochrome (1:1 spec)
+                  </option>
+                  <option className="bg-[#101014]" value="uipirate">
+                    UI Pirate Orange
+                  </option>
+                  <option className="bg-[#101014]" value="emerald">
+                    Phosphor Emerald
+                  </option>
+                  <option className="bg-[#101014]" value="cyan">
+                    Electric Cyan
+                  </option>
+                  <option className="bg-[#101014]" value="amber">
+                    Vintage Amber
+                  </option>
+                  <option className="bg-[#101014]" value="crimson">
+                    Cyber Crimson
+                  </option>
+                </select>
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-              <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as typeof size)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
-                <option value="sm" className="bg-[#151518] text-white">Small</option>
-                <option value="md" className="bg-[#151518] text-white">Medium</option>
-                <option value="lg" className="bg-[#151518] text-white">Large</option>
-                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
-              </select>
-            </div>
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  Scale
+                </label>
+                <select
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as typeof size)}
+                >
+                  <option className="bg-[#151518] text-white" value="xs">
+                    Extra Small
+                  </option>
+                  <option className="bg-[#151518] text-white" value="sm">
+                    Small
+                  </option>
+                  <option className="bg-[#151518] text-white" value="md">
+                    Medium
+                  </option>
+                  <option className="bg-[#151518] text-white" value="lg">
+                    Large
+                  </option>
+                  <option className="bg-[#151518] text-white" value="xl">
+                    Extra Large
+                  </option>
+                </select>
+              </div>
 
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as LedMatrixStateMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="interactive" className="bg-[#101014]">Interactive</option>
-                <option value="standerd" className="bg-[#101014]">Standard</option>
-                <option value="hover" className="bg-[#101014]">Hover</option>
-              </select>
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  State Preview
+                </label>
+                <select
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  value={stateMode}
+                  onChange={(e) =>
+                    setStateMode(e.target.value as LedMatrixStateMode)
+                  }
+                >
+                  <option className="bg-[#101014]" value="interactive">
+                    Interactive
+                  </option>
+                  <option className="bg-[#101014]" value="standerd">
+                    Standard
+                  </option>
+                  <option className="bg-[#101014]" value="hover">
+                    Hover
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             ALL VARIANTS & THEMES PREVIEW CARD
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#10B981] mb-1.5">
-                <span>PRESETS &amp; VARIATIONS</span>
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#10B981] mb-1.5">
+                  <span>PRESETS &amp; VARIATIONS</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">
+                  All Variants Preview
+                </h2>
               </div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+              <p className="text-xs text-gray-400 font-mono">
+                Hover over buttons to expand dot matrix screen &amp; trigger
+                cascading chevrons
+              </p>
             </div>
-            <p className="text-xs text-gray-400 font-mono">
-              Hover over buttons to expand dot matrix screen &amp; trigger cascading chevrons
-            </p>
+
+            <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Monochrome */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Monochrome</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">
+                      theme=&quot;monochrome&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <LedMatrixChevronButton
+                      label="See Plans"
+                      size="md"
+                      theme="monochrome"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    1:1 reference design with white LED grid pixels
+                  </span>
+                </div>
+
+                {/* UI Pirate Orange */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      UI Pirate Magma
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">
+                      theme=&quot;uipirate&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <LedMatrixChevronButton
+                      label="Get Started"
+                      size="md"
+                      theme="uipirate"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Signature magma orange LED illumination wave
+                  </span>
+                </div>
+
+                {/* Neon Emerald Matrix */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Neon Emerald
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">
+                      theme=&quot;emerald&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <LedMatrixChevronButton
+                      label="Deploy App"
+                      size="md"
+                      theme="emerald"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Cyberpunk reactor green LED matrix screen
+                  </span>
+                </div>
+
+                {/* Electric Cyan */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Electric Cyan
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">
+                      theme=&quot;cyan&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <LedMatrixChevronButton
+                      label="Explore Tech"
+                      size="md"
+                      theme="cyan"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Laser cyan glowing pixel chevrons
+                  </span>
+                </div>
+
+                {/* Amber Solar */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Amber Solar
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">
+                      theme=&quot;amber&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <LedMatrixChevronButton
+                      label="View Matrix"
+                      size="md"
+                      theme="amber"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    Warm golden amber retro terminal LED display
+                  </span>
+                </div>
+
+                {/* Crimson Laser */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">
+                      Crimson Laser
+                    </span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">
+                      theme=&quot;crimson&quot;
+                    </span>
+                  </div>
+                  <div className="my-3">
+                    <LedMatrixChevronButton
+                      label="Execute"
+                      size="md"
+                      theme="crimson"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">
+                    High-intensity ruby red cascading chevron pulse
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Monochrome */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Monochrome</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;monochrome&quot;</span>
-                </div>
-                <div className="my-3">
-                  <LedMatrixChevronButton
-                    theme="monochrome"
-                    label="See Plans"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with white LED grid pixels</span>
-              </div>
-
-              {/* UI Pirate Orange */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">UI Pirate Magma</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
-                </div>
-                <div className="my-3">
-                  <LedMatrixChevronButton
-                    theme="uipirate"
-                    label="Get Started"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange LED illumination wave</span>
-              </div>
-
-              {/* Neon Emerald Matrix */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Neon Emerald</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald&quot;</span>
-                </div>
-                <div className="my-3">
-                  <LedMatrixChevronButton
-                    theme="emerald"
-                    label="Deploy App"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green LED matrix screen</span>
-              </div>
-
-              {/* Electric Cyan */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Electric Cyan</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">theme=&quot;cyan&quot;</span>
-                </div>
-                <div className="my-3">
-                  <LedMatrixChevronButton
-                    theme="cyan"
-                    label="Explore Tech"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Laser cyan glowing pixel chevrons</span>
-              </div>
-
-              {/* Amber Solar */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Amber Solar</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;amber&quot;</span>
-                </div>
-                <div className="my-3">
-                  <LedMatrixChevronButton
-                    theme="amber"
-                    label="View Matrix"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Warm golden amber retro terminal LED display</span>
-              </div>
-
-              {/* Crimson Laser */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Crimson Laser</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">theme=&quot;crimson&quot;</span>
-                </div>
-                <div className="my-3">
-                  <LedMatrixChevronButton
-                    theme="crimson"
-                    label="Execute"
-                    size="md"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">High-intensity ruby red cascading chevron pulse</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
-          <div className="bg-[#101014] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Install required peer dependencies for animation support:
-            </p>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Installation &amp; Setup
+            </h2>
+            <div className="bg-[#101014] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Install required peer dependencies for animation support:
+              </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
-              <span>npm install framer-motion clsx</span>
-              <button
-                onClick={handleCopyInstall}
-                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
-              >
-                {copiedInstall ? "Copied Command!" : "Copy Command"}
-              </button>
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+                <span>npm install framer-motion clsx</span>
+                <button
+                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+                  onClick={handleCopyInstall}
+                >
+                  {copiedInstall ? "Copied Command!" : "Copy Command"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             CODE EXPORTER TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
-            <button
-              onClick={() =>
-                handleCopy(
-                  activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode,
-                  activeCodeTab
-                )
-              }
-              className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
-            >
-              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
-            </button>
-          </div>
-
-          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-white font-mono">
-                  {activeCodeTab === "component" ? "LedMatrixChevronButton.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
-                </span>
-                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
-              </div>
-
-              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
-                <button
-                  onClick={() => setActiveCodeTab("component")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "component" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Component.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("usage")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "usage" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Usage.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("css")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "css" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Tokens.css
-                </button>
-              </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white tracking-tight">
+                Code &amp; Integration
+              </h2>
+              <button
+                className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
+                onClick={() =>
+                  handleCopy(
+                    activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : cssOnlyCode,
+                    activeCodeTab,
+                  )
+                }
+              >
+                {copiedCode === activeCodeTab
+                  ? "✓ Copied to Clipboard"
+                  : "Copy Active Tab Code"}
+              </button>
             </div>
 
-            <div className="p-6 bg-[#08080A] overflow-x-auto max-h-[550px]">
-              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
-                <code>
-                  {activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode}
-                </code>
-              </pre>
+            <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-white font-mono">
+                    {activeCodeTab === "component"
+                      ? "LedMatrixChevronButton.tsx"
+                      : activeCodeTab === "usage"
+                        ? "Usage.tsx"
+                        : "Tokens.css"}
+                  </span>
+                  <span className="text-xs text-gray-500 font-mono">
+                    • Production Ready
+                  </span>
+                </div>
+
+                <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                  <button
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                      activeCodeTab === "component"
+                        ? "bg-emerald-500 text-black font-bold"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    onClick={() => setActiveCodeTab("component")}
+                  >
+                    Component.tsx
+                  </button>
+                  <button
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                      activeCodeTab === "usage"
+                        ? "bg-emerald-500 text-black font-bold"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    onClick={() => setActiveCodeTab("usage")}
+                  >
+                    Usage.tsx
+                  </button>
+                  <button
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                      activeCodeTab === "css"
+                        ? "bg-emerald-500 text-black font-bold"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                    onClick={() => setActiveCodeTab("css")}
+                  >
+                    Tokens.css
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 bg-[#08080A] overflow-x-auto max-h-[550px]">
+                <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                  <code>
+                    {activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : cssOnlyCode}
+                  </code>
+                </pre>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             PROPS & API REFERENCE TABLE
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
-          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
-                    <th className="py-3.5 px-6 font-semibold">Prop</th>
-                    <th className="py-3.5 px-6 font-semibold">Type</th>
-                    <th className="py-3.5 px-6 font-semibold">Default</th>
-                    <th className="py-3.5 px-6 font-semibold">Description</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
-                  <tr>
-                    <td className="py-3 px-6 text-emerald-400 font-semibold">label</td>
-                    <td className="py-3 px-6 text-blue-300">string</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;See Plans&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the button cap</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-emerald-400 font-semibold">theme</td>
-                    <td className="py-3 px-6 text-blue-300">LedMatrixTheme</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;monochrome&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">LED Phosphor color theme preset</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-emerald-400 font-semibold">onClick</td>
-                    <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
-                    <td className="py-3 px-6 text-gray-400">undefined</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Component API Reference
+            </h2>
+            <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
+                      <th className="py-3.5 px-6 font-semibold">Prop</th>
+                      <th className="py-3.5 px-6 font-semibold">Type</th>
+                      <th className="py-3.5 px-6 font-semibold">Default</th>
+                      <th className="py-3.5 px-6 font-semibold">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
+                    <tr>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        label
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">string</td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;See Plans&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Text displayed on the button cap
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        theme
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        LedMatrixTheme
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;monochrome&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        LED Phosphor color theme preset
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        size
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        &quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; |
+                        &quot;lg&quot; | &quot;xl&quot;
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;md&quot;
+                      </td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Scale multiplier
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        onClick
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
+                      <td className="py-3 px-6 text-gray-400">undefined</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">
+                        Click callback event handler
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Website Global CTA */}
-        <GlobalCTA topic="LED dot-matrix buttons or custom hardware UI controls" />
+          {/* Website Global CTA */}
+          <GlobalCTA topic="LED dot-matrix buttons or custom hardware UI controls" />
+        </div>
       </div>
-    </div>
-  </PageWrapper>
+    </PageWrapper>
   );
 }
