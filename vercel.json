@@ -4,6 +4,10 @@
     {
       "path": "/api/analytics/rollup",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/admin/indexing/cron?action=all",
+      "schedule": "0 2 * * *"
     }
   ]
 }

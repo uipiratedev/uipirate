@@ -41,6 +41,7 @@ export type Capability =
   | "manage:leads" // status, assignee, notes
   | "view:visitors:pii" // identified visitor list + raw journeys
   | "manage:users" // invite, role change, deactivate, reset password
+  | "manage:indexing" // search engine indexing, url inspection, sitemap diff
   | "export:data"; // CSV downloads
 
 const CAPABILITIES: Record<Role, Capability[]> = {
@@ -50,6 +51,7 @@ const CAPABILITIES: Record<Role, Capability[]> = {
     "manage:leads",
     "view:visitors:pii",
     "manage:users",
+    "manage:indexing",
     "export:data",
   ],
   "team-member": [
@@ -111,6 +113,12 @@ export const DASHBOARD_NAV: NavItem[] = [
     href: "/admin/visitors",
     icon: "users",
     capability: "view:visitors:pii",
+  },
+  {
+    label: "Indexing",
+    href: "/admin/indexing",
+    icon: "search",
+    capability: "manage:indexing",
   },
   {
     label: "Users & Roles",
