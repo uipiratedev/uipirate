@@ -9,9 +9,7 @@ const LandingBusinessHelp = () => {
         What We{" "}
         <span className="text-brand-orange"> Design, Build, & Scale</span>
       </SectionHeader>
-      <div className="autoShowBottom">
-        <ServicesSection />
-      </div>
+      <ServicesSection />
     </div>
   );
 };

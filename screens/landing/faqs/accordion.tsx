@@ -158,17 +158,10 @@ export default function FaqsAccordion() {
     <>
       <div>
         <motion.div
-          initial="hidden"
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.08,
-              },
-            },
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true, amount: 0.2 }}
-          whileInView="visible"
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <Accordion
             className="mb-0 p-0 -px-2"
@@ -181,7 +174,7 @@ export default function FaqsAccordion() {
               <AccordionItem
                 key={String(index)}
                 aria-label={item.heading}
-                className="px-4 md:px-6 shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:shadow-sm"
+                className="px-4 md:px-6 shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-[border-color,box-shadow] duration-300 data-[open=true]:shadow-sm"
                 indicator={({ isOpen }) =>
                   isOpen ? (
                     <img
