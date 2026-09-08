@@ -121,6 +121,11 @@ export const DASHBOARD_NAV: NavItem[] = [
     capability: "manage:indexing",
   },
   {
+    label: "Search & SEO",
+    href: "/admin/analytics/search",
+    icon: "radar",
+  },
+  {
     label: "Users & Roles",
     href: "/admin/settings/users",
     icon: "shield",

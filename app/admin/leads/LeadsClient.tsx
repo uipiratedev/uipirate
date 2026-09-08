@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Pagination } from "@heroui/react";
 
 import { LeadDrawer } from "./LeadDrawer";
 
@@ -13,6 +14,7 @@ import {
   StatusChip,
 } from "@/components/admin/ui";
 import { DataTable, type Column } from "@/components/admin/DataTable";
+import { Icon } from "@/components/admin/icons";
 import { fmtDateTime, fmtInt } from "@/components/admin/format";
 import { LEAD_STATUSES } from "@/lib/leads/constants";
 
@@ -64,6 +66,7 @@ export default function LeadsClient({
     {
       key: "name",
       header: "Name",
+      width: "26%",
       render: (r) => (
         <div className="min-w-0">
           <span className="block truncate font-medium text-gray-900">
@@ -79,17 +82,27 @@ export default function LeadsClient({
     {
       key: "kind",
       header: "Type",
-      render: (r) => r.kind,
+      width: "110px",
+      render: (r) => (
+        <span className="inline-flex rounded bg-gray-100 px-2 py-0.5 text-[11px] font-semibold text-gray-600 capitalize">
+          {r.kind}
+        </span>
+      ),
       sortValue: (r) => r.kind,
     },
     {
       key: "detail",
       header: "Detail",
-      render: (r) => <span className="text-gray-500">{r.detail || "—"}</span>,
+      render: (r) => (
+        <span className="block truncate text-gray-500" title={r.detail || "—"}>
+          {r.detail || "—"}
+        </span>
+      ),
     },
     {
       key: "status",
       header: "Status",
+      width: "120px",
       render: (r) => <StatusChip status={r.status} />,
       sortValue: (r) => r.status,
     },
@@ -97,14 +110,16 @@ export default function LeadsClient({
       key: "visit",
       header: "Visits",
       align: "right",
+      width: "80px",
       render: (r) => (r.visitorId ? "linked" : "—"),
     },
     {
       key: "createdAt",
       header: "Received",
       align: "right",
+      width: "140px",
       render: (r) => (
-        <span className="text-gray-500">{fmtDateTime(r.createdAt)}</span>
+        <span className="text-gray-500 font-mono text-xs">{fmtDateTime(r.createdAt)}</span>
       ),
       sortValue: (r) => r.createdAt,
     },
@@ -132,9 +147,21 @@ export default function LeadsClient({
         title="Leads"
       />
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2.5">
+        <div className="relative min-w-[240px] flex-1">
+          <Icon.search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <input
+            className="w-full rounded-xl border border-gray-200/80 bg-white py-2 pl-10 pr-3.5 text-xs text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/5 transition-all"
+            placeholder="Search name, email or message content…"
+            value={q}
+            onChange={(e) => {
+              setQ(e.target.value);
+              setPage(1);
+            }}
+          />
+        </div>
         <select
-          className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-sm"
+          className="rounded-xl border border-gray-200/80 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all focus:border-gray-400 focus:outline-none"
           value={status}
           onChange={(e) => {
             setStatus(e.target.value);
@@ -151,7 +178,7 @@ export default function LeadsClient({
           ))}
         </select>
         <select
-          className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-sm"
+          className="rounded-xl border border-gray-200/80 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all focus:border-gray-400 focus:outline-none"
           value={kind}
           onChange={(e) => {
             setKind(e.target.value);
@@ -162,15 +189,6 @@ export default function LeadsClient({
           <option value="contact">Contact form</option>
           <option value="estimate">Project estimate</option>
         </select>
-        <input
-          className="min-w-[200px] flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm"
-          placeholder="Search name or email…"
-          value={q}
-          onChange={(e) => {
-            setQ(e.target.value);
-            setPage(1);
-          }}
-        />
       </div>
 
       <StatePanel error={error} loading={loading && !data} onRetry={refetch}>
@@ -178,7 +196,6 @@ export default function LeadsClient({
           <DataTable
             columns={columns}
             initialSort={{ key: "createdAt", dir: "desc" }}
-            maxHeight={560}
             rowKey={(r) => r.id}
             rows={data?.rows || []}
             onRowClick={(r) => setOpenId(r.id)}
@@ -186,24 +203,23 @@ export default function LeadsClient({
         </Card>
 
         {totalPages > 1 ? (
-          <div className="flex items-center justify-end gap-2 text-sm">
-            <button
-              className="rounded border border-gray-200 px-2 py-1 disabled:opacity-40"
-              disabled={page <= 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              Prev
-            </button>
-            <span className="text-gray-500">
-              {page} / {totalPages}
+          <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
+            <span>
+              Showing {(page - 1) * (data?.pageSize || 30) + 1}–
+              {Math.min(page * (data?.pageSize || 30), data?.total || 0)} of{" "}
+              {fmtInt(data?.total || 0)} leads
             </span>
-            <button
-              className="rounded border border-gray-200 px-2 py-1 disabled:opacity-40"
-              disabled={page >= totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              Next
-            </button>
+            <Pagination
+              showControls
+              classNames={{
+                cursor: "bg-gray-900 text-white font-bold",
+              }}
+              page={page}
+              size="sm"
+              total={totalPages}
+              variant="flat"
+              onChange={setPage}
+            />
           </div>
         ) : null}
       </StatePanel>

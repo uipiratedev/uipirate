@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Button } from "@heroui/react";
+import { Button, Chip, Pagination } from "@heroui/react";
 import { useApi } from "@/lib/admin/useApi";
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
 import { KpiRow, type Kpi } from "@/components/admin/KpiRow";
@@ -266,12 +266,12 @@ export default function IndexingClient({
       ) : null}
 
       {/* Filters Strip */}
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="relative min-w-[220px] flex-1">
-          <Icon.search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      <div className="flex flex-wrap items-center gap-2.5">
+        <div className="relative min-w-[240px] flex-1">
+          <Icon.search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
-            className="w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-9 pr-3 text-sm placeholder:text-gray-400 focus:border-gray-400 focus:outline-none"
-            placeholder="Search URL or path..."
+            className="w-full rounded-xl border border-gray-200/80 bg-white py-2 pl-10 pr-3.5 text-xs text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900/5 transition-all"
+            placeholder="Search URL, pattern or slug..."
             value={q}
             onChange={(e) => {
               setQ(e.target.value);
@@ -281,7 +281,7 @@ export default function IndexingClient({
         </div>
 
         <select
-          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-700"
+          className="rounded-xl border border-gray-200/80 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all focus:border-gray-400 focus:outline-none"
           value={status}
           onChange={(e) => {
             setStatus(e.target.value);
@@ -298,7 +298,7 @@ export default function IndexingClient({
         </select>
 
         <select
-          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-700"
+          className="rounded-xl border border-gray-200/80 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all focus:border-gray-400 focus:outline-none"
           value={type}
           onChange={(e) => {
             setType(e.target.value);
@@ -314,7 +314,7 @@ export default function IndexingClient({
         </select>
 
         <select
-          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-700"
+          className="rounded-xl border border-gray-200/80 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all focus:border-gray-400 focus:outline-none"
           value={inSitemap}
           onChange={(e) => {
             setInSitemap(e.target.value);
@@ -327,7 +327,7 @@ export default function IndexingClient({
         </select>
 
         <select
-          className="rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-700"
+          className="rounded-xl border border-gray-200/80 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-sm transition-all focus:border-gray-400 focus:outline-none"
           value={isDraft}
           onChange={(e) => {
             setIsDraft(e.target.value);
@@ -549,30 +549,22 @@ export default function IndexingClient({
 
         {/* Pagination Bar */}
         {totalPages > 1 ? (
-          <div className="flex items-center justify-between text-xs text-gray-500">
+          <div className="flex items-center justify-between border-t border-gray-100 pt-3 text-xs text-gray-500">
             <span>
               Showing {(page - 1) * 25 + 1}–{Math.min(page * 25, data?.total ?? 0)} of{" "}
               {fmtInt(data?.total ?? 0)} URLs
             </span>
-            <div className="flex items-center gap-2">
-              <button
-                className="rounded-lg border border-gray-200 bg-white px-3 py-1 font-medium shadow-sm hover:bg-gray-50 disabled:opacity-40"
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-              >
-                Previous
-              </button>
-              <span>
-                {page} / {totalPages}
-              </span>
-              <button
-                className="rounded-lg border border-gray-200 bg-white px-3 py-1 font-medium shadow-sm hover:bg-gray-50 disabled:opacity-40"
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                Next
-              </button>
-            </div>
+            <Pagination
+              showControls
+              classNames={{
+                cursor: "bg-gray-900 text-white font-bold",
+              }}
+              page={page}
+              size="sm"
+              total={totalPages}
+              variant="flat"
+              onChange={setPage}
+            />
           </div>
         ) : null}
       </StatePanel>

@@ -1,9 +1,13 @@
 export function getBingApiKey(): string | undefined {
-  return process.env.BING_WMT_API_KEY;
+  return (
+    process.env.BING_WMT_API_KEY ||
+    process.env.BING_WEBMASTER ||
+    process.env.BING_API_KEY
+  );
 }
 
 export function getSiteOrigin(): string {
-  return process.env.SITE_ORIGIN || "https://uipirate.dev";
+  return process.env.SITE_ORIGIN || "https://www.uipirate.com/";
 }
 
 export interface BingSubmitResult {

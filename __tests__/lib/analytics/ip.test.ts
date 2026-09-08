@@ -78,9 +78,27 @@ describe("extractGeo", () => {
     });
 
     expect(extractGeo(h)).toEqual({
-      country: "IN",
+      country: "India",
       region: "MH",
       city: "Mumbai",
+    });
+  });
+
+  it("resolves location from timezone hint when headers are absent", () => {
+    const h = new Headers({});
+    expect(extractGeo(h, { tz: "Asia/Kolkata" })).toEqual({
+      country: "India",
+      region: "West Bengal",
+      city: "Kolkata",
+    });
+  });
+
+  it("resolves country from Accept-Language when headers and tz are absent", () => {
+    const h = new Headers({ "accept-language": "en-GB,en;q=0.9" });
+    expect(extractGeo(h)).toEqual({
+      country: "United Kingdom",
+      region: undefined,
+      city: undefined,
     });
   });
 

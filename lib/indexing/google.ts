@@ -24,7 +24,7 @@ export interface GoogleInspectionResult {
 }
 
 export function getGscSiteUrl(): string {
-  return process.env.GSC_SITE_URL || "sc-domain:uipirate.dev";
+  return process.env.GSC_SITE_URL || "sc-domain:uipirate.com";
 }
 
 /**

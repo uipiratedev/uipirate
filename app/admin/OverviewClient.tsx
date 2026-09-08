@@ -12,6 +12,7 @@ import {
 } from "@/components/admin/ui";
 import { KpiRow } from "@/components/admin/KpiRow";
 import { TrendChart, Donut } from "@/components/admin/charts";
+import { Icon } from "@/components/admin/icons";
 import {
   fmtInt,
   fmtCompact,
@@ -68,11 +69,22 @@ export default function OverviewClient({ userName }: { userName: string }) {
   );
 
   const s = data?.summary;
+  const firstName = userName.split(" ")[0] || "User";
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
-        description={`Welcome back, ${userName.split(" ")[0]}. First-party analytics for the marketing site.`}
+        actions={
+          <button
+            className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm transition-all hover:border-gray-300 hover:bg-gray-50"
+            onClick={refetch}
+          >
+            <Icon.refresh className="h-3.5 w-3.5 text-gray-400" />
+            Refresh Stats
+          </button>
+        }
+        badge="Live Analytics"
+        description={`Welcome back, ${firstName}. Real-time first-party analytics and search performance for UI Pirate.`}
         title="Overview"
       />
 
@@ -80,164 +92,194 @@ export default function OverviewClient({ userName }: { userName: string }) {
         {s ? (
           <KpiRow
             items={[
-              { label: "Visitors", value: fmtCompact(s.visitors) },
-              { label: "Sessions", value: fmtCompact(s.sessions) },
-              { label: "Pageviews", value: fmtCompact(s.pageviews) },
+              { label: "Visitors", value: fmtCompact(s.visitors), hint: "Unique users" },
+              { label: "Sessions", value: fmtCompact(s.sessions), hint: "Total visits" },
+              { label: "Pageviews", value: fmtCompact(s.pageviews), hint: "Content views" },
               {
-                label: "Avg. visit",
+                label: "Avg. Duration",
                 value: fmtDuration(s.avgSessionDurationMs),
+                hint: "Dwell per visit",
               },
-              { label: "Bounce rate", value: fmtPct(s.bounceRate, 0) },
-              { label: "New leads", value: fmtInt(s.newLeads) },
+              { label: "Bounce Rate", value: fmtPct(s.bounceRate, 0), hint: "Single-page exits" },
+              { label: "New Leads", value: fmtInt(s.newLeads), hint: "Form submissions" },
             ]}
           />
         ) : null}
 
-        <div className="mt-5">
-          <Card subtitle="Visitors · Sessions · Pageviews" title="Traffic">
-            <TrendChart
-              data={data?.series || []}
-              series={[
-                { key: "visitors", label: "Visitors" },
-                { key: "sessions", label: "Sessions" },
-                { key: "pageviews", label: "Pageviews" },
-              ]}
-            />
+        <div className="mt-6">
+          <Card
+            actions={
+              <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
+                <span className="inline-block h-2 w-2 rounded-full bg-blue-500" />
+                <span>Pageviews</span>
+                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 ml-2" />
+                <span>Visitors</span>
+              </div>
+            }
+            subtitle="Traffic trends across selected period"
+            title="Performance Trends"
+          >
+            <div className="pt-2">
+              <TrendChart
+                data={data?.series || []}
+                series={[
+                  { key: "visitors", label: "Visitors" },
+                  { key: "sessions", label: "Sessions" },
+                  { key: "pageviews", label: "Pageviews" },
+                ]}
+              />
+            </div>
           </Card>
         </div>
 
-        <div className="mt-5 grid gap-5 lg:grid-cols-2">
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          {/* Top Pages */}
           <Card
             actions={
               <Link
-                className="text-xs font-medium text-blue-600"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-700 hover:text-black transition-colors"
                 href="/admin/analytics/pages"
               >
-                All pages →
+                All pages <span aria-hidden="true">→</span>
               </Link>
             }
-            title="Top pages"
+            subtitle="Highest volume destination URLs"
+            title="Top Pages"
           >
-            <ul className="divide-y divide-gray-100 text-sm">
-              {(data?.topPages || []).map((p) => (
+            <ul className="divide-y divide-gray-100/90 text-sm">
+              {(data?.topPages || []).map((p, idx) => (
                 <li
                   key={p.path}
-                  className="flex items-center justify-between gap-3 py-2"
+                  className="flex items-center justify-between gap-3 py-3 transition-colors hover:bg-slate-50/50 -mx-2 px-2 rounded-xl"
                 >
-                  <span className="truncate text-gray-700" title={p.path}>
-                    {p.path}
-                  </span>
-                  <span className="flex shrink-0 items-center gap-4 tabular-nums text-gray-500">
-                    <span title="avg time on page">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-gray-100 font-mono text-[11px] font-bold text-gray-500">
+                      {idx + 1}
+                    </span>
+                    <span className="truncate font-mono text-xs text-gray-800" title={p.path}>
+                      {p.path}
+                    </span>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-4 tabular-nums text-gray-500 text-xs font-mono">
+                    <span title="Average dwell time">
                       {fmtDuration(p.avgDwellMs)}
                     </span>
-                    <span className="font-medium text-gray-900">
+                    <span className="font-bold text-gray-900 bg-gray-100/80 px-2 py-0.5 rounded-md">
                       {fmtInt(p.views)}
                     </span>
-                  </span>
+                  </div>
                 </li>
               ))}
               {!data?.topPages?.length ? (
-                <li className="py-6 text-center text-gray-400">
-                  No pageviews yet.
+                <li className="py-8 text-center text-xs text-gray-400">
+                  No pageviews recorded yet.
                 </li>
               ) : null}
             </ul>
           </Card>
 
+          {/* Top Clicks */}
           <Card
             actions={
               <Link
-                className="text-xs font-medium text-blue-600"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-700 hover:text-black transition-colors"
                 href="/admin/analytics/clicks"
               >
-                All clicks →
+                All clicks <span aria-hidden="true">→</span>
               </Link>
             }
-            title="Most clicked"
+            subtitle="Most engaged CTAs & interactive elements"
+            title="Most Clicked"
           >
-            <ul className="divide-y divide-gray-100 text-sm">
+            <ul className="divide-y divide-gray-100/90 text-sm">
               {(data?.topClicks || []).map((c, i) => (
                 <li
                   key={`${c.label}-${i}`}
-                  className="flex items-center justify-between gap-3 py-2"
+                  className="flex items-center justify-between gap-3 py-3 transition-colors hover:bg-slate-50/50 -mx-2 px-2 rounded-xl"
                 >
-                  <span className="min-w-0">
+                  <div className="min-w-0">
                     <span
-                      className="block truncate text-gray-700"
+                      className="block truncate font-medium text-xs text-gray-900"
                       title={c.label}
                     >
                       {c.label || "(unlabeled)"}
                     </span>
                     <span
-                      className="block truncate text-xs text-gray-400"
+                      className="block truncate font-mono text-[11px] text-gray-400"
                       title={c.path}
                     >
                       {c.path}
                     </span>
-                  </span>
-                  <span className="shrink-0 font-medium tabular-nums text-gray-900">
-                    {fmtInt(c.clicks)}
+                  </div>
+                  <span className="shrink-0 font-mono text-xs font-bold tabular-nums text-gray-900 bg-gray-100/80 px-2 py-0.5 rounded-md">
+                    {fmtInt(c.clicks)} clicks
                   </span>
                 </li>
               ))}
               {!data?.topClicks?.length ? (
-                <li className="py-6 text-center text-gray-400">
-                  No clicks tracked yet.
+                <li className="py-8 text-center text-xs text-gray-400">
+                  No click events recorded yet.
                 </li>
               ) : null}
             </ul>
           </Card>
 
-          <Card subtitle="Sessions by channel" title="Traffic sources">
-            <Donut
-              data={(data?.sources || []).map((r) => ({
-                name: r.key,
-                value: r.sessions,
-              }))}
-            />
-            <ul className="mt-2 space-y-1 text-sm">
+          {/* Traffic Sources */}
+          <Card subtitle="Session breakdown by acquisition channel" title="Traffic Channels">
+            <div className="flex flex-col items-center">
+              <Donut
+                data={(data?.sources || []).map((r) => ({
+                  name: r.key,
+                  value: r.sessions,
+                }))}
+              />
+            </div>
+            <ul className="mt-4 space-y-1.5 border-t border-gray-100 pt-3 text-xs">
               {(data?.sources || []).map((r) => (
-                <li key={r.key} className="flex justify-between text-gray-600">
-                  <span className="capitalize">{r.key}</span>
-                  <span className="tabular-nums">{fmtInt(r.sessions)}</span>
+                <li key={r.key} className="flex justify-between items-center text-gray-600">
+                  <span className="capitalize font-medium text-gray-700">{r.key}</span>
+                  <span className="tabular-nums font-mono font-bold text-gray-900">
+                    {fmtInt(r.sessions)}
+                  </span>
                 </li>
               ))}
             </ul>
           </Card>
 
+          {/* Recent Leads */}
           {can("view:leads") ? (
             <Card
               actions={
                 <Link
-                  className="text-xs font-medium text-blue-600"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-gray-700 hover:text-black transition-colors"
                   href="/admin/leads"
                 >
-                  Inbox →
+                  Inbox <span aria-hidden="true">→</span>
                 </Link>
               }
-              title="Recent leads"
+              subtitle="Latest submissions and contact inquiries"
+              title="Recent Leads"
             >
-              <ul className="divide-y divide-gray-100 text-sm">
+              <ul className="divide-y divide-gray-100/90 text-sm">
                 {(data?.recentLeads || []).map((l) => (
                   <li
                     key={l.id}
-                    className="flex items-center justify-between gap-3 py-2"
+                    className="flex items-center justify-between gap-3 py-3 transition-colors hover:bg-slate-50/50 -mx-2 px-2 rounded-xl"
                   >
-                    <span className="min-w-0">
-                      <span className="block truncate font-medium text-gray-900">
+                    <div className="min-w-0">
+                      <span className="block truncate text-xs font-semibold text-gray-900">
                         {l.name}
                       </span>
-                      <span className="block truncate text-xs text-gray-400">
+                      <span className="block truncate text-[11px] text-gray-400">
                         {l.kind} · {fmtDate(l.createdAt)}
                       </span>
-                    </span>
+                    </div>
                     <StatusChip status={l.status} />
                   </li>
                 ))}
                 {!data?.recentLeads?.length ? (
-                  <li className="py-6 text-center text-gray-400">
-                    No leads yet.
+                  <li className="py-8 text-center text-xs text-gray-400">
+                    No leads recorded yet.
                   </li>
                 ) : null}
               </ul>

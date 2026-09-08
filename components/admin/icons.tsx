@@ -35,6 +35,11 @@ export const Icon = {
       <line x1="16" x2="8" y1="17" y2="17" />
     </svg>
   ),
+  folder: (p: P) => (
+    <svg {...base} className={p.className}>
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
   "mouse-pointer": (p: P) => (
     <svg {...base} className={p.className}>
       <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
@@ -83,6 +88,11 @@ export const Icon = {
   chevron: (p: P) => (
     <svg {...base} className={p.className}>
       <polyline points="6 9 12 15 18 9" />
+    </svg>
+  ),
+  chevronRight: (p: P) => (
+    <svg {...base} className={p.className}>
+      <polyline points="9 18 15 12 9 6" />
     </svg>
   ),
   menu: (p: P) => (

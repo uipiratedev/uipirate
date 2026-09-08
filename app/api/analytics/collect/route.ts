@@ -67,7 +67,8 @@ export async function POST(req: NextRequest) {
     if (rawEvents.length === 0) return ok();
 
     const device = parseDevice(ua);
-    const geo = extractGeo(req.headers);
+    const firstEvt = rawEvents[0] as RawEvent | undefined;
+    const geo = extractGeo(req.headers, firstEvt);
 
     const events = (rawEvents.slice(0, MAX_EVENTS_PER_BATCH) as RawEvent[])
       .map((e) => normalize(e, ipHash, device, geo))

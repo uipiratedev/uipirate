@@ -14,7 +14,10 @@ interface CachedToken {
 const tokenCache = new Map<string, CachedToken>();
 
 export function getParsedServiceAccount(): ServiceAccountKey | null {
-  const raw = process.env.GOOGLE_INDEXING_SA_JSON;
+  const raw =
+    process.env.GOOGLE_INDEXING_SA_JSON ||
+    process.env.GOOGLE_SERVICE_ACCOUNT_JSON ||
+    process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
   if (!raw) return null;
 
   try {
