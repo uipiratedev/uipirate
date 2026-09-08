@@ -69,8 +69,9 @@ const AboutCardItem = ({
 
   return (
     <motion.div
-      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${isEven ? "lg:-mt-32" : "lg:mt-0"
-        } hover:ease-in-out`}
+      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
+        isEven ? "lg:-mt-32" : "lg:mt-0"
+      } hover:ease-in-out`}
       // Reveals once via IntersectionObserver (`whileInView`) instead of the
       // previous per-card `useScroll` tied to a ~1% viewport window on
       // desktop — that tiny window was the same "takes forever to trigger"
@@ -140,7 +141,7 @@ const AboutCardAnimation = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="container mx-auto px-4 max-md:px-0 pb-20 max-md:pb-12 max-md:pt-0 ">
+    <div className="pb-20 max-md:pb-12 max-md:pt-0">
       <div className="grid grid-cols-2 gap-6 max-md:gap-4 lg:mt-48 max-lg:grid-cols-1">
         {data.map((item, index) => (
           <AboutCardItem

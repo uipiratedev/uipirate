@@ -36,7 +36,7 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 1e | US Timezone badge `🟢 US Timezone Friendly — EST & PST hours` — keep | ✅ Keep as-is |
 
 **NC1 Recommended rewrite (for 1c & 1d):**
-> We're a product design and development agency. We work alongside SaaS founders and enterprise teams — from the first wireframe through to working, production-ready software.
+> We are a product design and development studio. We help SaaS founders and enterprise teams think through the product, design for real users, and ship production-ready code. No hand-offs, no gaps.
 
 ---
 
@@ -55,27 +55,41 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 ---
 
-## 3. "WHAT MAKES US DIFFERENT" (🟠 Duplicate cards)
+## 3. "WHAT MAKES US DIFFERENT" (✅ Rewrite & Redesign applied)
 
-**File:** `app/about/page.tsx` L379–403
+**File:** `app/about/page.tsx` L421–550
 
 | # | Item | Status |
-|---|------|--------|
-| 3a | Card 01 `Product Thinking First` — strong, keep | ✅ Keep as-is |
-| 3b | Card 03 `Designed for Conversion` — strong, keep | ✅ Keep as-is |
-| 3c | Cards 04 `Architecture to Code` + 06 `Idea to Shipped Product` are near-duplicates — consolidate into one `From Sketch to Working Code` card (NC2) | ✅ Done |
-| 3d | Cards 02 `Simplify Complex Products` + 05 `Enterprise Specialist` overlap — absorb Card 05 into 02 (NC2) | ✅ Done |
-| 3e | Add new Card 05: `We Work in Your Time Zone` — US Eastern + Pacific overlap, real-time calls (NC2) | ✅ Done |
-| 3f | Add new Card 06: `We've Shipped This 50+ Times` — experience + proof signal (NC2) | ✅ Done |
+|---|------|---------|
+| 3-sub | Section subtext `Most agencies give you mockups. We give you a shipped product.` — remove entirely (per user: no subtext under any heading) | ✅ Done |
+| 3-ui | Redesign section from a dark grid to a light Bento Grid matching the homepage style | ✅ Done |
+| 3a | Card 01 — new title + description per NC2 rewrite | ✅ Done |
+| 3b | Card 02 — new title + description per NC2 rewrite | ✅ Done |
+| 3c | Card 03 — new title + description per NC2 rewrite | ✅ Done |
+| 3d | Card 04 — new title + description per NC2 rewrite (merges old 04 + 06) | ✅ Done |
+| 3e | Card 05 — new title + description per NC2 rewrite (replaces Enterprise Specialist) | ✅ Done |
+| 3f | Card 06 — new title + description per NC2 rewrite (new proof card) | ✅ Done |
+
+**NC2 Approved card copy (apply verbatim when editing code):**
+
+| # | Title | Description |
+|---|---|---|
+| 01 | Strategy Before Pixels | Positioning, user flows, and scope mapped before any screen is touched. |
+| 02 | Complex Made Simple | We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use. |
+| 03 | Built to Convert | Every flow is built to move users forward. Conversion is the brief. |
+| 04 | Design Through to Code | Wireframes to React, Angular, and Next.js. One team, no hand-offs. |
+| 05 | Same Hours as Your Team | US Eastern and Pacific hours. Real-time calls, no time zone gaps. |
+| 06 | 50+ Products, Not Guesses | Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before. |
 
 ---
 
-## 4. "OUR DESIGN STYLE" (🟠 Jargon fix)
+## 4. "OUR DESIGN STYLE" (✅ Redesigned & Rewrite applied)
 
-**File:** `app/about/page.tsx` L431–477
+**File:** `app/about/page.tsx` L553–600
 
 | # | Item | Status |
 |---|------|--------|
+| 4-ui | Redesign cards to white layout with glowing custom SVGs (Quote, Link, Zap) and clean hover effect | ✅ Done |
 | 4a | Card 01 `Dashboards & SaaS UX` — strong, keep | ✅ Keep as-is |
 | 4b | Card 02 `Websites & Landing Pages` — strong, keep | ✅ Keep as-is |
 | 4c | Card 03 `Pixel-Perfect Execution` — jargon; rewrite to `Design That Holds Up in Code` (NC3) | ✅ Done |
@@ -92,9 +106,10 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status |
 |---|------|--------|
-| 5a | Sub-copy `Simple: you share your vision. We do the rest.` — keep | ✅ Keep as-is |
+| 5a | Sub-copy `Simple: you share your vision. We do the rest.` — keep | ✅ Removed per user request |
 | 5b | `/process` page link would 404 | ✅ Resolved — `/process` page now exists |
 | 5c | Redesign process cards to match landing page 'How It Works' light cards (6 steps) | ✅ Done |
+| 5d | All 6 step descriptions trimmed to ~12 words each — no em dashes, SEO preserved (`data/process.ts`) | ✅ Done |
 
 ---
 
@@ -107,9 +122,9 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 6a | Kartik Kumar titled `Lead Graphics & Motion` in schema + team — retitle to reflect current services (NF3) | ✅ Keep as-is (per user) |
 | 6b | Priyagni titled `Graphic Designer` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) |
 | 6c | Aman titled `Video Editing` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) |
-| 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ✅ Done |
+| 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ✅ Replaced entire section with home page `LandingWhoWeAre` component per user request |
 
-**NC10 Recommended founder note (Applied):**
+**NC10 Recommended founder note (Status: Replaced by home page WhoWeAre card):**
 > "UI Pirate started in 2015 when I got tired of design hand-offs that fell apart in engineering. We are built around one idea: the people who design the product should be able to ship it."
 
 ---

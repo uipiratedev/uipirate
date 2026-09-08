@@ -4,7 +4,14 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type NeumorphicGlowShape = "pill" | "squircle";
-export type NeumorphicGlowTheme = "uipirate" | "pirate" | "default" | "dark" | "orange" | "cyberpunk" | "minimal";
+export type NeumorphicGlowTheme =
+  | "uipirate"
+  | "pirate"
+  | "default"
+  | "dark"
+  | "orange"
+  | "cyberpunk"
+  | "minimal";
 export type NeumorphicGlowSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type NeumorphicGlowStateMode = "interactive" | "standerd" | "hover";
 export type NeumorphicNeonPreset =
@@ -23,7 +30,13 @@ export type NeumorphicNeonPreset =
 
 export const NEON_PRESETS: Record<
   NeumorphicNeonPreset,
-  { name: string; badgeBg: string; arrowColor: string; glowColor: string; innerShadow: string }
+  {
+    name: string;
+    badgeBg: string;
+    arrowColor: string;
+    glowColor: string;
+    innerShadow: string;
+  }
 > = {
   uipirate: {
     name: "UI Pirate",
@@ -165,16 +178,13 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
   const displayText = label !== undefined ? label : defaultLabel;
 
   const isLifted =
-    stateMode === "hover"
-      ? true
-      : stateMode === "standerd"
-      ? false
-      : isHovered;
+    stateMode === "hover" ? true : stateMode === "standerd" ? false : isHovered;
 
   // Theme configuration definitions
   const themeConfig = {
     uipirate: {
-      pillBg: "linear-gradient(172.34deg, rgb(55, 25, 10) 5.985%, rgb(35, 15, 5) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(55, 25, 10) 5.985%, rgb(35, 15, 5) 94.894%)",
       squircleBg: "#2E1206",
       textColor: "#FFF3EC",
       textShadow: "0px 1px 2px rgba(0, 0, 0, 0.8)",
@@ -184,11 +194,14 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
       badgeInnerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
       pillInsetShadow:
         "inset 2px 2px 4px 0px rgba(255,161,20,0.15), inset 4px 4px 14px 0px rgba(255,91,4,0.3), inset -4px -4px 4px 0px rgba(0,0,0,0.4)",
-      pillDropShadow: "0 20px 40px rgba(45,15,5,0.7), 0 8px 16px rgba(45,15,5,0.4)",
-      squircleShadow: "0 20px 40px rgba(45,15,5,0.7), 0 0 60px rgba(255,91,4,0.25)",
+      pillDropShadow:
+        "0 20px 40px rgba(45,15,5,0.7), 0 8px 16px rgba(45,15,5,0.4)",
+      squircleShadow:
+        "0 20px 40px rgba(45,15,5,0.7), 0 0 60px rgba(255,91,4,0.25)",
     },
     pirate: {
-      pillBg: "linear-gradient(172.34deg, rgb(55, 25, 10) 5.985%, rgb(35, 15, 5) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(55, 25, 10) 5.985%, rgb(35, 15, 5) 94.894%)",
       squircleBg: "#2E1206",
       textColor: "#FFF3EC",
       textShadow: "0px 1px 2px rgba(0, 0, 0, 0.8)",
@@ -198,11 +211,14 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
       badgeInnerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
       pillInsetShadow:
         "inset 2px 2px 4px 0px rgba(255,161,20,0.15), inset 4px 4px 14px 0px rgba(255,91,4,0.3), inset -4px -4px 4px 0px rgba(0,0,0,0.4)",
-      pillDropShadow: "0 20px 40px rgba(45,15,5,0.7), 0 8px 16px rgba(45,15,5,0.4)",
-      squircleShadow: "0 20px 40px rgba(45,15,5,0.7), 0 0 60px rgba(255,91,4,0.25)",
+      pillDropShadow:
+        "0 20px 40px rgba(45,15,5,0.7), 0 8px 16px rgba(45,15,5,0.4)",
+      squircleShadow:
+        "0 20px 40px rgba(45,15,5,0.7), 0 0 60px rgba(255,91,4,0.25)",
     },
     default: {
-      pillBg: "linear-gradient(172.34deg, rgb(225, 225, 225) 5.985%, rgb(215, 215, 215) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(225, 225, 225) 5.985%, rgb(215, 215, 215) 94.894%)",
       squircleBg: "#E1E1E1",
       textColor: "#000000",
       textShadow: "0px 1.5px 0px rgba(255, 255, 255, 0.5)",
@@ -218,7 +234,8 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
         "-6px -6px 6px 3px rgba(255,255,255,0.4), 6px -6px 6px 3px rgba(205,205,205,0.4), -6px 6px 6px 3px rgba(205,205,205,0.4), 6px 6px 6px 3px rgba(0,0,0,0.15), 0px 0px 60px 30px #e1e1e1",
     },
     dark: {
-      pillBg: "linear-gradient(172.34deg, rgb(42, 45, 54) 5.985%, rgb(30, 32, 40) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(42, 45, 54) 5.985%, rgb(30, 32, 40) 94.894%)",
       squircleBg: "#22252E",
       textColor: "#FFFFFF",
       textShadow: "0px 1px 2px rgba(0, 0, 0, 0.8)",
@@ -234,7 +251,8 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
         "-6px -6px 6px 3px rgba(255,255,255,0.06), 6px -6px 6px 3px rgba(0,0,0,0.3), -6px 6px 6px 3px rgba(0,0,0,0.3), 6px 6px 8px 3px rgba(0,0,0,0.5), 0px 0px 40px 10px rgba(6,182,212,0.08)",
     },
     orange: {
-      pillBg: "linear-gradient(172.34deg, rgb(255, 110, 30) 5.985%, rgb(235, 80, 0) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(255, 110, 30) 5.985%, rgb(235, 80, 0) 94.894%)",
       squircleBg: "#FF5B04",
       textColor: "#FFFFFF",
       textShadow: "0px 1.5px 2px rgba(120, 25, 0, 0.6)",
@@ -250,7 +268,8 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
         "-6px -6px 6px 3px rgba(255,255,255,0.35), 6px -6px 6px 3px rgba(200,60,0,0.3), -6px 6px 6px 3px rgba(200,60,0,0.3), 6px 6px 8px 3px rgba(140,30,0,0.4), 0px 0px 50px 15px rgba(255,91,4,0.2)",
     },
     cyberpunk: {
-      pillBg: "linear-gradient(172.34deg, rgb(28, 22, 48) 5.985%, rgb(18, 14, 34) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(28, 22, 48) 5.985%, rgb(18, 14, 34) 94.894%)",
       squircleBg: "#1E1735",
       textColor: "#F3E8FF",
       textShadow: "0px 0px 8px rgba(168, 85, 247, 0.6)",
@@ -266,7 +285,8 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
         "-6px -6px 6px 3px rgba(168,85,247,0.15), 6px -6px 6px 3px rgba(0,0,0,0.4), -6px 6px 6px 3px rgba(0,0,0,0.4), 6px 6px 8px 3px rgba(0,0,0,0.6), 0px 0px 50px 15px rgba(168,85,247,0.2)",
     },
     minimal: {
-      pillBg: "linear-gradient(172.34deg, rgb(255, 255, 255) 5.985%, rgb(245, 245, 245) 94.894%)",
+      pillBg:
+        "linear-gradient(172.34deg, rgb(255, 255, 255) 5.985%, rgb(245, 245, 245) 94.894%)",
       squircleBg: "#FAFAFA",
       textColor: "#18181B",
       textShadow: "0px 1px 0px rgba(255, 255, 255, 0.9)",
@@ -286,18 +306,30 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
   const currentTheme = themeConfig[theme] || themeConfig.default;
   const activeNeon = neonPreset ? NEON_PRESETS[neonPreset] : null;
 
-  const activeBadgeColor = customBadgeColor || activeNeon?.badgeBg || currentTheme.badgeBg;
-  const activeArrowColor = customArrowColor || activeNeon?.arrowColor || currentTheme.arrowColor;
-  const activeGlowColor = customGlowColor || activeNeon?.glowColor || currentTheme.glowColor;
-  const activeBadgeInnerShadow = activeNeon?.innerShadow || currentTheme.badgeInnerShadow;
+  const activeBadgeColor =
+    customBadgeColor || activeNeon?.badgeBg || currentTheme.badgeBg;
+  const activeArrowColor =
+    customArrowColor || activeNeon?.arrowColor || currentTheme.arrowColor;
+  const activeGlowColor =
+    customGlowColor || activeNeon?.glowColor || currentTheme.glowColor;
+  const activeBadgeInnerShadow =
+    activeNeon?.innerShadow || currentTheme.badgeInnerShadow;
 
   // Size scaling configurations
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -355,21 +387,21 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
 
   return __wrapSize(
     <motion.button
-      type="button"
-      onClick={onClick}
-      onHoverStart={() => stateMode === "interactive" && setIsHovered(true)}
-      onHoverEnd={() => stateMode === "interactive" && setIsHovered(false)}
       animate={{
         scale: isLifted ? 1.025 : 1,
       }}
-      whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
-      whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={`relative inline-flex items-center select-none cursor-pointer outline-none ${className}`}
       style={{
         transform: scale !== 1 ? `scale(${scale})` : undefined,
         transformOrigin: "center center",
       }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      type="button"
+      whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
+      whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
+      onClick={onClick}
+      onHoverEnd={() => stateMode === "interactive" && setIsHovered(false)}
+      onHoverStart={() => stateMode === "interactive" && setIsHovered(true)}
     >
       {/* ─────────────────────────────────────────────────────────────
           PILL VARIANT (Spec Node 14:642 / 14:647)
@@ -392,16 +424,16 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
 
           {/* Glowing Neon Badge (Node 14:723) */}
           <motion.div
-            className={`relative flex items-center justify-center ${sizeConfig.pillBadgePadding} ${sizeConfig.pillBadgeRadius} shrink-0 overflow-hidden`}
             animate={{
               boxShadow: isLifted
                 ? `0px 0px 32px 4px ${activeGlowColor}, 0px 1.3px 1.3px 0px rgba(255,255,255,0.95), 0px -1.3px 1.3px 0px rgba(0,0,0,0.1)`
                 : `0px 0px 26px 0px ${activeGlowColor}, 0px 1.3px 1.3px 0px rgba(255,255,255,0.85), 0px -1.3px 1.3px 0px rgba(0,0,0,0.1)`,
             }}
-            transition={{ duration: 0.2 }}
+            className={`relative flex items-center justify-center ${sizeConfig.pillBadgePadding} ${sizeConfig.pillBadgeRadius} shrink-0 overflow-hidden`}
             style={{
               backgroundColor: activeBadgeColor,
             }}
+            transition={{ duration: 0.2 }}
           >
             {/* Inset Badge Dish Depth */}
             <div
@@ -414,25 +446,28 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
             {/* Diagonal Arrow Vector Icon with Crisp Glow */}
             <div
               className="relative flex items-center justify-center"
-              style={{ width: sizeConfig.pillArrowSize, height: sizeConfig.pillArrowSize }}
+              style={{
+                width: sizeConfig.pillArrowSize,
+                height: sizeConfig.pillArrowSize,
+              }}
             >
               <svg
-                width={sizeConfig.pillArrowSize}
-                height={sizeConfig.pillArrowSize}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
                 className="overflow-visible"
+                fill="none"
+                height={sizeConfig.pillArrowSize}
                 style={{
                   filter: `drop-shadow(0px 0px 3px ${activeArrowColor}) drop-shadow(0px 1px 1px rgba(0,0,0,0.15))`,
                 }}
+                viewBox="0 0 24 24"
+                width={sizeConfig.pillArrowSize}
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M7 17L17 7M17 7H9M17 7V15"
                   stroke={activeArrowColor}
-                  strokeWidth="2.8"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="2.8"
                 />
               </svg>
             </div>
@@ -479,16 +514,16 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
 
           {/* Glowing Neon Squircle Badge (Node 14:673) */}
           <motion.div
-            className={`relative flex items-center justify-center ${sizeConfig.squircleBadgePadding} ${sizeConfig.squircleBadgeRadius} shrink-0 overflow-hidden`}
             animate={{
               boxShadow: isLifted
                 ? `0px 0px 24px 3px ${activeGlowColor}, 0px 1px 1px 0px rgba(255,255,255,0.95), 0px -1px 1px 0px rgba(0,0,0,0.1)`
                 : `0px 0px 20px 0px ${activeGlowColor}, 0px 1px 1px 0px rgba(255,255,255,0.85), 0px -1px 1px 0px rgba(0,0,0,0.1)`,
             }}
-            transition={{ duration: 0.2 }}
+            className={`relative flex items-center justify-center ${sizeConfig.squircleBadgePadding} ${sizeConfig.squircleBadgeRadius} shrink-0 overflow-hidden`}
             style={{
               backgroundColor: activeBadgeColor,
             }}
+            transition={{ duration: 0.2 }}
           >
             {/* Inset Badge Dish Depth */}
             <div
@@ -501,32 +536,35 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
             {/* Diagonal Arrow Vector Icon with Crisp Glow */}
             <div
               className="relative flex items-center justify-center"
-              style={{ width: sizeConfig.squircleArrowSize, height: sizeConfig.squircleArrowSize }}
+              style={{
+                width: sizeConfig.squircleArrowSize,
+                height: sizeConfig.squircleArrowSize,
+              }}
             >
               <svg
-                width={sizeConfig.squircleArrowSize}
-                height={sizeConfig.squircleArrowSize}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
                 className="overflow-visible"
+                fill="none"
+                height={sizeConfig.squircleArrowSize}
                 style={{
                   filter: `drop-shadow(0px 0px 3px ${activeArrowColor}) drop-shadow(0px 1px 1px rgba(0,0,0,0.15))`,
                 }}
+                viewBox="0 0 24 24"
+                width={sizeConfig.squircleArrowSize}
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M7 17L17 7M17 7H9M17 7V15"
                   stroke={activeArrowColor}
-                  strokeWidth="2.8"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="2.8"
                 />
               </svg>
             </div>
           </motion.div>
         </div>
       )}
-    </motion.button>
+    </motion.button>,
   );
 };
 

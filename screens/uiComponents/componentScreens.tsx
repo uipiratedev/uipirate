@@ -26,21 +26,42 @@ const studio = (importer: () => Promise<{ default: React.ComponentType }>) =>
   dynamic(importer, { loading: () => <StudioLoading /> });
 
 export const COMPONENT_LAB_SCREENS: Record<string, React.ComponentType> = {
-  "isometric-revive-button": studio(() => import("@/screens/buttons/isometricRevive")),
+  "isometric-revive-button": studio(
+    () => import("@/screens/buttons/isometricRevive"),
+  ),
   "tactile-pill-button": studio(() => import("@/screens/buttons/tactilePill")),
-  "frosted-gel-download-button": studio(() => import("@/screens/buttons/frostedGelDownload")),
-  "elevated-underglow-cta": studio(() => import("@/screens/buttons/elevatedUnderglow")),
-  "led-matrix-chevron": studio(() => import("@/screens/buttons/ledMatrixChevron")),
+  "frosted-gel-download-button": studio(
+    () => import("@/screens/buttons/frostedGelDownload"),
+  ),
+  "elevated-underglow-cta": studio(
+    () => import("@/screens/buttons/elevatedUnderglow"),
+  ),
+  "led-matrix-chevron": studio(
+    () => import("@/screens/buttons/ledMatrixChevron"),
+  ),
   "slide-grow-button": studio(() => import("@/screens/buttons/slideGrow")),
-  "vintage-leather-cta": studio(() => import("@/screens/buttons/vintageLeather")),
-  "neumorphic-glow-cta": studio(() => import("@/screens/buttons/neumorphicGlow")),
+  "vintage-leather-cta": studio(
+    () => import("@/screens/buttons/vintageLeather"),
+  ),
+  "neumorphic-glow-cta": studio(
+    () => import("@/screens/buttons/neumorphicGlow"),
+  ),
   "smash-tactile-button": studio(() => import("@/screens/buttons/smashButton")),
-  "scaling-capsule-button": studio(() => import("@/screens/buttons/scalingCapsule")),
+  "scaling-capsule-button": studio(
+    () => import("@/screens/buttons/scalingCapsule"),
+  ),
   "magnetic-pulse-cta": studio(() => import("@/screens/buttons/magneticPulse")),
-  "arc-corner-toggle": studio(() => import("@/screens/buttons/arcCornerToggle")),
-  "animated-slide-button": studio(() => import("@/screens/buttons/animatedSlide")),
-  "tactile-neumorphic-switch": studio(() => import("@/screens/buttons/tactileNeumorphicSwitch")),
+  "arc-corner-toggle": studio(
+    () => import("@/screens/buttons/arcCornerToggle"),
+  ),
+  "animated-slide-button": studio(
+    () => import("@/screens/buttons/animatedSlide"),
+  ),
+  "tactile-neumorphic-switch": studio(
+    () => import("@/screens/buttons/tactileNeumorphicSwitch"),
+  ),
 };
 
-export const getComponentLabScreen = (id: string): React.ComponentType | undefined =>
-  COMPONENT_LAB_SCREENS[id];
+export const getComponentLabScreen = (
+  id: string,
+): React.ComponentType | undefined => COMPONENT_LAB_SCREENS[id];

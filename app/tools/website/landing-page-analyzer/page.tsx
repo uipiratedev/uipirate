@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import LandingPageAnalyzerClient from "@/components/LandingPageAnalyzer/LandingPageAnalyzerClient";
 
 export const metadata: Metadata = {
@@ -21,16 +22,16 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Landing Page UX & Conversion Analyzer",
-  "url": "https://uipirate.com/tools/website/landing-page-analyzer",
-  "description":
+  name: "Landing Page UX & Conversion Analyzer",
+  url: "https://uipirate.com/tools/website/landing-page-analyzer",
+  description:
     "Analyze your landing page for value proposition clarity, CTA prominence, social proof trust signals, and cognitive friction.",
-  "applicationCategory": "DesignApplication",
-  "operatingSystem": "All",
-  "offers": {
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
     "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD",
+    price: "0",
+    priceCurrency: "USD",
   },
 };
 
@@ -38,8 +39,8 @@ export default function LandingPageAnalyzerNestedPage() {
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <LandingPageAnalyzerClient />
     </>

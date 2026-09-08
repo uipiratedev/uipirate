@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import UpcomingToolLandingPage, { UpcomingToolSpec } from "@/components/UpcomingToolLandingPage";
+
+import UpcomingToolLandingPage, {
+  UpcomingToolSpec,
+} from "@/components/UpcomingToolLandingPage";
 
 export const metadata: Metadata = {
   title: "SaaS Marketing Website UX Audit Tool | UI Pirate",
@@ -21,18 +24,45 @@ const spec: UpcomingToolSpec = {
   agencyService: "Landing Pages & Business Websites",
   agencyLink: "/contact",
   keyMetrics: [
-    { name: "Product Feature Visualization", desc: "Checks for interactive screenshots vs static mockups." },
-    { name: "Self-Serve vs Sales Demo Path", desc: "Audits dual-CTA funnel routing for self-serve vs enterprise." },
-    { name: "Security & Trust Compliance", desc: "Checks SOC2, GDPR, and enterprise trust center visibility." },
-    { name: "Comparison Page Architecture", desc: "Evaluates 'vs competitor' SEO landing pages." },
+    {
+      name: "Product Feature Visualization",
+      desc: "Checks for interactive screenshots vs static mockups.",
+    },
+    {
+      name: "Self-Serve vs Sales Demo Path",
+      desc: "Audits dual-CTA funnel routing for self-serve vs enterprise.",
+    },
+    {
+      name: "Security & Trust Compliance",
+      desc: "Checks SOC2, GDPR, and enterprise trust center visibility.",
+    },
+    {
+      name: "Comparison Page Architecture",
+      desc: "Evaluates 'vs competitor' SEO landing pages.",
+    },
   ],
   howItWorks: [
-    { step: "01. Marketing Funnel Crawl", title: "Full Site Evaluation", desc: "Scans homepage, pricing, features, and blog lead traps." },
-    { step: "02. SaaS Conversion Matrix", title: "B2B UX Scoring", desc: "Scores funnel against top-tier YC and venture-backed SaaS websites." },
-    { step: "03. Redesign Priority List", title: "Pipeline Optimization", desc: "Actionable roadmap to double demo and trial signups." },
+    {
+      step: "01. Marketing Funnel Crawl",
+      title: "Full Site Evaluation",
+      desc: "Scans homepage, pricing, features, and blog lead traps.",
+    },
+    {
+      step: "02. SaaS Conversion Matrix",
+      title: "B2B UX Scoring",
+      desc: "Scores funnel against top-tier YC and venture-backed SaaS websites.",
+    },
+    {
+      step: "03. Redesign Priority List",
+      title: "Pipeline Optimization",
+      desc: "Actionable roadmap to double demo and trial signups.",
+    },
   ],
   faqs: [
-    { q: "What makes a SaaS marketing site unique?", a: "SaaS websites must balance both technical buyers and executive decision makers with progressive disclosure." },
+    {
+      q: "What makes a SaaS marketing site unique?",
+      a: "SaaS websites must balance both technical buyers and executive decision makers with progressive disclosure.",
+    },
   ],
 };
 

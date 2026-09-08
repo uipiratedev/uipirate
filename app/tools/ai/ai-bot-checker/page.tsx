@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import AIBotCheckerClient from "@/components/AIBotChecker/AIBotCheckerClient";
 
 export const metadata: Metadata = {
@@ -21,16 +22,16 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "AI Bot & GEO Readiness Hub",
-  "url": "https://uipirate.com/tools/ai/ai-bot-checker",
-  "description":
+  name: "AI Bot & GEO Readiness Hub",
+  url: "https://uipirate.com/tools/ai/ai-bot-checker",
+  description:
     "Test your website against 26+ AI crawlers (GPTBot, ClaudeBot, Perplexity) and Cloudflare WAF. Get an instant 0–100 GEO Visibility Score.",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "All",
-  "offers": {
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  offers: {
     "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD",
+    price: "0",
+    priceCurrency: "USD",
   },
 };
 
@@ -38,8 +39,8 @@ export default function AiBotCheckerNestedPage() {
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <AIBotCheckerClient />
     </>

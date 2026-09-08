@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import SchemaGeneratorClient from "@/components/SchemaGenerator/SchemaGeneratorClient";
 
 export const metadata: Metadata = {

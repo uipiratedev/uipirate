@@ -55,7 +55,9 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">What’s Included:</span> Minor adjustments, bug fixes, and technical support for a set period. For ongoing support, we offer retainers for long-term collaboration.
+        <span className="font-bold text-gray-900">What’s Included:</span> Minor
+        adjustments, bug fixes, and technical support for a set period. For
+        ongoing support, we offer retainers for long-term collaboration.
       </>
     ),
   },
@@ -70,7 +72,9 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">Deliverables:</span> You’ll receive the full app code, all design assets, documentation, and testing reports.
+        <span className="font-bold text-gray-900">Deliverables:</span> You’ll
+        receive the full app code, all design assets, documentation, and testing
+        reports.
       </>
     ),
   },
@@ -82,7 +86,9 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">Flexibility:</span> Additional features can be billed hourly or added to the fixed budget as an agreed scope extension.
+        <span className="font-bold text-gray-900">Flexibility:</span> Additional
+        features can be billed hourly or added to the fixed budget as an agreed
+        scope extension.
       </>
     ),
   },
@@ -96,7 +102,9 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">Benefits:</span> A cohesive design system reduces redundancy and improves team efficiency by ensuring every design aligns with brand guidelines.
+        <span className="font-bold text-gray-900">Benefits:</span> A cohesive
+        design system reduces redundancy and improves team efficiency by
+        ensuring every design aligns with brand guidelines.
       </>
     ),
   },
@@ -111,7 +119,9 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">Deliverables:</span> A detailed report, consultation call, and an improvement roadmap, focusing on ease of use and user satisfaction.
+        <span className="font-bold text-gray-900">Deliverables:</span> A
+        detailed report, consultation call, and an improvement roadmap, focusing
+        on ease of use and user satisfaction.
       </>
     ),
   },
@@ -123,7 +133,8 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">Benefits:</span> Faster turnaround and cost savings, while keeping your original vision intact.
+        <span className="font-bold text-gray-900">Benefits:</span> Faster
+        turnaround and cost savings, while keeping your original vision intact.
       </>
     ),
   },
@@ -135,7 +146,8 @@ const data = [
     ],
     title2: (
       <>
-        <span className="font-bold text-gray-900">Getting in Touch:</span> Book a call directly or send us an email.
+        <span className="font-bold text-gray-900">Getting in Touch:</span> Book
+        a call directly or send us an email.
       </>
     ),
   },
@@ -221,12 +233,9 @@ export default function FaqsAccordion() {
           whileInView="visible"
         >
           <div className="flex flex-row items-center justify-center mt-6">
-            <LetsTalkButton
-              children="See all FAQ’s"
-              href="/faqs"
-              target="_self"
-              variant="light"
-            />
+            <LetsTalkButton href="/faqs" target="_self" variant="light">
+              See all FAQ’s
+            </LetsTalkButton>
           </div>
         </motion.div>
       </div>

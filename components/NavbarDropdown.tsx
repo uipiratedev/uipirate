@@ -209,8 +209,13 @@ export const NavbarDropdown = ({
                                   <div className="absolute inset-0 w-full h-full rounded-[24px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-white p-5 flex flex-col justify-start border border-gray-200">
                                     <div className="flex items-center gap-2.5 mb-2">
                                       <span className="text-xl flex-shrink-0 flex items-center">
-                                        {typeof item.icon === 'string' && item.icon.startsWith('http') ? (
-                                          <img src={item.icon} alt={`${item.category} icon`} className="w-8 h-8 object-contain" />
+                                        {typeof item.icon === "string" &&
+                                        item.icon.startsWith("http") ? (
+                                          <img
+                                            alt={`${item.category} icon`}
+                                            className="w-8 h-8 object-contain"
+                                            src={item.icon}
+                                          />
                                         ) : (
                                           item.icon || "✨"
                                         )}
@@ -221,7 +226,8 @@ export const NavbarDropdown = ({
                                     </div>
                                     <p className="text-[11px] text-gray-500 line-clamp-4 leading-relaxed">
                                       {/* @ts-ignore - description added directly in siteConfig */}
-                                      {item.description || "Explore our latest resources & blueprints."}
+                                      {item.description ||
+                                        "Explore our latest resources & blueprints."}
                                     </p>
                                   </div>
                                 </NextLink>
@@ -268,7 +274,8 @@ export const NavbarDropdown = ({
                                 >
                                   <div className="w-auto h-full aspect-square rounded-[8px] bg-white text-gray-700 flex items-center justify-center text-lg group-hover:bg-orange-50 group-hover:text-orange-600 border border-gray-200 group-hover:border-orange-200 transition-all shrink-0">
                                     {item.icon ? (
-                                      item.icon.startsWith("http") || item.icon.startsWith("/") ? (
+                                      item.icon.startsWith("http") ||
+                                      item.icon.startsWith("/") ? (
                                         <img
                                           alt={item.category}
                                           className="w-4 h-4 invert"

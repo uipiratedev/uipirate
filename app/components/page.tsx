@@ -1,13 +1,11 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+
 import Loader from "@/components/loader";
 
-const UIComponentsScreen = dynamic(
-  () => import("@/screens/uiComponents"),
-  {
-    loading: () => <Loader />,
-  }
-);
+const UIComponentsScreen = dynamic(() => import("@/screens/uiComponents"), {
+  loading: () => <Loader />,
+});
 
 export const metadata: Metadata = {
   title: "UI Components Library & Design System | UI Pirate",

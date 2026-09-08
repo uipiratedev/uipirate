@@ -5,13 +5,31 @@ import React, { useCallback, useState } from "react";
 export type StudioCanvasTheme = "light" | "dark";
 
 const SunIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    fill="none"
+    height="12"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    width="12"
+  >
     <circle cx="12" cy="12" r="4" />
     <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
   </svg>
 );
 const MoonIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    fill="none"
+    height="12"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
+    width="12"
+  >
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </svg>
 );
@@ -59,39 +77,49 @@ export default function StudioCanvas({
   onThemeChange,
   onGridChange,
 }: StudioCanvasProps) {
-  const [internalTheme, setInternalTheme] = useState<StudioCanvasTheme>(defaultTheme);
+  const [internalTheme, setInternalTheme] =
+    useState<StudioCanvasTheme>(defaultTheme);
   const [internalGrid, setInternalGrid] = useState(defaultGrid);
   const [interactions, setInteractions] = useState(0);
   const [lastLabel, setLastLabel] = useState<string | null>(null);
 
-  const activeTheme = controlledTheme !== undefined ? controlledTheme : internalTheme;
-  const activeGrid = controlledGrid !== undefined ? controlledGrid : internalGrid;
+  const activeTheme =
+    controlledTheme !== undefined ? controlledTheme : internalTheme;
+  const activeGrid =
+    controlledGrid !== undefined ? controlledGrid : internalGrid;
   const light = activeTheme === "light";
 
   const handleToggleTheme = () => {
     const next = light ? "dark" : "light";
+
     if (controlledTheme === undefined) setInternalTheme(next);
     onThemeChange?.(next);
   };
 
   const handleToggleGrid = () => {
     const next = !activeGrid;
+
     if (controlledGrid === undefined) setInternalGrid(next);
     onGridChange?.(next);
   };
 
-  const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = (e.target as HTMLElement).closest(
-      "button, [role='button'], a, input, select, textarea, label, [tabindex]"
-    ) as HTMLElement | null;
-    if (!el || el.closest("[data-studio-chrome]")) return;
-    setInteractions((n) => n + 1);
-    const raw =
-      el.getAttribute("aria-label") ||
-      el.textContent?.replace(/\s+/g, " ").trim() ||
-      el.tagName.toLowerCase();
-    setLastLabel(raw.length > 36 ? `${raw.slice(0, 36)}…` : raw);
-  }, []);
+  const handleCanvasClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = (e.target as HTMLElement).closest(
+        "button, [role='button'], a, input, select, textarea, label, [tabindex]",
+      ) as HTMLElement | null;
+
+      if (!el || el.closest("[data-studio-chrome]")) return;
+      setInteractions((n) => n + 1);
+      const raw =
+        el.getAttribute("aria-label") ||
+        el.textContent?.replace(/\s+/g, " ").trim() ||
+        el.tagName.toLowerCase();
+
+      setLastLabel(raw.length > 36 ? `${raw.slice(0, 36)}…` : raw);
+    },
+    [],
+  );
 
   const readout =
     interactions > 0
@@ -111,47 +139,56 @@ export default function StudioCanvas({
             <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
             <span className="w-3 h-3 rounded-full bg-[#28C840]" />
           </span>
-          <span className="text-xs font-mono text-gray-400 truncate">{title}</span>
+          <span className="text-xs font-mono text-gray-400 truncate">
+            {title}
+          </span>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           {/* Grid on/off — fixed width so ON/OFF never reflows the row */}
           <button
-            type="button"
-            onClick={handleToggleGrid}
             className={`h-8 inline-flex items-center text-[11px] font-mono font-bold px-3 rounded-lg border transition-colors ${
               activeGrid
                 ? "bg-white/10 text-white border-white/20"
                 : "text-gray-400 border-white/10 hover:bg-white/5"
             }`}
+            type="button"
+            onClick={handleToggleGrid}
           >
-            Grid:&nbsp;<span className="inline-block w-7 text-left">{activeGrid ? "ON" : "OFF"}</span>
+            Grid:&nbsp;
+            <span className="inline-block w-7 text-left">
+              {activeGrid ? "ON" : "OFF"}
+            </span>
           </button>
 
           {/* Light / Dark — both segments identical box model so toggling never shifts layout */}
           <div className="h-8 flex items-center gap-0.5 rounded-lg bg-black/40 border border-white/10 p-0.5 text-[11px] font-mono">
             <button
+              className={`flex items-center gap-1.5 h-full px-2.5 rounded-md font-bold transition-colors ${
+                light
+                  ? "bg-white text-gray-900"
+                  : "text-gray-400 hover:text-white"
+              }`}
               type="button"
               onClick={() => {
                 if (controlledTheme === undefined) setInternalTheme("light");
                 onThemeChange?.("light");
               }}
-              className={`flex items-center gap-1.5 h-full px-2.5 rounded-md font-bold transition-colors ${
-                light ? "bg-white text-gray-900" : "text-gray-400 hover:text-white"
-              }`}
             >
               <SunIcon />
               <span>Light</span>
             </button>
             <button
+              className={`flex items-center gap-1.5 h-full px-2.5 rounded-md font-bold transition-colors ${
+                !light
+                  ? "bg-[#1E1E28] text-white"
+                  : "text-gray-400 hover:text-white"
+              }`}
               type="button"
               onClick={() => {
                 if (controlledTheme === undefined) setInternalTheme("dark");
                 onThemeChange?.("dark");
               }}
-              className={`flex items-center gap-1.5 h-full px-2.5 rounded-md font-bold transition-colors ${
-                !light ? "bg-[#1E1E28] text-white" : "text-gray-400 hover:text-white"
-              }`}
             >
               <MoonIcon />
               <span>Dark</span>
@@ -162,10 +199,10 @@ export default function StudioCanvas({
 
       {/* Canvas body */}
       <div
-        onClickCapture={handleCanvasClick}
         className={`relative ${minHeight} flex flex-col items-center justify-center overflow-hidden p-10 sm:p-16 transition-colors duration-300 ${
           light ? "bg-gradient-to-b from-white to-[#E7ECF1]" : "bg-[#0E0F13]"
         }`}
+        onClickCapture={handleCanvasClick}
       >
         {activeGrid && (
           <div
@@ -179,7 +216,9 @@ export default function StudioCanvas({
           />
         )}
 
-        <div className="relative z-10 flex flex-col items-center gap-6">{children}</div>
+        <div className="relative z-10 flex flex-col items-center gap-6">
+          {children}
+        </div>
 
         {readout != null && (
           <div

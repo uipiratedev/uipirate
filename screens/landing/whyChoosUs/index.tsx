@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import GlassBadge from "@/components/GlassBadge";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 

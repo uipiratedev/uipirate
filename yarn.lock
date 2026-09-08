@@ -2401,6 +2401,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.11.3.tgz#ab92ff899825e2d71fc9914dda2847a099d43862"
   integrity sha512-v2mrNSnMwnPJtcVqNvV0c5roGCBqeogN8jDtgtuHCphdwBasOZ17x8UV8qpHUh+u0MLfX43c0uUHKje0s+Zb0w==
 
+"@thesvg/react@^3.3.2":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@thesvg/react/-/react-3.3.3.tgz#3261f4981f62ce4c2cd6263bae59c1ca7e0b2734"
+  integrity sha512-1WAeJ4vjjjCX4XAGCLVr8OYSudVu+Pgn7BshWseIs8VyOiAm/+kx9CGzR1nIJ/Z8XnSY4WHLZUpDr6mYACOsZw==
+
 "@tiptap/core@^3.10.1", "@tiptap/core@^3.13.0":
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-3.13.0.tgz#ae3fe6fe7732f36b6ea8a2198e1fc53a4ad0d0d2"

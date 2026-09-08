@@ -26,11 +26,7 @@ export function MagneticPulseCTA({
   const [isHovered, setIsHovered] = useState(false);
 
   const activeHover =
-    stateMode === "hover"
-      ? true
-      : stateMode === "standerd"
-      ? false
-      : isHovered;
+    stateMode === "hover" ? true : stateMode === "standerd" ? false : isHovered;
 
   const sizeConfig = {
     xs: {
@@ -79,21 +75,23 @@ export function MagneticPulseCTA({
         style={{ backgroundColor: pulseColor }}
       />
       <motion.button
-        type="button"
         animate={{
           scale: activeHover ? 1.05 : 1,
         }}
-        whileHover={stateMode === "interactive" ? { scale: 1.05 } : undefined}
-        whileTap={stateMode === "interactive" ? { scale: 0.95 } : undefined}
-        onClick={onClick}
         className={`relative ${sizeConfig.padding} rounded-full text-white font-bold ${sizeConfig.fontSize} shadow-2xl flex items-center ${sizeConfig.gap} cursor-pointer focus:outline-none`}
         style={{
           backgroundColor: pulseColor,
           boxShadow: `0 0 35px ${pulseColor}80`,
         }}
+        type="button"
+        whileHover={stateMode === "interactive" ? { scale: 1.05 } : undefined}
+        whileTap={stateMode === "interactive" ? { scale: 0.95 } : undefined}
+        onClick={onClick}
       >
         <span className="whitespace-nowrap">{label}</span>
-        <span className={`${sizeConfig.dotSize} rounded-full bg-white animate-ping`} />
+        <span
+          className={`${sizeConfig.dotSize} rounded-full bg-white animate-ping`}
+        />
       </motion.button>
     </div>
   );

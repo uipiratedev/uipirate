@@ -1,8 +1,8 @@
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
 import BlogsDetailsHero from "./hero";
 import BlogContents from "./blogContents";
 import SuggestedReads from "./suggestedReads";
-
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
 
 interface PostSEO {
   metaTitle?: string;

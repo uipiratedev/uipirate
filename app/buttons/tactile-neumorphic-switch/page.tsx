@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
+
 import Loader from "@/components/loader";
 
 const TactileNeumorphicSwitchScreen = dynamic(
   () => import("@/screens/buttons/tactileNeumorphicSwitch"),
   {
     loading: () => <Loader />,
-  }
+  },
 );
 
 export const metadata: Metadata = {
@@ -32,23 +33,28 @@ export default function TactileNeumorphicSwitchPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
-    "name": "Tactile Neumorphic Dual-Dome Switch",
-    "description":
+    name: "Tactile Neumorphic Dual-Dome Switch",
+    description:
       "Photorealistic 3D neumorphic toggle switch featuring an outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
-    "codeRepository": "https://github.com/uipirate/uipirate",
-    "programmingLanguage": ["TypeScript", "React", "Tailwind CSS", "Framer Motion"],
-    "author": {
+    codeRepository: "https://github.com/uipirate/uipirate",
+    programmingLanguage: [
+      "TypeScript",
+      "React",
+      "Tailwind CSS",
+      "Framer Motion",
+    ],
+    author: {
       "@type": "Organization",
-      "name": "UI Pirate",
-      "url": "https://uipirate.com",
+      name: "UI Pirate",
+      url: "https://uipirate.com",
     },
   };
 
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <TactileNeumorphicSwitchScreen />
     </>

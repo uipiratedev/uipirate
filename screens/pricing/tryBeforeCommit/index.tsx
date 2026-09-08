@@ -15,9 +15,23 @@ const fadeUp = {
 };
 
 const PILOT_OPTIONS = [
-  { type: "Design", price: "150", description: "5 screens or 1 full user flow — polished Figma file, ready for dev" },
-  { type: "Development", price: "250", description: "Working component or feature, production-ready code" },
-  { type: "Design + Dev", price: "350", description: "Designed and built in 5 days — you own all the files and code" },
+  {
+    type: "Design",
+    price: "150",
+    description:
+      "5 screens or 1 full user flow — polished Figma file, ready for dev",
+  },
+  {
+    type: "Development",
+    price: "250",
+    description: "Working component or feature, production-ready code",
+  },
+  {
+    type: "Design + Dev",
+    price: "350",
+    description:
+      "Designed and built in 5 days — you own all the files and code",
+  },
 ];
 
 const TryBeforeCommit = () => {

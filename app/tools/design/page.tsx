@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import ToolCategoryHub from "@/components/ToolCategoryHub";
 
 export const metadata: Metadata = {
@@ -13,14 +14,22 @@ export const metadata: Metadata = {
 export default function DesignToolsHubPage() {
   return (
     <ToolCategoryHub
-      categoryId="design-system"
-      badgeText="Pillar 3 · Code & Foundations"
-      title="Design Systems & Front-End Engineering Tools"
-      subtitle="Generate pixel-perfect 8pt spatial scales, modular typography ramps, Tailwind config tokens, and WCAG accessibility standards."
-      agencyService="Design Systems & Frontend Architecture"
       agencyDescription="We engineer scalable multi-brand design systems in Figma and code tokens with full Tailwind CSS, React, and Angular component libraries."
+      agencyService="Design Systems & Frontend Architecture"
+      badgeText="Pillar 3 · Code & Foundations"
+      categoryId="design-system"
+      faqs={[
+        {
+          q: "How do design tokens speed up frontend engineering?",
+          a: "Tokens synchronize design decisions between Figma and code repositories, preventing visual drift and eliminating tedious CSS rewriting.",
+        },
+        {
+          q: "Are the outputs compatible with Tailwind CSS v3 and v4?",
+          a: "Yes. All tokens export ready-to-use JavaScript configuration objects and CSS Custom Properties.",
+        },
+      ]}
       introParagraphs={[
-        "Every product team eventually hits the same wall: spacing, type sizes, and colors get chosen ad hoc across screens, Figma and the codebase drift apart, and \"just eyeball it\" stops scaling once more than one person touches the UI. Fixing that after the fact means auditing hundreds of components — fixing it up front means starting from a token scale that's mathematically consistent and shared between design and engineering from day one.",
+        'Every product team eventually hits the same wall: spacing, type sizes, and colors get chosen ad hoc across screens, Figma and the codebase drift apart, and "just eyeball it" stops scaling once more than one person touches the UI. Fixing that after the fact means auditing hundreds of components — fixing it up front means starting from a token scale that\'s mathematically consistent and shared between design and engineering from day one.',
         "These generators produce the same foundational tokens we hand off on real design-system engagements: 8pt-grid spacing, modular typography ramps, WCAG-compliant contrast pairs, and ready-to-use Tailwind config output. Run them once at the start of a project, or use them to audit an existing UI for accessibility and consistency gaps.",
       ]}
       methodology={[
@@ -40,16 +49,8 @@ export default function DesignToolsHubPage() {
           desc: "We test contrast ratios and perceptual lightness across dark and light modes to ensure enterprise-grade accessibility.",
         },
       ]}
-      faqs={[
-        {
-          q: "How do design tokens speed up frontend engineering?",
-          a: "Tokens synchronize design decisions between Figma and code repositories, preventing visual drift and eliminating tedious CSS rewriting.",
-        },
-        {
-          q: "Are the outputs compatible with Tailwind CSS v3 and v4?",
-          a: "Yes. All tokens export ready-to-use JavaScript configuration objects and CSS Custom Properties.",
-        },
-      ]}
+      subtitle="Generate pixel-perfect 8pt spatial scales, modular typography ramps, Tailwind config tokens, and WCAG accessibility standards."
+      title="Design Systems & Front-End Engineering Tools"
     />
   );
 }

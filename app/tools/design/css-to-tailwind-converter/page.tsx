@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import UpcomingToolLandingPage, { UpcomingToolSpec } from "@/components/UpcomingToolLandingPage";
+
+import UpcomingToolLandingPage, {
+  UpcomingToolSpec,
+} from "@/components/UpcomingToolLandingPage";
 
 export const metadata: Metadata = {
   title: "CSS to Tailwind CSS Class Converter | UI Pirate",
@@ -21,17 +24,41 @@ const spec: UpcomingToolSpec = {
   agencyService: "Frontend Architecture & Code Migration",
   agencyLink: "/contact",
   keyMetrics: [
-    { name: "Full CSS Property Coverage", desc: "Converts flexbox, grid, typography, colors, borders, and transforms." },
-    { name: "Arbitrary Value Syntax Support", desc: "Falls back to custom values like w-[342px] when outside standard scales." },
-    { name: "JSX / HTML className Output", desc: "Outputs ready-to-paste JSX className strings." },
+    {
+      name: "Full CSS Property Coverage",
+      desc: "Converts flexbox, grid, typography, colors, borders, and transforms.",
+    },
+    {
+      name: "Arbitrary Value Syntax Support",
+      desc: "Falls back to custom values like w-[342px] when outside standard scales.",
+    },
+    {
+      name: "JSX / HTML className Output",
+      desc: "Outputs ready-to-paste JSX className strings.",
+    },
   ],
   howItWorks: [
-    { step: "01. Paste CSS", title: "Input Style Rules", desc: "Paste standard CSS declaration blocks." },
-    { step: "02. AST Tokenizer", title: "Map to Tailwind", desc: "Matches properties to closest Tailwind utility equivalents." },
-    { step: "03. Copy Output", title: "Copy Utility Classes", desc: "Paste directly into React/Next.js components." },
+    {
+      step: "01. Paste CSS",
+      title: "Input Style Rules",
+      desc: "Paste standard CSS declaration blocks.",
+    },
+    {
+      step: "02. AST Tokenizer",
+      title: "Map to Tailwind",
+      desc: "Matches properties to closest Tailwind utility equivalents.",
+    },
+    {
+      step: "03. Copy Output",
+      title: "Copy Utility Classes",
+      desc: "Paste directly into React/Next.js components.",
+    },
   ],
   faqs: [
-    { q: "How does it handle unsupported CSS properties?", a: "It uses Tailwind's arbitrary value syntax or inline CSS variables." },
+    {
+      q: "How does it handle unsupported CSS properties?",
+      a: "It uses Tailwind's arbitrary value syntax or inline CSS variables.",
+    },
   ],
 };
 

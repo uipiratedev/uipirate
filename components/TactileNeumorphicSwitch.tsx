@@ -12,7 +12,12 @@ export type TactileSwitchTheme =
   | "amber-crt";
 
 export type TactileSwitchSize = "xs" | "sm" | "md" | "lg" | "xl";
-export type TactileSwitchStateMode = "interactive" | "off" | "on" | "standerd" | "hover";
+export type TactileSwitchStateMode =
+  | "interactive"
+  | "off"
+  | "on"
+  | "standerd"
+  | "hover";
 
 export interface TactileNeumorphicSwitchProps {
   /** Controlled active state (true = ON, false = OFF) */
@@ -42,6 +47,7 @@ export interface TactileNeumorphicSwitchProps {
 // Utility to shade/tint HEX colors for dynamic gradients and ambient glows
 function adjustHex(hex: string, percent: number): string {
   let cleanHex = hex.replace("#", "");
+
   if (cleanHex.length === 3) {
     cleanHex = cleanHex
       .split("")
@@ -49,13 +55,16 @@ function adjustHex(hex: string, percent: number): string {
       .join("");
   }
   let num = parseInt(cleanHex, 16);
+
   if (isNaN(num)) return hex;
   let r = (num >> 16) + Math.round((255 * percent) / 100);
   let g = ((num >> 8) & 0x00ff) + Math.round((255 * percent) / 100);
   let b = (num & 0x0000ff) + Math.round((255 * percent) / 100);
+
   r = Math.min(255, Math.max(0, r));
   g = Math.min(255, Math.max(0, g));
   b = Math.min(255, Math.max(0, b));
+
   return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 }
 
@@ -179,7 +188,8 @@ export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
       "inset -3px -3.5px 7px rgba(255, 255, 255, 0.95), " +
       "inset 1px 1px 2px rgba(135, 148, 170, 0.45), " +
       "inset -1px -1px 2px rgba(255, 255, 255, 1)",
-    trackOffBg: "linear-gradient(180deg, #BAC3D2 0%, #CDD5E2 25%, #E2E8F1 65%, #F0F4F9 100%)",
+    trackOffBg:
+      "linear-gradient(180deg, #BAC3D2 0%, #CDD5E2 25%, #E2E8F1 65%, #F0F4F9 100%)",
     trackOffShadow:
       "inset 0 4px 6px -1px rgba(45, 60, 85, 0.48), " +
       "inset 0 1px 2px rgba(45, 60, 85, 0.35), " +
@@ -205,7 +215,8 @@ export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
     outerBevelShadow:
       "inset 3px 3.5px 7px rgba(140, 155, 178, 0.6), " +
       "inset -3px -3.5px 7px rgba(255, 255, 255, 0.95)",
-    trackOffBg: "linear-gradient(180deg, #BAC3D2 0%, #CDD5E2 25%, #E2E8F1 65%, #F0F4F9 100%)",
+    trackOffBg:
+      "linear-gradient(180deg, #BAC3D2 0%, #CDD5E2 25%, #E2E8F1 65%, #F0F4F9 100%)",
     trackOffShadow:
       "inset 0 4px 6px -1px rgba(45, 60, 85, 0.48), " +
       "inset 0 -1px 2px rgba(255, 255, 255, 0.95)",
@@ -226,7 +237,8 @@ export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
     outerBevelShadow:
       "inset 3px 3.5px 7px rgba(175, 155, 145, 0.6), " +
       "inset -3px -3.5px 7px rgba(255, 255, 255, 0.95)",
-    trackOffBg: "linear-gradient(180deg, #C7BCB3 0%, #D8CFC7 25%, #E9E2DC 65%, #F5EFEB 100%)",
+    trackOffBg:
+      "linear-gradient(180deg, #C7BCB3 0%, #D8CFC7 25%, #E9E2DC 65%, #F5EFEB 100%)",
     trackOffShadow:
       "inset 0 4px 6px -1px rgba(85, 60, 50, 0.48), " +
       "inset 0 -1px 2px rgba(255, 255, 255, 0.95)",
@@ -248,7 +260,8 @@ export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
       "inset 3px 3.5px 8px rgba(0, 0, 0, 0.95), " +
       "inset -2px -2px 6px rgba(255, 255, 255, 0.06), " +
       "inset 0 1px 1px rgba(255, 255, 255, 0.14)",
-    trackOffBg: "linear-gradient(180deg, #050608 0%, #0B0D11 30%, #12151B 70%, #181C24 100%)",
+    trackOffBg:
+      "linear-gradient(180deg, #050608 0%, #0B0D11 30%, #12151B 70%, #181C24 100%)",
     trackOffShadow:
       "inset 0 6px 8px -1px rgba(0, 0, 0, 0.98), " +
       "inset 0 -1px 2px rgba(255, 255, 255, 0.06), " +
@@ -273,7 +286,8 @@ export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
     outerBevelShadow:
       "inset 6px 7px 14px rgba(160, 145, 180, 0.6), " +
       "inset -6px -7px 14px rgba(255, 255, 255, 0.95)",
-    trackOffBg: "linear-gradient(180deg, #C2B8D2 0%, #D4C9E3 25%, #E6DCF4 65%, #F3EDFC 100%)",
+    trackOffBg:
+      "linear-gradient(180deg, #C2B8D2 0%, #D4C9E3 25%, #E6DCF4 65%, #F3EDFC 100%)",
     trackOffShadow:
       "inset 0 10px 14px -2px rgba(75, 50, 95, 0.48), " +
       "inset 0 -2px 3px rgba(255, 255, 255, 0.95)",
@@ -294,7 +308,8 @@ export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
     outerBevelShadow:
       "inset 6px 7px 14px rgba(180, 165, 135, 0.6), " +
       "inset -6px -7px 14px rgba(255, 255, 255, 0.95)",
-    trackOffBg: "linear-gradient(180deg, #CAC2B0 0%, #DDD5C3 25%, #EDE6D6 65%, #FAF4E7 100%)",
+    trackOffBg:
+      "linear-gradient(180deg, #CAC2B0 0%, #DDD5C3 25%, #EDE6D6 65%, #FAF4E7 100%)",
     trackOffShadow:
       "inset 0 10px 14px -2px rgba(90, 75, 45, 0.48), " +
       "inset 0 -2px 3px rgba(255, 255, 255, 0.95)",
@@ -318,7 +333,9 @@ const SPRING_PHYSICS: Transition = {
  * Tactile Neumorphic Dual-Dome Switch
  * Photorealistic vector implementation with sculpted dual-dome handle and OFF / ON states.
  */
-export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = ({
+export const TactileNeumorphicSwitch: React.FC<
+  TactileNeumorphicSwitchProps
+> = ({
   checked: controlledChecked,
   defaultChecked = false,
   stateMode = "interactive",
@@ -348,7 +365,7 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
   const activeGradient = customActiveColor
     ? `linear-gradient(180deg, ${adjustHex(customActiveColor, -25)} 0%, ${customActiveColor} 45%, ${adjustHex(
         customActiveColor,
-        35
+        35,
       )} 100%)`
     : t.trackOnGradient;
 
@@ -359,6 +376,7 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
   const handleToggle = () => {
     if (disabled || stateMode !== "interactive") return;
     const nextVal = !isChecked;
+
     if (controlledChecked === undefined) {
       setInternalChecked(nextVal);
     }
@@ -379,18 +397,16 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
     >
       {/* ── Outer Recessed Bevel Cavity Frame ──────────────────────── */}
       <div
-        role="switch"
         aria-checked={isChecked}
         aria-label={label || "Tactile Neumorphic Switch"}
-        tabIndex={disabled ? -1 : 0}
-        onClick={handleToggle}
-        onKeyDown={handleKeyDown}
-        className={`relative flex items-center justify-center cursor-pointer outline-none transition-transform duration-200 ${disabled
-          ? "opacity-50 cursor-not-allowed"
-          : stateMode === "interactive"
-            ? "active:scale-[0.985]"
-            : ""
-          }`}
+        className={`relative flex items-center justify-center cursor-pointer outline-none transition-transform duration-200 ${
+          disabled
+            ? "opacity-50 cursor-not-allowed"
+            : stateMode === "interactive"
+              ? "active:scale-[0.985]"
+              : ""
+        }`}
+        role="switch"
         style={{
           width: cfg.outerW,
           height: cfg.outerH,
@@ -398,6 +414,9 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
           background: t.outerCavityBg,
           boxShadow: t.outerBevelShadow,
         }}
+        tabIndex={disabled ? -1 : 0}
+        onClick={handleToggle}
+        onKeyDown={handleKeyDown}
       >
         {/* ── Inner Deep Shadow Trench Slot (Track) ──────────────────── */}
         <div
@@ -412,18 +431,18 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
         >
           {/* ON State Illuminated Channel Fill */}
           <motion.div
-            initial={false}
             animate={{
               opacity: isChecked ? 1 : 0,
               width: isChecked ? `${cfg.trackW}px` : `${cfg.trackH}px`,
             }}
-            transition={SPRING_PHYSICS}
             className="absolute left-0 top-0 bottom-0 pointer-events-none"
+            initial={false}
             style={{
               borderRadius: `${cfg.trackH / 2}px`,
               background: activeGradient,
               boxShadow: activeShadow,
             }}
+            transition={SPRING_PHYSICS}
           >
             {/* Subtle Balanced Ambient Specular Edge */}
             <div
@@ -438,8 +457,11 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
 
         {/* ── Sculpted Dual-Dome Handle ─────────────── */}
         {/* Dark Obsidian Precision Color Matrix Shader */}
-        <svg className="absolute w-0 h-0 pointer-events-none opacity-0" aria-hidden="true">
-          <filter id="obsidian-dome-filter" colorInterpolationFilters="sRGB">
+        <svg
+          aria-hidden="true"
+          className="absolute w-0 h-0 pointer-events-none opacity-0"
+        >
+          <filter colorInterpolationFilters="sRGB" id="obsidian-dome-filter">
             <feColorMatrix
               type="matrix"
               values="
@@ -454,15 +476,11 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
 
         {/* Knob Handle Frame */}
         <motion.div
-          initial={false}
           animate={{
             x: isChecked ? cfg.travel / 2 : -cfg.travel / 2,
           }}
-          whileTap={{
-            scale: 0.965,
-          }}
-          transition={SPRING_PHYSICS}
           className="absolute z-20 pointer-events-none flex items-center justify-center overflow-hidden"
+          initial={false}
           style={{
             width: cfg.knobW,
             height: cfg.knobH,
@@ -474,12 +492,20 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
               t.knobShadow ||
               `${(2.891 * cfg.scale).toFixed(2)}px ${(3.614 * cfg.scale).toFixed(2)}px ${(
                 5.059 * cfg.scale
-              ).toFixed(2)}px 0px rgba(35,46,64,0.22), 0px ${(0.723 * cfg.scale).toFixed(2)}px ${(
+              ).toFixed(
+                2,
+              )}px 0px rgba(35,46,64,0.22), 0px ${(0.723 * cfg.scale).toFixed(2)}px ${(
                 0.361 * cfg.scale
-              ).toFixed(2)}px 0px rgba(0,23,55,0.1), inset 0px ${(-0.181 * cfg.scale).toFixed(2)}px ${(
+              ).toFixed(
+                2,
+              )}px 0px rgba(0,23,55,0.1), inset 0px ${(-0.181 * cfg.scale).toFixed(2)}px ${(
                 0.361 * cfg.scale
               ).toFixed(2)}px 0px rgba(0,14,38,0.07)`,
             filter: t.knobFilter || "none",
+          }}
+          transition={SPRING_PHYSICS}
+          whileTap={{
+            scale: 0.965,
           }}
         >
           {/* Symmetrical Dual-Dome Pads */}
@@ -498,14 +524,17 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
               }}
             >
               <img
-                src={ELLIPSE_1624_URI}
                 alt=""
                 className="block w-full h-full object-contain pointer-events-none select-none"
+                draggable={false}
+                src={ELLIPSE_1624_URI}
                 style={{
                   transform: "scale(1.04)",
-                  filter: theme === "dark-obsidian" ? "url(#obsidian-dome-filter)" : "none",
+                  filter:
+                    theme === "dark-obsidian"
+                      ? "url(#obsidian-dome-filter)"
+                      : "none",
                 }}
-                draggable={false}
               />
             </div>
 
@@ -519,14 +548,17 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
               }}
             >
               <img
-                src={ELLIPSE_1625_URI}
                 alt=""
                 className="block w-full h-full object-contain pointer-events-none select-none"
+                draggable={false}
+                src={ELLIPSE_1625_URI}
                 style={{
                   transform: "scale(1.04)",
-                  filter: theme === "dark-obsidian" ? "url(#obsidian-dome-filter)" : "none",
+                  filter:
+                    theme === "dark-obsidian"
+                      ? "url(#obsidian-dome-filter)"
+                      : "none",
                 }}
-                draggable={false}
               />
             </div>
           </div>
@@ -535,8 +567,8 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
 
       {label && (
         <span
-          onClick={handleToggle}
           className="mt-3 text-xs font-mono text-gray-500 dark:text-gray-400 font-semibold cursor-pointer hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+          onClick={handleToggle}
         >
           {label}
         </span>

@@ -2,8 +2,6 @@ import { Card, CardBody, Tooltip } from "@heroui/react";
 import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 
-import GlassBadge from "@/components/GlassBadge";
-
 const TheTeam = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -86,15 +84,6 @@ const TheTeam = () => {
 
   return (
     <div className="section-container relative">
-      {/* Header */}
-      <div className="text-center mb-8 max-md:mb-4 autoShow">
-        <div className="flex justify-center mb-6">
-          <GlassBadge variant="gradient">THE TEAM</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          Meet The <span className="text-brand-orange">Crew </span>On Board
-        </h2>
-      </div>
       <div className="autoShowBottom">
         {/* Team Grid */}
         <motion.div
@@ -157,9 +146,6 @@ const TheTeam = () => {
 
                     {/* Name and Title */}
                     <div className="">
-                      {/* <p className="text-xs font-bold text-black">
-                      {member.name}
-                    </p> */}
                       <p className="text-[10px] text-gray-800 font-semibold opacity-70">
                         {member.role}
                       </p>

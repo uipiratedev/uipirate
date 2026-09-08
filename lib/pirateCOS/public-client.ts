@@ -73,7 +73,10 @@ function toReaderPost(p: any): ReaderPost {
     bannerImage: p.bannerImage,
     tags: Array.isArray(p.tags) ? p.tags : [],
     postType: p.postType,
-    author: { name: p.author?.name ?? "UI Pirate", email: p.author?.email ?? "" },
+    author: {
+      name: p.author?.name ?? "UI Pirate",
+      email: p.author?.email ?? "",
+    },
     readTime: p.readTime,
     views: p.views,
     totalViews: p.totalViews,
@@ -84,7 +87,8 @@ function toReaderPost(p: any): ReaderPost {
     metrics: Array.isArray(p.metrics) ? p.metrics : undefined,
     externalUrl: p.externalUrl,
     seo: p.seo,
-    createdAt: p.createdAt ?? p.publishedAt ?? p.updatedAt ?? new Date(0).toISOString(),
+    createdAt:
+      p.createdAt ?? p.publishedAt ?? p.updatedAt ?? new Date(0).toISOString(),
     publishedAt: p.publishedAt ?? p.createdAt ?? null,
     updatedAt: p.updatedAt ?? p.createdAt ?? new Date(0).toISOString(),
   };
@@ -113,12 +117,15 @@ async function apiGet(
   try {
     const res = await fetch(url.toString(), {
       headers: { Authorization: `Bearer ${API_KEY}` },
-      // Next's fetch data cache hard-caps entries at 2MB. The API doesn't
-      // actually trim to the requested `fields` yet, so list responses can
-      // include full post `content` and blow past that limit. Skip the data
-      // cache here — each route's own `export const revalidate` still governs
-      // how often the page itself gets refreshed.
-      cache: "no-store",
+      // Use a time-based revalidate (NOT `cache: "no-store"`). In the App Router
+      // `no-store` opts the whole calling route out of static prerendering and
+      // makes it dynamically rendered on every request, which disables <Link>
+      // prefetch and makes navigation to /blogs, /case-studies, etc. a full
+      // server round-trip. `next: { revalidate }` keeps those pages statically
+      // prerendered + refreshed on an interval (matching each route's own
+      // `export const revalidate`). Responses over Next's 2MB fetch-cache cap
+      // simply aren't stored in the data cache — the page-level ISR still works.
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
@@ -162,9 +169,7 @@ export async function listPosts(opts?: {
 }
 
 /** Fetch a single published post by slug. Returns null if not found. */
-export async function getPostBySlug(
-  slug: string,
-): Promise<ReaderPost | null> {
+export async function getPostBySlug(slug: string): Promise<ReaderPost | null> {
   const json = await apiGet(`/content/${encodeURIComponent(slug)}`);
 
   if (!json?.success || !json.data) return null;

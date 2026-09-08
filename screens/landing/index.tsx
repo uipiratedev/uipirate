@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import LandingHero from "./hero";
 import LandingMarquee from "./marquee";
 import Pricing from "./pricing";
-import TheTeam from "./theTeam";
 import LandingWhoWeAre from "./whoWeAre";
 import FeaturedCaseStudy, {
   type FeaturedCaseStudyData,
@@ -17,10 +16,6 @@ import PageWrapper from "@/components/PageWrapper";
 import PricingPerfectFor from "@/screens/pricing/perfectFor";
 
 // Dynamically import below-the-fold components for better initial load performance
-const LandingAppScreen = dynamic(() => import("./appScreen"), {
-  loading: () => <div className="min-h-[400px]" />,
-});
-
 const LandingBusinessHelp = dynamic(() => import("./businessHelp"), {
   loading: () => <div className="min-h-[600px]" />,
 });
@@ -41,20 +36,12 @@ const LandingBehanceFramor = dynamic(() => import("./behance/LandingBehance"), {
   loading: () => <div className="min-h-[600px]" />,
 });
 
-const BoreYouCommit = dynamic(() => import("./boreYouCommit"), {
-  loading: () => <div className="min-h-[300px]" />,
-});
-
 const MiniService = dynamic(() => import("./miniService/miniService"), {
   loading: () => <div className="min-h-[400px]" />,
 });
 
 const BentoGrid = dynamic(() => import("./bentoGrid/bentoGrid"), {
   loading: () => <div className="min-h-[500px]" />,
-});
-
-const TopThree = dynamic(() => import("./top3/topThree"), {
-  loading: () => <div className="min-h-[400px]" />,
 });
 
 interface LandingProps {
@@ -75,11 +62,6 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
           <BentoGrid />
         </div>
 
-        {/* <div className="overflow-x-hidden py-0 max-md:py-4">
-          <TopThree />
-          <LandingAppScreen />
-        </div> */}
-
         <MiniProcess />
 
         <LandingBehanceFramor />
@@ -90,8 +72,6 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
 
         <LandingAbout />
 
-        {/* <WhyChooseUs /> */}
-
         <div id="Services">
           <LandingBusinessHelp />
         </div>
@@ -99,10 +79,6 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
         <div id="pricing">
           <Pricing />
         </div>
-
-        <TheTeam />
-
-        {/* <BoreYouCommit /> */}
 
         <div className="overflow-hidden">
           <LandingTestimonials />
@@ -112,9 +88,6 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
           <LandingFaqs />
         </div>
       </div>
-
-      {/* Floating Let's Talk Button - Only on Landing Page */}
-      {/* <FloatingLetsTalkButton /> */}
     </PageWrapper>
   );
 });

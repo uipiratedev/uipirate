@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import SuggestedTools, { ALL_TOOLS_REGISTRY } from "@/components/SuggestedTools";
+
+import SuggestedTools, {
+  ALL_TOOLS_REGISTRY,
+} from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
 export interface UpcomingToolSpec {
@@ -19,26 +22,30 @@ export interface UpcomingToolSpec {
   faqs: { q: string; a: string }[];
 }
 
-export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSpec }) {
+export default function UpcomingToolLandingPage({
+  spec,
+}: {
+  spec: UpcomingToolSpec;
+}) {
   const toolEntry = ALL_TOOLS_REGISTRY.find((t) => t.id === spec.id);
 
   const webAppSchema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": spec.title,
-    "description": spec.subtitle,
-    "url": `https://uipirate.com/tools/${spec.category}/${spec.id}`,
-    "applicationCategory": "DesignApplication",
-    "operatingSystem": "All",
-    "offers": {
+    name: spec.title,
+    description: spec.subtitle,
+    url: `https://uipirate.com/tools/${spec.category}/${spec.id}`,
+    applicationCategory: "DesignApplication",
+    operatingSystem: "All",
+    offers: {
       "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
+      price: "0",
+      priceCurrency: "USD",
     },
-    "creator": {
+    creator: {
       "@type": "Organization",
-      "name": "UI Pirate",
-      "url": "https://uipirate.com",
+      name: "UI Pirate",
+      url: "https://uipirate.com",
     },
   };
 
@@ -47,12 +54,12 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
       ? {
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          "mainEntity": spec.faqs.map((f) => ({
+          mainEntity: spec.faqs.map((f) => ({
             "@type": "Question",
-            "name": f.q,
-            "acceptedAnswer": {
+            name: f.q,
+            acceptedAnswer: {
               "@type": "Answer",
-              "text": f.a,
+              text: f.a,
             },
           })),
         }
@@ -69,20 +76,22 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
 
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+        type="application/ld+json"
       />
       {faqSchema && (
         <script
-          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          type="application/ld+json"
         />
       )}
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
@@ -115,12 +124,13 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
                 <span>Need a full diagnostic teardown today?</span>
               </div>
               <p className="text-xs text-gray-500 leading-relaxed max-w-md">
-                Our product design engineers provide tailored manual audits with high-converting Figma wireframes and technical recommendations.
+                Our product design engineers provide tailored manual audits with
+                high-converting Figma wireframes and technical recommendations.
               </p>
             </div>
             <Link
-              href="/contact"
               className="px-6 py-3 rounded-full bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-md shadow-gray-900/10 cursor-pointer"
+              href="/contact"
             >
               Book Manual Audit →
             </Link>
@@ -137,7 +147,8 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
               What This Tool Will Analyze & Score
             </h2>
             <p className="text-xs text-gray-500 mt-2">
-              Engineered according to UI Pirate agency standards for high-performing digital products.
+              Engineered according to UI Pirate agency standards for
+              high-performing digital products.
             </p>
           </div>
 
@@ -151,12 +162,18 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
                   <div className="w-10 h-10 rounded-2xl bg-[#FF5B04]/8 text-[#FF5B04] flex items-center justify-center font-mono font-bold text-sm mb-4">
                     {String(idx + 1).padStart(2, "0")}
                   </div>
-                  <h3 className="text-base font-bold text-gray-900 font-jakarta mb-2">{metric.name}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{metric.desc}</p>
+                  <h3 className="text-base font-bold text-gray-900 font-jakarta mb-2">
+                    {metric.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {metric.desc}
+                  </p>
                 </div>
                 <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between text-[11px] font-mono text-gray-400">
                   <span>Audit Parameter</span>
-                  <span className="text-emerald-600 font-semibold">0–100 Weighted</span>
+                  <span className="text-emerald-600 font-semibold">
+                    0–100 Weighted
+                  </span>
                 </div>
               </div>
             ))}
@@ -176,11 +193,20 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {spec.howItWorks.map((step, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-gray-50/80 border border-gray-100 flex flex-col justify-between">
+              <div
+                key={idx}
+                className="p-6 rounded-2xl bg-gray-50/80 border border-gray-100 flex flex-col justify-between"
+              >
                 <div>
-                  <span className="text-xs font-mono font-bold text-[#FF5B04] block mb-2">{step.step}</span>
-                  <h3 className="text-sm font-bold text-gray-900 font-jakarta mb-2">{step.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{step.desc}</p>
+                  <span className="text-xs font-mono font-bold text-[#FF5B04] block mb-2">
+                    {step.step}
+                  </span>
+                  <h3 className="text-sm font-bold text-gray-900 font-jakarta mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
               </div>
             ))}
@@ -197,12 +223,14 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
               Need these optimizations implemented now?
             </h3>
             <p className="text-xs text-gray-300 mt-2 leading-relaxed">
-              Don't wait for automated tools. UI Pirate's senior product designers and engineers can audit, redesign, and ship your interface directly in Figma and Next.js.
+              Don't wait for automated tools. UI Pirate's senior product
+              designers and engineers can audit, redesign, and ship your
+              interface directly in Figma and Next.js.
             </p>
           </div>
           <Link
-            href="/contact"
             className="px-7 py-4 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-sm font-bold transition-all shadow-lg shadow-[#FF5B04]/30 whitespace-nowrap flex-shrink-0"
+            href="/contact"
           >
             Get Expert Help →
           </Link>
@@ -222,9 +250,16 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
 
             <div className="max-w-3xl mx-auto space-y-4">
               {spec.faqs.map((faq, idx) => (
-                <div key={idx} className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-2xs">
-                  <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">{faq.q}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{faq.a}</p>
+                <div
+                  key={idx}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-2xs"
+                >
+                  <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                    {faq.q}
+                  </h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {faq.a}
+                  </p>
                 </div>
               ))}
             </div>
@@ -233,7 +268,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
 
         {/* Suggested Tools */}
         <div className="w-full">
-          <SuggestedTools currentToolId={spec.id} category={spec.category} />
+          <SuggestedTools category={spec.category} currentToolId={spec.id} />
         </div>
       </div>
     </div>

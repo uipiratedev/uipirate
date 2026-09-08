@@ -3,7 +3,7 @@ import React from "react";
 
 import TestimonialCards from "./testimonialCards";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 import testimonialData from "@/data/testimonials.json";
 
 // Build Review + AggregateRating JSON-LD from real testimonial data
@@ -45,11 +45,9 @@ function LandingTestimonials() {
         type="application/ld+json"
       />
 
-      <div className="autoShow">
-        <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-4">
-          <GlassBadge variant="gradient">testimonials</GlassBadge>
-        </div>
-      </div>
+      <SectionHeader chip="testimonials" className="autoShow">
+        What <span className="text-brand-orange">Clients Say</span>
+      </SectionHeader>
       <div className="autoShowBottom">
         <TestimonialCards />
       </div>

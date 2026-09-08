@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import BotDirectoryClient from "@/components/BotDirectory/BotDirectoryClient";
 
 export const metadata: Metadata = {

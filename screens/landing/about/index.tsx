@@ -1,16 +1,15 @@
 import AboutCardAnimation from "./aboutCard";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 
 const LandingAbout = () => {
   return (
     <section className="overflow-x-hidden">
       <div className="section-container">
-        <div className="autoShow">
-          <div className="flex flex-row items-center justify-center mb-6">
-            <GlassBadge variant="gradient">Our journey so far</GlassBadge>
-          </div>
-        </div>
+        <SectionHeader chip="Our journey so far" className="autoShow">
+          What We{" "}
+          <span className="text-brand-orange"> Design, Build, & Scale</span>
+        </SectionHeader>
       </div>
       <div className="section-container autoShowBottom">
         <AboutCardAnimation />

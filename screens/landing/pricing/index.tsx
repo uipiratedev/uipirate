@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import PricingFlip from "../pricingFlip";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 
 const Pricing = () => {
   // Subtle animation for the main container
@@ -20,33 +20,6 @@ const Pricing = () => {
       },
     },
   };
-
-  const monthlyRetainerFeatures = [
-    "Full design & development stack",
-    "1 active request at a time",
-    "Weekly progress sync",
-    "Fast turnaround",
-    "Unlimited requests within scope",
-    "Mon–Fri, < 2hr response",
-  ];
-
-  const customProjectFeatures = [
-    "Access to all services",
-    "Priority support & Fully custom scope",
-    "No hidden costs",
-    "Working with your team",
-    "Mon–Fri, < 2hr response",
-  ];
-
-  const customQuoteFeatures = [
-    "Full design, development & product support",
-    "Priority handling for complex scopes",
-    "Custom project scope & delivery plan",
-    "Flexible engagement based on your needs",
-    "Close collaboration with stakeholders",
-    "Dedicated project ownership",
-    "Mon–Fri, < 2hr response",
-  ];
 
   const benefits = [
     {
@@ -78,15 +51,10 @@ const Pricing = () => {
       whileInView="show"
     >
       {/* Header */}
-      <div className=" autoShow text-center mb-6 max-md:mb-4">
-        <div className="flex justify-center mb-6">
-          <GlassBadge variant="gradient">PRICING</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          Transparent Pricing for{" "}
-          <span className="text-brand-orange">SaaS Teams</span>{" "}
-        </h2>
-      </div>
+      <SectionHeader chip="PRICING" className="autoShow">
+        Transparent Pricing for{" "}
+        <span className="text-brand-orange">SaaS Teams</span>{" "}
+      </SectionHeader>
 
       <PricingFlip />
       {/* Benefits Section */}

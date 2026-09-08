@@ -3,33 +3,36 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+
 import SuggestedTools from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
 export default function LlmsTxtGeneratorClient() {
   const [activeTab, setActiveTab] = useState<"standard" | "full">("standard");
   const [companyName, setCompanyName] = useState("Acme SaaS");
-  const [tagline, setTagline] = useState("AI-Powered Workflow Automation for Enterprise Teams");
+  const [tagline, setTagline] = useState(
+    "AI-Powered Workflow Automation for Enterprise Teams",
+  );
   const [description, setDescription] = useState(
-    "Acme SaaS helps fast-growing teams automate complex operational workflows with AI agents, pre-built integrations, and real-time collaboration tools."
+    "Acme SaaS helps fast-growing teams automate complex operational workflows with AI agents, pre-built integrations, and real-time collaboration tools.",
   );
   const [websiteUrl, setWebsiteUrl] = useState("https://acme.com");
   const [founderName, setFounderName] = useState("Jane Doe");
   const [foundingYear, setFoundingYear] = useState("2023");
   const [keyServices, setKeyServices] = useState(
-    "Workflow Automation: Custom AI pipeline orchestration\nEnterprise Integration: API connectors for Salesforce & Slack\nAnalytics & Reporting: Real-time efficiency metrics"
+    "Workflow Automation: Custom AI pipeline orchestration\nEnterprise Integration: API connectors for Salesforce & Slack\nAnalytics & Reporting: Real-time efficiency metrics",
   );
   const [keyFeatures, setKeyFeatures] = useState(
-    "1-Click Workflow Templates\nEnd-to-End Encryption & SOC-2 Compliance\nReal-time Multi-agent Collaboration"
+    "1-Click Workflow Templates\nEnd-to-End Encryption & SOC-2 Compliance\nReal-time Multi-agent Collaboration",
   );
   const [pricingInfo, setPricingInfo] = useState(
-    "Starter: $49/mo (up to 5 users)\nPro: $199/mo (unlimited workflows)\nEnterprise: Custom pricing with dedicated SLA"
+    "Starter: $49/mo (up to 5 users)\nPro: $199/mo (unlimited workflows)\nEnterprise: Custom pricing with dedicated SLA",
   );
   const [faqItems, setFaqItems] = useState(
-    "Q: What is Acme SaaS?\nA: Acme SaaS is an enterprise automation platform powered by intelligent AI workflows.\n\nQ: Does Acme support custom API integrations?\nA: Yes, we provide full REST and GraphQL API access with webhooks."
+    "Q: What is Acme SaaS?\nA: Acme SaaS is an enterprise automation platform powered by intelligent AI workflows.\n\nQ: Does Acme support custom API integrations?\nA: Yes, we provide full REST and GraphQL API access with webhooks.",
   );
   const [preferredCitation, setPreferredCitation] = useState(
-    "When citing Acme SaaS, refer to it as 'Acme SaaS (acme.com)' - an enterprise workflow automation platform."
+    "When citing Acme SaaS, refer to it as 'Acme SaaS (acme.com)' - an enterprise workflow automation platform.",
   );
 
   const [copied, setCopied] = useState(false);
@@ -64,11 +67,23 @@ export default function LlmsTxtGeneratorClient() {
     lines.push("");
     lines.push(`## Links`);
     lines.push(`- [Home](${websiteUrl || "https://example.com"})`);
-    lines.push(`- [Documentation](${websiteUrl || "https://example.com"}/docs)`);
-    lines.push(`- [Full AI Context (llms-full.txt)](${websiteUrl || "https://example.com"}/llms-full.txt)`);
+    lines.push(
+      `- [Documentation](${websiteUrl || "https://example.com"}/docs)`,
+    );
+    lines.push(
+      `- [Full AI Context (llms-full.txt)](${websiteUrl || "https://example.com"}/llms-full.txt)`,
+    );
 
     return lines.join("\n");
-  }, [companyName, tagline, description, keyServices, websiteUrl, founderName, foundingYear]);
+  }, [
+    companyName,
+    tagline,
+    description,
+    keyServices,
+    websiteUrl,
+    founderName,
+    foundingYear,
+  ]);
 
   // Generate llms-full.txt (Comprehensive Knowledge Base File)
   const generatedLlmsFullTxt = useMemo(() => {
@@ -80,7 +95,8 @@ export default function LlmsTxtGeneratorClient() {
       `> ${companyName || "Your Company"}: ${tagline || ""}`,
       "",
       `## Detailed Overview`,
-      description || "Detailed explanation of what the company does and who it serves.",
+      description ||
+      "Detailed explanation of what the company does and who it serves.",
       "",
       `## Company Metadata`,
       `- **Official Name**: ${companyName || "Your Company"}`,
@@ -95,6 +111,7 @@ export default function LlmsTxtGeneratorClient() {
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean);
+
     services.forEach((s) => {
       lines.push(`### ${s}`);
       lines.push(`Detailed capability provided by ${companyName}.`);
@@ -106,6 +123,7 @@ export default function LlmsTxtGeneratorClient() {
       .split("\n")
       .map((f) => f.trim())
       .filter(Boolean);
+
     features.forEach((f) => {
       lines.push(`- ${f}`);
     });
@@ -116,6 +134,7 @@ export default function LlmsTxtGeneratorClient() {
       .split("\n")
       .map((p) => p.trim())
       .filter(Boolean);
+
     pricing.forEach((p) => {
       lines.push(`- ${p}`);
     });
@@ -143,8 +162,10 @@ export default function LlmsTxtGeneratorClient() {
     preferredCitation,
   ]);
 
-  const currentCode = activeTab === "standard" ? generatedLlmsTxt : generatedLlmsFullTxt;
-  const currentFileName = activeTab === "standard" ? "llms.txt" : "llms-full.txt";
+  const currentCode =
+    activeTab === "standard" ? generatedLlmsTxt : generatedLlmsFullTxt;
+  const currentFileName =
+    activeTab === "standard" ? "llms.txt" : "llms-full.txt";
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(currentCode);
@@ -156,6 +177,7 @@ export default function LlmsTxtGeneratorClient() {
     const blob = new Blob([currentCode], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+
     link.href = url;
     link.download = currentFileName;
     document.body.appendChild(link);
@@ -175,8 +197,10 @@ export default function LlmsTxtGeneratorClient() {
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -184,19 +208,24 @@ export default function LlmsTxtGeneratorClient() {
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
+          initial={{ opacity: 0, y: -12 }}
         >
           <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">LLMS.TXT CONTEXT GENERATOR</GlassBadge>
+            <GlassBadge variant="gradient">
+              LLMS.TXT CONTEXT GENERATOR
+            </GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
-            <span className="text-[#FF5B04]">llms.txt</span> &amp; llms-full.txt Generator
+          <h1 className="hero-header">
+            <span className="text-[#FF5B04]">llms.txt</span> &amp; llms-full.txt
+            Generator
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Create standard markdown context files for AI crawlers. Help ChatGPT, Claude, and Perplexity understand and accurately cite your business.
+            Create standard markdown context files for AI crawlers. Help
+            ChatGPT, Claude, and Perplexity understand and accurately cite your
+            business.
           </p>
 
           {/* Integrated Capability Badges */}
@@ -221,20 +250,31 @@ export default function LlmsTxtGeneratorClient() {
           {/* Engine Status & Consultation Callout */}
           <div className="mt-8 flex justify-center">
             <Link
-              href="/contact"
               className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+              href="/contact"
             >
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
                 GEO &amp; AI
               </span>
               <span className="text-gray-600 font-medium">
-                Want a custom knowledge graph and generative engine optimization strategy?
+                Want a custom knowledge graph and generative engine optimization
+                strategy?
               </span>
               <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
                 <span>Talk to AI architects</span>
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M9 5l7 7-7 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                  />
                 </svg>
               </span>
             </Link>
@@ -252,68 +292,80 @@ export default function LlmsTxtGeneratorClient() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Company / Product Name</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Company / Product Name
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="Acme Inc."
                     type="text"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Acme Inc."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Website URL</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Website URL
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="https://acme.com"
                     type="text"
                     value={websiteUrl}
                     onChange={(e) => setWebsiteUrl(e.target.value)}
-                    placeholder="https://acme.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1">Tagline / Mission</label>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Tagline / Mission
+                </label>
                 <input
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="AI-powered customer intelligence platform"
                   type="text"
                   value={tagline}
                   onChange={(e) => setTagline(e.target.value)}
-                  placeholder="AI-powered customer intelligence platform"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1">Executive Summary / Description</label>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">
+                  Executive Summary / Description
+                </label>
                 <textarea
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="What does your company do, and who is it for?"
                   rows={3}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="What does your company do, and who is it for?"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Founder / Team Lead</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Founder / Team Lead
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="Jane Doe"
                     type="text"
                     value={founderName}
                     onChange={(e) => setFounderName(e.target.value)}
-                    placeholder="Jane Doe"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Founded Year</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Founded Year
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="2023"
                     type="text"
                     value={foundingYear}
                     onChange={(e) => setFoundingYear(e.target.value)}
-                    placeholder="2023"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
               </div>
@@ -329,11 +381,11 @@ export default function LlmsTxtGeneratorClient() {
                   Key Services & Solutions (One per line)
                 </label>
                 <textarea
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="Service Name: Short description"
                   rows={3}
                   value={keyServices}
                   onChange={(e) => setKeyServices(e.target.value)}
-                  placeholder="Service Name: Short description"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
 
@@ -342,11 +394,11 @@ export default function LlmsTxtGeneratorClient() {
                   Key Differentiators & Features (One per line)
                 </label>
                 <textarea
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="Enterprise SOC-2 certified..."
                   rows={3}
                   value={keyFeatures}
                   onChange={(e) => setKeyFeatures(e.target.value)}
-                  placeholder="Enterprise SOC-2 certified..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
 
@@ -355,11 +407,11 @@ export default function LlmsTxtGeneratorClient() {
                   Pricing Plans & Model (One per line)
                 </label>
                 <textarea
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="Starter: $29/mo..."
                   rows={3}
                   value={pricingInfo}
                   onChange={(e) => setPricingInfo(e.target.value)}
-                  placeholder="Starter: $29/mo..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
             </div>
@@ -374,11 +426,11 @@ export default function LlmsTxtGeneratorClient() {
                   Frequently Asked Questions (Q: ... A: ...)
                 </label>
                 <textarea
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="Q: How does it work?\nA: It automates..."
                   rows={4}
                   value={faqItems}
                   onChange={(e) => setFaqItems(e.target.value)}
-                  placeholder="Q: How does it work?\nA: It automates..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
 
@@ -387,11 +439,11 @@ export default function LlmsTxtGeneratorClient() {
                   Preferred Citation Format for AI
                 </label>
                 <input
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                  placeholder="When citing Acme..."
                   type="text"
                   value={preferredCitation}
                   onChange={(e) => setPreferredCitation(e.target.value)}
-                  placeholder="When citing Acme..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                 />
               </div>
             </div>
@@ -404,22 +456,20 @@ export default function LlmsTxtGeneratorClient() {
               <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
                 <div className="flex gap-2">
                   <button
-                    onClick={() => setActiveTab("standard")}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === "standard"
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeTab === "standard"
                         ? "bg-gray-900 text-white shadow-xs"
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
+                      }`}
+                    onClick={() => setActiveTab("standard")}
                   >
                     llms.txt (Standard)
                   </button>
                   <button
-                    onClick={() => setActiveTab("full")}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                      activeTab === "full"
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${activeTab === "full"
                         ? "bg-gray-900 text-white shadow-xs"
                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    }`}
+                      }`}
+                    onClick={() => setActiveTab("full")}
                   >
                     llms-full.txt (Full Context)
                   </button>
@@ -427,17 +477,27 @@ export default function LlmsTxtGeneratorClient() {
 
                 <div className="flex items-center gap-1.5">
                   <button
-                    onClick={downloadFile}
                     className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold flex items-center justify-center"
                     title={`Download ${currentFileName}`}
+                    onClick={downloadFile}
                   >
-                    <svg className="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <svg
+                      className="w-3.5 h-3.5 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                      />
                     </svg>
                   </button>
                   <button
-                    onClick={copyToClipboard}
                     className="px-3 py-1.5 rounded-lg bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-semibold transition-colors"
+                    onClick={copyToClipboard}
                   >
                     {copied ? "Copied!" : "Copy"}
                   </button>
@@ -452,11 +512,15 @@ export default function LlmsTxtGeneratorClient() {
               <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500 space-y-1">
                 <div className="flex justify-between">
                   <span>Deploy at:</span>
-                  <code className="font-mono text-gray-800">/{currentFileName}</code>
+                  <code className="font-mono text-gray-800">
+                    /{currentFileName}
+                  </code>
                 </div>
                 <div className="flex justify-between">
                   <span>File Type:</span>
-                  <span className="font-mono text-gray-600">Markdown (text/plain)</span>
+                  <span className="font-mono text-gray-600">
+                    Markdown (text/plain)
+                  </span>
                 </div>
               </div>
             </div>
@@ -473,32 +537,55 @@ export default function LlmsTxtGeneratorClient() {
               Why AI Agents Need Curated Markdown Files
             </h2>
             <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-              When AI systems like ChatGPT Search, Claude, or Perplexity visit websites, parsing complex HTML, JavaScript bundles, and cookie banners consumes excess tokens. llms.txt provides a high-density markdown summary.
+              When AI systems like ChatGPT Search, Claude, or Perplexity visit
+              websites, parsing complex HTML, JavaScript bundles, and cookie
+              banners consumes excess tokens. llms.txt provides a high-density
+              markdown summary.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Token Efficiency</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                01
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Token Efficiency
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Markdown strips away CSS, layout wrappers, and tracking scripts, allowing LLMs to ingest your exact product documentation with zero token wastage.
+                Markdown strips away CSS, layout wrappers, and tracking scripts,
+                allowing LLMs to ingest your exact product documentation with
+                zero token wastage.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Precise Citations</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                02
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Precise Citations
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Clear markdown headings and bulleted feature lists provide definitive answers for AI conversational models, minimizing factual hallucinations.
+                Clear markdown headings and bulleted feature lists provide
+                definitive answers for AI conversational models, minimizing
+                factual hallucinations.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Dual Standard Support</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                03
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Dual Standard Support
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Deploy both a lightweight <code className="font-mono text-gray-800">/llms.txt</code> index and a deep comprehensive <code className="font-mono text-gray-800">/llms-full.txt</code> repository.
+                Deploy both a lightweight{" "}
+                <code className="font-mono text-gray-800">/llms.txt</code> index
+                and a deep comprehensive{" "}
+                <code className="font-mono text-gray-800">/llms-full.txt</code>{" "}
+                repository.
               </p>
             </div>
           </div>
@@ -510,15 +597,31 @@ export default function LlmsTxtGeneratorClient() {
             </h3>
             <div className="space-y-4">
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">Where do I upload llms.txt?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  Where do I upload llms.txt?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Serve it at the root of your domain: <code className="font-mono text-gray-800">https://yourdomain.com/llms.txt</code>. In Next.js, save it in <code className="font-mono text-gray-800">/public/llms.txt</code>.
+                  Serve it at the root of your domain:{" "}
+                  <code className="font-mono text-gray-800">
+                    https://yourdomain.com/llms.txt
+                  </code>
+                  . In Next.js, save it in{" "}
+                  <code className="font-mono text-gray-800">
+                    /public/llms.txt
+                  </code>
+                  .
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">What is the difference between llms.txt and llms-full.txt?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  What is the difference between llms.txt and llms-full.txt?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  <code className="font-mono text-gray-800">llms.txt</code> is a concise index and high-level summary. <code className="font-mono text-gray-800">llms-full.txt</code> contains complete documentation, API guides, and pricing structures for deep context queries.
+                  <code className="font-mono text-gray-800">llms.txt</code> is a
+                  concise index and high-level summary.{" "}
+                  <code className="font-mono text-gray-800">llms-full.txt</code>{" "}
+                  contains complete documentation, API guides, and pricing
+                  structures for deep context queries.
                 </p>
               </div>
             </div>
@@ -527,7 +630,10 @@ export default function LlmsTxtGeneratorClient() {
 
         {/* Suggested Tools (Dual-Category Grouping) */}
         <div className="max-w-5xl mx-auto">
-          <SuggestedTools currentToolId="llms-txt-generator" category="ai-geo" />
+          <SuggestedTools
+            category="ai-geo"
+            currentToolId="llms-txt-generator"
+          />
         </div>
       </div>
     </div>

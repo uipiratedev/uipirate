@@ -186,37 +186,37 @@ export const UNDERGLOW_THEMES: Record<
 /**
  * 1:1 Pixel-Accurate Phone Icon from Spec Node 55:14 / 55:31
  */
-export const PhoneCallIcon: React.FC<{ stroke?: string; className?: string }> = ({
-  stroke = "currentColor",
-  className = "size-4",
-}) => (
+export const PhoneCallIcon: React.FC<{
+  stroke?: string;
+  className?: string;
+}> = ({ stroke = "currentColor", className = "size-4" }) => (
   <svg
-    className={className}
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
+    className={className}
+    fill="none"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
   >
     <path
       d="M14.6655 11.28V13.28C14.6663 13.4657 14.6282 13.6495 14.5539 13.8196C14.4795 13.9897 14.3704 14.1424 14.2336 14.268C14.0967 14.3935 13.9352 14.489 13.7593 14.5485C13.5835 14.608 13.3971 14.6301 13.2122 14.6134C11.1607 14.3905 9.19018 13.6895 7.45885 12.5667C5.84806 11.5432 4.4824 10.1775 3.45885 8.56671C2.33216 6.82751 1.63101 4.84737 1.41218 2.78671C1.39552 2.60235 1.41743 2.41655 1.47651 2.24112C1.5356 2.0657 1.63056 1.9045 1.75536 1.76779C1.88015 1.63108 2.03205 1.52185 2.20137 1.44706C2.3707 1.37226 2.55374 1.33355 2.73884 1.33337H4.73885C5.06238 1.33019 5.37604 1.44476 5.62135 1.65573C5.86667 1.8667 6.0269 2.15967 6.07218 2.48004C6.15659 3.12009 6.31315 3.74853 6.53885 4.35337C6.62854 4.59199 6.64795 4.85132 6.59478 5.10063C6.54161 5.34994 6.41809 5.57878 6.23885 5.76004L5.39218 6.60671C6.34122 8.27574 7.72315 9.65767 9.39218 10.6067L10.2388 9.76004C10.4201 9.5808 10.6489 9.45727 10.8983 9.4041C11.1476 9.35093 11.4069 9.37034 11.6455 9.46004C12.2504 9.68574 12.8788 9.84229 13.5188 9.92671C13.8427 9.97239 14.1384 10.1355 14.3499 10.385C14.5613 10.6346 14.6736 10.9531 14.6655 11.28Z"
       stroke={stroke}
-      strokeWidth="1.3"
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth="1.3"
     />
     <path
       d="M10.0312 3.33341C10.6824 3.46046 11.2808 3.77892 11.75 4.24804C12.2191 4.71716 12.5375 5.31559 12.6646 5.96675"
       stroke={stroke}
-      strokeWidth="1.3"
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth="1.3"
     />
     <path
       d="M10.0312 0.666748C11.3841 0.817039 12.6456 1.42286 13.6087 2.38475C14.5718 3.34664 15.1793 4.60742 15.3313 5.96008"
       stroke={stroke}
-      strokeWidth="1.3"
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth="1.3"
     />
   </svg>
 );
@@ -226,19 +226,19 @@ const CalendarIcon: React.FC<{ stroke?: string; className?: string }> = ({
   className = "size-4",
 }) => (
   <svg
+    aria-hidden="true"
     className={className}
-    viewBox="0 0 24 24"
     fill="none"
     stroke={stroke}
-    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
-    aria-hidden="true"
+    strokeWidth="1.8"
+    viewBox="0 0 24 24"
   >
-    <rect x="3" y="4" width="18" height="18" rx="3" />
-    <line x1="16" y1="2" x2="16" y2="6" />
-    <line x1="8" y1="2" x2="8" y2="6" />
-    <line x1="3" y1="10" x2="21" y2="10" />
+    <rect height="18" rx="3" width="18" x="3" y="4" />
+    <line x1="16" x2="16" y1="2" y2="6" />
+    <line x1="8" x2="8" y1="2" y2="6" />
+    <line x1="3" x2="21" y1="10" y2="10" />
   </svg>
 );
 
@@ -247,16 +247,16 @@ const ArrowRightIcon: React.FC<{ stroke?: string; className?: string }> = ({
   className = "size-4",
 }) => (
   <svg
+    aria-hidden="true"
     className={className}
-    viewBox="0 0 24 24"
     fill="none"
     stroke={stroke}
-    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    aria-hidden="true"
+    strokeWidth="2"
+    viewBox="0 0 24 24"
   >
-    <line x1="5" y1="12" x2="19" y2="12" />
+    <line x1="5" x2="19" y1="12" y2="12" />
     <polyline points="12 5 19 12 12 19" />
   </svg>
 );
@@ -266,14 +266,14 @@ const SparkleIcon: React.FC<{ stroke?: string; className?: string }> = ({
   className = "size-4",
 }) => (
   <svg
+    aria-hidden="true"
     className={className}
-    viewBox="0 0 24 24"
     fill="none"
     stroke={stroke}
-    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
-    aria-hidden="true"
+    strokeWidth="1.8"
+    viewBox="0 0 24 24"
   >
     <path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z" />
   </svg>
@@ -284,16 +284,16 @@ const MailIcon: React.FC<{ stroke?: string; className?: string }> = ({
   className = "size-4",
 }) => (
   <svg
+    aria-hidden="true"
     className={className}
-    viewBox="0 0 24 24"
     fill="none"
     stroke={stroke}
-    strokeWidth="1.8"
     strokeLinecap="round"
     strokeLinejoin="round"
-    aria-hidden="true"
+    strokeWidth="1.8"
+    viewBox="0 0 24 24"
   >
-    <rect x="2" y="4" width="20" height="16" rx="3" />
+    <rect height="16" rx="3" width="20" x="2" y="4" />
     <path d="M22 6l-10 7L2 6" />
   </svg>
 );
@@ -327,8 +327,16 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -379,15 +387,31 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
     }
     switch (icon) {
       case "phone":
-        return <PhoneCallIcon stroke={t.iconStroke} className={sizeConfig.iconSize} />;
+        return (
+          <PhoneCallIcon
+            className={sizeConfig.iconSize}
+            stroke={t.iconStroke}
+          />
+        );
       case "calendar":
-        return <CalendarIcon stroke={t.iconStroke} className={sizeConfig.iconSize} />;
+        return (
+          <CalendarIcon className={sizeConfig.iconSize} stroke={t.iconStroke} />
+        );
       case "arrow":
-        return <ArrowRightIcon stroke={t.iconStroke} className={sizeConfig.iconSize} />;
+        return (
+          <ArrowRightIcon
+            className={sizeConfig.iconSize}
+            stroke={t.iconStroke}
+          />
+        );
       case "sparkle":
-        return <SparkleIcon stroke={t.iconStroke} className={sizeConfig.iconSize} />;
+        return (
+          <SparkleIcon className={sizeConfig.iconSize} stroke={t.iconStroke} />
+        );
       case "mail":
-        return <MailIcon stroke={t.iconStroke} className={sizeConfig.iconSize} />;
+        return (
+          <MailIcon className={sizeConfig.iconSize} stroke={t.iconStroke} />
+        );
       case "none":
       default:
         return null;
@@ -405,8 +429,8 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
     >
       {/* Invisible flex sizer ensuring the container auto-expands with custom label text */}
       <div
-        className={`invisible flex items-center justify-center opacity-0 pointer-events-none select-none h-0 ${sizeConfig.gap} ${sizeConfig.padding}`}
         aria-hidden="true"
+        className={`invisible flex items-center justify-center opacity-0 pointer-events-none select-none h-0 ${sizeConfig.gap} ${sizeConfig.padding}`}
       >
         <span
           className={`capitalize tracking-tight whitespace-nowrap font-['Figtree',sans-serif] ${sizeConfig.fontSize}`}
@@ -425,15 +449,15 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           1. AMBIENT BASE LAYER / GLOWING 3D EXTRUSION (Spec 55:23)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
-        className={`absolute bottom-0 left-0 right-0 ${sizeConfig.radius} ${t.baseBg}`}
-        style={{
-          height: sizeConfig.height,
-        }}
-        initial={false}
         animate={{
           opacity: isLifted ? 1 : 0,
           scaleY: isLifted ? 1 : 0.8,
           boxShadow: isLifted ? t.baseShadow : "none",
+        }}
+        className={`absolute bottom-0 left-0 right-0 ${sizeConfig.radius} ${t.baseBg}`}
+        initial={false}
+        style={{
+          height: sizeConfig.height,
         }}
         transition={{
           type: "spring",
@@ -455,13 +479,13 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           2. RESTING AMBIENT SHADOW BACKDROP (Spec 55:3 / 55:20)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-[20px] bg-black/10 blur-[12px] rounded-full pointer-events-none"
-        initial={false}
         animate={{
           opacity: isLifted ? 0.35 : 0.65,
           scaleX: isLifted ? 1.08 : 0.95,
           scaleY: isLifted ? 1.3 : 1,
         }}
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-[20px] bg-black/10 blur-[12px] rounded-full pointer-events-none"
+        initial={false}
         transition={{ duration: 0.25 }}
       />
 
@@ -469,9 +493,30 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           3. ELEVATED CAP / INTERACTIVE BUTTON FACE (Spec 55:9 & 55:26)
          ───────────────────────────────────────────────────────────── */}
       <motion.button
-        type="button"
+        animate={{
+          y: isPressed
+            ? isLifted
+              ? -sizeConfig.liftOffset * 0.35
+              : 2
+            : isLifted
+              ? -sizeConfig.liftOffset
+              : 0,
+          boxShadow: isLifted ? hoverShadowStack : restingShadowStack,
+        }}
+        className={`absolute bottom-0 left-0 right-0 flex items-center justify-center ${sizeConfig.gap} ${sizeConfig.padding} ${sizeConfig.radius} ${t.capBg} border ${t.capBorder} ${t.capText} font-medium outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed z-10`}
         disabled={disabled}
+        initial={false}
+        style={{
+          height: sizeConfig.height,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 450,
+          damping: 24,
+        }}
+        type="button"
         onClick={onClick}
+        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
         onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
         onMouseLeave={() => {
           if (stateMode === "interactive") {
@@ -479,46 +524,25 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
             setIsPressed(false);
           }
         }}
-        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
         onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
-        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
         onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
-        className={`absolute bottom-0 left-0 right-0 flex items-center justify-center ${sizeConfig.gap} ${sizeConfig.padding} ${sizeConfig.radius} ${t.capBg} border ${t.capBorder} ${t.capText} font-medium outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed z-10`}
-        style={{
-          height: sizeConfig.height,
-        }}
-        initial={false}
-        animate={{
-          y: isPressed
-            ? isLifted
-              ? -sizeConfig.liftOffset * 0.35
-              : 2
-            : isLifted
-            ? -sizeConfig.liftOffset
-            : 0,
-          boxShadow: isLifted ? hoverShadowStack : restingShadowStack,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 450,
-          damping: 24,
-        }}
+        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
       >
         {/* Bottom Inner Reflection Glow on Cap (Spec 55:28 inner shadow) */}
         <motion.div
-          className="absolute inset-0 pointer-events-none rounded-[inherit]"
-          initial={false}
           animate={{
             boxShadow: isLifted ? t.capInnerReflection : "none",
             opacity: isLifted ? 1 : 0,
           }}
+          className="absolute inset-0 pointer-events-none rounded-[inherit]"
+          initial={false}
           transition={{ duration: 0.2 }}
         />
 
         {/* Surface Ambient Clay Sheen Highlight */}
         <div
-          className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-[inherit]"
           aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-[inherit]"
         />
 
         {/* Button Content: Label + Icon */}
@@ -535,7 +559,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           </span>
         )}
       </motion.button>
-    </div>
+    </div>,
   );
 };
 

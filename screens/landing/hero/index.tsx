@@ -236,9 +236,9 @@ const LandingHero = () => {
             <AnimatedHeadline />
           </div>
           <p className="sub-header">
-            You have a product to build. You need someone who can think through it, 
-            design it, and ship it - not hand you a Figma file and walk away. 
-            That's what we do.
+            You have a product to build. You need someone who can think through
+            it, design it, and ship it - not hand you a Figma file and walk
+            away. That&apos;s what we do.
           </p>
           <div
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"

@@ -43,19 +43,71 @@ const Sitemap = () => {
     ],
     tools: [
       { label: "Tools Main Hub", href: "/tools", desc: "16+ Free Tools Suite" },
-      { label: "AI & GEO Tools Hub", href: "/tools/ai", desc: "AI Crawlers & llms.txt" },
-      { label: "Website & CRO Tools Hub", href: "/tools/website", desc: "Landing Pages & Readability" },
-      { label: "SaaS & Product UX Hub", href: "/tools/saas", desc: "Dashboards & Onboarding" },
-      { label: "Design Systems Hub", href: "/tools/design", desc: "Tokens & 8pt Grid" },
-      { label: "AI Bot & GEO Checker", href: "/tools/ai/ai-bot-checker", desc: "Test 26+ AI bots" },
-      { label: "llms.txt Generator", href: "/tools/ai/llms-txt-generator", desc: "Standard AI markdown" },
-      { label: "robots.txt Generator", href: "/tools/ai/robots-txt-generator", desc: "Allow/block AI crawlers" },
-      { label: "robots.txt Validator", href: "/tools/ai/robots-txt-validator", desc: "RFC 9309 linter" },
-      { label: "Landing Page Analyzer", href: "/tools/website/landing-page-analyzer", desc: "Above-the-fold CRO" },
-      { label: "SaaS UX & Friction Audit", href: "/tools/saas/saas-ux-audit", desc: "Product usability score" },
-      { label: "SaaS Pricing Analyzer", href: "/tools/saas/pricing-page-analyzer", desc: "Pricing table psychology" },
-      { label: "Design Token Generator", href: "/tools/design/design-tokens", desc: "Tailwind & 8pt scales" },
-      { label: "Bot Directory", href: "/tools/ai/bot-directory", desc: "26+ AI agent database" },
+      {
+        label: "AI & GEO Tools Hub",
+        href: "/tools/ai",
+        desc: "AI Crawlers & llms.txt",
+      },
+      {
+        label: "Website & CRO Tools Hub",
+        href: "/tools/website",
+        desc: "Landing Pages & Readability",
+      },
+      {
+        label: "SaaS & Product UX Hub",
+        href: "/tools/saas",
+        desc: "Dashboards & Onboarding",
+      },
+      {
+        label: "Design Systems Hub",
+        href: "/tools/design",
+        desc: "Tokens & 8pt Grid",
+      },
+      {
+        label: "AI Bot & GEO Checker",
+        href: "/tools/ai/ai-bot-checker",
+        desc: "Test 26+ AI bots",
+      },
+      {
+        label: "llms.txt Generator",
+        href: "/tools/ai/llms-txt-generator",
+        desc: "Standard AI markdown",
+      },
+      {
+        label: "robots.txt Generator",
+        href: "/tools/ai/robots-txt-generator",
+        desc: "Allow/block AI crawlers",
+      },
+      {
+        label: "robots.txt Validator",
+        href: "/tools/ai/robots-txt-validator",
+        desc: "RFC 9309 linter",
+      },
+      {
+        label: "Landing Page Analyzer",
+        href: "/tools/website/landing-page-analyzer",
+        desc: "Above-the-fold CRO",
+      },
+      {
+        label: "SaaS UX & Friction Audit",
+        href: "/tools/saas/saas-ux-audit",
+        desc: "Product usability score",
+      },
+      {
+        label: "SaaS Pricing Analyzer",
+        href: "/tools/saas/pricing-page-analyzer",
+        desc: "Pricing table psychology",
+      },
+      {
+        label: "Design Token Generator",
+        href: "/tools/design/design-tokens",
+        desc: "Tailwind & 8pt scales",
+      },
+      {
+        label: "Bot Directory",
+        href: "/tools/ai/bot-directory",
+        desc: "26+ AI agent database",
+      },
     ],
     legal: [
       { label: "Privacy Policy", href: "/privacy" },
@@ -234,7 +286,10 @@ const Sitemap = () => {
                 </span>
                 Free Tools &amp; AI Diagnostic Suites
               </h2>
-              <Link href="/tools" className="text-xs font-bold text-brand-orange hover:underline">
+              <Link
+                className="text-xs font-bold text-brand-orange hover:underline"
+                href="/tools"
+              >
                 Explore All 16 Tools →
               </Link>
             </div>

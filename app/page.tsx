@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
 import Loader from "@/components/loader";
-import { listPosts } from "@/lib/pirateCOS/public-client";
 
 // SSR-enabled dynamic import — Google can now crawl the full page content
 const Landing = dynamic(() => import("@/screens/landing"), {
@@ -39,10 +38,6 @@ export const metadata: Metadata = {
 };
 
 export const revalidate = 60;
-
-function isDataUri(url?: string) {
-  return !!url && url.startsWith("data:");
-}
 
 async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
   return {

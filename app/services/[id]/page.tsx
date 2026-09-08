@@ -26,8 +26,7 @@ const SERVICE_META: Record<
   { title: string; description: string; keywords: string }
 > = {
   "ux-ui-design": {
-    title:
-      "SaaS & Mobile App UX/UI Design | Idea to Product | Angular, React",
+    title: "SaaS & Mobile App UX/UI Design | Idea to Product | Angular, React",
     description:
       "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, and UX/UI design — from a few lines of vision to dev-ready, high-fidelity screens.",
     keywords:
@@ -50,16 +49,14 @@ const SERVICE_META: Record<
       "landing page design and development, business website development, Angular website development, high-converting landing page, product positioning, competitive analysis, startup website design",
   },
   "design-system-component-library": {
-    title:
-      "Design Systems & Component Libraries | Scalable UI Kits",
+    title: "Design Systems & Component Libraries | Scalable UI Kits",
     description:
       "Custom design systems with design tokens, branded UI kits, and documented dev-ready components for Angular, React, and other frameworks. Built for enterprise teams that need consistency at scale.",
     keywords:
       "design system agency, Angular component library, component library, design tokens, UI kit, scalable design system, enterprise design system, Angular design system, React component library, Figma component library",
   },
   "ux-audits-consultation": {
-    title:
-      "UX Audit & Consultation | Improve Your Product's Usability",
+    title: "UX Audit & Consultation | Improve Your Product's Usability",
     description:
       "Expert UX audits with heuristic analysis, usability testing, and actionable recommendations. Identify friction points and improve conversion rates in your SaaS product.",
     keywords:

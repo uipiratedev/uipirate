@@ -20,9 +20,7 @@ const ServiceDetails = ({ data }: any) => {
       <div className="space-y-20 max-md:space-y-16">
         {data.hero && <ServiceDetailsHero data={data.hero} />}
 
-        {data.whatYouGet && (
-          <WhatYouGetAnimations data={data.whatYouGet} />
-        )}
+        {data.whatYouGet && <WhatYouGetAnimations data={data.whatYouGet} />}
 
         {data.whyThisMatters && (
           <div className="section-container">

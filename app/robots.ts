@@ -10,7 +10,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/pirateCOS/", "/blogs/create", "/blogs/edit/", "/api/"],
+        disallow: [
+          "/admin/",
+          "/pirateCOS/",
+          "/blogs/create",
+          "/blogs/edit/",
+          "/api/",
+        ],
       },
       // AI crawlers — explicit allow (no Crawl-delay)
       { userAgent: "GPTBot", allow: "/" },

@@ -4,7 +4,6 @@ import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
-import { headers } from "next/headers";
 
 import { Providers } from "./providers";
 
@@ -34,7 +33,8 @@ export const metadata: Metadata = {
   keywords:
     "uipirate, uipirates, UI Pirate, product design agency, product development agency, SaaS development agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, Angular development, React development, Next.js development, full stack agency, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
+    title:
+      "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
     description:
       "Not just designs — we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
     url: "https://uipirate.com",
@@ -61,8 +61,20 @@ export const metadata: Metadata = {
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
   },
+  // Relative values resolve against `metadataBase` + the current route at build
+  // time, so every page gets a correct self-referential canonical + hreflang set
+  // WITHOUT a runtime `headers()` call (which would force the whole site to be
+  // dynamically rendered and kill <Link> prefetch / fast navigation).
   alternates: {
-    canonical: "https://uipirate.com",
+    canonical: "./",
+    languages: {
+      "en-US": "./",
+      "en-GB": "./",
+      "en-SG": "./",
+      "en-IN": "./",
+      "en-AU": "./",
+      "x-default": "./",
+    },
   },
   icons: {
     icon: "/favicon.ico?v=2",
@@ -89,41 +101,23 @@ export const viewport: Viewport = {
   ],
 };
 
-export default async function RootLayout({
+// NOTE: This component must stay synchronous and free of dynamic APIs
+// (`headers()`, `cookies()`, `searchParams`, `noStore()`, …). Any dynamic API
+// used in the ROOT layout opts every route in the app into dynamic rendering,
+// which disables static prerendering + <Link> prefetch and makes every
+// navigation a full server round-trip (the "click does nothing for 2s" bug).
+//
+// The `cos.` subdomain shell that used to live here was gated on an `x-is-cos`
+// request header that is not set anywhere in this codebase (middleware only sets
+// `x-pathname`), so the branch was dead. Subdomain nav/footer stripping is
+// handled client-side in ConditionalNavbar / ConditionalFooter. If a real COS
+// HTML shell is needed again, put it behind a `(cos)` route group with its own
+// layout, or a middleware rewrite — not a `headers()` call in the root layout.
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const requestHeaders = await headers();
-  const isCos = requestHeaders.get("x-is-cos") === "true";
-  const canonicalUrl = `https://uipirate.com${requestHeaders.get("x-pathname") || "/"}`;
-
-  if (isCos) {
-    return (
-      <html suppressHydrationWarning lang="en">
-        <head>
-          <meta content="width=device-width, initial-scale=1" name="viewport" />
-          <link href="/favicon.ico?v=2" rel="icon" />
-          <title>PirateCOS | UI Pirate</title>
-        </head>
-        <body
-          className={clsx(
-            "min-h-screen font-sans antialiased bg-[#F7F7F6]",
-            fontSans.variable,
-            fontJakarta.variable,
-            fontGeist.variable,
-            fontGeistMono.variable,
-            fontJetBrainsMono.variable,
-          )}
-        >
-          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-            <main className="min-h-screen">{children}</main>
-          </Providers>
-        </body>
-      </html>
-    );
-  }
-
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -365,16 +359,16 @@ export default async function RootLayout({
         {/* AI Data Reference (kept for AI crawlers that do follow links) */}
         <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
         <link href="/llms.txt" rel="alternate" type="text/plain" />
-        <link href="/llms-full.txt" rel="alternate" type="text/plain" title="Full AI Context" />
+        <link
+          href="/llms-full.txt"
+          rel="alternate"
+          title="Full AI Context"
+          type="text/plain"
+        />
 
-        {/* Hreflang for international targeting — self-referential per page,
-            since every locale variant serves the same URL/content. */}
-        <link href={canonicalUrl} hrefLang="en-us" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-gb" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-sg" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-in" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-au" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="x-default" rel="alternate" />
+        {/* Hreflang + canonical are emitted per-route by the Metadata API via
+            `metadata.alternates` above (self-referential, resolved statically at
+            build time). Kept out of here so the layout needs no `headers()`. */}
 
         {/* Social Media and Business Profile Links for SEO */}
         <link
@@ -407,27 +401,72 @@ export default async function RootLayout({
       >
         {/* noscript fallback — ensures AI crawlers that don't execute JS see real content */}
         <noscript>
-          <div style={{ padding: "2rem", fontFamily: "sans-serif", maxWidth: "900px", margin: "0 auto" }}>
+          <div
+            style={{
+              padding: "2rem",
+              fontFamily: "sans-serif",
+              maxWidth: "900px",
+              margin: "0 auto",
+            }}
+          >
             <h1>UI Pirate | SaaS &amp; AI Product Design Agency</h1>
-            <p>Product design &amp; development agency. We turn SaaS and AI ideas into shipped products. UX/UI design, Angular &amp; React development. Serving clients in USA, UK, Singapore, India, and Australia.</p>
+            <p>
+              Product design &amp; development agency. We turn SaaS and AI ideas
+              into shipped products. UX/UI design, Angular &amp; React
+              development. Serving clients in USA, UK, Singapore, India, and
+              Australia.
+            </p>
             <h2>Services</h2>
             <ul>
-              <li><a href="/services/SaaS-Web-&amp;-Mobile-Apps">SaaS Web &amp; Mobile App Design &amp; Development</a></li>
-              <li><a href="/services/Landing-Pages-&amp;-Business-Websites">Landing Pages &amp; Business Websites</a></li>
-              <li><a href="/services/Design-System-&amp;-Component-Library">Design Systems &amp; Component Libraries</a></li>
-              <li><a href="/services/UX-Audits-&amp;-Consultation">UX Audits &amp; Consultation</a></li>
+              <li>
+                <a href="/services/SaaS-Web-&amp;-Mobile-Apps">
+                  SaaS Web &amp; Mobile App Design &amp; Development
+                </a>
+              </li>
+              <li>
+                <a href="/services/Landing-Pages-&amp;-Business-Websites">
+                  Landing Pages &amp; Business Websites
+                </a>
+              </li>
+              <li>
+                <a href="/services/Design-System-&amp;-Component-Library">
+                  Design Systems &amp; Component Libraries
+                </a>
+              </li>
+              <li>
+                <a href="/services/UX-Audits-&amp;-Consultation">
+                  UX Audits &amp; Consultation
+                </a>
+              </li>
             </ul>
             <h2>Navigation</h2>
             <ul>
-              <li><a href="/case-studies">Case Studies &amp; Portfolio</a></li>
-              <li><a href="/pricing">Pricing</a></li>
-              <li><a href="/blogs">Blog</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/faqs">FAQs</a></li>
-              <li><a href="/tools">Free Tools</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li>
+                <a href="/case-studies">Case Studies &amp; Portfolio</a>
+              </li>
+              <li>
+                <a href="/pricing">Pricing</a>
+              </li>
+              <li>
+                <a href="/blogs">Blog</a>
+              </li>
+              <li>
+                <a href="/about">About</a>
+              </li>
+              <li>
+                <a href="/faqs">FAQs</a>
+              </li>
+              <li>
+                <a href="/tools">Free Tools</a>
+              </li>
+              <li>
+                <a href="/contact">Contact</a>
+              </li>
             </ul>
-            <p>Founded by Vishal Anand. 50+ products shipped. 5.0 rating. <a href="/contact">Contact us</a></p>
+            <p>
+              Founded by Vishal Anand. 50+ products shipped. 5.0 rating.{" "}
+              <a href="/contact">Contact us</a>
+            </p>
           </div>
         </noscript>
 

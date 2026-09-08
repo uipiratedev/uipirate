@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import UpcomingToolLandingPage, { UpcomingToolSpec } from "@/components/UpcomingToolLandingPage";
+
+import UpcomingToolLandingPage, {
+  UpcomingToolSpec,
+} from "@/components/UpcomingToolLandingPage";
 
 export const metadata: Metadata = {
   title: "Smooth CSS Layered Shadow Generator | UI Pirate",
@@ -21,17 +24,41 @@ const spec: UpcomingToolSpec = {
   agencyService: "Frontend Engineering & Design Systems",
   agencyLink: "/contact",
   keyMetrics: [
-    { name: "Multi-Layer Ambient Physics", desc: "Combines 3 to 6 micro-shadows for hyper-realistic elevation." },
-    { name: "Elevation Token Scale (xs–2xl)", desc: "Generates synchronized tokens for modals, dropdowns, and cards." },
-    { name: "Tailwind CSS & Vanilla CSS Output", desc: "Exports drop-in Tailwind box-shadow theme configs." },
+    {
+      name: "Multi-Layer Ambient Physics",
+      desc: "Combines 3 to 6 micro-shadows for hyper-realistic elevation.",
+    },
+    {
+      name: "Elevation Token Scale (xs–2xl)",
+      desc: "Generates synchronized tokens for modals, dropdowns, and cards.",
+    },
+    {
+      name: "Tailwind CSS & Vanilla CSS Output",
+      desc: "Exports drop-in Tailwind box-shadow theme configs.",
+    },
   ],
   howItWorks: [
-    { step: "01. Elevation Control", title: "Adjust Blur & Spread", desc: "Fine-tune light angle and elevation height." },
-    { step: "02. Color Tinting", title: "Ambient Color Match", desc: "Tint shadows to match your dark/light background." },
-    { step: "03. Code Export", title: "Copy CSS", desc: "Paste ready-to-use CSS rules or Tailwind configs." },
+    {
+      step: "01. Elevation Control",
+      title: "Adjust Blur & Spread",
+      desc: "Fine-tune light angle and elevation height.",
+    },
+    {
+      step: "02. Color Tinting",
+      title: "Ambient Color Match",
+      desc: "Tint shadows to match your dark/light background.",
+    },
+    {
+      step: "03. Code Export",
+      title: "Copy CSS",
+      desc: "Paste ready-to-use CSS rules or Tailwind configs.",
+    },
   ],
   faqs: [
-    { q: "Why are layered shadows superior to single box-shadows?", a: "Layered shadows mimic real-world optical physics with sharp key shadows and diffused ambient glow." },
+    {
+      q: "Why are layered shadows superior to single box-shadows?",
+      a: "Layered shadows mimic real-world optical physics with sharp key shadows and diffused ambient glow.",
+    },
   ],
 };
 

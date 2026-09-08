@@ -48,7 +48,7 @@ The About page was significantly rebuilt. The previous version was primarily a s
 **Structure added:**
 - Hero section with H1, subheadline, and "US Timezone Friendly" trust badge
 - Stats strip (4 cards: 9+ Years, 50+ Products, 5.0 Rating, 6 Countries)
-- "What Makes Us Different" dark card grid (6 cards)
+- "What Makes Us Different" light bento grid (6 cards)
 - "Our Design Style" section (3 cards)
 - "Our Process" dark section (6 steps from shared PROCESS_STEPS data) with link to `/process`
 - Team section (shared `TheTeam` component)
@@ -71,7 +71,7 @@ The About page was significantly rebuilt. The previous version was primarily a s
 ```
 1.  Hero (H1, subheadline, timezone badge)
 2.  Stats strip (4 cards)
-3.  "What Makes Us Different" (6 dark cards)
+3.  "What Makes Us Different" (6-card light bento grid)
 4.  "Our Design Style" (3 light cards)
 5.  "Our Process" (6 steps, dark section, links to /process)
 6.  Team section (shared TheTeam component)
@@ -137,9 +137,9 @@ and ship production-ready code. From idea to shipped product.
 
 **Suggested rewrite: (✅ Applied)**
 ```
-We're a product design and development agency. We work alongside SaaS founders
-and enterprise teams — from the first wireframe through to working,
-production-ready software.
+We are a product design and development studio. We help SaaS founders and enterprise teams
+think through the product, design for real users, and ship production-ready code.
+No hand-offs, no gaps.
 ```
 
 ---
@@ -187,7 +187,9 @@ H2: What Makes Us Different
 Sub: Most agencies give you mockups. We give you a shipped product.
 ```
 
-**Assessment:** ✅ Badge and heading are strong. "Most agencies give you mockups. We give you a shipped product." is excellent — it's the clearest competitive contrast statement on the site. Keep everything here.
+**Assessment:** ✅ Badge and heading are strong. "Most agencies give you mockups. We give you a shipped product." is the clearest competitive contrast statement on the site.
+
+**Decision (✅ Applied in MD):** Remove the subtext entirely. Per user direction, no section heading should have a subtext — keep it consistent across the page. The heading alone is strong enough to stand.
 
 ---
 
@@ -232,11 +234,11 @@ These two replacement cards add differentiation that doesn't exist anywhere else
 ### 4. "OUR DESIGN STYLE"
 **File:** `app/about/page.tsx` (lines ~431–477)
 
-**Current cards:**
+**Current cards (applied):**
 ```
-01 Dashboards & SaaS UX — "Clean, intuitive, data-driven. We tame complexity into clear, actionable interfaces."
-02 Websites & Landing Pages — "Fast and conversion-focused. Every section guides users toward the CTA."
-03 Pixel-Perfect Execution — "From Figma to code — the final product matches the vision exactly."
+01 Dashboards & SaaS UX — "Data-heavy flows and multi-role dashboards, simplified into interfaces that are fast to learn."
+02 Websites & Landing Pages — "Conversion-focused layouts where every section moves visitors toward the next step."
+03 Design That Holds Up in Code — "From Figma to production-ready code. The shipped product matches the design, exactly."
 ```
 
 **What's wrong:**
@@ -837,33 +839,42 @@ to shipped product.
 
 **Recommended:**
 ```
-We're a product design and development agency. We work alongside SaaS
-founders and enterprise teams — from the first wireframe through to
-working, production-ready software.
+We are a product design and development studio. We help SaaS founders
+and enterprise teams think through the product, design for real users,
+and ship production-ready code. No hand-offs, no gaps.
 ```
 
-**Why:** opens with a quotable "we are X" sentence (fixes the AI-citation and keyword gaps), removes the negation-first frame, cuts the 4-item service list the H1 already implies, and drops the `From idea to shipped product` repeat. Keeps "SaaS founders and enterprise teams" as the audience signal.
+**Why:** opens with a quotable "we are X" sentence (fixes the AI-citation and keyword gaps), removes the negation-first frame, cuts the 4-item service list the H1 already implies, drops the `From idea to shipped product` repeat, and has zero em dashes. Keeps "SaaS founders and enterprise teams" as the audience signal.
 
 ---
 
-### NC2. "What Makes Us Different" — consolidate the two duplicate pairs, fill the freed slots
+### NC2. "What Makes Us Different" — consolidate duplicates, sharpen titles, trim descriptions
 
 **Confirmed in:** `app/about/page.tsx` L379-403 (the 6-object array)
 
 **Current cards:** `01 Product Thinking First` · `02 Simplify Complex Products` · `03 Designed for Conversion` · `04 Architecture to Code` · `05 Enterprise Specialist` · `06 Idea to Shipped Product`
 
-**Recommended array (keep the section, swap 2 objects):**
+**Problems (updated assessment):**
+- Cards 04 + 06 are near-duplicates (both describe IA → wireframes → UI → code → launch)
+- Cards 02 + 05 overlap (both open with "Multi-role dashboards, data-heavy…")
+- Titles are generic and flat — not punchy or hook-driven
+- Descriptions are too long, inconsistent in length, and use em dashes
+- Section subtext ("Most agencies give you mockups...") should be removed (per user direction — no subtext on any heading)
+
+**Recommended array (✅ Applied in MD):**
+
+All descriptions are 1–2 lines, consistent in length, no em dashes.
 
 | Slot | Title | Description |
 |---|---|---|
-| 01 | Product Thinking First | *(keep L381-382 verbatim)* |
-| 02 | We Simplify Complex Products | `Multi-role dashboards, data-heavy flows, enterprise systems — the hard problems other agencies avoid. We break complexity into interfaces people actually understand.` *(absorbs old Card 05)* |
-| 03 | Designed for Conversion | *(keep L389-390 verbatim)* |
-| 04 | From Sketch to Working Code | `Information architecture, user flows, wireframes, UI, and production-ready React / Angular / Next.js code. One team carries your idea all the way to launch.` *(merges old 04 + 06)* |
-| 05 | We Work in Your Time Zone | `We overlap with US Eastern and Pacific business hours. Real-time calls, not async-only hand-offs across a 12-hour gap.` *(new — no other card says this)* |
-| 06 | We've Shipped This 50+ Times | `Not a boutique shop treating every project as an experiment. 50+ products across SaaS, AI, FinTech, HealthTech, and LegalTech.` *(new — differentiation + proof)* |
+| 01 | Strategy Before Pixels | Positioning, user flows, and scope mapped before any screen is touched. |
+| 02 | Complex Made Simple | We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use. |
+| 03 | Built to Convert | Every flow is built to move users forward. Conversion is the brief. |
+| 04 | Design Through to Code | Wireframes to React, Angular, and Next.js. One team, no hand-offs. |
+| 05 | Same Hours as Your Team | US Eastern and Pacific hours. Real-time calls, no time zone gaps. |
+| 06 | 50+ Products, Not Guesses | Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before. |
 
-**Why:** removes the "4 ideas dressed as 6" padding v2 identified, and the two new cards address the exact US-buyer concerns (time-zone risk, "are they experienced or improvising?") that the section currently doesn't touch.
+**Why:** removes duplicate ideas, gives each card a distinct hook (strategy / simplification / conversion / execution / timezone / proof), descriptions are balanced at 1–2 lines each, and zero em dashes. SEO signal words (SaaS, AI, FinTech, HealthTech, LegalTech, React, Angular, Next.js, enterprise) are preserved naturally in the copy.
 
 ---
 

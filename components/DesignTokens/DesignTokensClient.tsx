@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+
 import SuggestedTools from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
@@ -62,8 +63,10 @@ module.exports = {
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -71,19 +74,23 @@ module.exports = {
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12 w-full max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: -12 }}
         >
           <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">DESIGN SYSTEMS &amp; TOKENS</GlassBadge>
+            <GlassBadge variant="gradient">
+              DESIGN SYSTEMS &amp; TOKENS
+            </GlassBadge>
           </div>
 
           <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
-            SaaS Design Token &amp; <span className="text-[#FF5B04]">Tailwind</span> Generator
+            SaaS Design Token &amp;{" "}
+            <span className="text-[#FF5B04]">Tailwind</span> Generator
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Generate production-ready design tokens, 8pt spacing scales, typography ramps, and Tailwind CSS config objects in seconds.
+            Generate production-ready design tokens, 8pt spacing scales,
+            typography ramps, and Tailwind CSS config objects in seconds.
           </p>
 
           {/* Integrated Capability Badges */}
@@ -108,20 +115,31 @@ module.exports = {
           {/* Engine Status & Consultation Callout */}
           <div className="mt-8 flex justify-center">
             <Link
-              href="/contact"
               className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+              href="/contact"
             >
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
                 Design Systems
               </span>
               <span className="text-gray-600 font-medium">
-                Need a complete multi-brand Design System or Figma Component Library?
+                Need a complete multi-brand Design System or Figma Component
+                Library?
               </span>
               <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
                 <span>Talk to design team</span>
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M9 5l7 7-7 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                  />
                 </svg>
               </span>
             </Link>
@@ -137,32 +155,38 @@ module.exports = {
             </h3>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">Primary Brand Color</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-2">
+                Primary Brand Color
+              </label>
               <div className="flex items-center gap-3">
                 <input
+                  className="w-10 h-10 rounded-xl cursor-pointer border border-gray-200"
                   type="color"
                   value={primaryColor}
                   onChange={(e) => setPrimaryColor(e.target.value)}
-                  className="w-10 h-10 rounded-xl cursor-pointer border border-gray-200"
                 />
                 <input
+                  className="px-3 py-2 border border-gray-200 rounded-xl text-xs font-mono text-gray-800 uppercase outline-none"
                   type="text"
                   value={primaryColor}
                   onChange={(e) => setPrimaryColor(e.target.value)}
-                  className="px-3 py-2 border border-gray-200 rounded-xl text-xs font-mono text-gray-800 uppercase outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">Base Typography Font</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-2">
+                Base Typography Font
+              </label>
               <select
+                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs text-gray-800 outline-none bg-white font-jakarta"
                 value={baseFont}
                 onChange={(e) => setBaseFont(e.target.value)}
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs text-gray-800 outline-none bg-white font-jakarta"
               >
                 <option value="Inter">Inter (SaaS Default)</option>
-                <option value="Plus Jakarta Sans">Plus Jakarta Sans (Modern Clean)</option>
+                <option value="Plus Jakarta Sans">
+                  Plus Jakarta Sans (Modern Clean)
+                </option>
                 <option value="Geist">Geist (Developer-First)</option>
                 <option value="Outfit">Outfit (Punchy & Bold)</option>
               </select>
@@ -170,22 +194,25 @@ module.exports = {
 
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Card & Button Border Radius: <span className="font-mono text-[#FF5B04]">{borderRadius}px</span>
+                Card & Button Border Radius:{" "}
+                <span className="font-mono text-[#FF5B04]">
+                  {borderRadius}px
+                </span>
               </label>
               <input
-                type="range"
-                min="0"
+                className="w-full accent-[#FF5B04]"
                 max="32"
+                min="0"
+                type="range"
                 value={borderRadius}
                 onChange={(e) => setBorderRadius(e.target.value)}
-                className="w-full accent-[#FF5B04]"
               />
             </div>
 
             <div className="pt-4 border-t border-gray-100">
               <Link
-                href="/contact"
                 className="block text-center px-4 py-3 rounded-2xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all shadow-sm"
+                href="/contact"
               >
                 Need a Custom Enterprise Design System? →
               </Link>
@@ -200,11 +227,21 @@ module.exports = {
                   tailwind.config.js
                 </span>
                 <button
-                  onClick={copyCode}
                   className="px-3.5 py-1.5 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-[#FF5B04]/15 cursor-pointer"
+                  onClick={copyCode}
                 >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                    />
                   </svg>
                   {copied ? "Copied to Clipboard!" : "Copy Config"}
                 </button>
@@ -227,32 +264,54 @@ module.exports = {
               The Building Blocks of Production Design Systems
             </h2>
             <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-              Design tokens bridge the gap between Figma design systems and front-end engineering, maintaining visual consistency across large SaaS applications.
+              Design tokens bridge the gap between Figma design systems and
+              front-end engineering, maintaining visual consistency across large
+              SaaS applications.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">8-Point Spacing Grid</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                01
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                8-Point Spacing Grid
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Standardizing margins, paddings, and component heights on an 8pt scale eliminates visual guesswork and ensures pixel-perfect layout alignment.
+                Standardizing margins, paddings, and component heights on an 8pt
+                scale eliminates visual guesswork and ensures pixel-perfect
+                layout alignment.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Tailwind Config Tokens</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                02
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Tailwind Config Tokens
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Exporting semantic color variables (<code className="font-mono text-gray-800">brand-500</code>, <code className="font-mono text-gray-800">surface-card</code>) enables instant light/dark theme switching with zero runtime CSS overhead.
+                Exporting semantic color variables (
+                <code className="font-mono text-gray-800">brand-500</code>,{" "}
+                <code className="font-mono text-gray-800">surface-card</code>)
+                enables instant light/dark theme switching with zero runtime CSS
+                overhead.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Typography Ramps</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                03
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Typography Ramps
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Consistent typographic scale ratios (Minor Third vs Perfect Fourth) keep dashboard headers and table data cleanly proportioned.
+                Consistent typographic scale ratios (Minor Third vs Perfect
+                Fourth) keep dashboard headers and table data cleanly
+                proportioned.
               </p>
             </div>
           </div>
@@ -264,15 +323,31 @@ module.exports = {
             </h3>
             <div className="space-y-4">
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">What are design tokens?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  What are design tokens?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Design tokens are the atomic visual design values (colors, typography, spacing, border radii) stored as platform-agnostic variables that both Figma and code consume.
+                  Design tokens are the atomic visual design values (colors,
+                  typography, spacing, border radii) stored as platform-agnostic
+                  variables that both Figma and code consume.
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">How do I integrate this with Tailwind CSS?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  How do I integrate this with Tailwind CSS?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Copy the generated configuration object directly into the <code className="font-mono text-gray-800">theme.extend</code> block of your <code className="font-mono text-gray-800">tailwind.config.js</code> or <code className="font-mono text-gray-800">tailwind.config.ts</code> file.
+                  Copy the generated configuration object directly into the{" "}
+                  <code className="font-mono text-gray-800">theme.extend</code>{" "}
+                  block of your{" "}
+                  <code className="font-mono text-gray-800">
+                    tailwind.config.js
+                  </code>{" "}
+                  or{" "}
+                  <code className="font-mono text-gray-800">
+                    tailwind.config.ts
+                  </code>{" "}
+                  file.
                 </p>
               </div>
             </div>
@@ -280,7 +355,10 @@ module.exports = {
         </section>
 
         {/* Suggested Tools */}
-        <SuggestedTools currentToolId="design-tokens" category="design-system" />
+        <SuggestedTools
+          category="design-system"
+          currentToolId="design-tokens"
+        />
       </div>
     </div>
   );

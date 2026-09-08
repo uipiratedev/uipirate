@@ -14,8 +14,7 @@ export type GlossyGelTheme =
 export type GlossyGelSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type GlossyGelStateMode = "interactive" | "standerd" | "hover";
 
-export interface GlossyGelButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface GlossyGelButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Button text label */
   children?: React.ReactNode;
   /** Visual color theme preset */
@@ -207,7 +206,7 @@ export const GlossyGelButton = React.forwardRef<
       onClick,
       ...restProps
     },
-    ref
+    ref,
   ) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
@@ -216,8 +215,8 @@ export const GlossyGelButton = React.forwardRef<
       stateMode === "hover"
         ? true
         : stateMode === "standerd"
-        ? false
-        : isHovered;
+          ? false
+          : isHovered;
     const activePressed = stateMode === "interactive" ? isPressed : false;
 
     const themeConfig = GEL_THEMES[theme] || GEL_THEMES["emerald-gel"];
@@ -226,22 +225,7 @@ export const GlossyGelButton = React.forwardRef<
     return (
       <motion.button
         ref={ref}
-        type="button"
-        disabled={disabled || isLoading}
-        onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
-        onMouseLeave={() => {
-          if (stateMode === "interactive") {
-            setIsHovered(false);
-            setIsPressed(false);
-          }
-        }}
-        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
-        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
-        onClick={onClick}
         animate={{ scale: activePressed ? 0.97 : activeHover ? 1.025 : 1 }}
-        whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
-        whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
-        transition={{ type: "spring", stiffness: 450, damping: 25 }}
         className={`relative inline-flex items-center justify-center font-semibold select-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 overflow-hidden ${
           sizeConfig.padding
         } ${sizeConfig.height} ${sizeConfig.fontSize} ${sizeConfig.iconGap} ${
@@ -249,12 +233,27 @@ export const GlossyGelButton = React.forwardRef<
             ? "opacity-50 cursor-not-allowed grayscale-[30%]"
             : "active:brightness-95"
         } ${className}`}
+        disabled={disabled || isLoading}
         style={{
           borderRadius: sizeConfig.borderRadius,
           background: themeConfig.gelBg,
           boxShadow: themeConfig.shadowLayer,
           color: themeConfig.textColor,
         }}
+        transition={{ type: "spring", stiffness: 450, damping: 25 }}
+        type="button"
+        whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
+        whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
+        onClick={onClick}
+        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
+        onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
+        onMouseLeave={() => {
+          if (stateMode === "interactive") {
+            setIsHovered(false);
+            setIsPressed(false);
+          }
+        }}
+        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
         {...(restProps as any)}
       >
         {/* Soft Ambient Ground Bloom */}
@@ -283,15 +282,15 @@ export const GlossyGelButton = React.forwardRef<
           animate={{
             x: activeHover ? ["-120%", "150%"] : "-120%",
           }}
+          className="absolute inset-0 pointer-events-none w-1/2 -skew-x-12"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${themeConfig.hoverSheen}, transparent)`,
+          }}
           transition={{
             duration: 1.1,
             repeat: activeHover ? Infinity : 0,
             repeatDelay: 1.8,
             ease: "easeInOut",
-          }}
-          className="absolute inset-0 pointer-events-none w-1/2 -skew-x-12"
-          style={{
-            background: `linear-gradient(90deg, transparent, ${themeConfig.hoverSheen}, transparent)`,
           }}
         />
 
@@ -305,9 +304,9 @@ export const GlossyGelButton = React.forwardRef<
           {isLoading ? (
             <svg
               className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
-              xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <circle
                 className="opacity-25"
@@ -319,8 +318,8 @@ export const GlossyGelButton = React.forwardRef<
               />
               <path
                 className="opacity-75"
-                fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                fill="currentColor"
               />
             </svg>
           ) : (
@@ -333,7 +332,7 @@ export const GlossyGelButton = React.forwardRef<
         </span>
       </motion.button>
     );
-  }
+  },
 );
 
 GlossyGelButton.displayName = "GlossyGelButton";

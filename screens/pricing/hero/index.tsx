@@ -101,7 +101,6 @@ const PricingHero = () => {
             <span className="font-semibold text-gray-900">Save 50-70%</span>{" "}
             compared to US agencies
           </span>
-
         </div>
 
         {/* Optimized Pricing CTAs */}
@@ -115,8 +114,8 @@ const PricingHero = () => {
           <Link
             className="px-6 py-3 rounded-full bg-brand-orange text-white font-bold hover:bg-[#e04e00] transition-all duration-300 text-sm shadow-md hover:shadow-lg whitespace-nowrap"
             href="https://cal.com/ui-pirate/15min"
-            target="_blank"
             rel="noopener noreferrer"
+            target="_blank"
           >
             Book a Call →
           </Link>

@@ -1,12 +1,12 @@
 "use client";
 
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
 import { useState } from "react";
 
 import FeaturedBlogs from "./featuredBlogs";
 import BlogsHero from "./hero";
 import BlogsNewsletter from "./newsletter";
-
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
 
 interface BlogsProps {
   initialBlogs: ReaderPost[];

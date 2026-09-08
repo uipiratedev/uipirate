@@ -88,7 +88,10 @@ export interface FrostedGelThemeConfig {
   pinstripeColor: string;
 }
 
-export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> = {
+export const FROSTED_GEL_THEMES: Record<
+  FrostedGelTheme,
+  FrostedGelThemeConfig
+> = {
   "default-blue": {
     name: "Default Electric Blue (1:1)",
     badge: "1:1 Spec",
@@ -101,7 +104,8 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
       "linear-gradient(90deg, #FFFFFF 0%, #9FACE1 4.8%, #AFBCFF 80.8%, #5C76FF 95.3%, #E8EDFF 100%)",
     glowPrimary: "rgba(0, 123, 254, 0.35)",
     glowSecondary: "rgba(0, 42, 254, 0.22)",
-    gelBg: "linear-gradient(182deg, rgba(241, 241, 241, 0.55) 27%, rgba(153, 153, 153, 0.1) 150%)",
+    gelBg:
+      "linear-gradient(182deg, rgba(241, 241, 241, 0.55) 27%, rgba(153, 153, 153, 0.1) 150%)",
     gelBorder: "rgba(255, 255, 255, 0.75)",
     cableColor: "rgba(0, 42, 254, 0.18)",
     pinstripeColor: "rgba(0, 42, 254, 0.04)",
@@ -118,7 +122,8 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
       "linear-gradient(90deg, #FFFFFF 0%, #D8B4FE 4.8%, #C084FC 80.8%, #9333EA 95.3%, #F3E8FF 100%)",
     glowPrimary: "rgba(147, 51, 234, 0.35)",
     glowSecondary: "rgba(124, 58, 237, 0.22)",
-    gelBg: "linear-gradient(182deg, rgba(245, 235, 255, 0.55) 27%, rgba(192, 132, 252, 0.15) 150%)",
+    gelBg:
+      "linear-gradient(182deg, rgba(245, 235, 255, 0.55) 27%, rgba(192, 132, 252, 0.15) 150%)",
     gelBorder: "rgba(255, 255, 255, 0.75)",
     cableColor: "rgba(124, 58, 237, 0.2)",
     pinstripeColor: "rgba(124, 58, 237, 0.04)",
@@ -135,7 +140,8 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
       "linear-gradient(90deg, #FFFFFF 0%, #A7F3D0 4.8%, #6EE7B7 80.8%, #10B981 95.3%, #ECFDF5 100%)",
     glowPrimary: "rgba(16, 185, 129, 0.35)",
     glowSecondary: "rgba(5, 150, 105, 0.22)",
-    gelBg: "linear-gradient(182deg, rgba(236, 253, 245, 0.55) 27%, rgba(52, 211, 153, 0.15) 150%)",
+    gelBg:
+      "linear-gradient(182deg, rgba(236, 253, 245, 0.55) 27%, rgba(52, 211, 153, 0.15) 150%)",
     gelBorder: "rgba(255, 255, 255, 0.75)",
     cableColor: "rgba(5, 150, 105, 0.2)",
     pinstripeColor: "rgba(16, 185, 129, 0.04)",
@@ -152,7 +158,8 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
       "linear-gradient(90deg, #FFFFFF 0%, #FED7AA 4.8%, #FDBA74 80.8%, #F97316 95.3%, #FFEDD5 100%)",
     glowPrimary: "rgba(249, 115, 22, 0.35)",
     glowSecondary: "rgba(234, 88, 12, 0.22)",
-    gelBg: "linear-gradient(182deg, rgba(255, 247, 237, 0.55) 27%, rgba(251, 146, 60, 0.15) 150%)",
+    gelBg:
+      "linear-gradient(182deg, rgba(255, 247, 237, 0.55) 27%, rgba(251, 146, 60, 0.15) 150%)",
     gelBorder: "rgba(255, 255, 255, 0.75)",
     cableColor: "rgba(234, 88, 12, 0.2)",
     pinstripeColor: "rgba(249, 115, 22, 0.04)",
@@ -169,7 +176,8 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
       "linear-gradient(90deg, #1E293B 0%, #0369A1 4.8%, #0284C7 80.8%, #00F0FF 95.3%, #0C4A6E 100%)",
     glowPrimary: "rgba(0, 240, 255, 0.4)",
     glowSecondary: "rgba(2, 132, 199, 0.28)",
-    gelBg: "linear-gradient(182deg, rgba(30, 41, 59, 0.6) 27%, rgba(14, 165, 233, 0.2) 150%)",
+    gelBg:
+      "linear-gradient(182deg, rgba(30, 41, 59, 0.6) 27%, rgba(14, 165, 233, 0.2) 150%)",
     gelBorder: "rgba(0, 240, 255, 0.35)",
     cableColor: "rgba(0, 240, 255, 0.25)",
     pinstripeColor: "rgba(255, 255, 255, 0.03)",
@@ -186,7 +194,8 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
       "linear-gradient(90deg, #FFFFFF 0%, #FEF08A 4.8%, #FDE047 80.8%, #EAB308 95.3%, #FEF9C3 100%)",
     glowPrimary: "rgba(234, 179, 8, 0.35)",
     glowSecondary: "rgba(180, 83, 9, 0.22)",
-    gelBg: "linear-gradient(182deg, rgba(254, 252, 232, 0.55) 27%, rgba(250, 204, 21, 0.15) 150%)",
+    gelBg:
+      "linear-gradient(182deg, rgba(254, 252, 232, 0.55) 27%, rgba(250, 204, 21, 0.15) 150%)",
     gelBorder: "rgba(255, 255, 255, 0.75)",
     cableColor: "rgba(180, 83, 9, 0.2)",
     pinstripeColor: "rgba(234, 179, 8, 0.04)",
@@ -255,12 +264,14 @@ export function FrostedGelDownloadButton({
       className={`relative select-none inline-flex items-center justify-center isolate ${className}`}
       style={
         scaleFactor !== 1
-          ? { transform: `scale(${scaleFactor})`, transformOrigin: "center center" }
+          ? {
+              transform: `scale(${scaleFactor})`,
+              transformOrigin: "center center",
+            }
           : undefined
       }
     >
       <div className="relative min-w-[560px] h-[240px] flex items-center justify-center flex-none">
-
         {/* ================================================================= */}
         {/* 1. Background Technical Trace Cable Lines (Spec 4604:153-156)    */}
         {/* ================================================================= */}
@@ -269,8 +280,8 @@ export function FrostedGelDownloadButton({
             {/* Left Cable Cluster */}
             <svg
               className="absolute left-[-10px] top-[95px] w-[160px] h-[50px] pointer-events-none"
-              viewBox="0 0 160 50"
               fill="none"
+              viewBox="0 0 160 50"
             >
               <path
                 d="M0 5C50 5 80 25 160 25"
@@ -280,22 +291,22 @@ export function FrostedGelDownloadButton({
               <path
                 d="M10 45C60 45 90 25 160 25"
                 stroke={t.cableColor}
-                strokeWidth="1.2"
                 strokeDasharray="4 3"
+                strokeWidth="1.2"
               />
               <path
                 d="M0 25C40 25 80 25 160 25"
+                opacity="0.6"
                 stroke={t.cableColor}
                 strokeWidth="1"
-                opacity="0.6"
               />
             </svg>
 
             {/* Right Cable Cluster */}
             <svg
               className="absolute right-[-10px] top-[95px] w-[160px] h-[50px] pointer-events-none"
-              viewBox="0 0 160 50"
               fill="none"
+              viewBox="0 0 160 50"
             >
               <path
                 d="M0 25C80 25 110 5 160 5"
@@ -305,14 +316,14 @@ export function FrostedGelDownloadButton({
               <path
                 d="M0 25C70 25 100 45 150 45"
                 stroke={t.cableColor}
-                strokeWidth="1.2"
                 strokeDasharray="4 3"
+                strokeWidth="1.2"
               />
               <path
                 d="M0 25C80 25 120 25 160 25"
+                opacity="0.6"
                 stroke={t.cableColor}
                 strokeWidth="1"
-                opacity="0.6"
               />
             </svg>
           </div>
@@ -322,16 +333,16 @@ export function FrostedGelDownloadButton({
         {/* 2. UNIFIED INTERACTIVE CTA WRAPPER (Cohesive Hover & Glow)        */}
         {/* ================================================================= */}
         <div
+          className="relative flex items-center justify-center cursor-pointer group"
+          onMouseDown={() => !disabled && setIsPressed(true)}
           onMouseEnter={() => !disabled && setIsHovered(true)}
           onMouseLeave={() => {
             setIsHovered(false);
             setIsPressed(false);
           }}
-          onMouseDown={() => !disabled && setIsPressed(true)}
           onMouseUp={() => !disabled && setIsPressed(false)}
-          onTouchStart={() => !disabled && setIsPressed(true)}
           onTouchEnd={() => !disabled && setIsPressed(false)}
-          className="relative flex items-center justify-center cursor-pointer group"
+          onTouchStart={() => !disabled && setIsPressed(true)}
         >
           {/* =============================================================== */}
           {/* Main "Download Now" Ceramic Pill Button (Spec 4604:158/160)     */}
@@ -339,18 +350,18 @@ export function FrostedGelDownloadButton({
           <div className="relative mr-[14px] flex items-center justify-center">
             {/* Volumetric Underglow Flare (Spec 4604:152) */}
             <motion.div
-              initial={false}
               animate={{
                 opacity: isVisualHover ? 1 : 0,
                 scale: isPressed ? 0.98 : isVisualHover ? 1.05 : 0.95,
               }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
               className="absolute inset-0 -bottom-[14px] rounded-[24px] pointer-events-none transform-gpu"
+              initial={false}
               style={{
                 background: `radial-gradient(ellipse at 50% 90%, ${t.glowPrimary} 0%, ${t.glowSecondary} 60%, transparent 80%)`,
                 filter: "blur(20px)",
                 willChange: "transform, opacity",
               }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
             />
 
             {/* Blue Gradient Base Bevel / Tray Layer (Spec 4604:158) */}
@@ -374,23 +385,13 @@ export function FrostedGelDownloadButton({
 
             {/* Elevated Ceramic Pill Surface (Spec 4604:160) */}
             <motion.button
-              type="button"
-              disabled={disabled}
-              onClick={(e) => {
-                onDownloadClick?.(e);
-                onClick?.(e);
-              }}
               animate={{
                 y: isPressed ? 2 : isVisualHover ? -4 : 0,
                 scale: isPressed ? 0.985 : 1,
               }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 24,
-                mass: 0.6,
-              }}
+              aria-label={label}
               className="relative cursor-pointer outline-none border-[1.65px] border-solid flex items-center justify-center min-w-[254px] h-[74px] rounded-[16.5px] px-[32px] py-[23px] overflow-hidden"
+              disabled={disabled}
               style={{
                 borderColor: t.pillBorder,
                 backgroundColor: t.pillBg,
@@ -398,7 +399,17 @@ export function FrostedGelDownloadButton({
                   ? `0px 1px 0px 0px #00aff5, 0px 14px 26px 0px ${t.glowSecondary}, inset 0px -3.3px 0px 0px rgba(0,0,0,0.15), inset 0px 3.3px 0px 1.2px white`
                   : `0px 1px 0px 0px ${t.accentColor}, 0px 8px 16px 0px rgba(0,42,254,0.18), inset 0px -3.3px 0px 0px rgba(0,0,0,0.18), inset 0px 3.3px 0px 1.2px white`,
               }}
-              aria-label={label}
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 24,
+                mass: 0.6,
+              }}
+              type="button"
+              onClick={(e) => {
+                onDownloadClick?.(e);
+                onClick?.(e);
+              }}
             >
               {/* Specular Diagonal Sheen Accent */}
               <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/70 via-transparent to-black/[0.04]" />
@@ -424,39 +435,29 @@ export function FrostedGelDownloadButton({
           <div className="relative flex items-center justify-center">
             {/* Volumetric Cyan/Blue Flare under Gel Tile */}
             <motion.div
-              initial={false}
               animate={{
                 opacity: isVisualHover ? 1 : 0.25,
                 scale: isPressed ? 0.95 : isVisualHover ? 1.12 : 0.95,
               }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
               className="absolute inset-0 -bottom-[12px] rounded-[22px] pointer-events-none transform-gpu"
+              initial={false}
               style={{
                 background: `radial-gradient(circle, ${t.glowPrimary} 0%, ${t.glowSecondary} 60%, transparent 80%)`,
                 filter: "blur(18px)",
                 willChange: "transform, opacity",
               }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
             />
 
             {/* Frosted Gel Glass Button */}
             <motion.button
-              type="button"
-              disabled={disabled}
-              onClick={(e) => {
-                onIconClick?.(e);
-                onClick?.(e);
-              }}
               animate={{
                 y: isPressed ? 2 : isVisualHover ? -4 : 0,
                 scale: isPressed ? 0.97 : 1,
               }}
-              transition={{
-                type: "spring",
-                stiffness: 500,
-                damping: 24,
-                mass: 0.6,
-              }}
+              aria-label="Download Cloud Icon"
               className="relative cursor-pointer outline-none flex items-center justify-center w-[76px] h-[74px] rounded-[16.5px] border-[1.65px] border-solid overflow-hidden backdrop-blur-md"
+              disabled={disabled}
               style={{
                 borderColor: t.gelBorder,
                 background: t.gelBg,
@@ -464,7 +465,17 @@ export function FrostedGelDownloadButton({
                   ? `0px 1px 0px 0px white, 0px 16px 32px 0px ${t.glowPrimary}, inset 0px 1.65px 0px 0px rgba(255,255,255,0.9), inset 0px -3.3px 0px 0px rgba(0,42,254,0.15)`
                   : `0px 1px 0px 0px rgba(255,255,255,0.5), 0px 8px 18px 0px ${t.glowSecondary}, inset 0px 1.65px 0px 0px rgba(255,255,255,0.7), inset 0px -3.3px 0px 0px rgba(0,42,254,0.25)`,
               }}
-              aria-label="Download Cloud Icon"
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 24,
+                mass: 0.6,
+              }}
+              type="button"
+              onClick={(e) => {
+                onIconClick?.(e);
+                onClick?.(e);
+              }}
             >
               {/* Multi-layered Internal Glass Refraction Rings (Spec 4604:173-176) */}
               <div
@@ -486,23 +497,24 @@ export function FrostedGelDownloadButton({
               {/* Gel Tile Icon (Spec 4604:180) — configurable via `icon` prop */}
               <div className="relative z-10 flex items-center justify-center">
                 <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
+                  className="transition-transform duration-300"
                   fill="none"
+                  height="30"
                   stroke={t.accentColor}
-                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="transition-transform duration-300"
+                  strokeWidth="2"
                   style={{
                     filter: isVisualHover
                       ? `drop-shadow(0px 0px 6px ${t.accentColor})`
                       : "none",
                     transform: isPressed ? "translateY(2px)" : "none",
                   }}
+                  viewBox="0 0 24 24"
+                  width="30"
                 >
-                  {FROSTED_GEL_ICON_PATHS[icon] ?? FROSTED_GEL_ICON_PATHS["cloud-download"]}
+                  {FROSTED_GEL_ICON_PATHS[icon] ??
+                    FROSTED_GEL_ICON_PATHS["cloud-download"]}
                 </svg>
               </div>
             </motion.button>

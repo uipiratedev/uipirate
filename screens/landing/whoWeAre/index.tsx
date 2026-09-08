@@ -1,128 +1,141 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
-import GlassBadge from "@/components/GlassBadge";
+import TheTeam from "../theTeam";
 
-// Animation variants for the badge
-const badgeVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+import SectionHeader from "@/components/SectionHeader";
+
+// Animation variants
+const cardVariant = {
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.33, 1, 0.68, 1], // power3.out
-    },
+    transition: { duration: 0.8, ease: [0.33, 1, 0.68, 1] },
   },
 };
 
-// Word component that animates based on scroll progress
-const AnimatedWord = ({
-  word,
-  index,
-  totalWords,
-  scrollProgress,
-}: {
-  word: string;
-  index: number;
-  totalWords: number;
-  scrollProgress: MotionValue<number>;
-}) => {
-  // Calculate when this word should start and complete its reveal
-  const wordThreshold = index / totalWords;
-  const wordEndThreshold = (index + 1) / totalWords;
-
-  // Transform scroll progress to color interpolation (gray to black)
-  const color = useTransform(
-    scrollProgress,
-    [wordThreshold, wordEndThreshold],
-    ["rgb(209, 213, 219)", "rgb(17, 24, 39)"],
-  );
-
-  // Transform scroll progress to opacity
-  const opacity = useTransform(
-    scrollProgress,
-    [wordThreshold - 0.05, wordEndThreshold],
-    [0.35, 1],
-  );
-
-  return (
-    <motion.span
-      className="transition-none"
-      style={{
-        color,
-        opacity,
-        display: "inline-block",
-        marginRight: "0.25em",
-        willChange: "color, opacity",
-      }}
-    >
-      {word}
-    </motion.span>
-  );
-};
-
 const LandingWhoWeAre = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-
-  // Use Framer Motion's useScroll for better performance
-  const { scrollYProgress } = useScroll({
-    target: textRef,
-    offset: ["start 0.85", "start 0.35"],
-  });
-
-  const text =
-    "UI Pirate is a product design and development agency. We help SaaS founders and enterprise teams design, build, and ship products that look premium, perform well, and hold up as they grow.";
-
-  // Memoize word splitting to prevent unnecessary recalculations
-  const words = useMemo(() => text.split(" "), []);
-  const totalWords = words.length;
-
   return (
-    <section ref={containerRef} className="relative overflow-hidden">
-      {/* Subtle background gradient for depth */}
-      <div className="absolute inset-0 pointer-events-none" />
+    <section className="relative overflow-hidden bg-black py-20">
+      <div className="section-container relative z-10 flex flex-col items-center">
+        {/* Title */}
+        <SectionHeader className="autoShow" headingClassName="text-white">
+          Who We Are.
+        </SectionHeader>
 
-      <div className="section-container relative z-10">
-        {/* Badge with Framer Motion animation */}
-        <motion.div
-          className="flex justify-center mb-10 md:mb-14 lg:mb-16"
-          initial="hidden"
-          variants={badgeVariants}
-          viewport={{ once: true, amount: 0.5 }}
-          whileInView="visible"
-        >
-          <GlassBadge variant="gradient">WHO WE ARE</GlassBadge>
-        </motion.div>
-
-        {/* Animated text container */}
-        <div
-          ref={textRef}
-          className="max-w-5xl mx-auto px-4 sm:px-8 md:px-12 lg:px-16"
-        >
-          <h2
-            className="
-              text-center font-medium tracking-tight leading-snug
-              text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[42px]
-              md:leading-[1.35] lg:leading-[1.4] xl:leading-[1.35]
-            "
+        {/* Hand + Card composition */}
+        <div className="relative w-full max-w-2xl mx-auto flex flex-col items-center">
+          {/* The white card */}
+          <motion.div
+            className="relative z-10 w-full max-w-[480px] mx-auto"
+            initial="hidden"
+            variants={cardVariant}
+            viewport={{ once: true, amount: 0.2 }}
+            whileInView="visible"
           >
-            {words.map((word, index) => (
-              <AnimatedWord
-                key={index}
-                index={index}
-                scrollProgress={scrollYProgress}
-                totalWords={totalWords}
-                word={word}
-              />
-            ))}
-          </h2>
+            {/* Card shadow */}
+            <div
+              className="absolute inset-0 rounded-md"
+              style={{
+                boxShadow:
+                  "0 40px 80px -10px rgba(0,0,0,0.6), 0 20px 40px -8px rgba(0,0,0,0.4)",
+                borderRadius: "10px",
+              }}
+            />
+            {/* Card body */}
+            <div
+              className="relative bg-white  p-5 sm:p-7"
+              style={{ borderRadius: "4px" }}
+            >
+              {/* Headline */}
+              <p className="text-[13px] sm:text-sm font-bold text-black mb-4 leading-snug">
+                A small team, built for speed, obsessed with the details.
+              </p>
+
+              {/* Body paragraphs */}
+              <div className="space-y-3 text-[12px] sm:text-[13px] text-gray-700 leading-relaxed">
+                <p>
+                  We are a product design and development agency.
+                  <br />
+                  We help SaaS founders and enterprise teams design, build, and
+                  ship products that look premium, perform well, and hold up as
+                  they grow.
+                </p>
+
+                <p>
+                  We keep things simple on purpose.
+                  <br />
+                  No bloated process. No unnecessary layers.
+                  <br />
+                  Just clear communication, fast turnaround, and a team you can
+                  rely on.
+                </p>
+
+                <p>
+                  We&apos;re not trying to be the biggest studio.
+                  <br />
+                  We&apos;re here to be the one you can depend on.
+                </p>
+
+                <p>
+                  The team you come back to.
+                  <br />
+                  The team that just gets it.
+                </p>
+                <p className="text-[12px] sm:text-[13px] text-gray-500 font-medium">
+                  — UI Pirate Team
+                </p>
+              </div>
+
+              {/* Footer row */}
+              <div className="flex items-center justify-end mt-6 pt-5 border-t border-gray-100">
+                {/* UI Pirate logo — asset has transparent underglow padding at the bottom,
+                    so nudge it down to optically centre the icon against the wordmark */}
+                <div className="flex items-center gap-2">
+                  <Image
+                    alt="UI Pirate"
+                    className="h-5 w-5 object-contain shrink-0 translate-y-[3px]"
+                    height={32}
+                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1766234689/logo_lcn2cq.png"
+                    width={32}
+                  />
+
+                  <span className="text-sm font-semibold text-black tracking-tight leading-none whitespace-nowrap">
+                    UI Pirate
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Hand image — overlaps the bottom of the card */}
+          <motion.div
+            className="relative z-30 -mt-6 pb-16 md:pb-24 w-full max-w-[400px] mx-auto flex justify-center"
+            initial={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.9, ease: [0.33, 1, 0.68, 1], delay: 0.3 }}
+            viewport={{ once: true, amount: 0.1 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <Image
+              priority
+              unoptimized
+              alt="Hand holding the UI Pirate card"
+              className="w-full h-auto object-contain select-none pointer-events-none"
+              draggable={false}
+              height={480}
+              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1788774217/Image_Hand_image_holding_something_fxwtbj.svg"
+              style={{ maxHeight: "400px" }}
+              width={400}
+            />
+          </motion.div>
         </div>
       </div>
+      {/* call team section */}
+      <TheTeam />
     </section>
   );
 };

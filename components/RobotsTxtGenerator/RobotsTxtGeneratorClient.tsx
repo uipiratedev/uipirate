@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+
 import SuggestedTools from "@/components/SuggestedTools";
 
 interface BotOption {
@@ -163,24 +164,38 @@ const PRESET_BOTS: BotOption[] = [
   },
 ];
 
-type PresetMode = "ai-friendly" | "ai-search-only" | "block-ai-train" | "custom";
+type PresetMode =
+  | "ai-friendly"
+  | "ai-search-only"
+  | "block-ai-train"
+  | "custom";
 
 export default function RobotsTxtGeneratorClient() {
   const [preset, setPreset] = useState<PresetMode>("ai-friendly");
   const [domain, setDomain] = useState("example.com");
-  const [sitemapUrl, setSitemapUrl] = useState("https://example.com/sitemap.xml");
+  const [sitemapUrl, setSitemapUrl] = useState(
+    "https://example.com/sitemap.xml",
+  );
   const [llmsTxtUrl, setLlmsTxtUrl] = useState("https://example.com/llms.txt");
-  const [defaultRule, setDefaultRule] = useState<"allow-all" | "disallow-all">("allow-all");
-  const [disallowedPaths, setDisallowedPaths] = useState("/admin/\n/api/\n/checkout/");
+  const [defaultRule, setDefaultRule] = useState<"allow-all" | "disallow-all">(
+    "allow-all",
+  );
+  const [disallowedPaths, setDisallowedPaths] = useState(
+    "/admin/\n/api/\n/checkout/",
+  );
   const [crawlDelay, setCrawlDelay] = useState("");
   const [copied, setCopied] = useState(false);
 
   // Map of botId -> "allow" | "disallow" | "default"
-  const [botRules, setBotRules] = useState<Record<string, "allow" | "disallow" | "default">>(() => {
+  const [botRules, setBotRules] = useState<
+    Record<string, "allow" | "disallow" | "default">
+  >(() => {
     const initial: Record<string, "allow" | "disallow" | "default"> = {};
+
     PRESET_BOTS.forEach((b) => {
       initial[b.id] = b.recommended ? "allow" : "disallow";
     });
+
     return initial;
   });
 
@@ -195,7 +210,11 @@ export default function RobotsTxtGeneratorClient() {
       setDefaultRule("allow-all");
     } else if (newPreset === "ai-search-only") {
       PRESET_BOTS.forEach((b) => {
-        if (b.category === "ai-search" || b.category === "search-engine" || b.category === "seo-tool") {
+        if (
+          b.category === "ai-search" ||
+          b.category === "search-engine" ||
+          b.category === "seo-tool"
+        ) {
           updated[b.id] = "allow";
         } else {
           updated[b.id] = "disallow";
@@ -215,7 +234,10 @@ export default function RobotsTxtGeneratorClient() {
     setBotRules(updated);
   };
 
-  const handleBotRuleToggle = (botId: string, rule: "allow" | "disallow" | "default") => {
+  const handleBotRuleToggle = (
+    botId: string,
+    rule: "allow" | "disallow" | "default",
+  ) => {
     setPreset("custom");
     setBotRules((prev) => ({ ...prev, [botId]: rule }));
   };
@@ -257,6 +279,7 @@ export default function RobotsTxtGeneratorClient() {
 
     PRESET_BOTS.forEach((bot) => {
       const rule = botRules[bot.id];
+
       if (rule === "allow") allowedBots.push(bot);
       else if (rule === "disallow") disallowedBots.push(bot);
     });
@@ -289,7 +312,15 @@ export default function RobotsTxtGeneratorClient() {
     }
 
     return lines.join("\n");
-  }, [domain, sitemapUrl, llmsTxtUrl, defaultRule, disallowedPaths, crawlDelay, botRules]);
+  }, [
+    domain,
+    sitemapUrl,
+    llmsTxtUrl,
+    defaultRule,
+    disallowedPaths,
+    crawlDelay,
+    botRules,
+  ]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(generatedRobotsTxt);
@@ -298,9 +329,12 @@ export default function RobotsTxtGeneratorClient() {
   };
 
   const downloadFile = () => {
-    const blob = new Blob([generatedRobotsTxt], { type: "text/plain;charset=utf-8" });
+    const blob = new Blob([generatedRobotsTxt], {
+      type: "text/plain;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+
     link.href = url;
     link.download = "robots.txt";
     document.body.appendChild(link);
@@ -314,9 +348,9 @@ export default function RobotsTxtGeneratorClient() {
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-16">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10"
+          initial={{ opacity: 0, y: -12 }}
         >
           <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
@@ -328,10 +362,12 @@ export default function RobotsTxtGeneratorClient() {
           </div>
 
           <h1 className="heading-hero text-gray-900 mb-4">
-            AI-Ready <span className="text-[#FF5B04]">robots.txt</span> Generator
+            AI-Ready <span className="text-[#FF5B04]">robots.txt</span>{" "}
+            Generator
           </h1>
           <p className="sub-header">
-            Create an optimized robots.txt file in seconds. Control which AI bots (GPTBot, ClaudeBot, Gemini) can cite your website.
+            Create an optimized robots.txt file in seconds. Control which AI
+            bots (GPTBot, ClaudeBot, Gemini) can cite your website.
           </p>
         </motion.div>
 
@@ -363,21 +399,28 @@ export default function RobotsTxtGeneratorClient() {
                   },
                 ].map((p) => {
                   const active = preset === p.id;
+
                   return (
                     <button
                       key={p.id}
-                      onClick={() => handlePresetChange(p.id as PresetMode)}
                       className={`p-3.5 rounded-xl border text-left transition-all ${
                         active
                           ? "border-[#FF5B04] bg-[#FFF9F5] shadow-sm"
                           : "border-gray-200 hover:border-gray-300 bg-white"
                       }`}
+                      onClick={() => handlePresetChange(p.id as PresetMode)}
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold text-gray-900">{p.label}</span>
-                        {active && <span className="w-2 h-2 rounded-full bg-[#FF5B04]" />}
+                        <span className="text-xs font-bold text-gray-900">
+                          {p.label}
+                        </span>
+                        {active && (
+                          <span className="w-2 h-2 rounded-full bg-[#FF5B04]" />
+                        )}
                       </div>
-                      <p className="text-[11px] text-gray-500 leading-tight">{p.desc}</p>
+                      <p className="text-[11px] text-gray-500 leading-tight">
+                        {p.desc}
+                      </p>
                     </button>
                   );
                 })}
@@ -392,23 +435,27 @@ export default function RobotsTxtGeneratorClient() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Domain Name</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Domain Name
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="yoursite.com"
                     type="text"
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    placeholder="yoursite.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Sitemap URL</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Sitemap URL
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="https://yoursite.com/sitemap.xml"
                     type="text"
                     value={sitemapUrl}
                     onChange={(e) => setSitemapUrl(e.target.value)}
-                    placeholder="https://yoursite.com/sitemap.xml"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
               </div>
@@ -418,33 +465,37 @@ export default function RobotsTxtGeneratorClient() {
                   Disallow Paths for Default Crawlers (One per line)
                 </label>
                 <textarea
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-mono text-gray-800 outline-none focus:border-[#FF5B04]"
+                  placeholder="/admin/\n/api/\n/private/"
                   rows={3}
                   value={disallowedPaths}
                   onChange={(e) => setDisallowedPaths(e.target.value)}
-                  placeholder="/admin/\n/api/\n/private/"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-mono text-gray-800 outline-none focus:border-[#FF5B04]"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">llms.txt URL (Optional)</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    llms.txt URL (Optional)
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="https://yoursite.com/llms.txt"
                     type="text"
                     value={llmsTxtUrl}
                     onChange={(e) => setLlmsTxtUrl(e.target.value)}
-                    placeholder="https://yoursite.com/llms.txt"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-1">Crawl Delay (Seconds, Optional)</label>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">
+                    Crawl Delay (Seconds, Optional)
+                  </label>
                   <input
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
+                    placeholder="e.g. 10"
                     type="text"
                     value={crawlDelay}
                     onChange={(e) => setCrawlDelay(e.target.value)}
-                    placeholder="e.g. 10"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#FF5B04]"
                   />
                 </div>
               </div>
@@ -456,12 +507,15 @@ export default function RobotsTxtGeneratorClient() {
                 <h2 className="text-sm font-bold text-gray-900 font-jakarta uppercase tracking-wider">
                   3. Individual Bot Permissions
                 </h2>
-                <span className="text-xs text-gray-400 font-mono">14 Supported Crawlers</span>
+                <span className="text-xs text-gray-400 font-mono">
+                  14 Supported Crawlers
+                </span>
               </div>
 
               <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1">
                 {PRESET_BOTS.map((bot) => {
                   const rule = botRules[bot.id] || "default";
+
                   return (
                     <div
                       key={bot.id}
@@ -469,33 +523,39 @@ export default function RobotsTxtGeneratorClient() {
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-gray-900 truncate">{bot.name}</span>
+                          <span className="text-xs font-bold text-gray-900 truncate">
+                            {bot.name}
+                          </span>
                           <span className="text-[10px] font-mono text-gray-400 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
                             {bot.categoryLabel}
                           </span>
                         </div>
-                        <p className="text-[11px] text-gray-400 truncate mt-0.5">{bot.description}</p>
+                        <p className="text-[11px] text-gray-400 truncate mt-0.5">
+                          {bot.description}
+                        </p>
                       </div>
 
                       {/* Rule switch buttons */}
                       <div className="flex items-center gap-1 bg-white border border-gray-200 p-0.5 rounded-lg flex-shrink-0">
                         <button
-                          onClick={() => handleBotRuleToggle(bot.id, "allow")}
                           className={`px-2.5 py-1 text-[10px] font-bold rounded-md transition-all ${
                             rule === "allow"
                               ? "bg-emerald-500 text-white shadow-xs"
                               : "text-gray-500 hover:text-gray-900"
                           }`}
+                          onClick={() => handleBotRuleToggle(bot.id, "allow")}
                         >
                           Allow
                         </button>
                         <button
-                          onClick={() => handleBotRuleToggle(bot.id, "disallow")}
                           className={`px-2.5 py-1 text-[10px] font-bold rounded-md transition-all ${
                             rule === "disallow"
                               ? "bg-red-500 text-white shadow-xs"
                               : "text-gray-500 hover:text-gray-900"
                           }`}
+                          onClick={() =>
+                            handleBotRuleToggle(bot.id, "disallow")
+                          }
                         >
                           Block
                         </button>
@@ -515,22 +575,34 @@ export default function RobotsTxtGeneratorClient() {
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF5B04] font-jetbrains-mono">
                     Live Output
                   </span>
-                  <h3 className="text-base font-bold text-gray-900 font-jakarta">robots.txt Preview</h3>
+                  <h3 className="text-base font-bold text-gray-900 font-jakarta">
+                    robots.txt Preview
+                  </h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={downloadFile}
                     className="px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold flex items-center gap-1.5"
                     title="Download robots.txt"
+                    onClick={downloadFile}
                   >
-                    <svg className="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <svg
+                      className="w-3.5 h-3.5 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                      />
                     </svg>
                     Download
                   </button>
                   <button
-                    onClick={copyToClipboard}
                     className="px-3 py-2 rounded-lg bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-semibold transition-colors flex items-center gap-1.5"
+                    onClick={copyToClipboard}
                   >
                     {copied ? "Copied!" : "Copy Code"}
                   </button>
@@ -542,8 +614,16 @@ export default function RobotsTxtGeneratorClient() {
               </pre>
 
               <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-between">
-                <span>Save as: <code className="font-mono text-gray-700">robots.txt</code></span>
-                <span>Location: <code className="font-mono text-gray-700">/public/robots.txt</code></span>
+                <span>
+                  Save as:{" "}
+                  <code className="font-mono text-gray-700">robots.txt</code>
+                </span>
+                <span>
+                  Location:{" "}
+                  <code className="font-mono text-gray-700">
+                    /public/robots.txt
+                  </code>
+                </span>
               </div>
             </div>
           </div>
@@ -559,32 +639,54 @@ export default function RobotsTxtGeneratorClient() {
               How to Properly Configure robots.txt for AI Search
             </h2>
             <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-              Standard robots.txt directives follow RFC 9309. Understanding how AI crawlers interpret wildcard fallback rules prevents accidental search exclusion.
+              Standard robots.txt directives follow RFC 9309. Understanding how
+              AI crawlers interpret wildcard fallback rules prevents accidental
+              search exclusion.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Order of Specificity</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                01
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Order of Specificity
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Specific bot rules (e.g. <code className="font-mono text-gray-800">User-agent: GPTBot</code>) take priority over the global wildcard <code className="font-mono text-gray-800">User-agent: *</code>.
+                Specific bot rules (e.g.{" "}
+                <code className="font-mono text-gray-800">
+                  User-agent: GPTBot
+                </code>
+                ) take priority over the global wildcard{" "}
+                <code className="font-mono text-gray-800">User-agent: *</code>.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Explicit Allow Overrides</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                02
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Explicit Allow Overrides
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Always pair disallow blocks with explicit allows for public documentation and sitemaps so AI citation agents can verify your domain authority.
+                Always pair disallow blocks with explicit allows for public
+                documentation and sitemaps so AI citation agents can verify your
+                domain authority.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Sitemap Declaration</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                03
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Sitemap Declaration
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Declare absolute URLs for all XML sitemaps at the very bottom of your robots.txt to ensure complete multi-engine crawl coverage.
+                Declare absolute URLs for all XML sitemaps at the very bottom of
+                your robots.txt to ensure complete multi-engine crawl coverage.
               </p>
             </div>
           </div>
@@ -596,15 +698,37 @@ export default function RobotsTxtGeneratorClient() {
             </h3>
             <div className="space-y-4">
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">Where should I place robots.txt?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  Where should I place robots.txt?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  robots.txt must live in the root directory of your website (e.g. <code className="font-mono text-gray-800">https://yourdomain.com/robots.txt</code>). For Next.js projects, place it in <code className="font-mono text-gray-800">/public/robots.txt</code> or use <code className="font-mono text-gray-800">app/robots.ts</code>.
+                  robots.txt must live in the root directory of your website
+                  (e.g.{" "}
+                  <code className="font-mono text-gray-800">
+                    https://yourdomain.com/robots.txt
+                  </code>
+                  ). For Next.js projects, place it in{" "}
+                  <code className="font-mono text-gray-800">
+                    /public/robots.txt
+                  </code>{" "}
+                  or use{" "}
+                  <code className="font-mono text-gray-800">app/robots.ts</code>
+                  .
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">Can I block AI training without hurting Google SEO?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  Can I block AI training without hurting Google SEO?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Yes. By targeting named user-agents (<code className="font-mono text-gray-800">GPTBot</code>, <code className="font-mono text-gray-800">ClaudeBot</code>, <code className="font-mono text-gray-800">CCBot</code>) and leaving <code className="font-mono text-gray-800">Googlebot</code> and <code className="font-mono text-gray-800">Bingbot</code> allowed, your Google rankings remain 100% unaffected.
+                  Yes. By targeting named user-agents (
+                  <code className="font-mono text-gray-800">GPTBot</code>,{" "}
+                  <code className="font-mono text-gray-800">ClaudeBot</code>,{" "}
+                  <code className="font-mono text-gray-800">CCBot</code>) and
+                  leaving{" "}
+                  <code className="font-mono text-gray-800">Googlebot</code> and{" "}
+                  <code className="font-mono text-gray-800">Bingbot</code>{" "}
+                  allowed, your Google rankings remain 100% unaffected.
                 </p>
               </div>
             </div>
@@ -613,7 +737,10 @@ export default function RobotsTxtGeneratorClient() {
 
         {/* Suggested Tools (Dual-Category Grouping) */}
         <div className="max-w-5xl mx-auto">
-          <SuggestedTools currentToolId="robots-txt-generator" category="ai-geo" />
+          <SuggestedTools
+            category="ai-geo"
+            currentToolId="robots-txt-generator"
+          />
         </div>
       </div>
     </div>

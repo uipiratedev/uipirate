@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 
 const PERFECT_FOR = [
   {
@@ -52,14 +52,9 @@ const PricingPerfectFor = () => {
       whileInView={{ opacity: 1, y: 0 }}
     >
       {/* Header */}
-      <div className="text-center mb-12 max-md:mb-8">
-        <div className="flex justify-center mb-4">
-          <GlassBadge variant="gradient">WHO IT'S FOR</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          Is This Right For <span className="text-brand-orange">You?</span>
-        </h2>
-      </div>
+      <SectionHeader chip="WHO IT'S FOR">
+        Is This Right For <span className="text-brand-orange">You?</span>
+      </SectionHeader>
 
       {/* Perfect For Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
@@ -82,7 +77,7 @@ const PricingPerfectFor = () => {
                     src={item.image}
                   />
                 </div>
-                <div className="flex flex-1 flex-col justify-start items-start p-3 pb-0">
+                <div className="flex flex-1 flex-col justify-start items-center p-3 pb-8">
                   <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight">
                     {item.title}
                   </h3>
@@ -114,7 +109,10 @@ const PricingPerfectFor = () => {
         <div className="relative z-10 flex flex-col lg:flex-row p-8 md:p-10 gap-10 lg:gap-16 items-start lg:items-center">
           {/* Left Side: Title */}
           <div className="lg:w-2/5 shrink-0">
-            <img src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348516/not_sysbyc.svg" alt="" />
+            <img
+              alt=""
+              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348516/not_sysbyc.svg"
+            />
             <h3 className="text-[26px] md:text-[30px] leading-tight font-semibold tracking-tight text-slate-900 dark:text-white mt-8">
               <span style={{ color: NOT_RIGHT_FIT_RED }}>NOT</span> the right
               fit

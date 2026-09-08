@@ -3,37 +3,45 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
 
+import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
 export default function ToolsHubPage() {
-  const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">("all");
+  const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">(
+    "all",
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTools = useMemo(() => {
     return ALL_TOOLS_REGISTRY.filter((tool) => {
-      const matchesCat = activeCategory === "all" || tool.category === activeCategory;
+      const matchesCat =
+        activeCategory === "all" || tool.category === activeCategory;
       const matchesSearch =
         searchQuery.trim() === "" ||
         tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase());
+
       return matchesCat && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
 
   const liveTools = useMemo(
-    () => filteredTools.filter((t) => t.badge === "Live" || t.badge === "Popular"),
-    [filteredTools]
+    () =>
+      filteredTools.filter((t) => t.badge === "Live" || t.badge === "Popular"),
+    [filteredTools],
   );
   const previewTools = useMemo(
     () => filteredTools.filter((t) => t.badge === "Preview Available"),
-    [filteredTools]
+    [filteredTools],
   );
   const upcomingTools = useMemo(
-    () => filteredTools.filter((t) => t.badge === "Coming Soon" || (!t.badge && t.badge !== "Live")),
-    [filteredTools]
+    () =>
+      filteredTools.filter(
+        (t) => t.badge === "Coming Soon" || (!t.badge && t.badge !== "Live"),
+      ),
+    [filteredTools],
   );
 
   return (
@@ -47,8 +55,10 @@ export default function ToolsHubPage() {
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -56,20 +66,23 @@ export default function ToolsHubPage() {
       {/* Hero */}
       <div className="section-container pt-32 pb-20 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-14"
+          initial={{ opacity: 0, y: -12 }}
         >
           {/* Badge */}
           <div className="mb-6 flex flex-row items-center justify-center">
             <GlassBadge variant="gradient">TOOLS & DIAGNOSTICS</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
-            Free tools for <span className="text-[#FF5B04]">SaaS, AI &amp; Product Teams</span>
+          <h1 className="hero-header">
+            Free tools for{" "}
+            <span className="text-[#FF5B04]">SaaS, AI &amp; Product Teams</span>
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Audit, score, and optimize your product UX, conversion architecture, and AI bot visibility — 100% free and built by senior design engineers.
+            Audit, score, and optimize your product UX, conversion architecture,
+            and AI bot visibility — 100% free and built by senior design
+            engineers.
           </p>
         </motion.div>
 
@@ -77,11 +90,11 @@ export default function ToolsHubPage() {
         <div className="w-full mb-12 space-y-4">
           <div className="relative max-w-3xl mx-auto">
             <input
+              className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-xs font-jakarta text-gray-900"
+              placeholder="Search across all tools (e.g. AI bot, SaaS UX, Pricing, Onboarding, Typography, Breakpoints, robots.txt)..."
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search across all tools (e.g. AI bot, SaaS UX, Pricing, Onboarding, Typography, Breakpoints, robots.txt)..."
-              className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-xs font-jakarta text-gray-900"
             />
             <svg
               className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
@@ -90,12 +103,16 @@ export default function ToolsHubPage() {
               viewBox="0 0 24 24"
             >
               <circle cx="11" cy="11" r="8" strokeWidth="2" />
-              <path d="M21 21l-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
+              <path
+                d="M21 21l-4.35-4.35"
+                strokeLinecap="round"
+                strokeWidth="2"
+              />
             </svg>
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery("")}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-mono"
+                onClick={() => setSearchQuery("")}
               >
                 Clear
               </button>
@@ -105,51 +122,61 @@ export default function ToolsHubPage() {
           {/* Category Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
             {[
-              { id: "all", label: "All Tools", count: ALL_TOOLS_REGISTRY.length },
+              {
+                id: "all",
+                label: "All Tools",
+                count: ALL_TOOLS_REGISTRY.length,
+              },
               {
                 id: "ai-geo",
                 label: "AI & GEO Visibility",
                 badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length} Tools`,
-                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo")
+                  .length,
               },
               {
                 id: "website-conversion",
                 label: "Website & Conversion",
                 badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length} Tools`,
-                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length,
+                count: ALL_TOOLS_REGISTRY.filter(
+                  (t) => t.category === "website-conversion",
+                ).length,
               },
               {
                 id: "saas-product",
                 label: "SaaS & Product UX",
                 badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length} Tools`,
-                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length,
+                count: ALL_TOOLS_REGISTRY.filter(
+                  (t) => t.category === "saas-product",
+                ).length,
               },
               {
                 id: "design-system",
                 label: "Design Systems & Code",
                 badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length} Tools`,
-                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length,
+                count: ALL_TOOLS_REGISTRY.filter(
+                  (t) => t.category === "design-system",
+                ).length,
               },
             ].map((tab) => {
               const active = activeCategory === tab.id;
+
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveCategory(tab.id as ToolCategory)}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
-                    active
+                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${active
                       ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/20"
                       : "bg-white border border-gray-200 text-gray-700 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
-                  }`}
+                    }`}
+                  onClick={() => setActiveCategory(tab.id as ToolCategory)}
                 >
                   <span>{tab.label}</span>
                   {tab.badge && (
                     <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded-full font-mono ${
-                        active
+                      className={`text-[9px] px-1.5 py-0.5 rounded-full font-mono ${active
                           ? "bg-white/20 text-white"
                           : "bg-gray-100 text-gray-600"
-                      }`}
+                        }`}
                     >
                       {tab.badge}
                     </span>
@@ -166,7 +193,9 @@ export default function ToolsHubPage() {
             <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
               Explore Tools by Agency Pillar
             </h2>
-            <span className="text-[11px] text-gray-400 font-mono">4 Core Verticals</span>
+            <span className="text-[11px] text-gray-400 font-mono">
+              4 Core Verticals
+            </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -206,24 +235,32 @@ export default function ToolsHubPage() {
             ].map((cat, idx) => (
               <Link
                 key={idx}
-                href={cat.path}
                 className="group bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/50 rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] flex flex-col justify-between transition-all duration-300"
+                href={cat.path}
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-bold font-mono text-gray-400">{cat.count}</span>
-                    <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${cat.badgeColor}`}>
+                    <span className="text-[10px] font-bold font-mono text-gray-400">
+                      {cat.count}
+                    </span>
+                    <span
+                      className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${cat.badgeColor}`}
+                    >
                       {cat.badge}
                     </span>
                   </div>
                   <h3 className="text-base font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-2">
                     {cat.title}
                   </h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{cat.desc}</p>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {cat.desc}
+                  </p>
                 </div>
                 <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
                   <span>Explore Pillar</span>
-                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
                 </div>
               </Link>
             ))}
@@ -242,7 +279,7 @@ export default function ToolsHubPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {liveTools.map((tool) => (
-                <Link key={tool.id} href={tool.href} className="h-full block">
+                <Link key={tool.id} className="h-full block" href={tool.href}>
                   <div className="group relative bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/50 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between mb-4">
@@ -250,11 +287,10 @@ export default function ToolsHubPage() {
                           {tool.icon}
                         </div>
                         <span
-                          className={`text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
-                            tool.badge === "Popular"
+                          className={`text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${tool.badge === "Popular"
                               ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
                               : "text-emerald-700 bg-emerald-50 border-emerald-200"
-                          }`}
+                            }`}
                         >
                           {tool.badge}
                         </span>
@@ -269,7 +305,9 @@ export default function ToolsHubPage() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="text-[11px] text-gray-400 font-mono">
+                        {tool.categoryLabel}
+                      </span>
                       <span className="flex items-center gap-1 text-xs font-bold text-[#FF5B04] group-hover:gap-1.5 transition-all">
                         {tool.ctaLabel} →
                       </span>
@@ -298,7 +336,7 @@ export default function ToolsHubPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {previewTools.map((tool) => (
-                <Link key={tool.id} href={tool.href} className="h-full block">
+                <Link key={tool.id} className="h-full block" href={tool.href}>
                   <div className="group relative bg-white border border-[#E5E7EB] hover:border-amber-400 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between mb-4">
@@ -319,7 +357,9 @@ export default function ToolsHubPage() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="text-[11px] text-gray-400 font-mono">
+                        {tool.categoryLabel}
+                      </span>
                       <span className="flex items-center gap-1 text-xs font-bold text-amber-700 group-hover:gap-1.5 transition-all">
                         {tool.ctaLabel} →
                       </span>
@@ -348,7 +388,7 @@ export default function ToolsHubPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingTools.map((tool) => (
-                <Link key={tool.id} href={tool.href} className="h-full block">
+                <Link key={tool.id} className="h-full block" href={tool.href}>
                   <div className="group relative bg-white border border-[#E5E7EB] hover:border-blue-400 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between mb-4">
@@ -369,7 +409,9 @@ export default function ToolsHubPage() {
                     </div>
 
                     <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="text-[11px] text-gray-400 font-mono">
+                        {tool.categoryLabel}
+                      </span>
                       <span className="flex items-center gap-1 text-xs font-bold text-blue-700 group-hover:gap-1.5 transition-all">
                         {tool.ctaLabel} →
                       </span>
@@ -391,16 +433,28 @@ export default function ToolsHubPage() {
               Turn audit findings into a high-converting product.
             </h3>
             <p className="text-sm text-gray-500 mt-2 leading-relaxed">
-              UI Pirate is a product design & full-stack development agency specializing in complex SaaS platforms, AI interfaces, and high-velocity landing pages.
+              UI Pirate is a product design & full-stack development agency
+              specializing in complex SaaS platforms, AI interfaces, and
+              high-velocity landing pages.
             </p>
           </div>
           <Link
-            href="/contact"
             className="px-7 py-4 rounded-2xl bg-gray-900 hover:bg-[#FF5B04] text-white text-sm font-bold transition-all shadow-md flex-shrink-0 flex items-center gap-2"
+            href="/contact"
           >
             <span>Book a 1-on-1 UX Consultation</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+              />
             </svg>
           </Link>
         </div>
