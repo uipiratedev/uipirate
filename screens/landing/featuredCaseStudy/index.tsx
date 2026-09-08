@@ -2,7 +2,7 @@
 
 import GlassBadge from "@/components/GlassBadge";
 import LetsTalkButton from "@/components/LetsTalkButton";
-import { Parallax, ScrollReveal, Tilt } from "@/components/motion";
+import { Parallax, Reveal, Tilt } from "@/components/motion";
 
 export interface FeaturedCaseStudyData {
   slug: string;
@@ -28,12 +28,15 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
 
   return (
     <div className="section-container">
-      <ScrollReveal
+      <Reveal
         className="relative overflow-hidden rounded-[20px] border border-2 border-gray-200/80 bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] sm:rounded-[20px] dark:border-white/10 dark:bg-[#141414] dark:shadow-none"
-        scale={0.94}
+        scrub={false}
+        variant="fade"
       >
-        {/* Subtle peachy ambient glow in the top-left corner of the card */}
-        <div className="pointer-events-none absolute -left-10 -top-10 h-52 w-72 rounded-full bg-brand-orange/20 blur-[70px] dark:bg-brand-orange/15" />
+        {/* Subtle peachy ambient glow in the top-left corner of the card.
+            Hidden on mobile — a full-viewport-scale blur filter is costly
+            and can haze the card on low-end devices. */}
+        <div className="pointer-events-none absolute -left-10 -top-10 hidden h-52 w-72 rounded-full bg-brand-orange/20 blur-[70px] md:block dark:bg-brand-orange/15" />
 
         <Tilt
           className="relative z-10 flex flex-col lg:flex-row lg:items-stretch"
@@ -108,7 +111,7 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
             </Parallax>
           </div>
         </Tilt>
-      </ScrollReveal>
+      </Reveal>
     </div>
   );
 };
