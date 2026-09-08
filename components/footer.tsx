@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
           </h2>
 
           {/* "Lets Venture" button — opens lead capture modal */}
-          <div className="flex justify-center mb-16 max-md:mb-0 mt-6">
+          <div className="flex justify-center mb-16 max-md:mb-0 mt-[60px]">
             <div className="w-[600px] max-xl:w-[400px] max-md:w-[250px]">
               <JoinTactileButton
                 label="LETS VENTURE"
