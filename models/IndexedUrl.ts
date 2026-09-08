@@ -26,6 +26,8 @@ export interface BingIndexData {
   submittedAt: Date | null;
   lastResponseCode: number | null;
   indexed: boolean | null;
+  coverageState: string | null;
+  statusMessage: string | null;
   lastCrawlTime: Date | null;
   lastInspectedAt: Date | null;
   lastError: string | null;
@@ -105,6 +107,8 @@ const IndexedUrlSchema = new Schema<IIndexedUrl>(
       submittedAt: { type: Date, default: null },
       lastResponseCode: { type: Number, default: null },
       indexed: { type: Boolean, default: null },
+      coverageState: { type: String, default: null },
+      statusMessage: { type: String, default: null },
       lastCrawlTime: { type: Date, default: null },
       lastInspectedAt: { type: Date, default: null },
       lastError: { type: String, default: null },

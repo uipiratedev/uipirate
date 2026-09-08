@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "create-admin": "tsx scripts/create-admin.ts",
+    "inspection-report": "tsx scripts/inspection-report.ts",
     "validate-seo": "tsx scripts/validate-structured-data.ts"
   },
   "dependencies": {
