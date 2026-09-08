@@ -48,6 +48,9 @@ import {
   LuminousShelfCard,
   LUMINOUS_SHELF_CARD_COMPONENT_SOURCE,
 } from "@/components/LuminousShelfCard";
+import JoinTactileButton, {
+  JOIN_TACTILE_BUTTON_COMPONENT_SOURCE,
+} from "@/components/JoinTactileButton";
 
 // Full component source + Framer physics excerpts, re-used verbatim from the
 // dedicated /buttons/<slug> studio screens so the Component Lab code panel shows
@@ -153,6 +156,10 @@ const BUTTON_CODE: Record<string, ButtonCodeEntry> = {
   "luminous-shelf-card": {
     file: "LuminousShelfCard.tsx",
     componentCode: LUMINOUS_SHELF_CARD_COMPONENT_SOURCE,
+  },
+  "join-tactile-button": {
+    file: "JoinTactileButton.tsx",
+    componentCode: JOIN_TACTILE_BUTTON_COMPONENT_SOURCE,
   },
 };
 
@@ -817,6 +824,19 @@ export default function Example() {
     />
   );
 }`;
+      case "join-tactile-button":
+        return `import JoinTactileButton from "@/components/JoinTactileButton";
+
+export default function Example() {
+  return (
+    <JoinTactileButton
+      label="${customLabel || "LETS VENTURE"}"
+      variant="${customTheme || "orange"}"
+      size="${customSize}"
+      onClick={() => console.log("Venture!")}
+    />
+  );
+}`;
       default:
         return selectedComponent.jsxCode;
     }
@@ -1398,6 +1418,25 @@ export default function Example() {
               theme={cardTheme as any}
               title={customLabel || "Light Work"}
               onClick={() => handleTriggerAction("Luminous Shelf Card lit")}
+            />
+          </div>
+        );
+      }
+      case "join-tactile-button": {
+        const ventureVariant = safeTheme(
+          customTheme,
+          ["orange", "dark"],
+          "orange",
+        );
+
+        return (
+          <div className="py-8 w-full flex items-center justify-center">
+            <JoinTactileButton
+              label={customLabel || "LETS VENTURE"}
+              size={customSize}
+              stateMode={customStateMode}
+              variant={ventureVariant as any}
+              onClick={() => handleTriggerAction("Venture triggered!")}
             />
           </div>
         );

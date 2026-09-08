@@ -4,6 +4,7 @@ import { AnimatedButton } from "@/components/AnimatedButton";
 import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
+import JoinTactileButton from "@/components/JoinTactileButton";
 import GlassBadge from "@/components/GlassBadge";
 import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
@@ -3354,6 +3355,118 @@ export default function Example() {
             subtitle="Nightclub tube strike."
             theme="magenta"
           />
+        ),
+      },
+    ],
+  },
+  {
+    id: "join-tactile-button",
+    name: "Join Tactile 3D Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Backlit 3D Key",
+    badgeColor: "#FF5B04",
+    description:
+      "Lightweight rebuild of the footer's LETS VENTURE key: grey frame, recessed silver-bezel socket, and a black cap on a visible 3D base with a backlit magma glow behind the label. Nested elements + container-query units instead of a filter-heavy SVG.",
+    detailUrl: "/componentlab/join-tactile-button",
+    defaultLabel: "LETS VENTURE",
+    hasLabelControl: true,
+    hasSizeControl: true,
+    hasThemeControl: true,
+    defaultTheme: "orange",
+    availableThemes: [
+      { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
+      { value: "dark", label: "Cyan Backlight", color: "#3B82F6" },
+    ],
+    features: [
+      "Recessed silver-bezel socket",
+      "Cap sits on a visible 3D base",
+      "Backlit magma glow behind the label",
+      "Container-query fluid — no SVG filters",
+    ],
+    previewLight: (
+      <div className="py-6 flex items-center justify-center">
+        <JoinTactileButton label="LETS VENTURE" size="md" variant="orange" />
+      </div>
+    ),
+    previewDark: (
+      <div className="py-6 flex items-center justify-center">
+        <JoinTactileButton label="LETS VENTURE" size="md" variant="orange" />
+      </div>
+    ),
+    jsxCode: `import JoinTactileButton from "@/components/JoinTactileButton";
+
+export default function Example() {
+  return <JoinTactileButton label="LETS VENTURE" variant="orange" size="md" />;
+}`,
+    htmlCode: `<!-- CSS-only skeleton — see the Component tab for the real thing -->
+<div class="jtb">
+  <span class="jtb-frame"></span>
+  <span class="jtb-socket"></span>
+  <button class="jtb-cap">LETS VENTURE</button>
+</div>`,
+    cssCode: `/* Container-query fluid: 1cqw = 1% of the button width */
+.jtb { container-type: inline-size; position: relative; aspect-ratio: 622 / 207; }
+.jtb-cap {
+  position: absolute; inset-inline: 5.7cqw; top: 3%; height: 70%;
+  border-radius: 4cqw; background: #0B0B09;
+  transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+.jtb-cap:hover  { transform: translateY(-9%) scale(1.02); }
+.jtb-cap:active { transform: translateY(7%); }`,
+    props: [
+      {
+        name: "label",
+        type: "string",
+        defaultValue: '"LETS VENTURE"',
+        description: "Cap text (rendered uppercase).",
+      },
+      {
+        name: "variant",
+        type: '"orange" | "dark"',
+        defaultValue: '"orange"',
+        description: "Backlit glow + edge-lighting colour.",
+      },
+      {
+        name: "size",
+        type: '"xs" | "sm" | "md" | "lg" | "xl"',
+        defaultValue: '"lg"',
+        description: "Upper width bound; the button is fluid up to it.",
+      },
+      {
+        name: "stateMode",
+        type: '"interactive" | "standerd" | "hover"',
+        defaultValue: '"interactive"',
+        description: "Force a state instead of reacting to the pointer.",
+      },
+      {
+        name: "showArrow",
+        type: "boolean",
+        defaultValue: "true",
+        description: "Show the ↗ glyph in the top-right corner.",
+      },
+    ],
+    variantsList: [
+      {
+        title: "UI Pirate Magma",
+        themeValue: "orange",
+        themeProp: 'variant="orange"',
+        badgeColor: "#FF5B04",
+        description:
+          "The original footer look — molten orange glow bleeding through the dark face.",
+        renderPreview: (sz = "sm") => (
+          <JoinTactileButton label="LETS VENTURE" size={sz} variant="orange" />
+        ),
+      },
+      {
+        title: "Cyan Backlight",
+        themeValue: "dark",
+        themeProp: 'variant="dark"',
+        badgeColor: "#3B82F6",
+        description:
+          "Cooler blue backlight for dark UIs that don't want the orange.",
+        renderPreview: (sz = "sm") => (
+          <JoinTactileButton label="LETS VENTURE" size={sz} variant="dark" />
         ),
       },
     ],

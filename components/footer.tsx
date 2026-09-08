@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { Link } from "@heroui/link";
 import { useState } from "react";
 
-import { JoinButtonIcon } from "./JoinButtonIcon";
 import ProPirateFooterSection from "./proPirate";
 import LeadCaptureModal from "./LeadCaptureModal";
 
+import JoinTactileButton from "@/components/JoinTactileButton";
 import { useClickSound } from "@/hooks/useClickSound";
 
 const footerSocialLinks = [
@@ -51,14 +51,11 @@ const footerSocialLinks = [
  * Features a gradient button matching the design system.
  */
 export const Footer: React.FC = () => {
-  const [isActive, setIsActive] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const playClickSound = useClickSound();
 
   const handleClick = () => {
     playClickSound();
-    setIsActive(!isActive);
     setIsModalOpen(true);
   };
 
@@ -89,34 +86,14 @@ export const Footer: React.FC = () => {
           </h2>
 
           {/* "Lets Venture" button — opens lead capture modal */}
-          <div className="flex justify-center">
-            <motion.div
-              className="flex flex-col items-center mb-16 max-md:mb-0 mt-6 relative group cursor-pointer w-fit"
-              style={{ perspective: "1000px" }}
-              onClick={handleClick}
-              onMouseDown={() => setIsPressed(true)}
-              onMouseLeave={() => setIsPressed(false)}
-              onMouseUp={() => setIsPressed(false)}
-              onTouchEnd={() => setIsPressed(false)}
-              onTouchStart={() => setIsPressed(true)}
-            >
-              <div className="block relative mt-6">
-                {/* Reflection Sweep Effect (Floating Layer) */}
-                <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[32px]">
-                  <div className="absolute inset-x-0 top-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full -skew-x-20 group-hover:animate-sheen" />
-                </div>
-
-                {/* Icon Container with Lighting Glow */}
-                <div className="flex items-center justify-center w-[600px] max-xl:w-[400px] max-md:w-[250px] z-[999999999999999999] transition-all duration-300 group-hover:drop-shadow-[0_0_35px_rgba(255,100,0,0.8)]">
-                  <JoinButtonIcon
-                    className="w-full h-auto"
-                    isActive={isActive}
-                    isPressed={isPressed}
-                    text="lets venture"
-                  />
-                </div>
-              </div>
-            </motion.div>
+          <div className="flex justify-center mb-16 max-md:mb-0 mt-6">
+            <div className="w-[600px] max-xl:w-[400px] max-md:w-[250px]">
+              <JoinTactileButton
+                label="LETS VENTURE"
+                variant="orange"
+                onClick={handleClick}
+              />
+            </div>
           </div>
 
           {/* Lead Capture Modal */}

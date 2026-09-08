@@ -283,6 +283,24 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     codeSnippet: `<ScalingCapsuleButton\n  label="Scaling Workshop"\n  variant="dark"\n  size="md"\n/>`,
   },
   {
+    id: "join-tactile-button",
+    name: "Join Tactile 3D Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Backlit 3D Key",
+    badgeVariant: "gradient",
+    description:
+      "Lightweight rebuild of the footer's LETS VENTURE key — grey frame, recessed silver-bezel socket, and a black cap on a visible base with a backlit magma glow behind the label. Container-query fluid, no SVG filters.",
+    detailUrl: "/componentlab/join-tactile-button",
+    features: [
+      "Recessed silver-bezel socket",
+      "Cap on a visible 3D base",
+      "Backlit magma glow",
+      "Container-query fluid",
+    ],
+    codeSnippet: `<JoinTactileButton\n  label="LETS VENTURE"\n  variant="orange"\n  size="md"\n/>`,
+  },
+  {
     id: "tactile-pill-button",
     name: "Tactile 3D Pill Button",
     category: "buttons",
