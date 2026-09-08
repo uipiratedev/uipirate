@@ -216,7 +216,7 @@ export default function StudioCanvas({
           />
         )}
 
-        <div className="relative z-10 flex flex-col items-center gap-6">
+        <div className="relative z-10 flex flex-col items-center gap-6 w-full">
           {children}
         </div>
 

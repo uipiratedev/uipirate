@@ -47,6 +47,7 @@ export default function Breadcrumbs() {
     if (
       pathname === "/" ||
       pathname.startsWith("/admin") ||
+      pathname === "/login" ||
       pathname.startsWith("/tools") ||
       pathname.startsWith("/componentlab") ||
       /^\/blogs\/[^/]+/.test(pathname) ||

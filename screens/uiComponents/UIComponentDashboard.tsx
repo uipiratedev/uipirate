@@ -48,6 +48,9 @@ import {
   LuminousShelfCard,
   LUMINOUS_SHELF_CARD_COMPONENT_SOURCE,
 } from "@/components/LuminousShelfCard";
+import JoinTactileButton, {
+  JOIN_TACTILE_BUTTON_COMPONENT_SOURCE,
+} from "@/components/JoinTactileButton";
 
 // Full component source + Framer physics excerpts, re-used verbatim from the
 // dedicated /buttons/<slug> studio screens so the Component Lab code panel shows
@@ -75,6 +78,7 @@ import {
   TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE,
   TACTILE_NEUMORPHIC_SWITCH_PHYSICS,
 } from "@/screens/buttons/tactileNeumorphicSwitch";
+import { useDrawerScrollLock } from "@/hooks/useDrawerScrollLock";
 
 export { ALL_DASHBOARD_COMPONENTS };
 export type { ComponentCategory, PropRow, ComponentDetail, PresetVariant };
@@ -153,6 +157,10 @@ const BUTTON_CODE: Record<string, ButtonCodeEntry> = {
   "luminous-shelf-card": {
     file: "LuminousShelfCard.tsx",
     componentCode: LUMINOUS_SHELF_CARD_COMPONENT_SOURCE,
+  },
+  "join-tactile-button": {
+    file: "JoinTactileButton.tsx",
+    componentCode: JOIN_TACTILE_BUTTON_COMPONENT_SOURCE,
   },
 };
 
@@ -311,6 +319,10 @@ export default function UIComponentDashboard({
   const [activeCodeTab, setActiveCodeTab] = useState<CodeTab>("component");
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  useDrawerScrollLock({
+    enabled: mobileSidebarOpen,
+    onClose: () => setMobileSidebarOpen(false),
+  });
 
   // ── Playground Dynamic State ──────────────────────────────────────────
   const [customLabel, setCustomLabel] = useState<string>("");
@@ -814,6 +826,19 @@ export default function Example() {
       size="${["sm", "md", "lg"].includes(customSize) ? customSize : "md"}"
       stateMode="interactive"
       onClick={() => console.log("Card lit")}
+    />
+  );
+}`;
+      case "join-tactile-button":
+        return `import JoinTactileButton from "@/components/JoinTactileButton";
+
+export default function Example() {
+  return (
+    <JoinTactileButton
+      label="${customLabel || "LETS VENTURE"}"
+      variant="${customTheme || "orange"}"
+      size="${customSize}"
+      onClick={() => console.log("Venture!")}
     />
   );
 }`;
@@ -1402,6 +1427,25 @@ export default function Example() {
           </div>
         );
       }
+      case "join-tactile-button": {
+        const ventureVariant = safeTheme(
+          customTheme,
+          ["orange", "dark"],
+          "orange",
+        );
+
+        return (
+          <div className="py-8 w-full flex items-center justify-center">
+            <JoinTactileButton
+              label={customLabel || "LETS VENTURE"}
+              size={customSize}
+              stateMode={customStateMode}
+              variant={ventureVariant as any}
+              onClick={() => handleTriggerAction("Venture triggered!")}
+            />
+          </div>
+        );
+      }
       default:
         return canvasTheme === "light"
           ? selectedComponent.previewLight
@@ -1683,6 +1727,7 @@ export default function Example() {
           {mobileSidebarOpen && (
             <div
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+              data-lenis-prevent="true"
               onClick={() => setMobileSidebarOpen(false)}
             />
           )}

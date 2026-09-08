@@ -34,8 +34,33 @@ export const MobileMenuAccordionItem = ({
   onToggle,
   setIsMenuOpen,
 }: MobileMenuAccordionItemProps) => {
+  const isResources = item.label.toLowerCase() === "resources";
   const hasDropdown =
     item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
+
+  // On mobile view, show each resource option directly as a standard nav link (like Works, Pricing, About) without the Resources title
+  if (isResources && hasDropdown) {
+    return (
+      <>
+        {item.dropdownItems!.map((dropdownItem, idx) => (
+          <div
+            key={idx}
+            className="flex flex-col border-b border-gray-100 last:border-none"
+          >
+            <div className="flex items-center justify-between py-4">
+              <NextLink
+                className="text-lg text-foreground font-semibold flex-1"
+                href={dropdownItem.href || "#"}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {dropdownItem.category}
+              </NextLink>
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  }
 
   return (
     <div className="flex flex-col border-b border-gray-100 last:border-none">

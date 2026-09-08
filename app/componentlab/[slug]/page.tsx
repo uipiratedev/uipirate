@@ -58,13 +58,29 @@ export default async function ComponentDetailPage({
     notFound();
   }
 
+  // Sibling components in the same category — real crawlable internal links
+  // with descriptive anchor text (Bing guideline #5).
+  const relatedComponents = ALL_DASHBOARD_COMPONENTS.filter(
+    (c) => c.category === component.category && c.id !== component.id,
+  ).slice(0, 6);
+
+  const canonicalUrl = `https://uipirate.com/componentlab/${slug}`;
+
+  // Structured data mirrors the visible spec content below (Bing guideline #14).
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareSourceCode",
     name: component.name,
     description: component.description,
     programmingLanguage: "TypeScript / React",
-    url: `https://uipirate.com/componentlab/${slug}`,
+    codeSampleType: "code snippet",
+    url: canonicalUrl,
+    keywords: [
+      component.categoryLabel,
+      "React component",
+      "Tailwind CSS",
+      "Framer Motion",
+    ].join(", "),
     author: {
       "@type": "Organization",
       name: "UI Pirate",

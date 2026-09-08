@@ -1,63 +1,15 @@
-import { createHash } from "crypto";
-
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import ViewLog from "@/models/ViewLog";
-
-// Known bot/crawler User-Agent patterns — these are never counted as views
-const BOT_PATTERN =
-  /bot|crawler|spider|scraper|facebookexternalhit|Twitterbot|LinkedInBot|WhatsApp|Slackbot|TelegramBot|DuckDuckBot|baiduspider|yandexbot|sogou|exabot|ia_archiver|AhrefsBot|SemrushBot|MJ12bot|DotBot|PetalBot|BingPreview|Googlebot|bingbot|slurp|facebookexternalhit/i;
-
-/**
- * Extracts the real client IP from request headers.
- * Priority order handles CDN/proxy chains (Cloudflare, nginx, etc.)
- */
-function extractIp(headers: ReadonlyHeaders): string {
-  // Cloudflare — most reliable when behind CF
-  const cfIp = headers.get("cf-connecting-ip");
-
-  if (cfIp) return cfIp.trim();
-
-  // Standard proxy forward — take first IP (original client)
-  const forwardedFor = headers.get("x-forwarded-for");
-
-  if (forwardedFor) {
-    const first = forwardedFor.split(",")[0].trim();
-
-    if (first) return first;
-  }
-
-  // nginx real IP header
-  const realIp = headers.get("x-real-ip");
-
-  if (realIp) return realIp.trim();
-
-  // Vercel-specific
-  const vercelIp = headers.get("x-vercel-forwarded-for");
-
-  if (vercelIp) return vercelIp.split(",")[0].trim();
-
-  // Fallback for local dev
-  return "127.0.0.1";
-}
-
-/**
- * One-way SHA-256 hash of an IP address.
- * This means we never store raw IPs — only an irreversible fingerprint.
- */
-function hashIp(ip: string): string {
-  return createHash("sha256").update(ip).digest("hex");
-}
+import { extractIp, hashIp, isBotUserAgent } from "@/lib/analytics/ip";
 
 /**
  * Checks if the User-Agent is a known bot/crawler.
  */
 function isBot(headers: ReadonlyHeaders): boolean {
-  const ua = headers.get("user-agent") || "";
-
-  return BOT_PATTERN.test(ua);
+  return isBotUserAgent(headers.get("user-agent"));
 }
 
 /**

@@ -2,14 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/lib/mongodb";
 import Estimate from "@/models/Estimate";
+import { stitchVisitorToLead } from "@/lib/analytics/stitch";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+    const visitorId = req.cookies.get("up_vid")?.value;
 
     await dbConnect();
 
-    const estimate = await Estimate.create(body);
+    const estimate = await Estimate.create({ ...body, visitorId });
+
+    if (body?.email) {
+      await stitchVisitorToLead({
+        visitorId,
+        leadId: estimate._id as never,
+        email: String(body.email),
+        path: req.headers.get("referer") || undefined,
+        formName: "project-estimate",
+      });
+    }
 
     return NextResponse.json(
       { success: true, data: estimate },

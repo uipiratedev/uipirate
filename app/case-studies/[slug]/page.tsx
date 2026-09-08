@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
+import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";
 
@@ -41,6 +42,9 @@ export async function generateMetadata({
   const url = `https://uipirate.com/case-studies/${study.slug}`;
   const description = study.seo?.metaDescription || study.excerpt || undefined;
 
+  // Held/unreleased case studies must never be indexable, regardless of CMS SEO.
+  const noIndex = HELD_DRAFT_SLUGS.has(study.slug) || !!study.seo?.noIndex;
+
   return {
     title: study.seo?.metaTitle || `${study.title} | Case Study`,
     description,
@@ -54,7 +58,7 @@ export async function generateMetadata({
         ? [{ url: study.featuredImage, alt: study.title }]
         : undefined,
     },
-    robots: study.seo?.noIndex ? { index: false, follow: false } : undefined,
+    robots: noIndex ? { index: false, follow: false } : undefined,
   };
 }
 

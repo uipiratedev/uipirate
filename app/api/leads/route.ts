@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import dbConnect from "@/lib/mongodb";
+import Lead from "@/models/Lead";
+import { stitchVisitorToLead } from "@/lib/analytics/stitch";
+
+export const runtime = "nodejs";
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -22,42 +28,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const visitorId = req.cookies.get("up_vid")?.value;
+
     // Store in MongoDB if available
-    const mongodbUri = process.env.MONGODB_URI;
-
-    if (mongodbUri) {
+    if (process.env.MONGODB_URI) {
       try {
-        const { default: mongoose } = await import("mongoose");
+        await dbConnect();
 
-        if (mongoose.connection.readyState !== 1) {
-          await mongoose.connect(mongodbUri);
-        }
-
-        // Inline schema — avoids needing a separate model file
-        const LeadSchema = new mongoose.Schema(
-          {
-            name: { type: String, required: true, trim: true },
-            email: {
-              type: String,
-              required: true,
-              trim: true,
-              lowercase: true,
-            },
-            company: { type: String, trim: true },
-            budget: { type: String },
-            projectType: { type: String },
-            message: { type: String, trim: true },
-            source: { type: String, default: "contact-form" },
-            createdAt: { type: Date, default: Date.now },
-          },
-          { timestamps: true },
-        );
-
-        // Use existing model or create a new one
-        const Lead: any =
-          mongoose.models.Lead || mongoose.model("Lead", LeadSchema);
-
-        await Lead.create({
+        const lead = await Lead.create({
           name,
           email,
           company,
@@ -65,17 +43,22 @@ export async function POST(req: NextRequest) {
           projectType,
           message,
           source: "contact-form",
+          visitorId,
+        });
+
+        // Link this person's anonymous visit history to the new lead.
+        await stitchVisitorToLead({
+          visitorId,
+          leadId: lead._id as never,
+          email,
+          path: req.headers.get("referer") || undefined,
+          formName: "contact-form",
         });
       } catch (dbError) {
-        // Log but don't fail — still send the email notification
+        // Log but don't fail — still return success to the visitor.
         console.error("Lead DB save failed:", dbError);
       }
     }
-
-    // Send email notification via a simple fetch to an email service
-    // (Uses environment variable for the notification email)
-    const notificationEmail =
-      process.env.NOTIFICATION_EMAIL || "vishal@uipirate.com";
 
     // Log lead for server-side visibility
     console.log(
