@@ -1,34 +1,27 @@
 import { redirect } from "next/navigation";
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  tenantId: string;
-  plan: "free" | "starter" | "pro" | "enterprise";
-  accountType: "individual" | "organization";
-  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
-  avatar?: string;
-}
+import { getSession, type SessionUser } from "@/lib/auth/session";
 
 /**
- * Get current user from token (Mocked for public reader)
+ * Legacy shim. The real auth now lives in `@/lib/auth/*`. This file is kept
+ * only because `app/[slug]/page.tsx` imports `verifyAuth` to decide whether a
+ * blog view came from a signed-in staff member (those views are not counted).
  */
+export type User = SessionUser;
+
 export async function getCurrentUser(): Promise<User | null> {
-  return null;
+  return getSession();
 }
 
-/**
- * Require authentication - redirect to login if not authenticated
- */
 export async function requireAuth(): Promise<User> {
-  redirect("/login");
+  const user = await getSession();
+
+  if (!user) redirect("/login");
+
+  return user;
 }
 
-/**
- * Verify authentication for API routes
- */
+/** Used by the public blog reader to skip view-tracking for staff. */
 export async function verifyAuth(): Promise<User | null> {
-  return null;
+  return getSession();
 }

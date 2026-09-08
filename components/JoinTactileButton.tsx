@@ -128,8 +128,8 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
     <div
       className={`relative inline-flex items-center justify-center select-none ${className}`}
       style={{
-        width: `${widthPx}px`,
-        maxWidth: "100%",
+        width: "100%",
+        maxWidth: `${widthPx}px`,
         aspectRatio: "392 / 130",
         opacity: disabled ? 0.5 : 1,
         cursor: disabled ? "not-allowed" : "pointer",

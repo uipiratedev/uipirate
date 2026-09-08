@@ -1,5 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+import { LEAD_STATUSES, noteFieldDef, type LeadStatus } from "@/models/Lead";
+import type { ILeadNote } from "@/models/Lead";
+
 export interface IEstimate extends Document {
   name: string;
   email: string;
@@ -11,6 +14,11 @@ export interface IEstimate extends Document {
   budgetRange: string;
   timelineEstimate: string;
   isInvalidCombination: boolean;
+  /** First-party analytics visitor cookie captured at submit time. */
+  visitorId?: string;
+  status: LeadStatus;
+  assignedTo?: mongoose.Types.ObjectId;
+  notes: ILeadNote[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +72,10 @@ const EstimateSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    visitorId: { type: String, index: true },
+    status: { type: String, enum: LEAD_STATUSES, default: "new", index: true },
+    assignedTo: { type: Schema.Types.ObjectId, ref: "User" },
+    notes: [noteFieldDef],
   },
   {
     timestamps: true,

@@ -59,6 +59,12 @@ const sections = [
           "Records user sessions, heatmaps, and interaction patterns to improve user experience. Review Microsoft's Privacy Statement for details.",
         icon: "🎯",
       },
+      {
+        title: "First-Party Analytics (self-hosted)",
+        description:
+          "With your analytics consent, we record page views, clicks, scroll depth, time on page, referrer and coarse location (country/city, derived from your IP without ever storing the IP itself — only a one-way hash). Two first-party cookies (up_vid, up_sid) distinguish visits and sessions. If you submit the contact or estimate form, that visit history is linked to your enquiry so we can follow up in context. Raw events are deleted after 90 days; sessions after 180 days. Withdraw consent any time via the cookie banner to stop collection.",
+        icon: "🧭",
+      },
     ],
   },
   {
@@ -104,6 +110,7 @@ const sections = [
     bullets: [
       "Google Analytics — Analytics & behavior tracking",
       "Microsoft Clarity — Analytics & session recording",
+      "First-party analytics — Self-hosted on our own infrastructure; data is not shared with third parties",
       "Vercel Speed Insights — Performance monitoring",
       "Cloudinary — Image hosting and delivery",
     ],

@@ -10,6 +10,8 @@ import {
   Chip,
 } from "@heroui/react";
 
+import { trackFormSubmit } from "@/lib/analytics/client";
+
 export interface LeadFormData {
   name: string;
   email: string;
@@ -106,6 +108,7 @@ export default function LeadCaptureForm({
       }
 
       setStatus("success");
+      trackFormSubmit(source ? `contact:${source}` : "contact-form");
       onSuccess?.();
     } catch {
       setErrorMsg("Network error. Please try again.");

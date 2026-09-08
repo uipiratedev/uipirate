@@ -18,6 +18,7 @@ import PhoneInput from "react-phone-input-2";
 
 import { CheckIcon } from "@/components/icons";
 import LetsTalkButton from "@/components/LetsTalkButton";
+import { trackFormSubmit } from "@/lib/analytics/client";
 import "react-phone-input-2/lib/style.css";
 
 interface ProjectEstimateProps {
@@ -333,6 +334,7 @@ const ProjectEstimate = ({
   const handleWhatsAppRedirect = async () => {
     setIsSubmitted(true);
     await saveEstimate();
+    trackFormSubmit("project-estimate");
 
     const estimate = getCalculatedEstimate();
     const projectTypesList = selectedProjectTypes.join(", ");

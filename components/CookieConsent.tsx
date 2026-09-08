@@ -68,6 +68,14 @@ const CookieConsent = () => {
     analytics: false,
   });
 
+  // Let same-tab listeners (e.g. the first-party AnalyticsTracker) react
+  // immediately — the native `storage` event only fires in *other* tabs.
+  const broadcastConsentChange = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("cookie-consent-changed"));
+    }
+  }, []);
+
   // Initialize analytics based on preferences
   const initializeAnalytics = useCallback((prefs: CookiePreferences) => {
     if (prefs.analytics) {
@@ -103,6 +111,7 @@ const CookieConsent = () => {
 
         setPreferences(savedPreferences);
         initializeAnalytics(savedPreferences);
+        broadcastConsentChange();
 
         return;
       }
@@ -128,13 +137,14 @@ const CookieConsent = () => {
           JSON.stringify(autoAcceptPreferences),
         );
         initializeAnalytics(autoAcceptPreferences);
+        broadcastConsentChange();
       }
     } catch (error) {
       // If geolocation fails, show banner to be safe (GDPR-compliant by default)
       console.error("Failed to check user location:", error);
       setShowBanner(true);
     }
-  }, [initializeAnalytics]);
+  }, [initializeAnalytics, broadcastConsentChange]);
 
   useEffect(() => {
     checkUserLocation();
@@ -149,9 +159,10 @@ const CookieConsent = () => {
     setPreferences(newPreferences);
     localStorage.setItem("cookie-consent", JSON.stringify(newPreferences));
     initializeAnalytics(newPreferences);
+    broadcastConsentChange();
     setShowBanner(false);
     setShowSettings(false);
-  }, [initializeAnalytics]);
+  }, [initializeAnalytics, broadcastConsentChange]);
 
   const handleRejectAll = useCallback(() => {
     const newPreferences: CookiePreferences = {
@@ -162,16 +173,18 @@ const CookieConsent = () => {
     setPreferences(newPreferences);
     localStorage.setItem("cookie-consent", JSON.stringify(newPreferences));
     initializeAnalytics(newPreferences);
+    broadcastConsentChange();
     setShowBanner(false);
     setShowSettings(false);
-  }, [initializeAnalytics]);
+  }, [initializeAnalytics, broadcastConsentChange]);
 
   const handleSavePreferences = useCallback(() => {
     localStorage.setItem("cookie-consent", JSON.stringify(preferences));
     initializeAnalytics(preferences);
+    broadcastConsentChange();
     setShowBanner(false);
     setShowSettings(false);
-  }, [preferences, initializeAnalytics]);
+  }, [preferences, initializeAnalytics, broadcastConsentChange]);
 
   const handleToggleAnalytics = useCallback(() => {
     setPreferences((prev) => ({

@@ -15,6 +15,7 @@ import {
   fontJetBrainsMono,
 } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import { ConditionalFooter } from "@/components/ConditionalFooter";
@@ -493,6 +494,7 @@ export default function RootLayout({
             </PageLoader>
             <SpeedInsights />
             <Analytics />
+            <AnalyticsTracker />
             <CookieConsent />
             <StickyMobileCTA />
           </div>

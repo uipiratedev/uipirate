@@ -36,6 +36,8 @@ const StickyMobileCTA = () => {
     >
       <a
         className="pointer-events-auto flex items-center justify-center gap-3 w-full py-4 px-6 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold rounded-2xl shadow-lg shadow-[#25D366]/30 transition-all duration-300 active:scale-[0.98]"
+        data-analytics-id="cta-sticky-whatsapp"
+        data-section="Sticky mobile CTA"
         href="https://wa.link/i35lma"
         rel="noreferrer"
         target="_blank"
