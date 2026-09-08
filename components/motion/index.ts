@@ -1,6 +1,7 @@
 export { Reveal } from "./Reveal";
 export { RevealGroup, useRevealGroup } from "./RevealGroup";
 export { ScrollReveal } from "./ScrollReveal";
+export { ScrollExpand } from "./ScrollExpand";
 export { TextReveal } from "./TextReveal";
 export { CountUp } from "./CountUp";
 export { Magnetic } from "./Magnetic";
