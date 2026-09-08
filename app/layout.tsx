@@ -4,7 +4,6 @@ import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
-import { headers } from "next/headers";
 
 import { Providers } from "./providers";
 
@@ -62,8 +61,20 @@ export const metadata: Metadata = {
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
   },
+  // Relative values resolve against `metadataBase` + the current route at build
+  // time, so every page gets a correct self-referential canonical + hreflang set
+  // WITHOUT a runtime `headers()` call (which would force the whole site to be
+  // dynamically rendered and kill <Link> prefetch / fast navigation).
   alternates: {
-    canonical: "https://uipirate.com",
+    canonical: "./",
+    languages: {
+      "en-US": "./",
+      "en-GB": "./",
+      "en-SG": "./",
+      "en-IN": "./",
+      "en-AU": "./",
+      "x-default": "./",
+    },
   },
   icons: {
     icon: "/favicon.ico?v=2",
@@ -90,41 +101,23 @@ export const viewport: Viewport = {
   ],
 };
 
-export default async function RootLayout({
+// NOTE: This component must stay synchronous and free of dynamic APIs
+// (`headers()`, `cookies()`, `searchParams`, `noStore()`, …). Any dynamic API
+// used in the ROOT layout opts every route in the app into dynamic rendering,
+// which disables static prerendering + <Link> prefetch and makes every
+// navigation a full server round-trip (the "click does nothing for 2s" bug).
+//
+// The `cos.` subdomain shell that used to live here was gated on an `x-is-cos`
+// request header that is not set anywhere in this codebase (middleware only sets
+// `x-pathname`), so the branch was dead. Subdomain nav/footer stripping is
+// handled client-side in ConditionalNavbar / ConditionalFooter. If a real COS
+// HTML shell is needed again, put it behind a `(cos)` route group with its own
+// layout, or a middleware rewrite — not a `headers()` call in the root layout.
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const requestHeaders = await headers();
-  const isCos = requestHeaders.get("x-is-cos") === "true";
-  const canonicalUrl = `https://uipirate.com${requestHeaders.get("x-pathname") || "/"}`;
-
-  if (isCos) {
-    return (
-      <html suppressHydrationWarning lang="en">
-        <head>
-          <meta content="width=device-width, initial-scale=1" name="viewport" />
-          <link href="/favicon.ico?v=2" rel="icon" />
-          <title>PirateCOS | UI Pirate</title>
-        </head>
-        <body
-          className={clsx(
-            "min-h-screen font-sans antialiased bg-[#F7F7F6]",
-            fontSans.variable,
-            fontJakarta.variable,
-            fontGeist.variable,
-            fontGeistMono.variable,
-            fontJetBrainsMono.variable,
-          )}
-        >
-          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-            <main className="min-h-screen">{children}</main>
-          </Providers>
-        </body>
-      </html>
-    );
-  }
-
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -373,14 +366,9 @@ export default async function RootLayout({
           type="text/plain"
         />
 
-        {/* Hreflang for international targeting — self-referential per page,
-            since every locale variant serves the same URL/content. */}
-        <link href={canonicalUrl} hrefLang="en-us" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-gb" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-sg" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-in" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-au" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="x-default" rel="alternate" />
+        {/* Hreflang + canonical are emitted per-route by the Metadata API via
+            `metadata.alternates` above (self-referential, resolved statically at
+            build time). Kept out of here so the layout needs no `headers()`. */}
 
         {/* Social Media and Business Profile Links for SEO */}
         <link
