@@ -474,7 +474,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 5: Standard */}
-            <div className="premium-card md:col-span-3 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-3 h-full">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
@@ -482,8 +482,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <TimezoneAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative mb-2 text-left">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Same Hours as Your Team
                   </h3>
@@ -492,20 +491,20 @@ export default function AboutPage() {
                     gaps.
                   </p>
                 </div>
+                <TimezoneAsset />
               </motion.div>
             </div>
 
             {/* Card 6: Wide */}
-            <div className="premium-card md:col-span-3 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-3 h-full">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <ProductsGridAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative mb-2 text-left">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     50+ Products, Not Guesses
                   </h3>
@@ -514,6 +513,7 @@ export default function AboutPage() {
                     solved this type of problem before.
                   </p>
                 </div>
+                <ProductsGridAsset />
               </motion.div>
             </div>
           </div>
@@ -641,7 +641,7 @@ export default function AboutPage() {
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/plan_fuk5ac.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
-                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/desing_tsipbf.svg",
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334941/saasflip_rhxxax.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
               ];
 
@@ -655,7 +655,7 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                 >
                   {/* Step watermark touching top-right */}
-                  <span className="absolute -top-3 md:-top-3 -right-1 text-[72px] md:text-[84px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
+                  <span className="absolute -top-3 md:-top-3 -right-[0.65rem] text-[72px] md:text-[90px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
                     {step.step}
                   </span>
 
