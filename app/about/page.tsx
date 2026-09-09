@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Card, CardBody, Accordion, AccordionItem } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
+
+import FaqsAccordion from "@/components/FaqsAccordion";
 
 import GlassSurface from "@/components/GlassSurface";
 import SectionHeader from "@/components/SectionHeader";
@@ -551,15 +553,20 @@ export default function AboutPage() {
             ].map((item, i) => (
               <motion.div
                 key={item.title}
-                className="bg-white rounded-[20px] p-7 border border-gray-100 shadow-[0_4px_16px_rgb(0,0,0,0.03)] hover:-translate-y-1.5 hover:shadow-[0_8px_24px_rgb(0,0,0,0.08)] transition-all duration-300 h-full flex flex-col"
+                className="bg-white rounded-[24px] p-5 border border-[#E5E7EB] shadow-[0_4px_16px_rgb(0,0,0,0.03)] hover:-translate-y-1.5 hover:shadow-[0_8px_24px_rgb(0,0,0,0.08)] transition-all duration-300 h-full flex flex-col"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 {/* Icon Container - Exact Reference Match (Outer gray pill, inner white pill) */}
-                <div className="w-[74px] h-[50px] bg-[#F3F4F6] rounded-[20px] p-[5px] mb-6 flex-shrink-0">
-                  <div className="w-full h-full bg-white rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] flex items-center justify-center">
+                <div className="w-[74px] h-[50px] bg-[#F3F4F6] rounded-[12px] p-[5px] mb-6 flex-shrink-0">
+                  <div
+                    className="w-full h-full bg-white rounded-[8px] flex items-center justify-center shadow-[ 0 1px 0 0 rgba(255, 255, 255, 0.10) inset, 0 3px 4px 0 rgba(0, 0, 0, 0.03), 0 1px 0 0 #FFF inset]"
+                    style={{
+                      boxShadow: " 0 1px 0 0 rgba(255, 255, 255, 0.10) inset, 0 3px 4px 0 rgba(0, 0, 0, 0.03), 0 1px 0 0 #FFF inset",
+                    }}
+                  >
                     {/* 3D Glossy Orange Icon */}
                     <div className="relative flex items-center justify-center">
                       {/* Blurred Drop Shadow */}
@@ -630,11 +637,11 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {PROCESS_STEPS.map((step, i) => {
               const icons = [
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/listen_oravew.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
-                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/plan_fuk5ac.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
-                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
-                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/desing_tsipbf.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
               ];
 
@@ -772,38 +779,7 @@ export default function AboutPage() {
                 Everything you need to know
               </SectionHeader>
             </Reveal>
-            <Accordion
-              className="mb-0 p-0"
-              defaultExpandedKeys={["0"]}
-              selectionMode="multiple"
-              variant="splitted"
-            >
-              {ABOUT_FAQS.map((faq, index) => (
-                <AccordionItem
-                  key={String(index)}
-                  aria-label={faq.question}
-                  className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
-                  indicator={({ isOpen }) => (
-                    <img
-                      alt="icon"
-                      className={`transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
-                    />
-                  )}
-                  title={
-                    <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
-                      {faq.question}
-                    </p>
-                  }
-                >
-                  <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
-                    <p className="text-[15px] text-gray-600 leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <FaqsAccordion items={ABOUT_FAQS} />
           </div>
         </section>
 
@@ -856,7 +832,7 @@ export default function AboutPage() {
             </CardBody>
           </Card>
         </section>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
