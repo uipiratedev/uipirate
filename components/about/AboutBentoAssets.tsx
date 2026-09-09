@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { CLIENT_LOGOS } from "@/data/clientLogos";
+import { WORLD_LAND_COORDS } from "@/data/worldLandPoints";
 
 // Card 1: Strategy Before Pixels (Tall)
 const STRATEGY_NODES = [
@@ -334,53 +335,307 @@ export const DesignToCodeAsset = () => {
   );
 };
 
-// Card 5: Same Hours as Your Team (Standard) - Globe Background
+interface GlobeLocation {
+  id: "uk" | "india" | "usa";
+  name: string;
+  flag: string;
+  lat: number;
+  lon: number;
+  timezone: string;
+  time: string;
+  utc: string;
+}
+
+const GLOBE_LOCATIONS: GlobeLocation[] = [
+  {
+    id: "uk",
+    name: "UK",
+    flag: "🇬🇧",
+    lat: 54,
+    lon: -2,
+    timezone: "GMT",
+    time: "5:00 PM",
+    utc: "UTC+0",
+  },
+  {
+    id: "india",
+    name: "India",
+    flag: "🇮🇳",
+    lat: 22,
+    lon: 78,
+    timezone: "IST",
+    time: "10:30 PM",
+    utc: "UTC+5:30",
+  },
+  {
+    id: "usa",
+    name: "USA",
+    flag: "🇺🇸",
+    lat: 38,
+    lon: -97,
+    timezone: "EST",
+    time: "12:00 PM",
+    utc: "UTC-5",
+  },
+];
+
+// Card 5: Same Hours as Your Team - Interactive 3D Globe with Location Navigation
 export const TimezoneAsset = () => {
+  const [selected, setSelected] = useState<"uk" | "india" | "usa">("usa");
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const pinRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  // Target longitude in radians based on selected country
+  const selectedLoc = GLOBE_LOCATIONS.find((l) => l.id === selected) || GLOBE_LOCATIONS[2];
+
+  // Store rotation states
+  const rotationRef = useRef({
+    currentLon: (-selectedLoc.lon * Math.PI) / 180,
+    targetLon: (-selectedLoc.lon * Math.PI) / 180,
+    tilt: 0.32, // ~18 degrees tilt
+    isDragging: false,
+    lastMouseX: 0,
+  });
+
+  // When selection changes, update target angle
+  useEffect(() => {
+    // Target rotation to bring the location to front (center)
+    const targetRad = (-selectedLoc.lon * Math.PI) / 180;
+    rotationRef.current.targetLon = targetRad;
+  }, [selectedLoc]);
+
+  // Main animation render loop
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animId: number;
+
+    const render = () => {
+      const rot = rotationRef.current;
+
+      // Smooth lerp to target longitude if not dragging
+      if (!rot.isDragging) {
+        let diff = rot.targetLon - rot.currentLon;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        rot.currentLon += diff * 0.08;
+      }
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const cx = width / 2;
+      const cy = height / 2;
+      const radius = width * 0.44;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw authentic world map land dots
+      const totalPoints = WORLD_LAND_COORDS.length / 2;
+      for (let i = 0; i < totalPoints; i++) {
+        const lat = WORLD_LAND_COORDS[i * 2];
+        const lon = WORLD_LAND_COORDS[i * 2 + 1];
+
+        const radLat = (lat * Math.PI) / 180;
+        const radLon = (lon * Math.PI) / 180;
+        const theta = radLon + rot.currentLon;
+
+        // 3D coordinates on unit sphere
+        const x = Math.cos(radLat) * Math.sin(theta);
+        const y = -Math.sin(radLat);
+        const z = Math.cos(radLat) * Math.cos(theta);
+
+        // Tilt rotation along X axis
+        const yPrime = y * Math.cos(rot.tilt) - z * Math.sin(rot.tilt);
+        const zPrime = y * Math.sin(rot.tilt) + z * Math.cos(rot.tilt);
+
+        // Only draw front-facing points
+        if (zPrime > 0.02) {
+          const px = cx + x * radius;
+          const py = cy + yPrime * radius;
+          const size = 1.0 + zPrime * 0.9;
+          const alpha = Math.min(1, 0.25 + zPrime * 0.75);
+
+          ctx.beginPath();
+          ctx.arc(px, py, Math.max(0.65, size), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+          ctx.fill();
+        }
+      }
+
+      // Update positions of HTML location pins directly on the DOM
+      for (const loc of GLOBE_LOCATIONS) {
+        const pinEl = pinRefs.current[loc.id];
+        if (!pinEl) continue;
+
+        const radLat = (loc.lat * Math.PI) / 180;
+        const radLon = (loc.lon * Math.PI) / 180;
+        const theta = radLon + rot.currentLon;
+
+        const x = Math.cos(radLat) * Math.sin(theta);
+        const y = -Math.sin(radLat);
+        const z = Math.cos(radLat) * Math.cos(theta);
+
+        const yPrime = y * Math.cos(rot.tilt) - z * Math.sin(rot.tilt);
+        const zPrime = y * Math.sin(rot.tilt) + z * Math.cos(rot.tilt);
+
+        if (zPrime > 0.05) {
+          // Convert internal canvas pixels to CSS client coordinates with scale ratio
+          const scaleRatio = (canvas.clientWidth || 220) / canvas.width;
+          const clientPx = (cx + x * radius) * scaleRatio;
+          const clientPy = (cy + yPrime * radius) * scaleRatio;
+
+          pinEl.style.display = "block";
+          pinEl.style.transform = `translate3d(${clientPx}px, ${clientPy}px, 0)`;
+          pinEl.style.opacity = `${Math.min(1, (zPrime - 0.05) * 3)}`;
+        } else {
+          pinEl.style.display = "none";
+          pinEl.style.opacity = "0";
+        }
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
+  // Resize canvas for retina displays
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const size = canvas.clientWidth || 240;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+  }, []);
+
+  // Drag handlers for tactile manual rotation
+  const handleMouseDown = (e: React.MouseEvent) => {
+    rotationRef.current.isDragging = true;
+    rotationRef.current.lastMouseX = e.clientX;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!rotationRef.current.isDragging) return;
+    const delta = e.clientX - rotationRef.current.lastMouseX;
+    rotationRef.current.lastMouseX = e.clientX;
+    rotationRef.current.currentLon += delta * 0.008;
+    rotationRef.current.targetLon = rotationRef.current.currentLon;
+  };
+
+  const handleMouseUp = () => {
+    rotationRef.current.isDragging = false;
+  };
+
   return (
-    <div className="flex-1 rounded-xl mb-6 bg-gradient-to-br from-[#0B0F19] to-[#1A1F30] overflow-hidden relative min-h-[100px] flex items-center justify-center p-4">
-      {/* Abstract Map/Globe Graphic in Background */}
-      <div className="absolute inset-0 opacity-20 flex items-center justify-center overflow-hidden pointer-events-none">
-        <svg viewBox="0 0 200 100" className="w-[150%] h-[150%] animate-[spin_60s_linear_infinite]">
-          <circle cx="100" cy="50" r="45" fill="none" stroke="#fff" strokeWidth="0.5" strokeDasharray="2 2" />
-          <circle cx="100" cy="50" r="30" fill="none" stroke="#fff" strokeWidth="0.5" strokeDasharray="2 2" />
-          <path d="M55 50 Q100 20 145 50 Q100 80 55 50" fill="none" stroke="#fff" strokeWidth="0.5" />
-          <path d="M80 15 Q100 50 80 85" fill="none" stroke="#fff" strokeWidth="0.5" />
-          <path d="M120 15 Q100 50 120 85" fill="none" stroke="#fff" strokeWidth="0.5" />
-        </svg>
+    <div className="flex-1 w-full -mx-6 -mb-6 relative flex items-end justify-between pr-6 select-none pt-6 mt-1">
+      {/* Left Column: 3D Dotted Dark Globe Sphere */}
+      <div
+        className="relative w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] -ml-6 sm:-ml-8 -mb-6 sm:-mb-8 flex-shrink-0 flex items-center justify-center self-end"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
+        {/* Globe 3D Sphere with Dark Atmosphere & Vignette */}
+        <div className="w-full h-full rounded-full overflow-hidden relative shadow-[0_16px_45px_rgba(0,0,0,0.4),_0_0_60px_rgba(0,0,0,0.25)] border border-white/10 bg-[radial-gradient(circle_at_35%_28%,#222733_0%,#0d1016_60%,#030406_100%)]">
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full block cursor-grab active:cursor-grabbing"
+            style={{ width: "100%", height: "100%" }}
+          />
+
+          {/* Atmospheric Inner Shadow & Rim Vignette */}
+          <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_24px_rgba(255,255,255,0.08),inset_-10px_-10px_35px_rgba(0,0,0,0.85)]" />
+        </div>
+
+        {/* Floating Location Markers on Globe */}
+        {GLOBE_LOCATIONS.map((loc) => {
+          const isActive = selected === loc.id;
+          return (
+            <div
+              key={loc.id}
+              ref={(el) => {
+                pinRefs.current[loc.id] = el;
+              }}
+              onClick={() => setSelected(loc.id)}
+              className="absolute left-0 top-0 pointer-events-auto cursor-pointer z-30"
+              style={{
+                display: "none",
+                transform: "translate3d(0, 0, 0)",
+                willChange: "transform, opacity",
+              }}
+            >
+              {/* Pinpoint Dot Centered on Exact Coordinate */}
+              <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+                <div
+                  className={`w-2 h-2 rounded-full ${isActive ? "bg-white shadow-[0_0_8px_#ffffff]" : "bg-white/70"
+                    }`}
+                />
+                {isActive && (
+                  <div className="absolute w-4 h-4 rounded-full border border-white/60 animate-ping pointer-events-none" />
+                )}
+              </div>
+
+              {/* Flag Badge Connected Directly Above Pinpoint */}
+              <div
+                className={`absolute bottom-2 left-0 -translate-x-1/2 flex flex-col items-center transition-all duration-300 pointer-events-auto ${isActive ? "opacity-100 scale-100" : "opacity-40 hover:opacity-90 scale-90"
+                  }`}
+              >
+                <div className="bg-[#1E222B] text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-lg border border-white/20 flex items-center gap-1 whitespace-nowrap">
+                  <span>{loc.flag}</span>
+                  <span>{loc.name}</span>
+                </div>
+                <div className="w-0 h-0 border-l-[3.5px] border-l-transparent border-r-[3.5px] border-r-transparent border-t-[4px] border-t-[#1E222B]" />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="relative z-10 flex gap-4 w-full justify-center">
-        {/* PST Card */}
-        <motion.div
-          className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-2.5 shadow-xl text-center w-24 relative overflow-hidden"
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <div className="absolute top-0 right-0 w-8 h-8 bg-brand-orange/30 rounded-full blur-xl" />
-          <div className="flex items-center justify-center gap-1.5 mb-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
-            <div className="text-[10px] text-gray-300 font-semibold tracking-wider">PST</div>
-          </div>
-          <div className="text-sm font-bold text-white font-jetbrains-mono">9:00 AM</div>
-        </motion.div>
+      {/* Right Column: Interactive Location Pills & Remote Badge */}
+      <div className="flex flex-col items-end justify-between h-full z-20 pt-2 pb-6 pl-2 ml-auto self-stretch">
+        {/* Country Selector Buttons */}
+        <div className="flex flex-col gap-2 my-auto">
+          {GLOBE_LOCATIONS.map((loc) => {
+            const isActive = selected === loc.id;
+            return (
+              <button
+                key={loc.id}
+                onClick={() => setSelected(loc.id)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between gap-3 transition-all duration-300 shadow-sm min-w-[96px] sm:min-w-[106px] ${isActive
+                  ? "bg-white text-gray-900 border-2 border-[#1E60FF] shadow-md scale-105"
+                  : "bg-[#14161C] text-gray-200 border border-white/10 hover:bg-[#20242E] hover:text-white"
+                  }`}
+              >
+                <span>{loc.name}</span>
+                <span className="text-sm leading-none">{loc.flag}</span>
+              </button>
+            );
+          })}
+        </div>
 
-        {/* EST Card */}
-        <motion.div
-          className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-2.5 shadow-xl text-center w-24 relative overflow-hidden"
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <div className="absolute top-0 right-0 w-8 h-8 bg-blue-400/30 rounded-full blur-xl" />
-          <div className="flex items-center justify-center gap-1.5 mb-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            <div className="text-[10px] text-gray-300 font-semibold tracking-wider">EST</div>
+        {/* Remote Info Tag (Bottom-Right) */}
+        <div className="flex items-center gap-1.5 text-right mt-3">
+          <svg className="w-3.5 h-3.5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z" />
+          </svg>
+          <div className="flex flex-col">
+            <span className="text-[8px] uppercase tracking-wider text-gray-400 font-bold leading-tight">
+              REMOTE
+            </span>
+            <span className="text-[11px] font-bold text-gray-800 tracking-tight leading-tight">
+              {selectedLoc.name} · {selectedLoc.time}
+            </span>
           </div>
-          <div className="text-sm font-bold text-white font-jetbrains-mono">12:00 PM</div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -409,9 +664,9 @@ export const ProductsGridAsset = () => {
   ];
 
   return (
-    <div className="flex-1 flex items-end justify-center relative -mx-6 -mb-6 overflow-hidden pt-1 min-h-[170px]">
+    <div className="flex-1 w-full flex items-end justify-center relative -mx-6 -mb-6 overflow-hidden pt-8 mt-1 min-h-[180px]">
       {/* Concentric Circles with Gradients and Shadows - Rotating */}
-      <div className="relative flex items-center justify-center translate-y-44 scale-[0.85] origin-bottom">
+      <div className="absolute -bottom-36 sm:-bottom-36 flex items-center justify-center scale-[0.72] sm:scale-[0.75] origin-bottom pointer-events-none">
         {/* Outer Circle - Largest - Slow rotation */}
         <div className="w-96 h-96 rounded-full absolute bg-gradient-to-br from-orange-50/30 via-amber-50/20 to-yellow-50/10 shadow-[0_0_40px_rgba(255,91,4,0.08)] animate-[spin_20s_linear_infinite]" />
 
