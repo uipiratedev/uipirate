@@ -938,3 +938,165 @@ This is the more actionable finding. Across both the general dev sample (v4) and
 | A4 | SaaS & AI Development page, `whatYouGet` cards | "Full-Stack Architecture," "AI & LLM Integration," "Cloud Deployment & Scaling" cards should name the actual providers (AWS, GCP, Azure, Node.js, Python) rather than staying generic — matches confirmed real stack and live search terms | 🟡 Consider |
 
 *Cross-reference: this section extends `05-services-pages.md` v4 and has a matching About-page note appended to `04-about-page.md` v5.*
+
+---
+---
+
+# v6 — Implementation Reconciliation + Final Copy (Services Pages)
+**Audited:** 2026-09-09
+**Method:** v4/v5 market-demand findings diffed against the **current** `data/sericesDetailsList.json` (BOM-encoded; 4 in-scope slugs: `UX-UI-Design`, `SaaS-&-AI-Development`, `Landing-Pages-&-Business-Websites`, `UX-Audits-&-Consultation`). Some v1–v3 correctness items are already fixed in the data; this section states only what is still open and gives verbatim copy to paste. It supersedes the open recommendations in v4 (D1–D4) and v5 (Finding 1, Finding 2, A1–A4) with a checked, final version.
+
+## Decisions carried in from the user (2026-09-09)
+
+- **`/services` hub page (X2 / NC8 / v4 D2's "entry card") — WON'T DO, intentional.** The site deliberately has no services hub; service pages are reached from the nav dropdown and cross-links only. Close X2 and NC8 as *won't-fix by design*. Any earlier text implying the hub is required is void.
+- **No `.NET`/`C#`/`ASP.NET` language anywhere** (v5 Finding 1). Angular stays listed as-is. Azure is in scope only as a cloud/deploy target.
+- Real backend stack to reference where providers are named: **Node.js, Python, AWS, GCP, Azure, AI agents / LLM APIs**.
+
+## Already fixed in the data since v1–v3 (no action — recorded so they're not re-done)
+
+| v1–v3 item | Current state in `data/sericesDetailsList.json` |
+|---|---|
+| UX Audits hero was wrong-service copy | ✅ Fixed — hero is now "Find What's Blocking Growth, / Before You Build More" with a correct description |
+| UX Audits `whatYouGet` cards | ✅ Fixed — Heuristic UX Audit Report / Drop-Off & Friction Insights / Flow & Interaction Review / Walkthrough Video |
+| Landing Pages — Framer/Webflow visibility (v4 D4) | ✅ Already visible — `youWillGet.rightBadges` includes "Webflow or Framer setup"; `streamlinedProcess` names CMS/frameworks. **No change needed.** |
+| SaaS & AI Dev copy strength (v4 rank 3) | ✅ Hero + `whyThisMatters` already strong — only additive changes below |
+
+## STILL OPEN — apply per page
+
+---
+
+### Page 1 — UX Audits & Consultation (`UX-Audits-&-Consultation`)  🔴 highest leverage (highest demand + still-broken content)
+
+Three leftover wrong-service strings from the deleted 3D / Design-System service are still in this slug's `data`. Fix all three, plus one dedupe, plus two additive market items.
+
+**1a. `whatYouGet.heading` — deliverable-first + ungrammatical 🟠**
+- Current: `"What All Will you get in return"`
+- Change to: `"What You Get From a UX Audit"`
+
+**1b. `whyThisMatters.heading` — WRONG (references 3D) 🔴**
+- Current: `"Why Most 3D On Websites Fails "`  / `heading2: "(And How We Do It Right)"`
+- Change to: `"Why Growth Stalls After Launch"` / `heading2: "(And What an Audit Uncovers)"`
+- The 5 cards underneath (`Unclear First Steps`, `Too Many Decisions`, `Features Without Priority`, `Demo vs. Daily Use Gap`, `Silent Churn`) are on-topic and correct — **keep them as-is.**
+
+**1c. `streamlinedProcess` — WRONG (it's a website-build process under a "Design System Roadmap" heading) 🔴**
+- Current `heading`: `"Design System Roadmap"`; two workflow groups both badged `"Design Workflow"` with steps about CMS setup, React/Next.js, SEO, domain connection, deployment — none of which is an audit.
+- Replace the whole `streamlinedProcess` block with:
+
+```json
+"streamlinedProcess": {
+  "heading": "How a UX Audit Runs",
+  "badge": "Streamlined Process",
+  "workflow": [
+    {
+      "badge": "Review Workflow",
+      "card": [
+        { "heading": "Kickoff & Context", "description": "A short call to understand your product, target users, key conversion goals, and the metric you're worried about.", "gradientId": 1 },
+        { "heading": "Heuristic & Flow Review", "description": "We work through core journeys screen by screen against proven UX heuristics, noting friction, dead ends, and trust gaps.", "gradientId": 2 },
+        { "heading": "Prioritised Findings", "description": "Every issue is scored by impact and effort, so you know what to fix first — not just a list of everything wrong.", "gradientId": 3 }
+      ]
+    },
+    {
+      "badge": "Handover Workflow",
+      "card": [
+        { "heading": "Audit Report", "description": "An annotated report with each finding, why it matters, and a concrete recommendation you can hand to design or dev.", "gradientId": 1 },
+        { "heading": "Walkthrough Call or Video", "description": "We talk through the findings and priorities so the reasoning is clear, not just the conclusions.", "gradientId": 2 },
+        { "heading": "Action Roadmap", "description": "A sequenced fix list you can execute in-house or bring back to us for UX execution.", "gradientId": 3 }
+      ]
+    }
+  ]
+}
+```
+
+**1d. `youWillGet.rightBadges` — duplicate label 🟡**
+- `"Prioritized Suggestions"` appears twice (rotation -10 and -6). Change the second one to: `"Impact vs. Effort Scoring"`.
+
+**1e. ADD — name AI-tool-built prototypes as an audit input (v5 A3) 🟡**
+- In `whoThisIsFor.card`, the second card heading is lowercase (`"anyone looking to upgrade their product experience & conversions"`). Replace that card with:
+
+```json
+{
+  "heading": "Teams With an AI-Built Prototype",
+  "description": "You shipped something fast with Lovable, Bolt, v0, or Cursor and need a professional read on what's usable, what's fragile, and what to fix before you invest further.",
+  "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832688/anyone_l09c81.svg"
+}
+```
+- Also Title-case the first card heading: `"Founders or startups who are just starting out"` → `"Founders Just Getting Started"` (keep its description).
+
+**1f. ADD — scope / turnaround signal (v4 D2, closes X8 for this page) 🟠**
+- Append to the hero `description` (after "what to do next."):
+  > " Most audits run 1–2 weeks."
+- This is the only page where the small-fast-cheap buyer lands; the timeline signal is what that buyer scans for. (Price band omitted deliberately until the smallest audit tier is fixed — add `"from $X"` when it is.)
+
+---
+
+### Page 2 — SaaS & AI Development (`SaaS-&-AI-Development`)  🔴 add the AI-code card
+
+**2a. ADD a 5th `whatYouGet` card — "AI-Generated Code, Production-Ready" (v5 Finding 2 / A1) 🔴**
+Highest-intent unaddressed keyword in both scans; the underlying skill (full-stack engineering) is already the service. Insert as the last card in `whatYouGet.card`:
+
+```json
+{
+  "heading": "AI-Generated Code, Production-Ready",
+  "description": "Built something fast with Lovable, Bolt, Replit, or Claude Code? We take it from prototype to a secure, scalable, production-grade product.",
+  "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
+}
+```
+*(The `whatYouGet` heading render couples to animations per X4 — verify a 5th card doesn't fall off the animation map in `screens/serviceDetails/whatYouGetAnimations/index.tsx`; if it does, swap this card in for the weakest current one, "API & Third-Party Integrations", rather than appending.)*
+
+**2b. `whyThisMatters` — extend "Fragile Foundations" to name AI-tool output (v5 Finding 2) 🟡**
+- Current card 1 `description`: `"Why does adding one feature break three others?"`
+- Current `QuickWins[0]`: `"Because the architecture wasn't built to extend. We design data models and services that absorb change instead of fighting it."`
+- Change `QuickWins[0]` to: `"Because the architecture — often scaffolded fast by an AI tool — wasn't built to extend. We re-lay the data models and services so change is absorbed, not fought."`
+
+**2c. Name real providers in the generic cards (v5 A4) 🟡**
+- `whatYouGet` card "Full-Stack Architecture" desc → `"Scalable backend and database architecture on Node.js or Python, built to handle real growth"`
+- `whatYouGet` card "Cloud Deployment & Scaling" desc → `"Production deployment on AWS, GCP, or Azure — CI/CD, monitoring, and infrastructure that scales with usage"`
+- `youWillGet.leftBadges` "AI/LLM Integration" and "Cloud Deployment & CI/CD" are fine as-is; optionally add one right badge: `{ "icon": "🤖", "text": "AI Agents / LLM APIs", "color": "#E8E8FFE5", "rotation": 4 }`.
+
+---
+
+### Page 3 — UX/UI Design (`UX-UI-Design`)  🟡 name the redesign use case
+
+**3a. ADD "redesign an existing product" as an explicit deliverable (v4 D3) 🟡**
+Most SaaS UI/UX buyers have a live product to improve, not a blank page — but every `whatYouGet` card and the hero lean "idea → MVP".
+- Replace `whatYouGet` card 3, currently:
+  > `"heading": "Idea to MVP"`, `"description": "Product strategy, Product thinking, Competitive analysis"`
+  with:
+  ```json
+  {
+    "heading": "New Build or Redesign",
+    "description": "Whether you're going idea-to-MVP or modernising a live SaaS product that's outgrown its interface — product strategy, IA, and competitive analysis included.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
+  }
+  ```
+  *(This also fixes the Material "sentences not noun-lists" flag on the old "Idea to MVP" card carried from v1.)*
+
+**3b. Naming consistency (X1 / X5 / NC7 — still open) 🟠**
+- `hero.badge` is `"SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT"`; `recommendedNextSteps` on other pages links this slug as both `"UX/UI Design"` and `"UX/UI & Front End Development"`. Pick **"UX/UI Design"** as the one public name and use it in the badge and every cross-link `title`. Not a market-demand finding — but v4 rank 2 notes this crowded lane makes an inconsistent name a real cost, so it's re-prioritised 🟠.
+
+---
+
+### Page 4 — Landing Pages & Business Websites (`Landing-Pages-&-Business-Websites`)  ✅ no change
+
+v4 D4 (Framer/Webflow must be visible) is already satisfied — `youWillGet.rightBadges` has "Webflow or Framer setup" and the process names CMS/frameworks. "Conversion", "credibility", "signups/demos/inquiries" language is already throughout. **Nothing to change from the market findings.** (Any open v1–v3 correctness items for this page are unaffected and tracked in the checklist.)
+
+---
+
+## Priority additions to the master table (supersedes v5's provisional A1–A4)
+
+| # | Page | Change | Priority | Source |
+|---|---|---|---|---|
+| V6-1 | UX Audits | Fix `whyThisMatters` heading (3D → growth-stall) | 🔴 | 1b |
+| V6-2 | UX Audits | Replace `streamlinedProcess` (website-build → audit flow) | 🔴 | 1c |
+| V6-3 | UX Audits | `whatYouGet` heading grammar | 🟠 | 1a |
+| V6-4 | UX Audits | Dedupe `rightBadges` label | 🟡 | 1d |
+| V6-5 | UX Audits | Add "AI-Built Prototype" audience card + Title-case headings | 🟡 | 1e |
+| V6-6 | UX Audits | Add "Most audits run 1–2 weeks" scope signal to hero | 🟠 | 1f |
+| V6-7 | SaaS & AI Dev | Add "AI-Generated Code, Production-Ready" `whatYouGet` card | 🔴 | 2a |
+| V6-8 | SaaS & AI Dev | Extend "Fragile Foundations" copy to name AI-tool scaffolding | 🟡 | 2b |
+| V6-9 | SaaS & AI Dev | Name Node.js/Python/AWS/GCP/Azure in generic cards | 🟡 | 2c |
+| V6-10 | UX/UI Design | Replace "Idea to MVP" card with "New Build or Redesign" | 🟡 | 3a |
+| V6-11 | UX/UI Design | Standardise the service name to "UX/UI Design" everywhere | 🟠 | 3b |
+| V6-12 | Cross-cutting | Close X2 / NC8 (`/services` hub) as intentional won't-do | ✅ | user decision |
+
+*Cross-reference: `04-about-page.md` v6 carries the matching About-page copy (backend/cloud stack row, AI + "AI prototype" hero mention, low-commitment CTA line). Checklist: `05-services-pages-checklist.md`.*

@@ -1134,3 +1134,74 @@ The live Angular job market is overwhelmingly an **enterprise .NET/C#/Azure buye
 Full evidence and recommended service-page copy is in `05-services-pages.md` v5, Finding 2 — this is the higher-leverage location for the fix. The About-page-specific note: this buyer situation ("I built something fast with an AI tool and need it taken to production") is *functionally identical* to the page's own core promise — the H1 "We Turn Ideas Into Shipped Products," differentiation card 04 "Design Through to Code" / "Wireframes to React, Angular, and Next.js. One team, no hand-offs," and card 06 "50+ Products, Not Guesses." None of these currently name AI-generated code or vibe-coded prototypes as a starting point, even though the promise already covers it. Adding one phrase to one of the existing differentiation cards (no new card needed, no section restructure) would let this page catch a real, currently-unaddressed search intent without touching anything v1–v4 already validated as strong.
 
 *Cross-reference: `05-services-pages.md` v5 carries the full job-title evidence table, budget data, and the primary services-page recommendations (adding a `whatYouGet` card to SaaS & AI Development, and an audit-page mention of AI-tool-built prototypes).*
+
+---
+---
+
+# v6 — Implementation Reconciliation + Final Copy (About Page)
+**Audited:** 2026-09-09
+**Method:** v4/v5 recommendations diffed against the **current** source (`app/about/page.tsx`, `app/about/layout.tsx`) rather than the code state the earlier versions were written against. Several v4/v5 items are already shipped; this section states only what is *still* open, with verbatim copy to apply. Nothing here conflicts with v1–v5 — it supersedes the open recommendations in v4 AD1/AD2 and v4 NC-D1/NC-D2 with a checked, final version.
+
+## Already done in code (no action — recorded so v4/v5 are not re-implemented)
+
+| v4/v5 item | Current state in `app/about/page.tsx` |
+|---|---|
+| Bento card rename (Built to Convert / Design Through to Code / 50+ Products, Not Guesses) | ✅ Live — cards already carry the NC2 titles and AI is already named in card 06 |
+| "Design Through to Code" names the stack | ✅ Live — "Wireframes to React, Angular, and Next.js. One team, no hand-offs." |
+| Industries list trimmed to 5, includes "AI Products & Platforms" | ✅ Live (`industries` array) |
+| Schema `description` claims Node.js + Python full-stack (NF8) | ✅ Still in JSON-LD — but see AD1 below, the visible stack now also needs the backend row |
+| `technologies` array already contains `Node.js` and `Python` entries | ⚠️ Present in the array **but the logo files `/assets/logos/nodejs.svg` and `/assets/logos/python.svg` do not exist** — these two chips currently render broken images. Fix is part of AD1. |
+
+## Still open — apply these
+
+### AD1 (final). Technology Stack: add the real backend/cloud row + fix the two broken logo chips 🟠
+**File:** `app/about/page.tsx` — `technologies` array (currently L36–47) and the Technology Stack render block (currently L666–692).
+
+**Problem:** The visible list is front-end only in practice (`Angular, React, Next.js, Node.js, Python, TypeScript, Tailwind CSS, Framer, Figma, GSAP`), and the two backend entries that *are* in the array (`Node.js`, `Python`) point at logo files that don't exist in `public/assets/logos/`, so they render broken. Meanwhile the JSON-LD and the confirmed real stack (user decision 2026-09-09) include cloud + AI-agent capability that appears **nowhere** visible. Live buyer search terms from the v4/v5 scans repeatedly name AWS, GCP, Azure, Python, Node.js, and "AI agents".
+
+**Do:**
+1. Add these logo assets to `public/assets/logos/`: `nodejs.svg`, `python.svg`, `aws.svg`, `gcp.svg`, `azure.svg`, `ai-agents.svg` (or a generic "LLM / AI Agents" mark). Until the SVGs exist, ship the new items as **text-only chips** (no `<img>`) rather than broken images.
+2. Final `technologies` list (front-end first, backend/cloud second — order matters for scanning):
+
+   ```
+   Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP,
+   Node.js, Python, AWS, GCP, Azure, AI Agents / LLM APIs
+   ```
+3. Optionally split the render into two labelled rows — "Design & Front-End" and "Back-End, Cloud & AI" — using the same chip component. Not required; a single wrapped flex row is acceptable.
+4. **Do not** add `.NET`, `C#`, or `ASP.NET` anywhere. Angular stays exactly as listed — no extra emphasis, no pairing with enterprise-.NET language. (User decision: the .NET/C# Angular buyer is out of scope; Azure is in scope only as a deploy target.)
+
+**Also update** `knowsAbout[]` in the Organization JSON-LD (currently L135–149) to add: `"Cloud Deployment"`, `"AWS"`, `"Node.js Development"`, `"Python Development"`, `"AI Agent Development"`. Keep existing entries.
+
+### AD2 (final). Name AI product work + a low-commitment entry point in visible prose 🟠
+Three small copy edits, no new sections, no restructure.
+
+**1. Hero subheadline** — **File:** `app/about/page.tsx` (currently L295–300). AI is a top buyer search term but never appears above the bento grid.
+
+- Current:
+  > We are a product design and development studio. We help SaaS founders and enterprise teams think through the product, design for real users, and ship production-ready code. No hand-offs, no gaps.
+- Change to:
+  > We are a product design and development studio. We help SaaS founders, enterprise teams, and AI product teams think through the product, design for real users, and ship production-ready code — whether you're starting from a blank page or a prototype built with an AI tool.
+
+  *(If the second clause makes the sentence too long in layout, drop it here and instead apply it to card 04 — see edit 2.)*
+
+**2. Bento card 04 "Design Through to Code"** — **File:** `app/about/page.tsx` (currently L433–439). Optional, use if the hero clause is cut.
+
+- Current desc: `Wireframes to React, Angular, and Next.js. One team, no hand-offs.`
+- Change to: `Wireframes — or an AI-generated prototype — to production React, Angular, and Next.js. One team, no hand-offs.`
+
+**3. CTA section subheadline** — **File:** `app/about/page.tsx` (currently L784–787). Nothing on the page tells the small-first-project buyer they're welcome; the CTA only frames a full build.
+
+- Current:
+  > Book a free 15-minute call. Tell us your vision — we'll bring it to life.
+- Change to:
+  > Book a free 15-minute call. Whether it's a quick UX audit or a full product build, tell us where you are — we'll tell you the fastest path forward.
+
+### AD3. SEO metadata — minor keyword top-up 🟡
+**File:** `app/about/layout.tsx`. The `keywords` string already has `AI product design agency` and `hire Next.js agency`. Add, comma-separated, to the end: `AI SaaS development, Node.js Python backend, AWS GCP Azure deployment, take AI prototype to production`. No change to `title`, `description`, OG, or Twitter — those are settled in v3 (checklist §11).
+
+## Explicitly NOT doing
+- **No `/services` hub page** and no new "start small" section on About — the low-commitment signal is handled by the one CTA line in AD2 edit 3. (User decision 2026-09-09: the missing `/services` hub in `05-services-pages.md` X2/NC8 is intentional and closed as won't-do.)
+- No change to the team section, stats strip, client grid, process, or FAQ — untouched by the market-demand findings.
+- No `.NET`/`C#` language anywhere (AD1).
+
+*Cross-reference: `05-services-pages.md` v6 carries the matching final copy for the four service pages and closes X2/NC8 as intentional-won't-do.*

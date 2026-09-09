@@ -294,9 +294,10 @@ export default function AboutPage() {
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
               We are a product design and development studio. We help SaaS
-              founders and enterprise teams think through the product, design
-              for real users, and ship production-ready code. No hand-offs, no
-              gaps.
+              founders, enterprise teams, and AI product teams think through the
+              product, design for real users, and ship production-ready code —
+              whether you&apos;re starting from a blank page or a prototype
+              built with an AI tool.
             </p>
 
             {/* US Market Badge */}
