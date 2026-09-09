@@ -351,9 +351,9 @@ export default function AboutPage() {
           </Reveal>
 
           {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
             {/* Card 1: Tall */}
-            <div className="premium-card md:row-span-2">
+            <div className="premium-card md:row-span-2 md:col-span-2">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
                 initial={{ opacity: 0, y: 20 }}
@@ -375,7 +375,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 2: Wide */}
-            <div className="premium-card md:col-span-2 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-4 h-full min-h-[240px]">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
@@ -398,7 +398,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 3: Standard */}
-            <div className="premium-card md:col-span-1 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-2 h-full min-h-[240px]">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
@@ -420,7 +420,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 4: Standard */}
-            <div className="premium-card md:col-span-1 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-2 h-full min-h-[240px]">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
@@ -442,7 +442,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 5: Standard */}
-            <div className="premium-card md:col-span-1 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-3 h-full min-h-[240px]">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
@@ -464,7 +464,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 6: Wide */}
-            <div className="premium-card md:col-span-2 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-3 h-full min-h-[240px]">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
