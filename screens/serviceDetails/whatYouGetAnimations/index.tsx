@@ -10,6 +10,7 @@ const VISUAL_MAPPING: Record<string, any> = {
   "UX/UI Design & Prototype": Visuals.VisualUX,
   "UI Development & Integration": Visuals.VisualCode,
   "Idea to MVP": Visuals.VisualMVP,
+  "New Build or Redesign": Visuals.VisualMVP,
   "Mobile Optimization": Visuals.VisualMobile,
   // Landing
   "Landing Pages & Corporate Websites": Visuals.VisualLanding,

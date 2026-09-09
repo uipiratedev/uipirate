@@ -224,7 +224,6 @@ const SERVICE_SLUGS = [
   "UX-UI-Design",
   "SaaS-&-AI-Development",
   "Landing-Pages-&-Business-Websites",
-  "Design-System-&-Component-Library",
   "UX-Audits-&-Consultation",
 ];
 

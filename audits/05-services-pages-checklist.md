@@ -1,9 +1,11 @@
 # Services Pages Audit Checklist
 
 This document tracks the progress of all content, copy, SEO, and conversion changes on the 4 service detail pages.
-Synced to **`05-services-pages.md` v7 (2026-09-09)** — all statuses are code-verified against live source files.
+Synced to **`05-services-pages.md` v8 (2026-09-09)** — all statuses are code-verified against live source files.
 
-**2026-09-09 — v7 consolidated change list (C1–C12) applied to `data/sericesDetailsList.json`.** All C1–C12 textual/content edits are now in the data file; JSON validated. Remaining open items below are code-level (routing, soft 404, JSON-LD `name`) or polish not covered by the market-demand pass. The `model landing pages` → `modern` typo was also fixed in `data/sericesDetailsList.json` **and** `data/servicesTopList.json`.
+**2026-09-09 — v7 consolidated change list (C1–C12) applied to `data/sericesDetailsList.json`.** All C1–C12 textual/content edits are in the data file; JSON validated. The `model landing pages` → `modern` typo was also fixed in `data/sericesDetailsList.json` **and** `data/servicesTopList.json`.
+
+**2026-09-09 — v8 "What we provide" removal + render reconciliation.** The `youWillGet` block ("What we provide") duplicated the `whatYouGet` ("WHAT YOU GET") section, so it was **removed entirely**: the `youWillGet` key is deleted from all 5 entries in `data/sericesDetailsList.json`, and no component renders it. Consequences: **C6, C7, and the optional C10 "AI Agents / LLM APIs" badge are now VOID** — they only ever touched `youWillGet`. The short-lived `YouWillGet` component from the v7 render pass was deleted. The three other v7 render-pass fixes (streamlinedProcess heading, RecommendedNextSteps `href`, animation-map key) stay. Also fixed the dead SEO-footer / sitemap links to the killed Design System + `SaaS-Web-&-Mobile-Apps` slugs (`app/layout.tsx` noscript, `app/sitemap.ts`).
 
 **Pages in scope (`/services/[id]`):**
 
@@ -18,7 +20,7 @@ Synced to **`05-services-pages.md` v7 (2026-09-09)** — all statuses are code-v
 - `app/services/[id]/opengraph-image.tsx` — OG social card
 - `screens/serviceDetails/` — section components
 - `screens/serviceDetails/whatYouGetAnimations/index.tsx` — `whatYouGet` heading → animation coupling (X4)
-- `config/site.ts`, `components/footer.tsx`, `screens/sitemap/index.tsx` — navigation into these pages
+- `config/site.ts`, `components/footer.tsx`, `screens/sitemap/index.tsx`, `app/layout.tsx` (noscript SEO footer), `app/sitemap.ts` (`SERVICE_SLUGS`), `components/Breadcrumbs.tsx` — navigation / discovery into these pages
 
 ---
 
@@ -38,7 +40,7 @@ Synced to **`05-services-pages.md` v7 (2026-09-09)** — all statuses are code-v
 
 | # | Item | Status |
 |---|------|--------|
-| X1 | One service ("UX/UI Design") referenced by 3+ names and some dead slugs across cross-links | ⚠️ Mostly done (C12) — badge now `SAAS & AI PRODUCT DESIGN`; all `recommendedNextSteps` cross-links to this service now use `UX/UI Design` / slug `ux-ui-design` (Landing Pages `otherServices`, UX Audits `featuredService`). **Still open (code):** JSON-LD `Service.name` in `app/services/[id]/page.tsx` still derives from `hero.badge` |
+| X1 | One service ("UX/UI Design") referenced by 3+ names and some dead slugs across cross-links | ⚠️ Mostly done — (C12) badge now `SAAS & AI PRODUCT DESIGN`; all in-JSON `recommendedNextSteps` cross-links to this service use `UX/UI Design` / slug `ux-ui-design`. (v8) `app/layout.tsx` noscript SEO footer + `app/sitemap.ts` no longer link the dead `SaaS-Web-&-Mobile-Apps` / `Design-System-&-Component-Library` slugs. **Still open (code):** JSON-LD `Service.name` in `app/services/[id]/page.tsx` still derives from `hero.badge`; the killed **Design System** entry (5th in the JSON) is still route-generated with wrong-service copy and its own dead `ux-ui-front-end-development` cross-link |
 | X2 | No `/services` hub page | 🚫 Won't do — intentional (user decision 2026-09-09). Service pages are reached via nav dropdown + cross-links only |
 | X3 | Placeholder / copy-paste content left in production (`<div>danis...`, wrong-service strings) | ⚠️ Content done (C1, C2) — UX Audits 3D heading + Design-System-Roadmap process replaced. **Still open (code):** `screens/serviceDetails/index.tsx` `<div>danis...</div>` fallback |
 | X4 | `whatYouGet` card headings silently coupled to animation map | ✅ Checked for C8 — SaaS & AI Dev's 4 existing headings were already unmapped (fall back to `image`), so the new 5th card "AI-Generated Code, Production-Ready" behaves identically. `whatYouGetAnimations/index.tsx` map still undocumented — 🟡 leave a comment there when convenient |
@@ -47,7 +49,7 @@ Synced to **`05-services-pages.md` v7 (2026-09-09)** — all statuses are code-v
 | X7 | Social proof (`LandingWork` gallery) is generic, not service-filtered | 🟡 Consider — not addressed by market findings |
 | X8 | No timeline / price signal on most pages | ⚠️ Partially — UX Audits now carries "Most audits run 1–2 weeks" (C4, done); other 3 pages still bare. Price band deferred until smallest audit tier is set |
 | X9 | SEO metadata keyword-stuffed / partly stale | 🟡 Consider — see §*.SEO rows |
-| NF1 | `RecommendedNextSteps` buttons were undisclosed WhatsApp links | ✅ Verify — data now carries real `slug` values; confirm the component routes to `/services/[slug]` not WhatsApp |
+| NF1 | `RecommendedNextSteps` buttons were undisclosed WhatsApp links | ✅ Done (v7 render pass) — `recommendedNextSteps/index.tsx` now passes `href={`/services/${slug}`}` on featured + other-service buttons; WhatsApp only as fallback when `slug` is absent |
 | NF4 | Unknown service slug returns HTTP 200 (soft 404) | ❌ Not done — add `notFound()` for unknown slugs in `app/services/[id]/page.tsx` |
 
 ---
@@ -144,8 +146,8 @@ Synced to **`05-services-pages.md` v7 (2026-09-09)** — all statuses are code-v
 ### 2.6 RecommendedNextSteps / SEO
 | # | Item | Status |
 |---|------|--------|
-| 2.6a | Featured = UX/UI Design; other = UX Audits — real slugs | ✅ Verify routing (NF1) |
-| 2.6b | `youWillGet` — optionally add `AI Agents / LLM APIs` right badge | ✅ Done (C10) — badge added to `rightBadges` |
+| 2.6a | Featured = UX/UI Design; other = UX Audits — real slugs | ✅ Done — routes internally (NF1 fixed) |
+| 2.6b | `youWillGet` — optionally add `AI Agents / LLM APIs` right badge | 🚫 Void (v8) — `youWillGet` / "What we provide" section removed entirely (duplicated `whatYouGet`) |
 
 ---
 
@@ -161,7 +163,7 @@ Synced to **`05-services-pages.md` v7 (2026-09-09)** — all statuses are code-v
 | # | Item | Status |
 |---|------|--------|
 | 3.2a | 4 cards incl. `SEO Performance & AI-Readable Websites` | ✅ Keep as-is (differentiator praised in v1–v3) |
-| 3.2b | Framer / Webflow named as buyer search terms (v4 D4) | ✅ Already visible in `youWillGet.rightBadges` ("Webflow or Framer setup") — no change |
+| 3.2b | Framer / Webflow named as buyer search terms (v4 D4) | ⚠️ Re-open — this was satisfied only by `youWillGet.rightBadges` ("Webflow or Framer setup"), which is now **removed** (v8). Framer/Webflow are still named in `streamlinedProcess` ("Frameworks, CMS, and integrations are set up…") but not explicitly. 🟡 Consider naming Framer/Webflow in a `whatYouGet` card description if the tool-name keyword matters. |
 
 ### 3.3–3.5 WhyThisMatters / StreamlinedProcess / WhoThisIsFor
 | # | Item | Status |
@@ -225,11 +227,11 @@ Highest real demand in both Upwork scans **and** still carrying leftover wrong-s
 > **Heading:** Teams With an AI-Built Prototype
 > **Description:** You shipped something fast with Lovable, Bolt, v0, or Cursor and need a professional read on what's usable, what's fragile, and what to fix before you invest further.
 
-### 4.6 youWillGet (badge set)
+### 4.6 youWillGet ("What we provide") — 🚫 SECTION REMOVED (v8)
 | # | Item | Status |
 |---|------|--------|
-| 4.6a | `rightBadges` has `Prioritized Suggestions` twice | ✅ Done (C6) — second one → `Impact vs. Effort Scoring` |
-| 4.6b | `youWillGet.description` is copy-pasted from UX/UI Design ("We design & build intuitive user interfaces...") | ✅ Done (C7) — now "We review your live product against proven UX heuristics and real user journeys, then hand you a prioritised, actionable set of fixes." |
+| 4.6a | `rightBadges` had `Prioritized Suggestions` twice | 🚫 Void — `youWillGet` deleted from all entries; it duplicated the `whatYouGet` section |
+| 4.6b | `youWillGet.description` was copy-pasted from UX/UI Design | 🚫 Void — same |
 
 ### 4.7 RecommendedNextSteps / SEO
 | # | Item | Status |
@@ -245,13 +247,61 @@ Highest real demand in both Upwork scans **and** still carrying leftover wrong-s
 2. **V6-3 / C3, V6-6 / C4, V6-11 / C12** (🟠) — ✅ done — UX Audits heading grammar + scope signal, service-name standardisation.
 3. **V6-4 / C6, V6-5 / C5, V6-8 / C9, V6-9 / C10, V6-10 / C11** (🟡) — ✅ done — dedupe, audience cards, provider naming, redesign card.
 4. **V6-12** — ✅ recorded X2 / NC8 (`/services` hub) as 🚫 won't-do.
-5. Also done in the v7 pass: C7 (UX Audits `youWillGet.description`), Landing Pages `model` → `modern` typo (both data files), UX Audits self-link removed.
+5. Also done in the v7 pass: Landing Pages `model` → `modern` typo (both data files), UX Audits self-link removed.
 
-### Still open after the v7 content pass (code-level, not textual)
+### v7 render pass — make updated content visible (2026-09-09)
 
-- **X1 / 1.7b** — JSON-LD `Service.name` in `app/services/[id]/page.tsx` still derives from `hero.badge`; set from a clean name map / `SERVICE_OG`.
-- **X3 (code)** — `screens/serviceDetails/index.tsx` still ships `<div>danis...</div>` as the no-data fallback.
-- **NF1** — verify `RecommendedNextSteps` buttons route to `/services/[slug]` (not the default WhatsApp link) now that all slugs in the data are valid.
-- **NF4** — unknown slug returns HTTP 200 (soft 404); add `notFound()` in `app/services/[id]/page.tsx`.
-- **X6** — `whoThisIsFor` heading "Does it sound like you?" vs "Does this sound like you?" not yet normalised.
-- **X4** — `whatYouGetAnimations/index.tsx` heading→animation map still undocumented (no functional break).
+The v7 content edits landed in `data/sericesDetailsList.json` but a source read showed several fields were never rendered.
+
+| Change | File | Status |
+|---|---|---|
+| `streamlinedProcess` H2 was hardcoded `"How We Work"` → now renders `data.heading` (fallback kept) | `screens/serviceDetails/streamlinedProcess/index.tsx` | ✅ Kept — surfaces **C2** and each service's real process heading |
+| `RecommendedNextSteps` buttons ignored `slug` → linked to WhatsApp (**NF1**) → now `href={`/services/${slug}`}`, arrow added | `screens/serviceDetails/recommendedNextSteps/index.tsx` | ✅ Kept — makes **C12** slug standardisation functional; WhatsApp only as fallback |
+| `"New Build or Redesign": Visuals.VisualMVP` added to animation map | `screens/serviceDetails/whatYouGetAnimations/index.tsx` | ✅ Kept — **C11** card keeps its visual |
+| ~~New `YouWillGet` section component~~ | ~~`screens/serviceDetails/youWillGet/`~~ | 🚫 **Reverted in v8** — the section duplicated `whatYouGet`; component deleted, `youWillGet` key removed from the JSON |
+
+### v8 — "What we provide" removal + dead-link cleanup (2026-09-09)
+
+| Change | Files | Status |
+|---|---|---|
+| Remove the duplicate "What we provide" (`youWillGet`) section entirely | `data/sericesDetailsList.json` (key deleted from all 5 entries), `screens/serviceDetails/index.tsx` (import + render removed), `screens/serviceDetails/youWillGet/` (deleted) | ✅ Done — JSON validated, `tsc`/`eslint` clean, no dangling refs |
+| SEO-footer + sitemap linked dead service slugs (`SaaS-Web-&-Mobile-Apps`, killed `Design-System-&-Component-Library`) | `app/layout.tsx` noscript list → now the 4 real in-scope slugs; `app/sitemap.ts` `SERVICE_SLUGS` → Design System removed | ✅ Done |
+
+Verified: JSON parses, `tsc --noEmit` clean, `eslint` clean on changed files (pre-existing unused-var warning in `streamlinedProcess` `getCardRotation`, and pre-existing prettier warnings in `sitemap.ts`, are unrelated).
+
+---
+
+## STILL OPEN — what more needs fixing
+
+### Code / structural
+
+| # | Item | Priority | Where |
+|---|---|---|---|
+| S1 | **Kill the Design System service properly.** The 5th JSON entry (`Design-System-&-Component-Library`) is still route-generated (`generateStaticParams` reads the JSON), still in `SERVICE_META` + `SERVICE_OG` + `components/Breadcrumbs.tsx`, still has duplicate `"Design Workflow"` badges, old graphic-design `whoThisIsFor` cards, and a dead `ux-ui-front-end-development` cross-link. Decide: delete the entry + its `SERVICE_META`/`SERVICE_OG`/breadcrumb keys, or fully rewrite it as a real service. | 🔴 | `data/sericesDetailsList.json`, `app/services/[id]/page.tsx`, `app/services/[id]/opengraph-image.tsx`, `components/Breadcrumbs.tsx` |
+| S2 | `<div>danis...</div>` dev placeholder still shipped as the no-data fallback (X3) | 🔴 | `screens/serviceDetails/index.tsx:17` |
+| S3 | Unknown slug returns HTTP 200 soft-404 (NF4) — add `import { notFound } from "next/navigation"` + `if (!service) notFound()` | 🟠 | `app/services/[id]/page.tsx` |
+| S4 | JSON-LD `Service.name` still uses `hero.badge` (all-caps sentence for UX/UI: `SAAS & AI PRODUCT DESIGN`) — set from a clean name map / reuse `SERVICE_OG[slug].badge` (X1/1.7b/NF3) | 🟠 | `app/services/[id]/page.tsx:122` |
+| S5 | Hero CTAs are hardcoded + identical on every page — primary → `/contact` (not cal.com), secondary → WhatsApp (`wa.link/i35lma`), label "Lets Talk via Whatsapp". Contradicts the landing / pricing / about audits. | 🟠 | `screens/serviceDetails/hero/index.tsx` |
+| S6 | Hero badge fallback string `"EMPOWERING 40+ Business ACROSS 6 COUNTRIES"` — grammar + wrong figure (should echo "50+ Products Shipped") | 🟡 | `screens/serviceDetails/hero/index.tsx:76` |
+| S7 | `streamlinedProcess` renders only the first 6 flattened cards and never shows the per-group `badge` ("Review Workflow" / "Handover Workflow" etc.) — the two-phase structure in the data is invisible | 🟡 | `screens/serviceDetails/streamlinedProcess/index.tsx` |
+| S8 | Dead helper `getCardRotation` never called | 🟡 | `screens/serviceDetails/streamlinedProcess/index.tsx:32` |
+| S9 | `whatYouGetAnimations` map is undocumented; SaaS & AI Dev's 5 `whatYouGet` cards + Landing Pages fall back to `image` SVGs, some mislabelled (X4) — add a `visualKey` field or document the protected heading strings | 🟡 | `screens/serviceDetails/whatYouGetAnimations/index.tsx` |
+| S10 | `LandingWork` gallery is generic on every service page — no service-specific project, metric, or testimonial (X7) | 🟡 | `screens/serviceDetails/index.tsx:36` |
+
+### Copy / content
+
+| # | Item | Priority | Where |
+|---|---|---|---|
+| C-a | `whoThisIsFor` section heading: `Does it sound like you?` (UX/UI, SaaS) vs `Does this sound like you?` (Landing Pages, UX Audits) — pick one (X6) | 🟡 | `data/sericesDetailsList.json` |
+| C-b | UX Audits `whoThisIsFor` now has only **2** cards while every other page has 3 — add a 3rd (e.g. "Teams With Stalled Growth" / "Pre-Redesign Product Leads") for parallelism, or accept 2 | 🟡 | `data/sericesDetailsList.json` |
+| C-c | UX/UI `whyThisMatters` "Trust Gap" quick win: "People trust what behaves consistent" → "…behaves consistently" | 🟡 | `data/sericesDetailsList.json` |
+| C-d | Landing Pages `whyThisMatters` `QuickWins` have leading spaces (" If clarity is missing…", " Clear messaging…") and a trailing space ("Slow sites feel unreliable. ") | 🟡 | `data/sericesDetailsList.json` |
+| C-e | Landing Pages `whatYouGet` "Fully Responsive Experience" — "…without extra effort later" is vague filler; cut it | 🟡 | `data/sericesDetailsList.json` |
+| C-f | Landing Pages `whyThisMatters` has 6 cards, 3 of which overlap on "clarity" — consolidate to ~4 (v1 X-ref, not a market finding) | 🟡 | `data/sericesDetailsList.json` |
+| C-g | Landing Pages `whoThisIsFor` spans SaaS → café → personal portfolio — too broad for specialist positioning (X24) | 🟡 | `data/sericesDetailsList.json` |
+| C-h | `hero.description` "enterprise grade" → "enterprise-grade" (UX/UI); double space "corporations  that" already fixed | 🟡 | `data/sericesDetailsList.json` |
+| C-i | SEO: `SERVICE_META["ux-ui-design"].title` still 3 pipe-separated value props (~64 chars); `keywords` meta still long on all entries; fallback branch still emits "…Enterprise-grade design trusted by Fortune 500 companies." (X9) | 🟡 | `app/services/[id]/page.tsx` |
+
+### Won't-do (recorded)
+
+- **X2 / `/services` hub page** — 🚫 intentional (user decision 2026-09-09). Reached via nav dropdown + cross-links only.

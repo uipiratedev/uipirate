@@ -92,7 +92,7 @@ const StreamlinedProcess = ({ data }: any) => {
         <div className="flex flex-row items-center justify-center mb-6 ">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <h2 className="heading-center">How We Work</h2>
+        <h2 className="heading-center">{data.heading || "How We Work"}</h2>
       </div>
 
       {/* Cards Section */}

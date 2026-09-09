@@ -66,11 +66,17 @@ const RecommendedNextSteps = ({ data }: any) => {
               </div>
 
               <LetsTalkButton
-                children={data.featuredService.buttonText}
+                href={
+                  data.featuredService.slug
+                    ? `/services/${data.featuredService.slug}`
+                    : undefined
+                }
                 showArrow={true}
                 size="sm"
                 variant="dark"
-              />
+              >
+                {data.featuredService.buttonText}
+              </LetsTalkButton>
             </div>
           </div>
         </div>
@@ -81,12 +87,16 @@ const RecommendedNextSteps = ({ data }: any) => {
             Other Services You May Need
           </h3>
           <div className="space-y-3">
-            {data.otherServices.map((service: any) => (
+            {data.otherServices.map((service: any, index: number) => (
               <LetsTalkButton
-                children={service.title}
+                key={service.slug || service.title || index}
                 fullWidth
+                href={service.slug ? `/services/${service.slug}` : undefined}
+                showArrow={true}
                 variant="light"
-              />
+              >
+                {service.title}
+              </LetsTalkButton>
             ))}
           </div>
         </div>

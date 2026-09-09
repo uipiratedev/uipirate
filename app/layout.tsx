@@ -421,18 +421,16 @@ export default function RootLayout({
             <h2>Services</h2>
             <ul>
               <li>
-                <a href="/services/SaaS-Web-&amp;-Mobile-Apps">
-                  SaaS Web &amp; Mobile App Design &amp; Development
+                <a href="/services/UX-UI-Design">UX/UI Design</a>
+              </li>
+              <li>
+                <a href="/services/SaaS-&amp;-AI-Development">
+                  SaaS &amp; AI Development
                 </a>
               </li>
               <li>
                 <a href="/services/Landing-Pages-&amp;-Business-Websites">
                   Landing Pages &amp; Business Websites
-                </a>
-              </li>
-              <li>
-                <a href="/services/Design-System-&amp;-Component-Library">
-                  Design Systems &amp; Component Libraries
                 </a>
               </li>
               <li>
