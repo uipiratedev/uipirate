@@ -3,7 +3,7 @@
     "slug": "UX-UI-Design",
     "data": {
       "hero": {
-        "badge": "SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT",
+        "badge": "SAAS & AI PRODUCT DESIGN",
         "heading": [
           [
             { "text": "Build ", "highlight": false },
@@ -31,8 +31,8 @@
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
           },
           {
-            "heading": "Idea to MVP",
-            "description": "Product strategy, Product thinking, Competitive analysis",
+            "heading": "New Build or Redesign",
+            "description": "Whether you're going idea-to-MVP or modernising a live SaaS product that's outgrown its interface — product strategy, IA, and competitive analysis included.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
           },
           {
@@ -281,7 +281,7 @@
         "card": [
           {
             "heading": "Full-Stack Architecture",
-            "description": "Scalable backend & database architecture built to handle real growth",
+            "description": "Scalable backend and database architecture on Node.js or Python, built to handle real growth",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
           },
           {
@@ -296,8 +296,13 @@
           },
           {
             "heading": "Cloud Deployment & Scaling",
-            "description": "Production deployment, CI/CD, monitoring, and infrastructure that scales with usage",
+            "description": "Production deployment on AWS, GCP, or Azure — CI/CD, monitoring, and infrastructure that scales with usage",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622283/mobile_ior7xh.svg"
+          },
+          {
+            "heading": "AI-Generated Code, Production-Ready",
+            "description": "Built something fast with Lovable, Bolt, Replit, or Claude Code? We take it from prototype to a secure, scalable, production-grade product.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
           }
         ]
       },
@@ -310,7 +315,7 @@
             "heading": "Fragile Foundations",
             "description": "Why does adding one feature break three others?",
             "QuickWins": [
-              "Because the architecture wasn't built to extend. We design data models and services that absorb change instead of fighting it."
+              "Because the architecture — often scaffolded fast by an AI tool — wasn't built to extend. We re-lay the data models and services so change is absorbed, not fought."
             ]
           },
           {
@@ -486,6 +491,12 @@
             "text": "Documented, Handoff-Ready Code",
             "color": "#FDE6ACE5",
             "rotation": 10
+          },
+          {
+            "icon": "🤖",
+            "text": "AI Agents / LLM APIs",
+            "color": "#E8E8FFE5",
+            "rotation": 4
           }
         ],
         "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
@@ -525,7 +536,7 @@
 
           ]
         ],
-        "description": "We design model landing pages & websites for small businesses to large corporations  that communicate your value, look stunning on every device, and turn visitors into users or leads."
+        "description": "We design modern landing pages & websites for small businesses to large corporations that communicate your value, look stunning on every device, and turn visitors into users or leads."
       },
       "whatYouGet": {
         "heading": "Everything You Need to Launch and Convert",
@@ -756,8 +767,8 @@
     },
     "otherServices": [
       {
-        "title": "UX/UI & Front End Development",
-        "slug": "ux-ui-front-end-development",
+        "title": "UX/UI Design",
+        "slug": "ux-ui-design",
         "icon": "code"
       }
     ]
@@ -1047,10 +1058,10 @@
 
           ]
         ],
-        "description": "We identify where users hesitate, drop off, or lose confidence — and tell you exactly what to fix, why it matters, and what to do next."
+        "description": "We identify where users hesitate, drop off, or lose confidence — and tell you exactly what to fix, why it matters, and what to do next. Most audits run 1–2 weeks."
       },
       "whatYouGet": {
-        "heading": "What All Will you get in return",
+        "heading": "What You Get From a UX Audit",
         "badge": "WHAT YOU GET",
     "card": [
   {
@@ -1077,8 +1088,8 @@
 
       },
       "whyThisMatters": {
-  "heading": "Why Most 3D On Websites Fails ",
-  "heading2":"(And How We Do It Right)",
+  "heading": "Why Growth Stalls After Launch",
+  "heading2":"(And What an Audit Uncovers)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {
@@ -1128,76 +1139,64 @@
   "badge": "Who This Is For",
   "card": [
     {
-      "heading": "Founders or startups who are just starting out",
+      "heading": "Founders Just Getting Started",
       "description": "Looking for guidance on essential design principles and identify key elements to focus on as you embark on your journey",
       "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832692/founder_gipqiv.svg"
     },
     {
-      "heading": "anyone looking to upgrade their product experience & conversions",
-      "description": "If you’ve noticed that growth has slowed down and you’re feeling uncertain about what might be holding users back.",
+      "heading": "Teams With an AI-Built Prototype",
+      "description": "You shipped something fast with Lovable, Bolt, v0, or Cursor and need a professional read on what's usable, what's fragile, and what to fix before you invest further.",
       "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832688/anyone_l09c81.svg"
     }
   ]
 },
       "streamlinedProcess": {
-        "heading": "Design System Roadmap",
+        "heading": "How a UX Audit Runs",
         "badge": "Streamlined Process",
         "workflow": [
           {
-            "badge": "Design Workflow",
+            "badge": "Review Workflow",
             "card": [
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Onboarding & Research",
-                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "heading": "Kickoff & Context",
+                "description": "A short call to understand your product, target users, key conversion goals, and the metric you're worried about.",
                 "gradientId": 1
               },
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Strategy & Structure",
-                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "heading": "Heuristic & Flow Review",
+                "description": "We work through core journeys screen by screen against proven UX heuristics, noting friction, dead ends, and trust gaps.",
                 "gradientId": 2
               },
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Visual Design & Styling",
-                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "heading": "Prioritised Findings",
+                "description": "Every issue is scored by impact and effort, so you know what to fix first — not just a list of everything wrong.",
                 "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Feedback & Finalization",
-                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
-                "gradientId": 4
               }
             ]
           },
           {
-            "badge": "Design Workflow",
+            "badge": "Handover Workflow",
             "card": [
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Setup & Configuration",
-                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "heading": "Audit Report",
+                "description": "An annotated report with each finding, why it matters, and a concrete recommendation you can hand to design or dev.",
                 "gradientId": 1
               },
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "heading": "Walkthrough Call or Video",
+                "description": "We talk through the findings and priorities so the reasoning is clear, not just the conclusions.",
                 "gradientId": 2
               },
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "QA & SEO Optimization",
-                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "heading": "Action Roadmap",
+                "description": "A sequenced fix list you can execute in-house or bring back to us for UX execution.",
                 "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Launch & Handoff",
-                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
-                "gradientId": 4
               }
             ]
           }
@@ -1206,7 +1205,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
+        "description": "We review your live product against proven UX heuristics and real user journeys, then hand you a prioritised, actionable set of fixes.",
         "leftBadges": [
           {
             "icon": "📄",
@@ -1248,7 +1247,7 @@
           },
           {
             "icon": "📌",
-            "text": "Prioritized Suggestions",
+            "text": "Impact vs. Effort Scoring",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
@@ -1278,12 +1277,12 @@
     "badge": "RECOMMENDED NEXT STEPS",
     "heading": "What Most SaaS & AI Founders Require Next",
     "featuredService": {
-      "title": "SaaS & AI Product UX/UI & Front End Development",
+      "title": "UX/UI Design",
       "tagline": "Turn audit insights into a product that’s easier to use, easier to trust, and easier to scale.",
       "description": "Most teams move from clarity → UX execution to fix friction fast.",
       "description2":" Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
       "buttonText": "Explore",
-      "slug": "ux-ui-front-end-development",
+      "slug": "ux-ui-design",
       "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
     },
     "otherServices": [
@@ -1293,9 +1292,9 @@
         "icon": "browser"
       },
       {
-        "title": "UX Audits & Consultation",
-        "slug": "ux-audits-consultation",
-        "icon": "audit"
+        "title": "SaaS & AI Development",
+        "slug": "saas-ai-development",
+        "icon": "code"
       }
     ]
   
