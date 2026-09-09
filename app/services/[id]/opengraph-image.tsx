@@ -35,13 +35,6 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
     description:
       "High-converting landing pages and business websites in React, Next.js, Framer, or Webflow. Built around your positioning.",
   },
-  "design-system-component-library": {
-    badge: "Design Systems",
-    title: "Design Systems at",
-    titleHighlight: "Enterprise Scale",
-    description:
-      "Custom design tokens, branded UI kits, and dev-ready component libraries for Angular, React & beyond.",
-  },
   "ux-audits-consultation": {
     badge: "UX Audits",
     title: "UX Audit —",

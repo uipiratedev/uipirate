@@ -6,15 +6,27 @@
         "badge": "SAAS & AI PRODUCT DESIGN",
         "heading": [
           [
-            { "text": "Build ", "highlight": false },
-            { "text": "SaaS, AI & Mobile apps", "highlight": true },
-            { "text": "that", "highlight": false }
+            {
+              "text": "Build ",
+              "highlight": false
+            },
+            {
+              "text": "SaaS, AI & Mobile apps",
+              "highlight": true
+            },
+            {
+              "text": "that",
+              "highlight": false
+            }
           ],
           [
-            { "text": "scale & convert consistently.", "highlight": false }
+            {
+              "text": "scale & convert consistently.",
+              "highlight": false
+            }
           ]
         ],
-        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products."
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, and mobile-first products — from MVP Figma wireframes to fully developed, enterprise-grade products."
       },
       "whatYouGet": {
         "badge": "WHAT YOU GET",
@@ -43,151 +55,147 @@
         ]
       },
       "whyThisMatters": {
-  "heading": "Why Most SaaS & AI Products Break",
-  "heading2": "(And How We Fix It)",
-  "badge": "WHY THIS MATTERS",
-  "card": [
-    {
-      "heading": "Hidden Churn",
-      "description": "Why do users leave without obvious problems?",
-      "QuickWins": [
-        "They didn’t get stuck — they got confused. Confusion creates silent churn"
-      ]
-    },
-    {
-      "heading": "Product Fragility",
-      "description": "Why does the product feel fragile as it grows?",
-      "QuickWins": [
-        "Because it wasn’t designed for change. We build systems that expect growth, not fight it."
-      ]
-    },
-    {
-      "heading": "Too Many Questions",
-      "description": "Why do buyers ask endless questions?",
-      "QuickWins": [
-        "Because the product doesn’t answer them upfront.",
-        "Clarity reduces friction before sales ever speaks."
-      ]
-    },
-    {
-      "heading": "Commitment Risk",
-      "description": "Why does the product feel risky to adopt?",
-      "QuickWins": [
-        "Because outcomes aren’t clear.",
-        "People commit when they know what success looks like."
-      ]
-    },
-    {
-      "heading": "Trust Gap",
-      "description": "Why do some products feel safe instantly?",
-      "QuickWins": [
-        "Because they’re predictable.",
-        "People trust what behaves consistent"
-      ]
-    }
-  ]
-}
-,
-  "whoThisIsFor": {
-  "heading": "Does it sound like you?",
-  "badge": "Who This Is For",
-  "card": [
-    {
-      "heading": "SaaS & AI Startups",
-      "description": "Building a product and need it to be clear, usable, and ready to grow without breaking later.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
-    },
-    {
-      "heading": "Enterprise Teams",
-      "description": "Managing complex tools and teams, and need systems that people actually understand and use.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
-    },
-    {
-      "heading": "Design / Dev Agencies",
-      "description": "Need a reliable partner to handle product structure and interface work for client projects.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
-    }
-  ]
-},
+        "heading": "Why Most SaaS & AI Products Break",
+        "heading2": "(And How We Fix It)",
+        "badge": "WHY THIS MATTERS",
+        "card": [
+          {
+            "heading": "Hidden Churn",
+            "description": "Why do users leave without obvious problems?",
+            "QuickWins": [
+              "They didn’t get stuck — they got confused. Confusion creates silent churn"
+            ]
+          },
+          {
+            "heading": "Product Fragility",
+            "description": "Why does the product feel fragile as it grows?",
+            "QuickWins": [
+              "Because it wasn’t designed for change. We build systems that expect growth, not fight it."
+            ]
+          },
+          {
+            "heading": "Too Many Questions",
+            "description": "Why do buyers ask endless questions?",
+            "QuickWins": [
+              "Because the product doesn’t answer them upfront.",
+              "Clarity reduces friction before sales ever speaks."
+            ]
+          },
+          {
+            "heading": "Commitment Risk",
+            "description": "Why does the product feel risky to adopt?",
+            "QuickWins": [
+              "Because outcomes aren’t clear.",
+              "People commit when they know what success looks like."
+            ]
+          },
+          {
+            "heading": "Trust Gap",
+            "description": "Why do some products feel safe instantly?",
+            "QuickWins": [
+              "Because they’re predictable.",
+              "People trust what behaves consistently."
+            ]
+          }
+        ]
+      },
+      "whoThisIsFor": {
+        "heading": "Does this sound like you?",
+        "badge": "Who This Is For",
+        "card": [
+          {
+            "heading": "SaaS & AI Startups",
+            "description": "Building a product and need it to be clear, usable, and ready to grow without breaking later.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
+          },
+          {
+            "heading": "Enterprise Teams",
+            "description": "Managing complex tools and teams, and need systems that people actually understand and use.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
+          },
+          {
+            "heading": "Design / Dev Agencies",
+            "description": "Need a reliable partner to handle product structure and interface work for client projects.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
+          }
+        ]
+      },
       "streamlinedProcess": {
         "heading": "Complete SaaS Web & Mobile App Workflow",
         "badge": "Streamlined Process",
-
-"workflow": [
-  {
-    "badge": "Design Workflow",
-    "card": [
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
-        "heading": "Discovery, Research & Strategy",
-        "description": "Onboarding, kickoff, product understanding, user context, goals, and success metrics. We define the strategic direction before design begins.",
-        "gradientId": 1
+        "workflow": [
+          {
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+                "heading": "Discovery, Research & Strategy",
+                "description": "Onboarding, kickoff, product understanding, user context, goals, and success metrics. We define the strategic direction before design begins.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+                "heading": "UX Design & Wireframes",
+                "description": "We design information architecture, user journeys, and low- to mid-fidelity wireframes focused on clarity and usability.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
+                "heading": "UI Design & Prototyping",
+                "description": "High-fidelity UI, strong visual direction, and interactive prototypes to validate design decisions before development.",
+                "gradientId": 3
+              }
+            ]
+          },
+          {
+            "badge": "Development Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
+                "heading": "Setup & Planning",
+                "description": "We configure repositories, environments, and finalize the tech stack based on your product’s technical requirements.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
+                "heading": "Full Stack Development",
+                "description": "Scalable architecture, reusable UI components, API integration, and production-ready code built for long-term growth.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
+                "heading": "Testing, Launch & Handoff",
+                "description": "Performance testing followed by deployment, documentation, and a smooth handoff to ensure long-term product stability.",
+                "gradientId": 3
+              }
+            ]
+          }
+        ]
       },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
-        "heading": "UX Design & Wireframes",
-        "description": "We design information architecture, user journeys, and low- to mid-fidelity wireframes focused on clarity and usability.",
-        "gradientId": 2
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
-        "heading": "UI Design & Prototyping",
-        "description": "High-fidelity UI, strong visual direction, and interactive prototypes to validate design decisions before development.",
-        "gradientId": 3
+      "recommendedNextSteps": {
+        "badge": "RECOMMENDED NEXT STEPS",
+        "heading": "What Most Clients Require Next",
+        "featuredService": {
+          "title": "Landing Pages & Business Websites",
+          "tagline": "Launch faster with beautiful, high-converting websites",
+          "description": "Once your product is ready, the next bottleneck is adoption.",
+          "description2": "We design and build high-converting landing pages and marketing websites that help you launch, explain value clearly, and drive sign-ups.",
+          "buttonText": "Explore",
+          "slug": "landing-pages-business-websites"
+        },
+        "otherServices": [
+          {
+            "title": "SaaS & AI Development",
+            "slug": "saas-ai-development"
+          },
+          {
+            "title": "UX Audits & Consultation",
+            "slug": "ux-audits-consultation"
+          }
+        ]
       }
-    ]
-  },
-  {
-    "badge": "Development Workflow",
-    "card": [
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
-        "heading": "Setup & Planning",
-        "description": "We configure repositories, environments, and finalize the tech stack based on your product’s technical requirements.",
-        "gradientId": 1
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
-        "heading": "Full Stack Development",
-        "description": "Scalable architecture, reusable UI components, API integration, and production-ready code built for long-term growth.",
-        "gradientId": 2
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
-        "heading": "Testing, Launch & Handoff",
-        "description": "Performance testing followed by deployment, documentation, and a smooth handoff to ensure long-term product stability.",
-        "gradientId": 3
-      }
-    ]
-  }
-]
-
-      },
-  "recommendedNextSteps": {
-    "badge": "RECOMMENDED NEXT STEPS",
-    "heading": "What Most Clients Require Next",
-    "featuredService": {
-      "title": "Landing Pages & Business Websites",
-      "tagline": "Launch faster with beautiful, high-converting websites",
-      "description": "Once your product is ready, the next bottleneck is adoption.",
-      "description2": "We design and build high-converting landing pages and marketing websites that help you launch, explain value clearly, and drive sign-ups.",
-      "buttonText": "Explore",
-      "slug": "landing-pages-business-websites"
-    },
-    "otherServices": [
-      {
-        "title": "SaaS & AI Development",
-        "slug": "saas-ai-development"
-      },
-      {
-        "title": "UX Audits & Consultation",
-        "slug": "ux-audits-consultation"
-      }
-    ]
-
     }
-  }
-},
+  },
   {
     "slug": "SaaS-&-AI-Development",
     "data": {
@@ -195,12 +203,24 @@
         "badge": "SAAS & AI FULL-STACK ENGINEERING",
         "heading": [
           [
-            { "text": "Build the ", "highlight": false },
-            { "text": "engine", "highlight": true },
-            { "text": "behind your", "highlight": false }
+            {
+              "text": "Build the ",
+              "highlight": false
+            },
+            {
+              "text": "engine",
+              "highlight": true
+            },
+            {
+              "text": "behind your",
+              "highlight": false
+            }
           ],
           [
-            { "text": "SaaS or AI product.", "highlight": false }
+            {
+              "text": "SaaS or AI product.",
+              "highlight": false
+            }
           ]
         ],
         "description": "Full-stack development for SaaS platforms and AI-powered products — architecture, APIs, database design, AI/LLM integration, and production deployment. We build what the interface runs on."
@@ -283,7 +303,7 @@
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
+        "heading": "Does this sound like you?",
         "badge": "Who This Is For",
         "card": [
           {
@@ -382,12 +402,20 @@
         "badge": "Landing Pages & Business Websites",
         "heading": [
           [
-            { "text": "Your Website Isn’t a Brochure, ", "highlight": false }
+            {
+              "text": "Your Website Isn’t a Brochure, ",
+              "highlight": false
+            }
           ],
           [
-            { "text": "It’s a ", "highlight": false },
-            { "text": "Sales Tool ", "highlight": true }
-
+            {
+              "text": "It’s a ",
+              "highlight": false
+            },
+            {
+              "text": "Sales Tool ",
+              "highlight": true
+            }
           ]
         ],
         "description": "We design modern landing pages & websites for small businesses to large corporations that communicate your value, look stunning on every device, and turn visitors into users or leads."
@@ -395,373 +423,146 @@
       "whatYouGet": {
         "heading": "Everything You Need to Launch and Convert",
         "badge": "WHAT YOU GET",
-      "card": [
-  {
-    "heading": "Landing Pages & Corporate Websites",
-    "description": "High-impact pages designed to build credibility, clearly explain your product, and drive signups, demos, or inquiries.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151374/marketing_nubpwx.svg"
-  },
-  {
-    "heading": "Design & Frontend Development",
-    "description": "Clean, fast, production-ready development ensuring your designs translate perfectly into a live site.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151360/corporate_szit3w.svg"
-  },
-  {
-    "heading": "SEO Performance & AI-Readable Websites",
-    "description": "Fast-loading, well-structured websites optimized for search engines and AI discovery systems.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151290/seo_e1bwaz.svg"
-  },
-  {
-    "heading": "Fully Responsive Experience",
-    "description": "Your site works seamlessly across mobile, tablet, and desktop without extra effort later.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151376/Responsive_i5t4u3.svg"
-  }
-]
-
-      },
-      "whyThisMatters": {
-  "heading": "Why Most Business Websites Don’t Convert",
-  "heading2":  "(And What We Do Differently)",
-  "badge": "WHY THIS MATTERS",
-  "card": [
-    {
-      "heading": "First Impressions Matter",
-      "description": "Why do most websites fail to convert visitors?",
-      "QuickWins": [
-        "Because people don’t understand what the business does within a few seconds.",
-        " If clarity is missing, they leave."
-      ]
-    },
-    {
-      "heading": "Clarity Beats Creativity",
-      "description": "Why isn’t a good-looking website enough?",
-      "QuickWins": [
-        "A site can look great and still confuse users.",
-        " Clear messaging drives action, not visuals alone."
-      ]
-    },
-    {
-      "heading": "Messaging Drives Action",
-      "description": "Why do visitors scroll but not click?",
-      "QuickWins": [
-        "Because the site doesn’t clearly tell them what to do next or why it matters."
-      ]
-    },
-    {
-      "heading": "Mobile Is Not Optional",
-      "description": "Why does mobile performance matter so much?",
-      "QuickWins": [
-        "Most visitors see your site on their phone first.",
-        "If it’s hard to use, they’re gone."
-      ]
-    },
-    {
-      "heading": "Speed Is Perception",
-      "description": "Why does a slow website hurt credibility?",
-      "QuickWins": [
-        "Slow sites feel unreliable. ",
-        "People associate speed with professionalism."
-      ]
-    },
-    {
-      "heading": "Users Scan, They Don’t Read",
-      "description": "Why do long paragraphs fail on websites?",
-      "QuickWins": [
-        "People scan headlines and buttons.",
-        "If meaning isn’t visible instantly, text is ignored."
-      ]
-    }
-  ]
-}
-,
-     "whoThisIsFor": {
-  "heading": "Does this sound like you?",
-  "badge": "Who This Is For",
-  "card": [
-    {
-      "heading": "SaaS & Product Teams",
-      "description": "Turn visitors into users with high-converting landing pages built for startups, corporates, and tech products.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
-    },
-    {
-      "heading": "Local Businesses",
-      "description": "Showcase your restaurant, café, or studio with a fast, modern website that builds trust and drives more local traffic.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771830594/local_bzcfjn.svg"
-    },
-    {
-      "heading": "Portfolios & Personal Brand Sites",
-      "description": "Build a sleek, minimal portfolio or brand site that highlights your story and credibility.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
-    }
-  ]
-},
-      "streamlinedProcess": {
-        "heading": "From idea to live website",
-        "badge": "Streamlined Process",
-       "workflow": [
-  {
-    "badge": "Website Strategy & Design",
-    "card": [
-      {
-        "heading": "Discovery & Positioning",
-        "description": "We understand your business, audience, and goals so the site speaks clearly to the right people."
-      },
-      {
-        "heading": "Structure & Messaging",
-        "description": "We map page flow, key sections, and messaging so visitors instantly “get it.”"
-      },
-      {
-        "heading": "Visual Design & Prototyping",
-        "description": "High-fidelity designs showing exactly how the site will look and behave."
-      }
-    ]
-  },
-  {
-    "badge": "Website Development",
-    "card": [
-      {
-        "heading": "Development Setup",
-        "description": "Frameworks, CMS, and integrations are set up for smooth development and future updates."
-      },
-      {
-        "heading": "Build & QA",
-        "description": "We build, test, and optimize for speed, responsiveness, and reliability."
-      },
-      {
-        "heading": "Launch & Handoff",
-        "description": "Site goes live with documentation and support so you’re never stuck post-launch."
-      }
-    ]
-  }
-]
-
-      },
-      
-  "recommendedNextSteps": {
-    "badge": "RECOMMENDED NEXT STEPS",
-    "heading": "What Most Founders Require Next",
-    "featuredService": {
-      "title": "UX Audits & Consultation",
-      "tagline": "Make sure your new site actually converts.",
-      "description": "Once your website is live, the next step is validating that it works for real users.",
-      "description2": " We run heuristic audits and usability reviews to find friction points and turn them into an actionable roadmap.",
-      "buttonText": "Explore",
-      "slug": "ux-audits-consultation",
-      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
-    },
-    "otherServices": [
-      {
-        "title": "UX/UI Design",
-        "slug": "ux-ui-design",
-        "icon": "code"
-      }
-    ]
-  
-}
-    }
-  },
-  {
-    "slug": "Design-System-&-Component-Library",
-    "data": {
-      "hero": {
-        "badge": "Tokens to Components | Built for Scale | 1–4 Week Delivery",
-        "heading": [
-          [
-            { "text": "Your Website Isn’t a Brochure, ", "highlight": false }
-          ],
-          [
-            { "text": "It’s a ", "highlight": false },
-            { "text": "Sales Tool ", "highlight": true }
-
-          ]
-        ],
-        "description": "We build robust design systems with custom tokens, brand-aligned UI kits, and fully documented, dev-ready components, built for long-term consistency and speed."
-      },
-      "whatYouGet": {
-        "heading": "What This Service Includes",
-        "badge": "What we provide",
         "card": [
           {
-            "heading": "Custom UI Kits",
-            "description": "Tailored button styles, forms, modals, cards, and visual assets that match your brand",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151376/custom_y8apuh.svg"
+            "heading": "Landing Pages & Corporate Websites",
+            "description": "High-impact pages designed to build credibility, clearly explain your product, and drive signups, demos, or inquiries.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151374/marketing_nubpwx.svg"
           },
           {
-            "heading": "Design Tokens",
-            "description": "Scalable typography, spacing, color systems, and variable sets for dev and design alignment.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151276/design_bmrluo.svg"
+            "heading": "Design & Frontend Development",
+            "description": "Clean, fast, production-ready development ensuring your designs translate perfectly into a live site.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151360/corporate_szit3w.svg"
           },
           {
-            "heading": "Documentation",
-            "description": "Clear usage rules, examples, and accessibility guidelines, made for easy handoff.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151325/documentation_ikeckn.svg"
+            "heading": "SEO Performance & AI-Readable Websites",
+            "description": "Fast-loading, well-structured websites optimized for search engines and AI discovery systems.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151290/seo_e1bwaz.svg"
           },
           {
-            "heading": "Component Libraries",
-            "description": "Figma-based components and states for faster prototyping and development.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151316/component_zv2ihz.svg"
+            "heading": "Fully Responsive Experience",
+            "description": "Your site works seamlessly across mobile, tablet, and desktop.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151376/Responsive_i5t4u3.svg"
+          }
+        ]
+      },
+      "whyThisMatters": {
+        "heading": "Why Most Business Websites Don’t Convert",
+        "heading2": "(And What We Do Differently)",
+        "badge": "WHY THIS MATTERS",
+        "card": [
+          {
+            "heading": "First Impressions Matter",
+            "description": "Why do most websites fail to convert visitors?",
+            "QuickWins": [
+              "Because people don’t understand what the business does within a few seconds.",
+              "If clarity is missing, they leave."
+            ]
           },
           {
-            "heading": "Cross-Platform Consistency",
-            "description": "Ensure design parity across web, mobile, and internal tools.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151299/cross_k6lawz.svg"
+            "heading": "Clarity Beats Creativity",
+            "description": "Why isn’t a good-looking website enough?",
+            "QuickWins": [
+              "A site can look great and still confuse users.",
+              "Visitors scan headlines and buttons — if the meaning isn’t instant, they leave without acting."
+            ]
           },
           {
-            "heading": "Dev Handoff Ready",
-            "description": "Organized, named, and structured files that developers can plug and play.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151370/Coding_fco4jv.svg"
+            "heading": "Mobile Is Not Optional",
+            "description": "Why does mobile performance matter so much?",
+            "QuickWins": [
+              "Most visitors see your site on their phone first.",
+              "If it’s hard to use, they’re gone."
+            ]
+          },
+          {
+            "heading": "Speed Is Perception",
+            "description": "Why does a slow website hurt credibility?",
+            "QuickWins": [
+              "Slow sites feel unreliable.",
+              "People associate speed with professionalism."
+            ]
           }
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
+        "heading": "Does this sound like you?",
         "badge": "Who This Is For",
         "card": [
           {
-            "heading": "For Product Teams",
-            "description": "Need clean, consistent visuals for your app or website? We design assets that blend seamlessly into your product experience.",
-            "QuickWins": [
-              "UI illustrations & icon sets",
-              "In-app and dashboard visuals",
-              "Web graphics optimized for clarity"
-            ]
+            "heading": "SaaS & Product Teams",
+            "description": "Turn visitors into users with high-converting landing pages built for startups, corporates, and tech products.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
           },
           {
-            "heading": "For Brand & Marketing Teams",
-            "description": "Looking to strengthen your brand identity? We create visuals that align perfectly with your tone, style, and audience.",
-            "QuickWins": [
-              "Brand assets & social visuals",
-              "Presentation and pitch decks",
-              "Consistent branding all across"
-            ]
+            "heading": "Local Businesses",
+            "description": "Showcase your restaurant, café, or studio with a fast, modern website that builds trust and drives more local traffic.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771830594/local_bzcfjn.svg"
           },
           {
-            "heading": "For Founders & Creators",
-            "description": "Launching a new brand or refreshing your visuals? Get polished, versatile designs that look great on web, print, and social.",
-            "QuickWins": [
-              "Logo and visual identity",
-              "Print-ready materials",
-              "Cohesive design language"
-            ]
+            "heading": "Funded Startups & Scaleups",
+            "description": "Raising or launching and need a site that matches the pitch — clear positioning, fast load, and a page built to convert investor and customer traffic.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
           }
         ]
       },
       "streamlinedProcess": {
-        "heading": "Built for Consistency",
+        "heading": "From idea to live website",
         "badge": "Streamlined Process",
         "workflow": [
           {
-            "badge": "Design Workflow",
+            "badge": "Website Strategy & Design",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Onboarding & Research",
-                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
-                "gradientId": 1
+                "heading": "Discovery & Positioning",
+                "description": "We understand your business, audience, and goals so the site speaks clearly to the right people."
               },
               {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Strategy & Structure",
-                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
-                "gradientId": 2
+                "heading": "Structure & Messaging",
+                "description": "We map page flow, key sections, and messaging so visitors instantly “get it.”"
               },
               {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Visual Design & Styling",
-                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Feedback & Finalization",
-                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
-                "gradientId": 4
+                "heading": "Visual Design & Prototyping",
+                "description": "High-fidelity designs showing exactly how the site will look and behave."
               }
             ]
           },
           {
-            "badge": "Design Workflow",
+            "badge": "Website Development",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Setup & Configuration",
-                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
-                "gradientId": 1
+                "heading": "Development Setup",
+                "description": "Frameworks, CMS, and integrations are set up for smooth development and future updates."
               },
               {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
-                "gradientId": 2
+                "heading": "Build & QA",
+                "description": "We build, test, and optimize for speed, responsiveness, and reliability."
               },
               {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "QA & SEO Optimization",
-                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Launch & Handoff",
-                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
-                "gradientId": 4
+                "description": "Site goes live with documentation and support so you’re never stuck post-launch."
               }
-            ]
-          }
-        ]
-      },
-      "whyThisMatters": {
-        "heading": "Why Most Design Systems Fail to Scale",
-        "heading2":"(And How We Fix It)",
-        "badge": "WHY THIS MATTERS",
-        "card": [
-          {
-            "heading": "Visual Inconsistency",
-            "description": "Different teams using different versions of the same component leads to a fragmented user experience and brand confusion.",
-            "QuickWins": [
-              "Centralized component library",
-              "Version control for design",
-              "Strict brand alignment"
-            ]
-          },
-          {
-            "heading": "Development Friction",
-            "description": "Developers often spend too much time rebuilding common UI elements from scratch instead of focusing on core features.",
-            "QuickWins": [
-              "Reusable code snippets",
-              "Standardized design tokens",
-              "Easy handoff documentation"
-            ]
-          },
-          {
-            "heading": "Maintenance Debt",
-            "description": "Updating a single brand color or font requires searching through hundreds of files, leading to errors and delays.",
-            "QuickWins": [
-              "Global design tokens",
-              "One-click updates",
-              "Scalable architecture"
             ]
           }
         ]
       },
       "recommendedNextSteps": {
         "badge": "RECOMMENDED NEXT STEPS",
-        "heading": "What Most Teams Require Next",
+        "heading": "What Most Founders Require Next",
         "featuredService": {
           "title": "UX Audits & Consultation",
-          "tagline": "Ensure your new design system is being used effectively.",
-          "description": "Once your design system is live, the next step is making sure it's solving real usability problems. We audit your product to ensure the new components are improving adoption and reducing friction.",
+          "tagline": "Make sure your new site actually converts.",
+          "description": "Once your website is live, the next step is validating that it works for real users.",
+          "description2": "We run heuristic audits and usability reviews to find friction points and turn them into an actionable roadmap.",
           "buttonText": "Explore",
-          "slug": "ux-audits-consultation"
+          "slug": "ux-audits-consultation",
+          "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
           {
-            "title": "SaaS Web & Mobile Apps",
-            "slug": "ux-ui-front-end-development"
-          },
-          {
-            "title": "Landing Pages & Business Websites",
-            "slug": "landing-pages-business-websites"
+            "title": "UX/UI Design",
+            "slug": "ux-ui-design",
+            "icon": "code"
           }
         ]
       }
@@ -772,14 +573,18 @@
     "data": {
       "hero": {
         "badge": "UX Audits & Consultation",
-         "heading": [
+        "heading": [
           [
-            { "text": "Find What’s Blocking Growth,", "highlight": false }
+            {
+              "text": "Find What’s Blocking Growth,",
+              "highlight": false
+            }
           ],
           [
-            { "text": "Before You Build More", "highlight": true }
-
-
+            {
+              "text": "Before You Build More",
+              "highlight": true
+            }
           ]
         ],
         "description": "We identify where users hesitate, drop off, or lose confidence — and tell you exactly what to fix, why it matters, and what to do next. Most audits run 1–2 weeks."
@@ -787,93 +592,97 @@
       "whatYouGet": {
         "heading": "What You Get From a UX Audit",
         "badge": "WHAT YOU GET",
-    "card": [
-  {
-    "heading": "Heuristic UX Audit Report",
-    "description": "We analyze your product using proven UX principles and heuristics to uncover usability gaps and improvement areas.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151117/Tick_Shield_bizqew.svg"
-  },
-  {
-    "heading": "Drop-Off & Friction Insights",
-    "description": "Pinpoint where users hesitate, abandon actions, or lose trust — and understand why it’s happening.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
-  },
-  {
-    "heading": "Flow & Interaction Review",
-    "description": "We review complete user journeys and interaction patterns, not just isolated screens.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151102/flow_krv5pk.svg"
-  },
-  {
-    "heading": "Walkthrough Video",
-    "description": "Optional video explanation walking through findings, priorities, and actionable recommendations.",
-    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151107/Video_Camera_osg0ob.svg"
-  }
-]
-
+        "card": [
+          {
+            "heading": "Heuristic UX Audit Report",
+            "description": "We analyze your product using proven UX principles and heuristics to uncover usability gaps and improvement areas.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151117/Tick_Shield_bizqew.svg"
+          },
+          {
+            "heading": "Drop-Off & Friction Insights",
+            "description": "Pinpoint where users hesitate, abandon actions, or lose trust — and understand why it’s happening.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
+          },
+          {
+            "heading": "Flow & Interaction Review",
+            "description": "We review complete user journeys and interaction patterns, not just isolated screens.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151102/flow_krv5pk.svg"
+          },
+          {
+            "heading": "Walkthrough Video",
+            "description": "Optional video explanation walking through findings, priorities, and actionable recommendations.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151107/Video_Camera_osg0ob.svg"
+          }
+        ]
       },
       "whyThisMatters": {
-  "heading": "Why Growth Stalls After Launch",
-  "heading2":"(And What an Audit Uncovers)",
-  "badge": "WHY THIS MATTERS",
-  "card": [
-    {
-      "heading": "Unclear First Steps",
-      "description": "Why do users hesitate even after signing up?",
-      "QuickWins": [
-        "They’re unsure what to do next.",
-        "When the product doesn’t clearly guide the first few actions, confidence drops fast."
-      ]
-    },
-    {
-      "heading": "Too Many Decisions",
-      "description": "Why does a product feel “heavy” or tiring to use?",
-      "QuickWins": [
-        "Too many decisions at once.",
-        "Every extra choice increases friction and slows momentum."
-      ]
-    },
-    {
-      "heading": "Features Without Priority",
-      "description": "Why don’t features translate into usage?",
-      "QuickWins": [
-        "They solve internal ideas, not user priorities.",
-        "What makes sense to the team doesn’t always make sense to customers."
-      ]
-    },
-    {
-      "heading": "Demo vs. Daily Use Gap",
-      "description": "Why do demos go well but adoption stalls?",
-      "QuickWins": [
-        "Real usage isn’t a demo.",
-        "Products optimized for presentations often break in daily workflows."
-      ]
-    },
-    {
-      "heading": "Silent Churn",
-      "description": "Why do users churn without complaining?",
-      "QuickWins": [
-        "Confusion doesn’t trigger feedback — it triggers exits.",
-        "People leave quietly when effort outweighs value."
-      ]
-    }
-  ]
-},
+        "heading": "Why Growth Stalls After Launch",
+        "heading2": "(And What an Audit Uncovers)",
+        "badge": "WHY THIS MATTERS",
+        "card": [
+          {
+            "heading": "Unclear First Steps",
+            "description": "Why do users hesitate even after signing up?",
+            "QuickWins": [
+              "They’re unsure what to do next.",
+              "When the product doesn’t clearly guide the first few actions, confidence drops fast."
+            ]
+          },
+          {
+            "heading": "Too Many Decisions",
+            "description": "Why does a product feel “heavy” or tiring to use?",
+            "QuickWins": [
+              "Too many decisions at once.",
+              "Every extra choice increases friction and slows momentum."
+            ]
+          },
+          {
+            "heading": "Features Without Priority",
+            "description": "Why don’t features translate into usage?",
+            "QuickWins": [
+              "They solve internal ideas, not user priorities.",
+              "What makes sense to the team doesn’t always make sense to customers."
+            ]
+          },
+          {
+            "heading": "Demo vs. Daily Use Gap",
+            "description": "Why do demos go well but adoption stalls?",
+            "QuickWins": [
+              "Real usage isn’t a demo.",
+              "Products optimized for presentations often break in daily workflows."
+            ]
+          },
+          {
+            "heading": "Silent Churn",
+            "description": "Why do users churn without complaining?",
+            "QuickWins": [
+              "Confusion doesn’t trigger feedback — it triggers exits.",
+              "People leave quietly when effort outweighs value."
+            ]
+          }
+        ]
+      },
       "whoThisIsFor": {
-  "heading": "Does this sound like you?",
-  "badge": "Who This Is For",
-  "card": [
-    {
-      "heading": "Founders Just Getting Started",
-      "description": "Looking for guidance on essential design principles and identify key elements to focus on as you embark on your journey",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832692/founder_gipqiv.svg"
-    },
-    {
-      "heading": "Teams With an AI-Built Prototype",
-      "description": "You shipped something fast with Lovable, Bolt, v0, or Cursor and need a professional read on what's usable, what's fragile, and what to fix before you invest further.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832688/anyone_l09c81.svg"
-    }
-  ]
-},
+        "heading": "Does this sound like you?",
+        "badge": "Who This Is For",
+        "card": [
+          {
+            "heading": "Founders Just Getting Started",
+            "description": "Looking for guidance on essential design principles and identify key elements to focus on as you embark on your journey",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832692/founder_gipqiv.svg"
+          },
+          {
+            "heading": "Teams With an AI-Built Prototype",
+            "description": "You shipped something fast with Lovable, Bolt, v0, or Cursor and need a professional read on what's usable, what's fragile, and what to fix before you invest further.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832688/anyone_l09c81.svg"
+          },
+          {
+            "heading": "Teams With Stalled Growth",
+            "description": "Signups or activation have flattened and you're not sure which friction points are costing you — you want a prioritised fix list before the next redesign.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
+          }
+        ]
+      },
       "streamlinedProcess": {
         "heading": "How a UX Audit Runs",
         "badge": "Streamlined Process",
@@ -926,33 +735,31 @@
           }
         ]
       },
-      
-  "recommendedNextSteps": {
-    "badge": "RECOMMENDED NEXT STEPS",
-    "heading": "What Most SaaS & AI Founders Require Next",
-    "featuredService": {
-      "title": "UX/UI Design",
-      "tagline": "Turn audit insights into a product that’s easier to use, easier to trust, and easier to scale.",
-      "description": "Most teams move from clarity → UX execution to fix friction fast.",
-      "description2":" Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
-      "buttonText": "Explore",
-      "slug": "ux-ui-design",
-      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
-    },
-    "otherServices": [
-      {
-        "title": "Landing Pages & Business Websites",
-        "slug": "landing-pages-business-websites",
-        "icon": "browser"
-      },
-      {
-        "title": "SaaS & AI Development",
-        "slug": "saas-ai-development",
-        "icon": "code"
+      "recommendedNextSteps": {
+        "badge": "RECOMMENDED NEXT STEPS",
+        "heading": "What Most SaaS & AI Founders Require Next",
+        "featuredService": {
+          "title": "UX/UI Design",
+          "tagline": "Turn audit insights into a product that’s easier to use, easier to trust, and easier to scale.",
+          "description": "Most teams move from clarity → UX execution to fix friction fast.",
+          "description2": "Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
+          "buttonText": "Explore",
+          "slug": "ux-ui-design",
+          "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
+        },
+        "otherServices": [
+          {
+            "title": "Landing Pages & Business Websites",
+            "slug": "landing-pages-business-websites",
+            "icon": "browser"
+          },
+          {
+            "title": "SaaS & AI Development",
+            "slug": "saas-ai-development",
+            "icon": "code"
+          }
+        ]
       }
-    ]
-  
-}
     }
   }
 ]

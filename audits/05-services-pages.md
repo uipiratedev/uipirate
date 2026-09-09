@@ -1276,14 +1276,14 @@ Most SaaS UI/UX buyers have a live product to improve, not a blank page. Also fi
 
 - **`youWillGet` ("What we provide") duplicated `whatYouGet` ("WHAT YOU GET")** — keep `whatYouGet`, **remove `youWillGet` from every page entirely.** Do not build a section for it.
 
-## What shipped in v8
+## What shipped in v8 — the "What we provide" removal
 
 | Change | Files | Notes |
 |---|---|---|
-| **`youWillGet` block deleted** from all 5 entries | `data/sericesDetailsList.json` | JSON re-validated. |
-| **`YouWillGet` component deleted** (it had been added earlier the same day in the v7 render pass, before this decision) | `screens/serviceDetails/youWillGet/` removed; import + render removed from `screens/serviceDetails/index.tsx` | No dangling refs anywhere (`grep` clean for `youWillGet` / `leftBadges` / `rightBadges`). |
-| **Dead SEO-footer links fixed** | `app/layout.tsx` `<noscript>` service list | Was linking `/services/SaaS-Web-&-Mobile-Apps` (no match) and `/services/Design-System-&-Component-Library` (killed service). Now lists the 4 real in-scope services with resolvable slugs. |
-| **Sitemap entry removed** | `app/sitemap.ts` `SERVICE_SLUGS` | Dropped `Design-System-&-Component-Library` so the sitemap no longer advertises the killed service. |
+| **`youWillGet` block deleted** from all entries | `data/sericesDetailsList.json` | JSON re-validated. It duplicated `whatYouGet`. |
+| **`YouWillGet` component deleted** (added earlier the same day in the v7 render pass, before this decision) | `screens/serviceDetails/youWillGet/` removed; import + render removed from `screens/serviceDetails/index.tsx` | No dangling refs (`grep` clean for `youWillGet` / `leftBadges` / `rightBadges`). |
+
+(The rest of the v8 work — killing the Design System service, the soft-404 fix, hero CTAs, and all the copy items — is in **"v8 — full open-items sweep"** below.)
 
 **Kept from the v7 render pass** (independent of the `youWillGet` decision):
 - `streamlinedProcess/index.tsx` now renders `data.heading` instead of a hardcoded `"How We Work"` — so **C2**'s "How a UX Audit Runs" and each service's real workflow heading are visible.
@@ -1299,25 +1299,50 @@ Most SaaS UI/UX buyers have a live product to improve, not a blank page. Also fi
 | Hero | `badge`, `heading[]`, `description` (CTAs hardcoded) | C4 (UX Audits "…1–2 weeks"), C12 (UX/UI badge) |
 | WhatYouGet | `badge`, `heading`, `card[].{heading, description, image}` (+ animation by exact heading string) | C3, C8, C10 (card descriptions), C11 |
 | WhyThisMatters | `badge`, `heading`, `heading2`, `card[].{heading, description, QuickWins[]}` | C1, C9 |
-| StreamlinedProcess | `badge` (the literal "Streamlined Process"), `heading` (v8), first 6 flattened `workflow[].card[].{heading, description}` — per-group badges **not** shown | C2 |
+| StreamlinedProcess | `badge` ("Streamlined Process"), `heading` (v8), 2 `workflow` groups × up to 3 cards, **each group's `badge` shown as a phase label** (v8/S7) | C2 |
 | WhoThisIsFor | `badge`, `heading`, `card[].{image, heading, description}` | C5 |
 | RecommendedNextSteps | `featuredService.{title, tagline, description, description2, buttonText}` + `href` from `slug` (v8); `otherServices[].{title}` + `href` | C12 (titles + working internal links) |
 
-## Per-page status after v7 + v8
+## v8 — full open-items sweep (2026-09-09)
 
-| Page | Applied & live | Still open (see checklist S/C items) |
-|---|---|---|
-| **UX/UI Design** | Badge → `SAAS & AI PRODUCT DESIGN`; "New Build or Redesign" card (with visual); cross-link titles standardised | "behaves consistent" typo; `hero.description` "enterprise grade"; JSON-LD name; SEO title length |
-| **SaaS & AI Development** | 5th card "AI-Generated Code, Production-Ready"; Node.js/Python + AWS/GCP/Azure in card copy; "Fragile Foundations" names AI scaffolding | Optional AI-agent badge is void (section removed); animation map still unmapped for all 5 cards (mislabelled `image` fallbacks) |
-| **Landing Pages** | `modern` typo fixed (both files); cross-link → `ux-ui-design` | Framer/Webflow keyword lost with `youWillGet` removal — reconsider surfacing in a card; 6→4 card consolidation; `QuickWins` leading/trailing spaces; broad `whoThisIsFor`; "without extra effort later" filler |
-| **UX Audits & Consultation** | 3D heading → "Why Growth Stalls After Launch"; process block → real audit flow with visible heading; `whatYouGet` heading grammar; "…1–2 weeks" in hero; "Founders Just Getting Started" + "Teams With an AI-Built Prototype" cards; featured next-step → `ux-ui-design`, self-link removed | Only 2 `whoThisIsFor` cards vs 3 elsewhere; `whoThisIsFor` heading "this" vs "it" mismatch |
+After the "What we provide" removal, every remaining open item from the v1–v7 audits + checklist was worked. **`next build` passes; 4 service routes, no Design System route; `tsc` + `eslint` clean.**
 
-## Highest-priority remaining work
+**Structural / code**
+- **S1 — Design System service killed.** Removed the 5th JSON entry and every reference: `SERVICE_META`, `SERVICE_OG`, `SERVICE_LABELS` (breadcrumbs), the `<noscript>` SEO-footer link (`app/layout.tsx`), and the `app/sitemap.ts` slug. (`/componentlab` — the "Component Lab" showcase page — is unrelated and untouched.)
+- **S2** — `<div>danis...</div>` → `notFound()`.
+- **S3** — unknown slug now calls `notFound()` (real 404, was soft-404 HTTP 200).
+- **S4** — JSON-LD `Service.name` + `serviceType` from a new `SERVICE_NAME` map; `description` from `SERVICE_META`.
+- **S5** — hero CTAs reworked: primary → `https://cal.com/ui-pirate/15min` (was `/contact`); secondary "See Pricing" → `/pricing` (WhatsApp block removed).
+- **S6** — hero badge fallback → `"50+ PRODUCTS SHIPPED ACROSS 6 COUNTRIES"`.
+- **S7** — `streamlinedProcess` now renders each `workflow` group as one row with its `badge` as a phase label — the two-phase structure is visible.
+- **S8** — dead `getCardRotation` removed.
+- **S9** — animation map documented as load-bearing; `Full-Stack Architecture` + `AI-Generated Code, Production-Ready` mapped to `VisualCode`.
 
-1. **S1 — kill the Design System service properly.** Still route-generated from the JSON with wrong-service copy (duplicate "Design Workflow" badges, graphic-design `whoThisIsFor`, dead `ux-ui-front-end-development` cross-link) and still referenced in `SERVICE_META`, `SERVICE_OG`, `components/Breadcrumbs.tsx`. Either delete the entry + all its keys, or rewrite it as a genuine offering.
-2. **S2 — `<div>danis...</div>`** dev placeholder still ships as the no-data fallback in `serviceDetails/index.tsx`.
-3. **S3 — soft 404** (NF4): unknown slug returns HTTP 200; add `notFound()`.
-4. **S4 — JSON-LD `Service.name`** still built from `hero.badge`.
-5. **S5 — hero CTAs**: hardcoded `/contact` + WhatsApp on every page, contradicting the landing/pricing/about audits.
+**Copy (`data/sericesDetailsList.json`)**
+- **C-a** `whoThisIsFor` heading → `Does this sound like you?` on all 4 pages.
+- **C-b** UX Audits `whoThisIsFor` 3rd card added ("Teams With Stalled Growth") — 3 cards, parallel with the others.
+- **C-c** "behaves consistent" → "behaves consistently."
+- **C-d** trimmed leading/trailing spaces in Landing `QuickWins` and two `description2` fields.
+- **C-e** cut "…without extra effort later".
+- **C-f** Landing `whyThisMatters` 6 → 4 cards (dropped "Messaging Drives Action" + "Users Scan, They Don't Read"; "Clarity Beats Creativity" absorbs the scanning point).
+- **C-g** Landing `whoThisIsFor` 3rd card → "Funded Startups & Scaleups" (was "Portfolios & Personal Brand Sites").
+- **C-h** UX/UI `hero.description` → "enterprise-grade" + tidy punctuation.
+- **C-i** (`app/services/[id]/page.tsx`) 4 `SERVICE_META` titles tightened + `| UI Pirate`; keyword lists trimmed; SaaS description names the real stack + AI-code; UX Audits description reflects the reframe; "Fortune 500" fallback claim removed.
 
-Full list with file references and priorities: `05-services-pages-checklist.md` → "STILL OPEN — what more needs fixing".
+## Per-page status after v8
+
+| Page | State |
+|---|---|
+| **UX/UI Design** | Badge `SAAS & AI PRODUCT DESIGN`; "New Build or Redesign" card (animated); cross-links standardised; hero copy + SEO title fixed. Clean. |
+| **SaaS & AI Development** | 5-card `whatYouGet` incl. "AI-Generated Code, Production-Ready" (2 now animated); real provider names in copy; "Fragile Foundations" names AI scaffolding; SEO description names the stack. Clean. |
+| **Landing Pages** | `whyThisMatters` 4 cards; `whoThisIsFor` retargeted commercial; typo/whitespace/filler fixed; cross-link `ux-ui-design`. **Note:** Framer/Webflow are named in the process step copy but no longer in a badge (the `youWillGet` badge set was removed) — surfacing them in a `whatYouGet` card is the only remaining 🟡. |
+| **UX Audits & Consultation** | Full wrong-service content replaced; real audit process with visible heading + phase labels; 3 audience cards; hero turnaround line; cross-links fixed. Clean. |
+
+## Still open (product / content decisions, not mechanical)
+
+1. **S10 / X7** — `LandingWork` gallery is generic on every service page. Needs a per-service project + result metric + testimonial (content the team must supply).
+2. **Landing Pages** — optionally name Framer/Webflow in a `whatYouGet` card (keyword lost with the badge-set removal).
+3. **Cross-audit** — service-page JSON-LD `areaServed` (`US, UK, SG, IN, AU`) still differs from `/about`'s Organization schema; tracked in `04-about-page.md` NF3.
+4. **S7 cosmetic** — the new phase label sits above the decorative rope SVG on desktop; a designer may want to reposition it.
+
+Full item-by-item status: `05-services-pages-checklist.md`.

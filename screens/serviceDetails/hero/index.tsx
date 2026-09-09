@@ -73,7 +73,7 @@ const ServiceDetailsHero = ({ data }: any) => {
           >
             {/* Text */}
             <p className="badge-text relative z-10 max-md:text-xs uppercase">
-              {data.badge || "EMPOWERING 40+ Business ACROSS 6 COUNTRIES"}
+              {data.badge || "50+ PRODUCTS SHIPPED ACROSS 6 COUNTRIES"}
             </p>
           </GlassSurface>
           {/* Animated Headline Replacement using Data Props */}
@@ -102,7 +102,12 @@ const ServiceDetailsHero = ({ data }: any) => {
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
-            <Link className="relative z-10" href="/contact">
+            <a
+              className="relative z-10"
+              href="https://cal.com/ui-pirate/15min"
+              rel="noreferrer"
+              target="_blank"
+            >
               <div
                 className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
                 style={{
@@ -213,14 +218,9 @@ const ServiceDetailsHero = ({ data }: any) => {
                   Start Your Product Journey — Book a 15-Min Call
                 </p>
               </div>
-            </Link>
+            </a>
             <div className="w-[100%] z-10">
-              <a
-                className="w-full"
-                href="https://wa.link/i35lma"
-                rel="noreferrer"
-                target="_blank"
-              >
+              <Link className="w-full" href="/pricing">
                 <Button
                   className="text-black font-bold w-full py-[27px] max-md:py-[20px]"
                   color="primary"
@@ -236,17 +236,12 @@ const ServiceDetailsHero = ({ data }: any) => {
                   variant="bordered"
                 >
                   <div className="flex flex-row items-center gap-3">
-                    <img
-                      alt="WhatsApp Logo"
-                      className="w-[30px] h-[30px] max-md:w-[20px] max-md:h-[20px]"
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    />
                     <p className="text-base font-semibold max-md:text-sm max-md:font-regular">
-                      Lets Talk via Whatsapp
+                      See Pricing
                     </p>
                   </div>
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

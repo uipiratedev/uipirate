@@ -1,5 +1,7 @@
 "use client";
 
+import { notFound } from "next/navigation";
+
 import LandingWork from "../landing/works";
 
 import ServiceDetailsHero from "./hero";
@@ -13,7 +15,7 @@ import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
 const ServiceDetails = ({ data }: any) => {
-  if (!data) return <div>danis...</div>;
+  if (!data) notFound();
 
   return (
     <PageWrapper showFloatingButton={false}>

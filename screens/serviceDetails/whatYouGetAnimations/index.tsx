@@ -5,19 +5,31 @@ import GlassBadge from "@/components/GlassBadge";
 import { ContainerScroll } from "@/components/container-scroll-animation";
 import * as Visuals from "@/components/visuals";
 
+/**
+ * `whatYouGet` card `heading` strings are LOAD-BEARING: an exact match here swaps
+ * the card's static `image`/`img` SVG for an animated visual. Renaming a heading
+ * in `data/sericesDetailsList.json` without updating this map silently drops the
+ * animation (the card falls back to its `image`). Keep the two in sync.
+ *
+ * Cards with no entry below (e.g. the SaaS & AI Development set) intentionally
+ * render their `image` SVG — that's fine, just not animated.
+ */
 const VISUAL_MAPPING: Record<string, any> = {
-  // SaaS
+  // UX/UI Design
   "UX/UI Design & Prototype": Visuals.VisualUX,
   "UI Development & Integration": Visuals.VisualCode,
   "Idea to MVP": Visuals.VisualMVP,
   "New Build or Redesign": Visuals.VisualMVP,
   "Mobile Optimization": Visuals.VisualMobile,
-  // Landing
+  // SaaS & AI Development
+  "Full-Stack Architecture": Visuals.VisualCode,
+  "AI-Generated Code, Production-Ready": Visuals.VisualCode,
+  // Landing Pages & Business Websites
   "Landing Pages & Corporate Websites": Visuals.VisualLanding,
   "Design & Frontend Development": Visuals.VisualFrontend,
   "SEO Performance & AI-Readable Websites": Visuals.VisualSEO,
   "Fully Responsive Experience": Visuals.VisualResponsive,
-  // Audit
+  // UX Audits & Consultation
   "Heuristic UX Audit Report": Visuals.VisualAudit,
   "Drop-Off & Friction Insights": Visuals.VisualFriction,
   "Flow & Interaction Review": Visuals.VisualFlow,

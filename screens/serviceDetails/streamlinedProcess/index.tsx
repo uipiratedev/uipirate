@@ -1,46 +1,25 @@
 import GlassBadge from "@/components/GlassBadge";
 
 const StreamlinedProcess = ({ data }: any) => {
-  // Flatten all workflow cards into a single array with index numbers
-  const allCards: { heading: string; description: string; index: number }[] =
-    [];
+  // Each workflow group renders as one row (max 2 rows × 3 cards to match the
+  // design). The group `badge` (e.g. "Review Workflow" / "Handover Workflow")
+  // labels its row so the two-phase structure stays visible.
+  type Step = { heading: string; description: string; index: number };
+  const rows: { badge?: string; cards: Step[] }[] = [];
   let cardIndex = 1;
 
   if (data.workflow) {
-    data.workflow.forEach((workflow: any) => {
-      workflow.card.forEach((card: any) => {
-        allCards.push({
+    data.workflow.slice(0, 2).forEach((workflow: any) => {
+      rows.push({
+        badge: workflow.badge,
+        cards: (workflow.card || []).slice(0, 3).map((card: any) => ({
           heading: card.heading,
           description: card.description,
           index: cardIndex++,
-        });
+        })),
       });
     });
   }
-
-  // Use only the first 6 steps to match the design (2 rows of 3 cards)
-  const displayCards = allCards.slice(0, 6);
-
-  // Split cards into rows of 3 for the rope effect
-  const rows: (typeof allCards)[] = [];
-
-  for (let i = 0; i < displayCards.length; i += 3) {
-    rows.push(displayCards.slice(i, i + 3));
-  }
-
-  // Slight pseudo-random rotation for each card to simulate natural hanging
-  const getCardRotation = (cardIndex: number): string => {
-    const rotations = [
-      "-2deg",
-      "1.3deg",
-      "-1.1deg",
-      "1.7deg",
-      "-1.6deg",
-      "0.9deg",
-    ];
-
-    return rotations[(cardIndex - 1) % rotations.length];
-  };
 
   // Rope Curve Math: Y = 10 + 120 * t * (1 - t)
   const getRopeParam = (colIndex: number, localT: number) => {
@@ -140,9 +119,18 @@ const StreamlinedProcess = ({ data }: any) => {
               </svg>
             </div>
 
+            {/* Workflow phase label */}
+            {row.badge && (
+              <div className="section-container relative z-10 mb-3 md:mb-4 max-md:pl-6">
+                <span className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#FF5B04]">
+                  {row.badge}
+                </span>
+              </div>
+            )}
+
             {/* Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 section-container gap-4 md:gap-6 relative z-10 pt-1 md:pt-0 md:mb-32">
-              {row.map((card, colIdx) => (
+              {row.cards.map((card, colIdx) => (
                 <div
                   key={card.index}
                   className="flex md:flex-col items-start md:items-center relative transition-all duration-700 h-full group/unit md:mt-[var(--rope-offset)]"
