@@ -25,6 +25,22 @@ import {
   TimezoneAsset,
   ProductsGridAsset,
 } from "@/components/about/AboutBentoAssets";
+import {
+  Angular,
+  React as ReactIcon,
+  Nextjs,
+  Typescript,
+  Tailwindcss,
+  Framer,
+  Figma,
+  Gsap,
+  Nodejs,
+  Python,
+  Aws,
+  GoogleCloud,
+  Azure,
+  Langchain,
+} from "@thesvg/react";
 
 const stats = [
   { number: "9+", label: "Years of Experience" },
@@ -33,17 +49,25 @@ const stats = [
   { number: "6", label: "Countries Served" },
 ];
 
+// Front-end tools first, then back-end / cloud / AI. Icons come from
+// @thesvg/react (brand marks); some render monochrome via currentColor.
 const technologies = [
-  { name: "Angular", logo: "/assets/logos/angular.svg" },
-  { name: "React", logo: "/assets/logos/react.svg" },
-  { name: "Next.js", logo: "/assets/logos/next js.svg" },
-  { name: "Node.js", logo: "/assets/logos/nodejs.svg" },
-  { name: "Python", logo: "/assets/logos/python.svg" },
-  { name: "TypeScript", logo: "/assets/logos/typescript.svg" },
-  { name: "Tailwind CSS", logo: "/assets/logos/tailwind.svg" },
-  { name: "Framer", logo: "/assets/logos/framer.svg" },
-  { name: "Figma", logo: "/assets/logos/figma.svg" },
-  { name: "GSAP", logo: "/assets/logos/gsap.svg" },
+  { name: "Angular", Icon: Angular },
+  { name: "React", Icon: ReactIcon },
+  { name: "Next.js", Icon: Nextjs },
+  { name: "TypeScript", Icon: Typescript },
+  { name: "Tailwind CSS", Icon: Tailwindcss },
+  // Framer's default/dark variants hardcode fill="#fff" (invisible on the
+  // white chip) — "mono" respects currentColor.
+  { name: "Framer", Icon: Framer, variant: "mono" as const },
+  { name: "Figma", Icon: Figma },
+  { name: "GSAP", Icon: Gsap },
+  { name: "Node.js", Icon: Nodejs },
+  { name: "Python", Icon: Python },
+  { name: "AWS", Icon: Aws },
+  { name: "Google Cloud", Icon: GoogleCloud },
+  { name: "Azure", Icon: Azure },
+  { name: "AI Agents / LLM APIs", Icon: Langchain },
 ];
 
 const industries = [
@@ -139,6 +163,11 @@ export default function AboutPage() {
                 "UX/UI Design",
                 "Angular Development",
                 "React Development",
+                "Node.js Development",
+                "Python Development",
+                "Cloud Deployment",
+                "AWS",
+                "AI Agent Development",
                 "Complex Enterprise Applications",
                 "Design Systems",
                 "Enterprise Security Software",
@@ -435,8 +464,8 @@ export default function AboutPage() {
                     Design Through to Code
                   </h3>
                   <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                    Wireframes to React, Angular, and Next.js. One team, no
-                    hand-offs.
+                    Wireframes or an AI-generated MVP to production React,
+                    Angular, and Next.js.
                   </p>
                 </div>
               </motion.div>
@@ -671,24 +700,32 @@ export default function AboutPage() {
                 Technology Stack
               </h3>
               <div className="flex flex-wrap gap-3">
-                {technologies.map((tech) => (
-                  <motion.div
-                    key={tech.name}
-                    className="bg-white border border-gray-200 rounded-xl px-4 py-2 flex items-center gap-2 hover:border-brand-orange/50 hover:shadow-sm transition-all duration-300"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    viewport={{ once: true }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                  >
-                    <img
-                      alt={tech.name}
-                      className="w-5 h-5 object-contain"
-                      src={tech.logo}
-                    />
-                    <span className="text-sm font-medium text-gray-700">
-                      {tech.name}
-                    </span>
-                  </motion.div>
-                ))}
+                {technologies.map(({ name, Icon, variant }) => {
+                  const TechIcon = Icon as React.ComponentType<
+                    React.SVGProps<SVGSVGElement> & { variant?: string }
+                  >;
+
+                  return (
+                    <motion.div
+                      key={name}
+                      className="bg-white border border-gray-200 rounded-xl px-4 py-2 flex items-center gap-2 hover:border-brand-orange/50 hover:shadow-sm transition-all duration-300"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      viewport={{ once: true }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                    >
+                      <TechIcon
+                        aria-hidden
+                        className="w-5 h-5 object-contain text-gray-700 shrink-0"
+                        height={20}
+                        variant={variant}
+                        width={20}
+                      />
+                      <span className="text-sm font-medium text-gray-700">
+                        {name}
+                      </span>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
 
@@ -783,8 +820,9 @@ export default function AboutPage() {
                   <span className="text-brand-orange">Product</span>?
                 </h2>
                 <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-                  Book a free 15-minute call. Tell us your vision — we&apos;ll
-                  bring it to life.
+                  Book a free 15-minute call. Whether it&apos;s a quick UX audit
+                  or a full product build, tell us where you are — we&apos;ll
+                  tell you the fastest path forward.
                 </p>
                 <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
                   <Link

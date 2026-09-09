@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "UI Pirate is a product design and development agency — 50+ products shipped across SaaS, AI, FinTech and HealthTech. US timezone friendly. From first wireframe to working software.",
   keywords:
-    "uipirate, uipirates, UI Pirate, about UI Pirate, product design agency USA, idea to product, product thinking agency, competitive analysis design, information architecture, conversion focused UX, simplify complex products, SaaS product design, AI app design, enterprise UX design, hire product designer USA, Vishal Anand, product design and development agency, hire Next.js agency, AI product design agency",
+    "uipirate, uipirates, UI Pirate, about UI Pirate, product design agency USA, idea to product, product thinking agency, competitive analysis design, information architecture, conversion focused UX, simplify complex products, SaaS product design, AI app design, enterprise UX design, hire product designer USA, Vishal Anand, product design and development agency, hire Next.js agency, AI product design agency, AI SaaS development, Node.js Python backend, AWS GCP Azure deployment, take AI prototype to production",
   openGraph: {
     title: "About UI Pirate | Product Design — From Idea to Shipped Product",
     description:
