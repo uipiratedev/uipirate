@@ -30,6 +30,7 @@ interface DashboardContextValue {
   can: (c: Capability) => boolean;
   range: DateRange;
   setPreset: (p: RangePreset) => void;
+  setCustomRange: (from: string, to: string) => void;
   /** Cache-busting key that changes whenever the range changes. */
   rangeKey: string;
   /** Ready-to-append query string: `from=…&to=…&preset=…`. */
@@ -53,6 +54,25 @@ export function DashboardProvider({
     setRange(rangeFromPreset(p));
   }, []);
 
+  const setCustomRange = useCallback((from: string, to: string) => {
+    const fromDate = from.includes("T")
+      ? new Date(from)
+      : new Date(`${from}T00:00:00.000Z`);
+    let toDate = to.includes("T")
+      ? new Date(to)
+      : new Date(`${to}T23:59:59.999Z`);
+
+    if (toDate.getTime() <= fromDate.getTime()) {
+      toDate = new Date(fromDate.getTime() + 24 * 60 * 60 * 1000 - 1);
+    }
+
+    setRange({
+      preset: "custom",
+      from: fromDate.toISOString(),
+      to: toDate.toISOString(),
+    });
+  }, []);
+
   const value = useMemo<DashboardContextValue>(() => {
     const rangeQuery = new URLSearchParams({
       from: range.from,
@@ -66,10 +86,11 @@ export function DashboardProvider({
       can: (c: Capability) => capabilities.includes(c),
       range,
       setPreset,
+      setCustomRange,
       rangeKey: `${range.from}|${range.to}`,
       rangeQuery,
     };
-  }, [user, capabilities, range, setPreset]);
+  }, [user, capabilities, range, setPreset, setCustomRange]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

@@ -213,13 +213,28 @@ class Tracker {
   }
 
   private baseFields(path: string) {
+    const tz =
+      typeof Intl !== "undefined" && Intl.DateTimeFormat
+        ? Intl.DateTimeFormat().resolvedOptions().timeZone
+        : undefined;
+    const lang =
+      typeof navigator !== "undefined" ? navigator.language : undefined;
+
     return {
       visitorId: this.visitorId,
       sessionId: this.sessionId,
       path,
       ts: Date.now(),
-      screen: { w: screen.width, h: screen.height },
-      viewport: { w: window.innerWidth, h: window.innerHeight },
+      tz,
+      lang,
+      screen:
+        typeof screen !== "undefined"
+          ? { w: screen.width, h: screen.height }
+          : undefined,
+      viewport:
+        typeof window !== "undefined"
+          ? { w: window.innerWidth, h: window.innerHeight }
+          : undefined,
     };
   }
 

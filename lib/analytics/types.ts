@@ -56,6 +56,7 @@ export interface RawEvent {
   referrer?: string;
   title?: string;
   lang?: string;
+  tz?: string;
   utm?: Utm;
   screen?: Dimensions;
   viewport?: Dimensions;

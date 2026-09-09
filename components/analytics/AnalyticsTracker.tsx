@@ -15,9 +15,15 @@ function hasConsent(): boolean {
   }
 }
 
+// Internal surfaces — team traffic, never counted.
+const PRIVATE_PREFIXES = ["/admin", "/login"];
+
 function TrackerInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const isPrivate = PRIVATE_PREFIXES.some(
+    (p) => pathname === p || pathname?.startsWith(`${p}/`),
+  );
 
   // Start / stop with consent. `cookie-consent-changed` is dispatched by
   // components/CookieConsent.tsx; `storage` covers other tabs.
@@ -39,7 +45,7 @@ function TrackerInner() {
 
   // One page_view per committed navigation (pathname or query change).
   useEffect(() => {
-    if (!hasConsent()) return;
+    if (isPrivate || !hasConsent()) return;
 
     const tracker = getTracker();
 

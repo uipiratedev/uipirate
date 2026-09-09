@@ -78,6 +78,7 @@ import {
   TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE,
   TACTILE_NEUMORPHIC_SWITCH_PHYSICS,
 } from "@/screens/buttons/tactileNeumorphicSwitch";
+import { useDrawerScrollLock } from "@/hooks/useDrawerScrollLock";
 
 export { ALL_DASHBOARD_COMPONENTS };
 export type { ComponentCategory, PropRow, ComponentDetail, PresetVariant };
@@ -318,6 +319,10 @@ export default function UIComponentDashboard({
   const [activeCodeTab, setActiveCodeTab] = useState<CodeTab>("component");
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  useDrawerScrollLock({
+    enabled: mobileSidebarOpen,
+    onClose: () => setMobileSidebarOpen(false),
+  });
 
   // ── Playground Dynamic State ──────────────────────────────────────────
   const [customLabel, setCustomLabel] = useState<string>("");
@@ -1722,6 +1727,7 @@ export default function Example() {
           {mobileSidebarOpen && (
             <div
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+              data-lenis-prevent="true"
               onClick={() => setMobileSidebarOpen(false)}
             />
           )}

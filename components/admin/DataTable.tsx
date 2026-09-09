@@ -23,6 +23,7 @@ export function DataTable<T>({
   onRowClick,
   emptyText = "No rows.",
   maxHeight,
+  layout = "fixed",
 }: {
   rows: T[];
   columns: Column<T>[];
@@ -31,6 +32,7 @@ export function DataTable<T>({
   onRowClick?: (row: T) => void;
   emptyText?: string;
   maxHeight?: number;
+  layout?: "auto" | "fixed";
 }) {
   const [sort, setSort] = useState(initialSort || null);
 
@@ -63,26 +65,32 @@ export function DataTable<T>({
 
   return (
     <div
-      className="overflow-auto rounded-lg border border-gray-200"
-      style={maxHeight ? { maxHeight } : undefined}
+      className="w-full rounded-xl border border-gray-200/80 bg-white"
+      style={maxHeight ? { maxHeight, overflowY: "auto" } : undefined}
     >
-      <table className="w-full min-w-[640px] border-collapse text-sm">
-        <thead className="sticky top-0 z-10 bg-gray-50 text-xs uppercase tracking-wide text-gray-400">
-          <tr>
+      <table className={`w-full border-collapse text-sm ${layout === "fixed" ? "table-fixed" : ""}`}>
+        <thead className="bg-gray-50/90 text-xs uppercase tracking-wider text-gray-400">
+          <tr className="border-b border-gray-200/80">
             {columns.map((c) => (
               <th
                 key={c.key}
-                className={`whitespace-nowrap px-3 py-2 font-medium ${
+                className={`truncate px-4 py-3 font-semibold ${
                   c.align === "right" ? "text-right" : "text-left"
-                } ${c.sortValue ? "cursor-pointer select-none hover:text-gray-600" : ""}`}
+                } ${
+                  c.sortValue
+                    ? "cursor-pointer select-none transition-colors hover:text-gray-900"
+                    : ""
+                }`}
                 style={c.width ? { width: c.width } : undefined}
                 onClick={c.sortValue ? () => toggleSort(c.key) : undefined}
               >
-                <span className="inline-flex items-center gap-1">
+                <span className="inline-flex items-center gap-1.5">
                   {c.header}
                   {sort?.key === c.key ? (
                     <Icon.chevron
-                      className={`h-3 w-3 ${sort.dir === "asc" ? "rotate-180" : ""}`}
+                      className={`h-3 w-3 text-gray-900 transition-transform ${
+                        sort.dir === "asc" ? "rotate-180" : ""
+                      }`}
                     />
                   ) : null}
                 </span>
@@ -94,7 +102,7 @@ export function DataTable<T>({
           {sorted.length === 0 ? (
             <tr>
               <td
-                className="px-3 py-8 text-center text-gray-400"
+                className="px-4 py-12 text-center text-sm text-gray-400"
                 colSpan={columns.length}
               >
                 {emptyText}
@@ -104,13 +112,19 @@ export function DataTable<T>({
             sorted.map((row, i) => (
               <tr
                 key={rowKey(row, i)}
-                className={onRowClick ? "cursor-pointer hover:bg-gray-50" : ""}
+                className={`transition-colors ${
+                  onRowClick
+                    ? "cursor-pointer hover:bg-slate-50/80"
+                    : "hover:bg-slate-50/40"
+                }`}
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
               >
                 {columns.map((c) => (
                   <td
                     key={c.key}
-                    className={`px-3 py-2 ${c.align === "right" ? "text-right tabular-nums" : "text-left"}`}
+                    className={`truncate px-4 py-3 text-sm text-gray-700 ${
+                      c.align === "right" ? "text-right tabular-nums font-mono text-xs" : "text-left"
+                    }`}
                   >
                     {c.render(row)}
                   </td>

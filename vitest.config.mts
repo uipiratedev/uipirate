@@ -13,6 +13,7 @@ export default defineConfig({
       "__tests__/lib/auth/**/*.test.ts",
       "__tests__/lib/admin/**/*.test.ts",
       "__tests__/lib/rateLimit.test.ts",
+      "__tests__/indexing.test.ts",
     ],
   },
 });

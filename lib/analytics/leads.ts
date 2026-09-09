@@ -404,7 +404,17 @@ export async function listVisitors(opts: {
   if (q) {
     const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
 
-    match.$or = [{ identifiedEmail: rx }, { visitorId: rx }];
+    match.$or = [
+      { identifiedEmail: rx },
+      { visitorId: rx },
+      { "lastGeo.city": rx },
+      { "lastGeo.country": rx },
+      { "lastGeo.region": rx },
+      { "lastDevice.browser": rx },
+      { "lastDevice.os": rx },
+      { firstLandingPath: rx },
+      { firstReferrerType: rx },
+    ];
   }
 
   const [rows, total] = await Promise.all([
@@ -425,10 +435,17 @@ export async function listVisitors(opts: {
       lastSeenAt: v.lastSeenAt ? new Date(v.lastSeenAt).toISOString() : null,
       sessionCount: v.sessionCount || 0,
       pageViewCount: v.pageViewCount || 0,
+      clickCount: v.clickCount || 0,
       totalDurationMs: v.totalDurationMs || 0,
       country: v.lastGeo?.country || null,
+      region: v.lastGeo?.region || null,
+      city: v.lastGeo?.city || null,
       device: v.lastDevice?.type || null,
+      os: v.lastDevice?.os || null,
+      browser: v.lastDevice?.browser || null,
       referrerType: v.firstReferrerType || null,
+      firstReferrer: v.firstReferrer || null,
+      firstLandingPath: v.firstLandingPath || null,
     })),
     total,
     page,

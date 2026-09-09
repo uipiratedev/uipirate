@@ -40,13 +40,18 @@ export default function PagesClient() {
     {
       key: "path",
       header: "Page",
-      render: (r) => <span className="text-gray-700">{r.path}</span>,
+      render: (r) => (
+        <span className="block truncate font-mono text-xs text-gray-800" title={r.path}>
+          {r.path}
+        </span>
+      ),
       sortValue: (r) => r.path,
     },
     {
       key: "views",
       header: "Views",
       align: "right",
+      width: "80px",
       render: (r) => fmtInt(r.views),
       sortValue: (r) => r.views,
     },
@@ -54,6 +59,7 @@ export default function PagesClient() {
       key: "uniqueVisitors",
       header: "Unique",
       align: "right",
+      width: "80px",
       render: (r) => fmtInt(r.uniqueVisitors),
       sortValue: (r) => r.uniqueVisitors,
     },
@@ -61,6 +67,7 @@ export default function PagesClient() {
       key: "avgDwellMs",
       header: "Avg time",
       align: "right",
+      width: "90px",
       render: (r) => fmtDuration(r.avgDwellMs),
       sortValue: (r) => r.avgDwellMs,
     },
@@ -68,6 +75,7 @@ export default function PagesClient() {
       key: "avgScrollDepth",
       header: "Scroll",
       align: "right",
+      width: "75px",
       render: (r) => `${r.avgScrollDepth}%`,
       sortValue: (r) => r.avgScrollDepth,
     },
@@ -75,6 +83,7 @@ export default function PagesClient() {
       key: "bounceRate",
       header: "Bounce",
       align: "right",
+      width: "75px",
       render: (r) => fmtPct(r.bounceRate, 0),
       sortValue: (r) => r.bounceRate,
     },
@@ -82,6 +91,7 @@ export default function PagesClient() {
       key: "entrances",
       header: "Entr.",
       align: "right",
+      width: "75px",
       render: (r) => fmtInt(r.entrances),
       sortValue: (r) => r.entrances,
     },
@@ -89,6 +99,7 @@ export default function PagesClient() {
       key: "exits",
       header: "Exits",
       align: "right",
+      width: "75px",
       render: (r) => fmtInt(r.exits),
       sortValue: (r) => r.exits,
     },
@@ -110,7 +121,6 @@ export default function PagesClient() {
           <DataTable
             columns={columns}
             initialSort={{ key: "views", dir: "desc" }}
-            maxHeight={560}
             rowKey={(r) => r.path}
             rows={data?.rows || []}
             onRowClick={(r) => setSelected(r.path)}
