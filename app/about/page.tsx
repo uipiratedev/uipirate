@@ -634,7 +634,7 @@ export default function AboutPage() {
             <SectionHeader chip="THE PROCESS">Our Approach</SectionHeader>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-6">
             {PROCESS_STEPS.map((step, i) => {
               const icons = [
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/listen_oravew.svg",
