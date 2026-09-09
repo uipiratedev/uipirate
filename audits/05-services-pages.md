@@ -836,3 +836,105 @@ The three highest-return changes across the service pages:
 ---
 
 *This file is the living audit for the services pages. v1/v2 (2026-08-27) → v3 (2026-08-31). Verify against current source before implementing — the code is the ground truth. The data file remains misspelled `sericesDetailsList.json`; all path references above use the real filename.*
+
+---
+---
+
+# v4 — Market Demand Findings (Upwork Job Scan) → Services Pages Implications
+**Audited:** 2026-09-09
+**Method:** Live scan of ~50 Upwork job postings across four searches (`SaaS UI UX product design`, `landing page design`, `UX audit`, `Next.js developer` / `product designer`), read for recurring buyer language, tooling, budget shape, and engagement pattern. This maps live buyer demand onto the 4 in-scope service pages to prioritize which fixes actually drive traffic and leads, on top of the correctness fixes already documented in v1–v3.
+
+## Demand by service, ranked
+
+| Rank | Service page | Signal from the job scan | Read |
+|---|---|---|---|
+| 1 | **UX Audits & Consultation** | Largest single recurring job category across the whole sample. Titles like "UX Audit and Research," "UX/UI Audit & MVP Improvements," "Senior Product UX Designer Needed for End-to-End UX Audit," "Website Audit Specialist" — at least 8 of ~50 postings were audits, more than any other single job type. Budgets are small ($80–$300 fixed, or modest hourly) and timelines short (`Less than 1 month`), meaning **fast-turnaround, low-commitment first engagements** are a real, high-volume lane. | This is simultaneously the page with the most real demand and, per v1–v3, the page in the worst content state (wrong headings from a deleted 3D service, website-build steps under a "Design System Roadmap" heading, broken `recommendedNextSteps`). **This is the highest-leverage fix on the entire services surface** — real buyers are actively searching this exact service today, landing on a page that visibly describes the wrong offering. |
+| 2 | **UX/UI Design** (SaaS-focused) | Second-largest category — "UI/UX Designer Needed to Redesign SaaS Dashboard," "Senior UI/UX Designer for SaaS Redesign," "SaaS UI/UX Consultation," "Mobile UI/UX SAAS." Most of these are **redesigns of an existing product**, not greenfield builds — the buyer already has something live and wants it improved. Competition is fierce (50–140+ proposals on generic "UI/UX Designer" titles). | Confirms this should stay the flagship page, but the existing X5 finding (unclear boundary with SaaS & AI Development, 4 different names for one service) matters more than it looks — in a lane this crowded, an inconsistent name/positioning is a real cost, not just a hygiene issue. Also: since most buyers already have a live product, "redesign an existing SaaS dashboard" language would match search intent better than "idea to MVP" framing alone. |
+| 3 | **SaaS & AI Development** | Strong, specific demand — "Full-Stack Developer – Next.js/TypeScript/Python/PostgreSQL \| AI SaaS," "Full-Stack AI Developer for Multi-Tenant Compliance SaaS Portal," "Senior FullStack Developer \| React, Next.js, TypeScript, Supabase \| AI-Powered." Roughly 1 in 4 dev postings name AI/LLM integration explicitly. Budgets here run highest ($10k+ fixed, $30–40+/hr, 6+ month engagements). | This is confirmed as the page's highest-value lane per engagement, even though it's not the highest-volume search term. Per v1–v3 this page's copy ("Build the engine behind your SaaS or AI product") is already the strongest on the site — no copy change needed, but the AI/LLM specificity buyers are using (prompt pipelines, LLM integration, multi-tenant) is good language to keep verbatim if it's already in the `whatYouGet` cards. |
+| 4 | **Landing Pages & Business Websites** | High volume but the *tool* named matters: **Framer** and **Webflow** show up repeatedly as the buyer's stated preference ("Framer Landing Page Designer/Developer – SaaS Validation Page," "Webflow Designer/Developer," "Senior Landing Page Designer — Custom Figma / Direct Response / Premium UI"). Buyers also use "conversion-focused," "CRO," and "lead generation" as their own words, not agency marketing-speak. | Validates the page's existing "AI-Readable Websites… optimized for search engines and AI discovery systems" differentiator (praised in v1–v3) and the emphasis on conversion. New finding: Framer is named by buyers often enough that it's worth confirming it's visible on this page's tech/tooling mentions, not just in the About page's tech stack. |
+
+## New cross-cutting findings (v4)
+
+### D1. The single highest-leverage fix on the services surface is finishing the UX Audits page content fix 🔴🔴
+
+v1–v3 already flagged the UX Audits page's wrong-service content (3D heading, Design System Roadmap process, "What All Will you get in return") as a 🔴 "Fix now." The job scan adds the missing piece: **this isn't just a broken page, it's a broken page in the highest-demand lane in the sample.** Every other 🔴 item on the priority table competes for attention against this one on both correctness *and* revenue grounds — fixing this page should be sequenced first among the open 🔴 items in the v1–v3 Priority Fix Table.
+
+### D2. No dedicated "quick audit" low-commitment offer exists anywhere in the funnel 🟠
+
+Across the sample, a recurring buyer pattern is: small fixed budget, fast timeline, explicit framing as "before we build more" or "before our pilot." This is a distinct buyer journey from the "idea to shipped product" full-engagement framing used everywhere else on the site (H1, CTA sections, process). The UX Audits page is the natural landing spot for this buyer, but nothing about its current price/timeline signal (X8, still unresolved per v3) speaks to "this can be small and fast." Adding a concrete scope signal here (e.g. "Starts at $X, 1–2 week turnaround" — the actual smallest audit tier) would match what this specific buyer segment is scanning for, and gives the `/services` hub page (X2, still missing) a natural low-friction entry card once it exists.
+
+### D3. "Redesign an existing product" is the dominant SaaS UI/UX search pattern, not "design a new one" 🟡
+
+Most SaaS-related UI/UX postings in the sample describe an existing, live product that needs improvement ("the current interface is functional but feels outdated," "we already have the product developed," "improve the visual quality of several websites"). The UX/UI Design page's current framing leans toward the MVP/idea-to-product journey (`whatYouGet` card "Idea to MVP"). Consider adding one card or one line that explicitly names "redesigning an existing SaaS product" as a use case — it's currently implied by the WhyThisMatters cards but never stated as a deliverable the way "Idea to MVP" is.
+
+### D4. Framer and Webflow are named buyer search terms for Landing Pages — confirm they're visible, not just implied 🟡
+
+The About page's Technology Stack already lists Framer (confirmed good in v4 About findings). On the Landing Pages service page specifically, verify Framer/Webflow (or the equivalent tools actually used) appear in visible body copy or the `whatYouGet` cards, since buyers in this lane are naming their preferred build tool directly in job titles, not just "a website."
+
+## What this does *not* change
+
+- All 🔴/🟠 correctness findings from v1–v3 (broken links, `<div>danis...</div>`, WhatsApp-only `RecommendedNextSteps`, soft 404s) remain valid and unaffected by market data — those are bugs regardless of demand.
+- No new service category is warranted. Mobile app UI/UX appeared frequently in the sample as its own job type, but the site's current 4-service scope (UX/UI Design, SaaS & AI Development, Landing Pages, UX Audits) already covers it under UX/UI Design's "Mobile Optimization" card — a 5th dedicated page is not justified by this sample.
+
+*Cross-reference: `04-about-page.md` v4 covers the About-page-specific implication of this same job scan (the AI-mention gap and the missing low-commitment-buyer signal).*
+
+---
+---
+
+# v5 — Angular Scope-Fit + "AI-Generated Code to Production" Findings (Upwork Job Scan)
+**Audited:** 2026-09-09
+**Method:** Follow-up scan of ~30 additional Upwork postings targeting two specific questions: (1) what does Angular demand actually look like, distinct from the React/Next.js demand already covered in v4, and (2) is there real, paid demand for taking AI-generated ("vibe coded") app code to production. Both were investigated because the site currently lists Angular as a core stack alongside React/Next.js without distinguishing the buyer, and has no language anywhere addressing AI-code cleanup despite it being core to "idea to shipped product" positioning.
+
+## Finding 1: Angular demand is a different buyer than the site's current stack story implies — RESOLVED, scope confirmed by user 🟠→✅
+
+**User decision (2026-09-09):** the agency does not want to chase heavy backend stacks like .NET/C#. **Azure is fine** as a cloud/deploy target. The confirmed real backend stack is **AWS, GCP, Azure, Python, Node.js, and AI agents**. This resolves the open question below — the recommendation is now: stay out of the .NET/C# lane entirely, and make the true backend stack (AWS/GCP/Azure/Python/Node.js/AI agents) visible on the site, since it currently isn't shown anywhere despite being real capability that matches live search demand (see Finding 2 and the v4 findings — AWS, Python, Node.js, and "AI agent" skills recurred often across both scans).
+
+Across the Angular-specific sample, the pattern is consistent and different from the React/Next.js sample in v4:
+
+| What buyers actually ask for | Example titles |
+|---|---|
+| Angular paired with **.NET / C# / ASP.NET Core / Azure / SQL Server** — an enterprise .NET shop, not a startup SaaS stack | "Senior .NET Angular & Azure Developer," "Full-Stack .NET / Angular / Azure Developer – Security Remediation," "Full-Stack .NET Developer — Angular + ASP.NET Core," "Senior Full-Stack Developer / Technical Contractor — C#, Angular, Azure, Elasticsearch" |
+| Angular paired with **Go** backends | "Go, AWS, PostgreSQL, Angular Developer," "Go & Angular Developer" |
+| Only one posting in the sample paired Angular with a Node/Postgres stack close to what the site's own tech stack implies | "Senior Full-Stack Developer (Angular 20+, Node.js, PostgreSQL) – Government Job Portal" |
+
+**Why this matters:** the About page's Technology Stack section (`Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP`) and the UX/UI Design service page both list Angular alongside React/Next.js as if they serve the same buyer. The live market says otherwise — the Angular buyer is overwhelmingly an **enterprise .NET/C#/Azure shop**, a different technical world from the React/Next.js/Supabase/Firebase startup buyer covered in v4.
+
+**Resolved:** the agency has confirmed it does not want the .NET/C# lane — that segment is explicitly out of scope. Azure stays in scope as a cloud/deploy target. **Action:** don't add .NET/C#/ASP.NET language anywhere on the site. Angular stays in the visible stack list as-is (true, low-cost to list, no change needed). The real fix this finding points to is additive, not corrective: the actual backend stack (AWS, GCP, Azure, Python, Node.js, AI agents) isn't shown anywhere on the site yet, and should be — see the updated recommendation below and `04-about-page.md` v5 AD1 for the specific Technology Stack addition.
+
+---
+
+## Finding 2: "AI-generated code → production-ready" is a real, recurring, currently invisible service gap 🔴
+
+This is the more actionable finding. Across both the general dev sample (v4) and this follow-up scan, a distinct and recurring buyer category showed up — someone who built something with an AI coding tool (Lovable, Bolt, Replit, v0, Cursor, Claude Code, "vibe coding" generally) and now needs a professional to secure, scale, refactor, or finish it for real users:
+
+| Job title | Budget / engagement | What they're actually asking for |
+|---|---|---|
+| "Lovable App Finalization and Automation" | $15–25/hr, <1 month | Finish app setup, "improve user experience," add automation — i.e. take a Lovable-generated app the rest of the way |
+| "Secure and Enhance Vibe Coded App" | 1–3 months | "Help secure my vibe coded app and add more complex features… ensuring the app runs smoothly" |
+| "Vibe Coding / Automation Specialist – AI Content Creation App" | 3–6 months, 127 proposals | Building on Lovable + Claude output long-term — this had the highest proposal count of any job in either scan, signaling strong freelancer awareness this category exists, but also strong buyer demand |
+| "Vibe coder: Claude Code: e-Commerce Development" | 1–3 months | Client has Claude Code subscription and access, wants a team to "put these together" and finish the build |
+| "Full-Stack .NET / Angular / Azure Developer – Security Remediation" | $200 fixed, <1 month | "Review, validate, and remediate security issues identified by **AI-assisted code analysis**" — a slightly different but related pattern: AI found the problems, a human is needed to actually fix them |
+| "Developer / Technical Lead for AI-powered Accounting Platform" (Aurora OS) | 6+ months, 131 proposals | "We already have several automation tools and prototypes and are looking for a strong developer / technical lead who can review what we have" — explicitly a review-and-productionize engagement, not greenfield |
+| "AI App Vibe Coder/Developer for Instagram videos" | 6+ months, FULL_TIME | Wants someone who has "previously made exactly what we're looking to create" using AI tooling — proof of prior AI-to-production work is the qualifying bar |
+
+**Why this is a genuine gap, not just a market curiosity:** the site's entire positioning — "From Idea to Shipped Product," "Design Through to Code," "no hand-offs, no gaps" (per `04-about-page.md` NC1/NC2) — is *already* the exact pitch this buyer needs to hear. This buyer has an idea that got partway to working code (via an AI tool) and needs someone to carry it the rest of the way to shipped — which is precisely the gap the agency's own tagline describes. But the phrase never appears anywhere: not in `data/sericesDetailsList.json`, not in the About page differentiation cards, not in the SaaS & AI Development page's `whatYouGet` cards (Full-Stack Architecture, AI & LLM Integration, API & Third-Party Integrations, Cloud Deployment & Scaling — none of which name "cleaning up / hardening / productionizing AI-generated code" even though the process work is functionally close to it).
+
+**Recommendation — services pages:**
+- Add one `whatYouGet` card to **SaaS & AI Development** naming this directly, e.g. `AI-Generated Code, Production-Ready` — "Built something fast with Lovable, Bolt, Replit, or Claude Code? We take it from prototype to a secure, scalable, production-grade product." This is additive (a 5th card, or a swap for the weakest of the current 4) and costs nothing to test since the underlying skill (full-stack engineering) is already the service being sold.
+- Consider whether this belongs as its own line in `WhyThisMatters` ("Fragile Foundations" already gestures at this — "Fragile Foundations — [problem] → [fix]" per v1's cross-reference — worth checking if its current copy already covers AI-tool output specifically, or only general technical debt).
+- This also strengthens the **UX Audits & Consultation** page's case (already the top-priority fix per v4 D1): a "review what we already have" audit is exactly the entry point for a buyer who vibe-coded a prototype and needs a professional read on what's salvageable before further investment — the audit page could explicitly mention AI-tool-built prototypes as a thing it evaluates.
+
+**Recommendation — About page:** add "AI-generated code" or "vibe-coded prototype" as a named starting point once, somewhere a scanning buyer would see it — the differentiation cards (Section 3a) or the hero subheadline are the two highest-visibility spots. This is a keyword and a real, quotable buyer situation that currently has zero surface area on the site despite being squarely inside the "idea to shipped product" promise.
+
+---
+
+## Priority additions to the existing tables
+
+| # | Scope | Issue | Priority |
+|---|---|---|---|
+| A1 | SaaS & AI Development page | No `whatYouGet` card or copy names "AI-generated code to production" despite this being a live, recurring, well-matched buyer request | 🔴 Add — high-intent keyword + service gap, zero conflict with existing content |
+| A2 | About / Tech Stack | Real backend stack (AWS, GCP, Azure, Python, Node.js, AI agents) isn't shown anywhere on the site — only front-end tools are listed | 🟠 Add — resolved scope, see AD1 in `04-about-page.md` v5 |
+| A3 | UX Audits & Consultation page | Could explicitly mention auditing AI-tool-built (Lovable/Bolt/Replit/v0) prototypes as an audit input, reinforcing the page's existing "before you build more" framing | 🟡 Consider — pairs naturally with the D1/D2 findings in v4 |
+| A4 | SaaS & AI Development page, `whatYouGet` cards | "Full-Stack Architecture," "AI & LLM Integration," "Cloud Deployment & Scaling" cards should name the actual providers (AWS, GCP, Azure, Node.js, Python) rather than staying generic — matches confirmed real stack and live search terms | 🟡 Consider |
+
+*Cross-reference: this section extends `05-services-pages.md` v4 and has a matching About-page note appended to `04-about-page.md` v5.*
