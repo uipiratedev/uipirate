@@ -78,7 +78,7 @@ const ServicesSection = () => {
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
-      title: "Landing Websites",
+      title: "Business Websites",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
