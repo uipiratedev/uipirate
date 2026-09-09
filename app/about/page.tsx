@@ -17,6 +17,14 @@ import {
   HERO_BADGE_ANIMATION_STYLE,
 } from "@/config/glassSurfacePresets";
 import { PROCESS_STEPS } from "@/data/process";
+import {
+  StrategyBeforePixelsAsset,
+  ComplexMadeSimpleAsset,
+  BuiltToConvertAsset,
+  DesignToCodeAsset,
+  TimezoneAsset,
+  ProductsGridAsset,
+} from "@/components/about/AboutBentoAssets";
 
 const stats = [
   { number: "9+", label: "Years of Experience" },
@@ -353,7 +361,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[160px]" />
+                <StrategyBeforePixelsAsset />
                 <div className="z-10 relative">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Strategy Before Pixels
@@ -375,7 +383,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[120px]" />
+                <ComplexMadeSimpleAsset />
                 <div className="z-10 relative">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Complex Made Simple
@@ -398,7 +406,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
+                <BuiltToConvertAsset />
                 <div className="z-10 relative">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Built to Convert
@@ -420,7 +428,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
+                <DesignToCodeAsset />
                 <div className="z-10 relative">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Design Through to Code
@@ -442,7 +450,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
+                <TimezoneAsset />
                 <div className="z-10 relative">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Same Hours as Your Team
@@ -464,7 +472,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[120px]" />
+                <ProductsGridAsset />
                 <div className="z-10 relative">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     50+ Products, Not Guesses
