@@ -422,42 +422,6 @@ export default function ToolsHubPage() {
             </div>
           </div>
         )}
-
-        {/* Agency Bridge Banner */}
-        <div className="w-full mt-16 bg-white border border-[#E5E7EB] rounded-[32px] p-8 sm:p-12 shadow-[0_2px_16px_rgba(0,0,0,0.05)] flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="max-w-2xl">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
-              Need a Custom Product Audit?
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
-              Turn audit findings into a high-converting product.
-            </h3>
-            <p className="text-sm text-gray-500 mt-2 leading-relaxed">
-              UI Pirate is a product design & full-stack development agency
-              specializing in complex SaaS platforms, AI interfaces, and
-              high-velocity landing pages.
-            </p>
-          </div>
-          <Link
-            className="px-7 py-4 rounded-2xl bg-gray-900 hover:bg-[#FF5B04] text-white text-sm font-bold transition-all shadow-md flex-shrink-0 flex items-center gap-2"
-            href="/contact"
-          >
-            <span>Book a 1-on-1 UX Consultation</span>
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-              />
-            </svg>
-          </Link>
-        </div>
       </div>
     </div>
   );

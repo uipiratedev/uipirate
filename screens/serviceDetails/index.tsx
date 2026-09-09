@@ -12,7 +12,6 @@ import WhyThisMatters from "./whyThisMatters";
 import WhatYouGetAnimations from "./whatYouGetAnimations";
 
 import PageWrapper from "@/components/PageWrapper";
-import GlobalCTA from "@/components/GlobalCTA";
 
 const ServiceDetails = ({ data }: any) => {
   if (!data) notFound();
@@ -43,13 +42,11 @@ const ServiceDetails = ({ data }: any) => {
         )}
 
         {data.recommendedNextSteps && (
-          <div className="section-container">
+          <div className="section-container pb-20">
             <RecommendedNextSteps data={data.recommendedNextSteps} />
           </div>
         )}
 
-        {/* Final CTA for service page */}
-        <GlobalCTA />
       </div>
     </PageWrapper>
   );

@@ -5,7 +5,7 @@ import { useState, useId } from "react";
 
 export type JoinTactileButtonVariant = "orange" | "dark";
 export type JoinTactileButtonState = "interactive" | "standerd" | "hover";
-export type JoinTactileButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type JoinTactileButtonSize = "xs" | "sm" | "md" | "lg" | "xl" | "auto";
 
 export interface JoinTactileButtonProps {
   /** Text on the key cap. Defaults to "LETS VENTURE.". */
@@ -30,6 +30,7 @@ const MAX_WIDTH: Record<JoinTactileButtonSize, number> = {
   md: 460,
   lg: 580,
   xl: 720,
+  auto: 9999,
 };
 
 const VARIANTS: Record<
@@ -111,12 +112,38 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
   const pressed = live ? isPressed : false;
 
   const v = VARIANTS[variant] ?? VARIANTS.orange;
-  const widthPx = MAX_WIDTH[size] ?? 460;
 
   // Exact vector match if label is default
   const cleanLabel = label.trim().toUpperCase();
   const isDefaultLabel =
     cleanLabel === "LETS VENTURE." || cleanLabel === "LETS VENTURE";
+
+  // Dynamic width calculation based on text length: button expands smoothly as text grows
+  const baseWidth = MAX_WIDTH[size] ?? 460;
+  const textAdaptiveWidth =
+    size === "auto"
+      ? "100%"
+      : `${Math.max(
+          baseWidth,
+          size === "xs" || size === "sm"
+            ? baseWidth
+            : Math.min(720, 460 + Math.max(0, cleanLabel.length - 13) * 24),
+        )}px`;
+
+  // Dynamic font sizing for custom labels so text adapts and never collides with arrow
+  const charCount = cleanLabel.length;
+  const maxAvailableWidth = showArrow ? 230 : 280;
+  const computedFontSize = Math.min(
+    22,
+    Math.max(13, Math.floor(maxAvailableWidth / (charCount * 0.58))),
+  );
+  const computedReflectionSize = Math.max(9, Math.round(computedFontSize * 0.64));
+  const computedLetterSpacing = computedFontSize < 17 ? "0.03em" : "0.06em";
+  const computedTextX = showArrow
+    ? cleanLabel.length > 15
+      ? "43.5%"
+      : "45%"
+    : "50%";
 
   const capTransform = pressed
     ? "translateY(4px) scale(0.988)"
@@ -129,10 +156,11 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
       className={`relative inline-flex items-center justify-center select-none ${className}`}
       style={{
         width: "100%",
-        maxWidth: `${widthPx}px`,
+        maxWidth: textAdaptiveWidth,
         aspectRatio: "392 / 130",
         opacity: disabled ? 0.5 : 1,
         cursor: disabled ? "not-allowed" : "pointer",
+        transition: "max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
       onClick={disabled ? undefined : onClick}
       onMouseDown={() => live && setIsPressed(true)}
@@ -478,12 +506,12 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
                 style={{
                   fontFamily: "var(--font-jakarta), sans-serif",
                   fontWeight: 600,
-                  fontSize: "22px",
-                  letterSpacing: "0.08em",
+                  fontSize: `${computedFontSize}px`,
+                  letterSpacing: computedLetterSpacing,
                   textTransform: "uppercase",
                 }}
                 textAnchor="middle"
-                x={showArrow ? "45%" : "50%"}
+                x={computedTextX}
                 y="64"
               >
                 {label}
@@ -522,12 +550,12 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
                 style={{
                   fontFamily: "var(--font-jakarta), sans-serif",
                   fontWeight: 600,
-                  fontSize: "14px",
-                  letterSpacing: "0.08em",
+                  fontSize: `${computedReflectionSize}px`,
+                  letterSpacing: computedLetterSpacing,
                   textTransform: "uppercase",
                 }}
                 textAnchor="middle"
-                x={showArrow ? "45%" : "50%"}
+                x={computedTextX}
                 y="98"
               >
                 {label}

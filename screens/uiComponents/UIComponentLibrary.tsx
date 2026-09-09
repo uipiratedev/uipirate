@@ -8,7 +8,6 @@ import GlassSurface from "@/components/GlassSurface";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import PageWrapper from "@/components/PageWrapper";
-import GlobalCTA from "@/components/GlobalCTA";
 import {
   HERO_BADGE_PRESET,
   HERO_BADGE_CLASSNAME,
@@ -922,9 +921,6 @@ export default function UIComponentLibrary() {
               ))}
             </div>
           </div>
-
-          {/* Website Global CTA */}
-          <GlobalCTA topic="custom UI components or design systems" />
         </div>
       </div>
     </PageWrapper>
