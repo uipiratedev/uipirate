@@ -234,8 +234,9 @@ const CheckIcon = () => (
   </svg>
 );
 
-const SearchIcon = () => (
+const SearchIcon = ({ className = "" }: { className?: string }) => (
   <svg
+    className={className}
     fill="none"
     height="13"
     stroke="currentColor"
@@ -1637,8 +1638,8 @@ export default function Example() {
           >
             {/* Sidebar Search */}
             <div className="p-3 border-b border-inherit">
-              <div className="relative">
-                <SearchIcon />
+              <div className="relative flex items-center">
+                <SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                 <input
                   className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${
                     isLightPage

@@ -782,57 +782,7 @@ export default function AboutPage() {
             <FaqsAccordion items={ABOUT_FAQS} />
           </div>
         </section>
-
-        {/* CTA Section - Dark Card */}
-        <section className="section-container">
-          <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture overflow-hidden">
-            <CardBody className="p-12 max-md:p-6 text-center relative">
-              {/* Glow effect */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-brand-orange/10 blur-3xl pointer-events-none" />
-
-              <div className="relative z-10">
-                <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4 tracking-tight">
-                  Ready to Turn Your Idea Into a{" "}
-                  <span className="text-brand-orange">Product</span>?
-                </h2>
-                <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-                  Book a free 15-minute call. Whether it&apos;s a quick UX audit
-                  or a full product build, tell us where you are — we&apos;ll
-                  tell you the fastest path forward.
-                </p>
-                <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
-                  <Link
-                    className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
-                    href="https://cal.com/vishal-anand-3w8233/15min"
-                    target="_blank"
-                  >
-                    Book a Free Call
-                  </Link>
-                  <Link
-                    className="bg-white/10 border border-white/20 text-white px-6 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all duration-300"
-                    href="/pricing"
-                  >
-                    See Pricing
-                  </Link>
-                </div>
-
-                {/* Trust indicators */}
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-gray-500 text-sm">
-                  <span className="flex items-center gap-2">
-                    <CheckIcon /> No commitment required
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <CheckIcon /> Response within 2 hours
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <CheckIcon /> US timezone friendly
-                  </span>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        </section>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
