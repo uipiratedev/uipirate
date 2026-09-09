@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { CLIENT_LOGOS } from "@/data/clientLogos";
 
 // Card 1: Strategy Before Pixels (Tall)
@@ -59,8 +60,23 @@ export const StrategyBeforePixelsAsset = () => {
 
 // Card 2: Complex Made Simple (Wide) - Animated Slider
 export const ComplexMadeSimpleAsset = () => {
+  const percent = useMotionValue(0);
+
+  useEffect(() => {
+    const controls = animate(percent, [0, 100, 0], {
+      duration: 6,
+      ease: "easeInOut",
+      repeat: Infinity,
+    });
+    return () => controls.stop();
+  }, [percent]);
+
+  // Synchronously compute clipPath and handle position from the exact same animated motion value
+  const clipPath = useTransform(percent, (v) => `inset(0 ${100 - v}% 0 0)`);
+  const left = useTransform(percent, (v) => `${v}%`);
+
   return (
-    <div className="flex-1 rounded-xl mb-6 bg-gray-100 overflow-hidden relative min-h-[120px]">
+    <div className="flex-1 rounded-xl mb-6 bg-gray-100 overflow-hidden relative min-h-[120px] select-none">
       
       {/* Background: Bloated UI */}
       <div className="absolute inset-0 p-4 bg-gray-100 flex flex-col gap-2">
@@ -83,11 +99,10 @@ export const ComplexMadeSimpleAsset = () => {
          <div className="absolute top-2 right-2 bg-red-200 text-red-800 text-[8px] font-bold px-1 rounded border border-red-400">ERROR</div>
       </div>
 
-      {/* Foreground: Clean UI with Clip Path Animation */}
+      {/* Foreground: Clean UI with Clip Path Animation (driven by shared percent) */}
       <motion.div 
-        className="absolute inset-0 bg-white p-4 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] border-r-2 border-brand-orange"
-        animate={{ clipPath: ["inset(0 100% 0 0)", "inset(0 0% 0 0)", "inset(0 100% 0 0)"] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+        className="absolute inset-0 bg-white p-4 shadow-[inset_0_0_20px_rgba(0,0,0,0.05)] pointer-events-none"
+        style={{ clipPath }}
       >
          <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-50">
             <div className="flex items-center gap-3">
@@ -116,13 +131,12 @@ export const ComplexMadeSimpleAsset = () => {
          </div>
       </motion.div>
 
-      {/* Slider Handle */}
+      {/* Slider Divider Line + Handle (driven by the exact same left transform) */}
       <motion.div 
-        className="absolute top-0 bottom-0 w-[2px] bg-brand-orange z-20 flex items-center justify-center"
-        animate={{ left: ["0%", "100%", "0%"] }}
-        transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
+        className="absolute top-0 bottom-0 w-[2px] bg-brand-orange z-20 pointer-events-none -ml-[1px]"
+        style={{ left }}
       >
-         <div className="w-6 h-6 bg-white border-2 border-brand-orange rounded-full shadow-lg flex items-center justify-center -ml-3">
+         <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white border-2 border-brand-orange rounded-full shadow-lg flex items-center justify-center">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff5e00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                <path d="M15 18l-6-6 6-6" />
                <path d="M9 18l6-6-6-6" className="opacity-0" />
