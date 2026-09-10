@@ -6,6 +6,7 @@ import { ContainerScroll } from "@/components/container-scroll-animation";
 import * as Visuals from "@/components/visuals";
 import * as UxAuditVisuals from "@/components/visuals/UxAuditVisuals";
 import * as SaasDevVisuals from "@/components/visuals/SaasDevVisuals";
+import * as LandingVisuals from "@/components/visuals/LandingVisuals";
 
 /**
  * `whatYouGet` card `heading` strings are LOAD-BEARING: an exact match here swaps
@@ -29,10 +30,10 @@ const VISUAL_MAPPING: Record<string, any> = {
   "Cloud Deployment & Scaling": SaasDevVisuals.VisualCloudNew,
   "AI-Generated Code, Production-Ready": SaasDevVisuals.VisualAiCodeNew,
   // Landing Pages & Business Websites
-  "Landing Pages & Corporate Websites": Visuals.VisualLanding,
-  "Design & Frontend Development": Visuals.VisualFrontend,
-  "SEO Performance & AI-Readable Websites": Visuals.VisualSEO,
-  "Fully Responsive Experience": Visuals.VisualResponsive,
+  "Landing Pages & Corporate Websites": LandingVisuals.VisualLandingNew,
+  "Design & Frontend Development": LandingVisuals.VisualFrontendNew,
+  "SEO Performance & AI-Readable Websites": LandingVisuals.VisualSEONew,
+  "Fully Responsive Experience": LandingVisuals.VisualResponsiveNew,
   // UX Audits & Consultation
   "Heuristic UX Audit Report": UxAuditVisuals.VisualAuditNew,
   "Drop-Off & Friction Insights": UxAuditVisuals.VisualFrictionNew,

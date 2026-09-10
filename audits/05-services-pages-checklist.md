@@ -166,6 +166,8 @@ Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-veri
 |---|------|--------|
 | 3.2a | 4 cards incl. `SEO Performance & AI-Readable Websites` | ✅ Keep as-is (differentiator praised in v1–v3) |
 | 3.2b | Framer / Webflow named as buyer search terms (v4 D4) | ✅ Done (v8), "Design & Frontend Development" `whatYouGet` card description now reads "…builds in React, Next.js, Framer, or Webflow…". Keyword is back in visible body copy after the `youWillGet` badge removal. |
+| 3.2c | "Design & Frontend Development" subtext spanned over three lines | ✅ Done, shortened to exactly 2 lines ("Production-ready builds in React, Next.js, Framer, or Webflow matching your design exactly.") |
+| 3.2d | 4 card visuals upgraded from static SVG to highly specific Framer Motion glassmorphic components | ✅ Done |
 
 ### 3.3–3.5 WhyThisMatters / StreamlinedProcess / WhoThisIsFor
 | # | Item | Status |
