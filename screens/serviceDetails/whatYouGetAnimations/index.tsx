@@ -5,6 +5,7 @@ import GlassBadge from "@/components/GlassBadge";
 import { ContainerScroll } from "@/components/container-scroll-animation";
 import * as Visuals from "@/components/visuals";
 import * as UxAuditVisuals from "@/components/visuals/UxAuditVisuals";
+import * as SaasDevVisuals from "@/components/visuals/SaasDevVisuals";
 
 /**
  * `whatYouGet` card `heading` strings are LOAD-BEARING: an exact match here swaps
@@ -23,8 +24,11 @@ const VISUAL_MAPPING: Record<string, any> = {
   "New Build or Redesign": Visuals.VisualMVP,
   "Mobile Optimization": Visuals.VisualMobile,
   // SaaS & AI Development
-  "Full-Stack Architecture": Visuals.VisualCode,
-  "AI-Generated Code, Production-Ready": Visuals.VisualCode,
+  "Full-Stack Architecture": SaasDevVisuals.VisualFullStackNew,
+  "AI & LLM Integration": SaasDevVisuals.VisualAILLMNew,
+  "API & Third-Party Integrations": SaasDevVisuals.VisualAPINew,
+  "Cloud Deployment & Scaling": SaasDevVisuals.VisualCloudNew,
+  "AI-Generated Code, Production-Ready": SaasDevVisuals.VisualAiCodeNew,
   // Landing Pages & Business Websites
   "Landing Pages & Corporate Websites": Visuals.VisualLanding,
   "Design & Frontend Development": Visuals.VisualFrontend,
