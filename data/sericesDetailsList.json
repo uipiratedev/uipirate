@@ -26,7 +26,7 @@
             }
           ]
         ],
-        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, data-heavy dashboards, and mobile-first products, from MVP Figma wireframes to fully developed, enterprise-grade products."
+        "description": "You bring the idea; we handle the strategy, design, and build. Intuitive interfaces and working apps for SaaS, AI tools, data-heavy dashboards, and mobile-first products, from MVP Figma wireframes to fully developed, enterprise-grade products."
       },
       "whatYouGet": {
         "badge": "WHAT YOU GET",
@@ -174,23 +174,23 @@
       },
       "whatYouGain": {
         "badge": "WHAT YOU GAIN",
-        "heading": "What You Gain Working With Us",
+        "heading": "What You Gain Building With Us",
         "card": [
           {
-            "heading": "You Don't Have to Manage Us",
-            "description": "Give us the initial gist of your idea. We take the brainstorming, research, direction, and end-to-end project management from there, and tell you what needs improvement and what stays as it is."
+            "heading": "Strategy to Screens, One Team",
+            "description": "Product strategy, information architecture, UX/UI design, and front-end build in React, Next.js, or Angular, handled together."
           },
           {
-            "heading": "One Team, Idea to Production",
-            "description": "Planning, research, documentation, design, and development under one roof, so you're not stitching separate vendors together or filling the gaps yourself."
+            "heading": "You Steer, We Design",
+            "description": "Share the idea. We run the research, own the design decisions, and flag what to change and what to keep."
           },
           {
-            "heading": "Built to Convert, and Fast",
-            "description": "Not just a product that looks beautiful. We design and build for sign-ups, activation, and load speed, so the work pays back."
+            "heading": "Interfaces Built to Convert",
+            "description": "Clean, usable SaaS and app screens designed for activation and retention, not just a polished look."
           },
           {
-            "heading": "Research and Docs You Keep",
-            "description": "Proper research and documentation handed over alongside the design and code, yours to use whether you continue with us or not."
+            "heading": "A Handoff You Can Trust",
+            "description": "Dev-ready designs, a reusable design system, and documentation your team keeps."
           }
         ]
       },
@@ -397,23 +397,23 @@
       },
       "whatYouGain": {
         "badge": "WHAT YOU GAIN",
-        "heading": "What You Gain Working With Us",
+        "heading": "What You Gain Shipping With Us",
         "card": [
           {
-            "heading": "You Don't Have to Manage Us",
-            "description": "Give us the initial gist of your idea. We take the brainstorming, research, technical direction, and end-to-end project management from there, and tell you what needs improvement and what stays as it is."
+            "heading": "Backend, AI, and Infra in One Team",
+            "description": "Full-stack SaaS development, AI agents and RAG pipelines, and production deployment on AWS, GCP, or Azure."
           },
           {
-            "heading": "One Team, Idea to Production",
-            "description": "Architecture, research, documentation, backend, AI, and deployment under one roof, so you're not stitching separate vendors together or filling the gaps yourself."
+            "heading": "You Steer, We Build",
+            "description": "Give us the idea. We own the architecture decisions, technical direction, and delivery timeline."
           },
           {
-            "heading": "Built to Scale, and Fast",
-            "description": "Not just code that runs in a demo. We build for real load, real usage, and response times that hold up as you grow."
+            "heading": "Built for Real Load",
+            "description": "Scalable data models and APIs, load-tested for the usage you're growing into, not just the demo."
           },
           {
-            "heading": "Research and Docs You Keep",
-            "description": "Proper research and documentation handed over alongside the code, yours to use whether you continue with us or not."
+            "heading": "Code Your Team Can Own",
+            "description": "Readable, documented code and a clean handoff, with no lock-in to us."
           }
         ]
       },
@@ -605,23 +605,23 @@
       },
       "whatYouGain": {
         "badge": "WHAT YOU GAIN",
-        "heading": "What You Gain Working With Us",
+        "heading": "What You Gain Launching With Us",
         "card": [
           {
-            "heading": "You Don't Have to Manage Us",
-            "description": "Give us the initial gist of your idea. We take the brainstorming, positioning, research, and end-to-end project management from there, and tell you what needs improvement and what stays as it is."
+            "heading": "Positioning to Published",
+            "description": "Messaging, landing page design, and a fast build in React, Next.js, Framer, or Webflow, handled end to end."
           },
           {
-            "heading": "One Team, Idea to Live Site",
-            "description": "Positioning, research, copy direction, design, and development under one roof, so you're not stitching separate vendors together or filling the gaps yourself."
+            "heading": "You Steer, We Run It",
+            "description": "Bring the rough idea. We handle positioning, copy direction, and project management."
           },
           {
-            "heading": "Built to Convert, and Fast",
-            "description": "Not just a site that looks beautiful. We design and build for signups, leads, and load speed, so the page pays back."
+            "heading": "Pages Built to Convert",
+            "description": "Structured for signups and leads, with SEO and load speed built in, not bolted on after."
           },
           {
-            "heading": "Research and Docs You Keep",
-            "description": "Proper research and documentation handed over alongside the design and code, yours to use whether you continue with us or not."
+            "heading": "Easy to Update Later",
+            "description": "A clean CMS setup and documentation so your team can edit the site without us."
           }
         ]
       },
@@ -671,7 +671,7 @@
             }
           ]
         ],
-        "description": "We identify where users hesitate, drop off, or lose confidence, and tell you exactly what to fix, why it matters, and what to do next. Most audits run 1 to 2 weeks."
+        "description": "You point us at the product; we handle the research and the roadmap. We identify where users hesitate, drop off, or lose confidence, and tell you exactly what to fix, why it matters, and what to do next. Most audits run 1 to 2 weeks."
       },
       "whatYouGet": {
         "heading": "What You Get From a UX Audit",
@@ -821,23 +821,23 @@
       },
       "whatYouGain": {
         "badge": "WHAT YOU GAIN",
-        "heading": "What You Gain Working With Us",
+        "heading": "What You Gain From the Audit",
         "card": [
           {
-            "heading": "You Don't Have to Manage Us",
-            "description": "Point us at the product and the metric you're worried about. We take the research, analysis, and prioritisation from there, and tell you what needs fixing and what stays as it is."
+            "heading": "A Prioritised Fix List",
+            "description": "Every usability issue scored by impact and effort, sequenced into a roadmap you can execute."
           },
           {
-            "heading": "Findings You Can Act On",
-            "description": "Not a list of everything wrong. Every issue is scored by impact and effort, sequenced into a roadmap your team or ours can execute."
+            "heading": "You Point, We Investigate",
+            "description": "Share the metric you're worried about. We run the heuristic UX review and drop-off analysis."
           },
           {
             "heading": "Clarity Before You Spend",
-            "description": "Know what's blocking growth before you commit budget to a redesign or a new build, so the next investment lands."
+            "description": "Know what's blocking activation before you commit budget to a redesign or rebuild."
           },
           {
-            "heading": "Research and Docs You Keep",
-            "description": "An annotated report and walkthrough handed over, with the reasoning behind each finding, yours to use whether you continue with us or not."
+            "heading": "Findings With the Reasoning",
+            "description": "An annotated report and walkthrough your design or dev team can act on directly."
           }
         ]
       },
