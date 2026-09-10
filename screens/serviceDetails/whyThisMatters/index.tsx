@@ -75,30 +75,32 @@ const WhyThisMatters = ({ data }: { data: any }) => {
                         : "grid-rows-[0fr] opacity-0 mt-0"
                     }`}
                   >
-                    <div className="overflow-hidden pb-4">
-                      <p className="text-[15px] text-[#475569] leading-relaxed pl-[48px]">
-                        {item.description}
-                      </p>
+                    <div className="overflow-hidden">
+                      <div className="pb-4">
+                        <p className="text-[15px] text-[#475569] leading-relaxed pl-[48px]">
+                          {item.description}
+                        </p>
 
-                      {/* QuickWins - shown inline on mobile only */}
-                      <div className="lg:hidden mt-4  mr-4 ml-[32px] rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-4">
-                        <div className="space-y-2">
-                          {Array.isArray(item.QuickWins) ? (
-                            item.QuickWins.map((win: string, i: number) => (
-                              <h3
-                                key={i}
-                                className="text-base font-semibold leading-tight"
-                              >
-                                {win}
+                        {/* QuickWins - shown inline on mobile only */}
+                        <div className="lg:hidden mt-4 mr-4 ml-[32px] rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-4">
+                          <div className="space-y-2">
+                            {Array.isArray(item.QuickWins) ? (
+                              item.QuickWins.map((win: string, i: number) => (
+                                <h3
+                                  key={i}
+                                  className="text-base font-semibold leading-tight"
+                                >
+                                  {win}
+                                </h3>
+                              ))
+                            ) : (
+                              <h3 className="text-base font-semibold leading-tight">
+                                {item.QuickWins}
                               </h3>
-                            ))
-                          ) : (
-                            <h3 className="text-base font-semibold leading-tight">
-                              {item.QuickWins}
-                            </h3>
-                          )}
+                            )}
+                          </div>
+                          <div className="w-10 h-1 bg-[#FF5B04] mt-3 rounded-full opacity-20" />
                         </div>
-                        <div className="w-10 h-1 bg-[#FF5B04] mt-3 rounded-full opacity-20" />
                       </div>
                     </div>
                   </div>
