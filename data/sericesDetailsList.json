@@ -174,23 +174,26 @@
       },
       "recommendedNextSteps": {
         "badge": "RECOMMENDED NEXT STEPS",
-        "heading": "What Most Clients Require Next",
+        "heading": "What Most Product Teams Require Next",
         "featuredService": {
-          "title": "Landing Pages & Business Websites",
-          "tagline": "Launch faster with beautiful, high-converting websites",
-          "description": "Once your product is ready, the next bottleneck is adoption.",
-          "description2": "We design and build high-converting landing pages and marketing websites that help you launch, explain value clearly, and drive sign-ups.",
+          "title": "SaaS & AI Development",
+          "tagline": "Turn your UI into a functional product.",
+          "description": "Beautiful designs need robust engineering.",
+          "description2": "We build scalable backends, integrate AI models, and deliver production-ready code.",
           "buttonText": "Explore",
-          "slug": "landing-pages-business-websites"
+          "slug": "saas-ai-development",
+          "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
           {
-            "title": "SaaS & AI Development",
-            "slug": "saas-ai-development"
+            "title": "Landing Pages & Business Websites",
+            "slug": "landing-pages-business-websites",
+            "icon": "browser"
           },
           {
             "title": "UX Audits & Consultation",
-            "slug": "ux-audits-consultation"
+            "slug": "ux-audits-consultation",
+            "icon": "code"
           }
         ]
       }
@@ -372,19 +375,26 @@
       },
       "recommendedNextSteps": {
         "badge": "RECOMMENDED NEXT STEPS",
-        "heading": "What Most Clients Require Next",
+        "heading": "What Most Startups Require Next",
         "featuredService": {
-          "title": "UX/UI Design",
-          "tagline": "Design the interface your product deserves",
-          "description": "Great engineering needs a great interface to sit behind.",
-          "description2": "We design intuitive, premium user interfaces for SaaS and AI products, from wireframes to dev-ready UI.",
+          "title": "Landing Pages & Business Websites",
+          "tagline": "Launch faster with a high-converting website.",
+          "description": "Your product is ready. Now you need users.",
+          "description2": "We design and build marketing sites that clearly explain your value and drive sign-ups.",
           "buttonText": "Explore",
-          "slug": "ux-ui-design"
+          "slug": "landing-pages-business-websites",
+          "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
           {
+            "title": "UX/UI Design",
+            "slug": "ux-ui-design",
+            "icon": "code"
+          },
+          {
             "title": "UX Audits & Consultation",
-            "slug": "ux-audits-consultation"
+            "slug": "ux-audits-consultation",
+            "icon": "code"
           }
         ]
       }
@@ -551,20 +561,25 @@
       },
       "recommendedNextSteps": {
         "badge": "RECOMMENDED NEXT STEPS",
-        "heading": "What Most Founders Require Next",
+        "heading": "What Most Businesses Require Next",
         "featuredService": {
-          "title": "UX Audits & Consultation",
-          "tagline": "Make sure your new site actually converts.",
-          "description": "Once your website is live, the next step is validating that it works for real users.",
-          "description2": "We run heuristic audits and usability reviews to find friction points and turn them into an actionable roadmap.",
+          "title": "SaaS & AI Development",
+          "tagline": "Turn your audience into active users.",
+          "description": "Your marketing site is live and converting.",
+          "description2": "Now build out the core product, web app, or AI platform that your users are signing up for.",
           "buttonText": "Explore",
-          "slug": "ux-audits-consultation",
+          "slug": "saas-ai-development",
           "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
           {
             "title": "UX/UI Design",
             "slug": "ux-ui-design",
+            "icon": "code"
+          },
+          {
+            "title": "UX Audits & Consultation",
+            "slug": "ux-audits-consultation",
             "icon": "code"
           }
         ]
@@ -740,12 +755,12 @@
       },
       "recommendedNextSteps": {
         "badge": "RECOMMENDED NEXT STEPS",
-        "heading": "What Most SaaS & AI Founders Require Next",
+        "heading": "What Most Founders Require Next",
         "featuredService": {
           "title": "UX/UI Design",
-          "tagline": "Turn audit insights into a product that’s easier to use, easier to trust, and easier to scale.",
-          "description": "Most teams move from clarity → UX execution to fix friction fast.",
-          "description2": "Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
+          "tagline": "Turn audit insights into a usable product.",
+          "description": "Most teams move straight to UX execution to fix friction fast.",
+          "description2": "We apply the audit fixes with structure, building flows that hold up as the product grows.",
           "buttonText": "Explore",
           "slug": "ux-ui-design",
           "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
