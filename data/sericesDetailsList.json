@@ -185,12 +185,8 @@
             "description": "Share the idea. We run the research, own the design decisions, and flag what to change and what to keep."
           },
           {
-            "heading": "Interfaces Built to Convert",
-            "description": "Clean, usable SaaS and app screens designed for activation and retention, not just a polished look."
-          },
-          {
-            "heading": "A Handoff You Can Trust",
-            "description": "Dev-ready designs, a reusable design system, and documentation your team keeps."
+            "heading": "Built to Convert, Ready to Ship",
+            "description": "Usable screens designed for activation, delivered dev-ready with a design system and docs your team keeps."
           }
         ]
       },
@@ -408,12 +404,8 @@
             "description": "Give us the idea. We own the architecture decisions, technical direction, and delivery timeline."
           },
           {
-            "heading": "Built for Real Load",
-            "description": "Scalable data models and APIs, load-tested for the usage you're growing into, not just the demo."
-          },
-          {
-            "heading": "Code Your Team Can Own",
-            "description": "Readable, documented code and a clean handoff, with no lock-in to us."
+            "heading": "Built to Scale, Yours to Own",
+            "description": "Data models and APIs load-tested for real usage, shipped as documented code with no lock-in."
           }
         ]
       },
@@ -616,12 +608,8 @@
             "description": "Bring the rough idea. We handle positioning, copy direction, and project management."
           },
           {
-            "heading": "Pages Built to Convert",
-            "description": "Structured for signups and leads, with SEO and load speed built in, not bolted on after."
-          },
-          {
-            "heading": "Easy to Update Later",
-            "description": "A clean CMS setup and documentation so your team can edit the site without us."
+            "heading": "Built to Convert, Easy to Update",
+            "description": "Structured for signups with SEO and load speed built in, on a CMS your team can edit without us."
           }
         ]
       },
@@ -833,11 +821,7 @@
           },
           {
             "heading": "Clarity Before You Spend",
-            "description": "Know what's blocking activation before you commit budget to a redesign or rebuild."
-          },
-          {
-            "heading": "Findings With the Reasoning",
-            "description": "An annotated report and walkthrough your design or dev team can act on directly."
+            "description": "Know what's blocking activation before a redesign, with findings your design or dev team can act on directly."
           }
         ]
       },

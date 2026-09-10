@@ -17,7 +17,7 @@ const WhatYouGain = ({ data }: { data: any }) => {
       </Reveal>
 
       {/* Cards */}
-      <RevealGroup className="grid grid-cols-1 gap-5 md:grid-cols-2 autoShowBottom">
+      <RevealGroup className="grid grid-cols-1 gap-5 md:grid-cols-3 autoShowBottom">
         {data.card?.map((item: any) => (
           <Reveal
             key={item.heading}
