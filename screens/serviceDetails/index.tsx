@@ -13,7 +13,7 @@ import WhatYouGetAnimations from "./whatYouGetAnimations";
 
 import PageWrapper from "@/components/PageWrapper";
 
-const ServiceDetails = ({ data }: any) => {
+const ServiceDetails = ({ data, slug }: { data: any, slug?: string }) => {
   if (!data) notFound();
 
   return (
@@ -33,7 +33,7 @@ const ServiceDetails = ({ data }: any) => {
           <StreamlinedProcess data={data.streamlinedProcess} />
         )}
 
-        <LandingWork />
+        {slug !== "UX-Audits-&-Consultation" && <LandingWork />}
 
         {data.whoThisIsFor && (
           <div className="section-container">

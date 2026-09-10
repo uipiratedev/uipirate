@@ -140,7 +140,7 @@ const ServicesByIdPage = ({ params }: PageProps) => {
         }}
         type="application/ld+json"
       />
-      <ServiceDetails data={service.data} />
+      <ServiceDetails data={service.data} slug={service.slug} />
     </div>
   );
 };
