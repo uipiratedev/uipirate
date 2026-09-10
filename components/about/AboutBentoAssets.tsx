@@ -618,7 +618,7 @@ export const TimezoneAsset = () => {
                   setSelected(loc.id as "usa" | "uk" | "india");
                 }}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between gap-3 transition-colors duration-150 shadow-sm w-[114px] h-[34px] border-2 cursor-pointer ${isActive
-                    ? "bg-white text-gray-900 border-[#1E60FF] shadow-md"
+                    ? "bg-white text-gray-900 border-brand-orange shadow-md"
                     : "bg-[#14161C] text-gray-200 border-transparent hover:bg-[#20242E] hover:text-white"
                   }`}
               >
