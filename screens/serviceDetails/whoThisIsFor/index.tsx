@@ -1,58 +1,63 @@
+"use client";
+
 import GlassBadge from "@/components/GlassBadge";
+import { Reveal, RevealGroup } from "@/components/motion";
 
-const patternBackgrounds = [
-  // Soft green diagonal stripes
-  "bg-[repeating-linear-gradient(135deg,#E4F7E9,#E4F7E9_12px,#F7FFF9_12px,#F7FFF9_24px)]",
-  // Soft yellow diagonal stripes
-  "bg-[repeating-linear-gradient(135deg,#FFF1C9,#FFF1C9_12px,#FFFBEA_12px,#FFFBEA_24px)]",
-  // Soft purple diagonal stripes
-  "bg-[repeating-linear-gradient(135deg,#EDE8FF,#EDE8FF_12px,#F7F5FF_12px,#F7F5FF_24px)]",
-];
+const PLACEHOLDER_IMAGE =
+  "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206604/founder_gnnfbf.svg";
 
-const WhoThisIsFor = ({ data }: any) => {
+const WhoThisIsFor = ({ data }: { data: any }) => {
   return (
     <section>
       {/* Header */}
-      <div className="autoShow text-center mb-4 md:mb-6">
-        <div className="flex items-center justify-center mb-6">
-          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
+      <Reveal variant="up">
+        <div className="autoShow text-center mb-6 md:mb-10">
+          <div className="flex items-center justify-center mb-6">
+            <GlassBadge variant="gradient">{data.badge}</GlassBadge>
+          </div>
+          <h2 className="heading-center">{data.heading}</h2>
         </div>
-        <h2 className="heading-center">{data.heading}</h2>
-      </div>
+      </Reveal>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7 autoShowBottom">
-        {data.card?.map((item: any, index: number) => (
-          <div
-            key={index}
-            className="group flex h-full flex-col overflow-hidden rounded-[20px] max-md:rounded-[12px] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] border border-[#0000000f]"
+      <RevealGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 autoShowBottom">
+        {data.card?.map((item: any) => (
+          <Reveal
+            key={item.heading}
+            as="article"
+            className="group relative h-[240px] w-full [perspective:1000px] md:h-[280px]"
+            variant="up"
           >
-            {/* Illustration / pattern area */}
-            <div
-              className={`relative h-44 md:h-52 ${
-                patternBackgrounds[index % patternBackgrounds.length]
-              }`}
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,#ffffff,transparent_55%)] opacity-60" />
-              <img
-                alt={item.heading}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-[200px] h-auto"
-                src={item.image}
-              />
-            </div>
+            <div className="relative h-full w-full rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition-transform duration-500 [transform-style:preserve-3d] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] group-hover:[transform:rotateY(180deg)] dark:group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
+              {/* FRONT FACE */}
+              <div className="absolute inset-0 flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-gray-200/80 bg-white [backface-visibility:hidden] dark:border-white/10 dark:bg-[#1A1A1A]">
+                <div className="relative flex h-[180px] w-full items-center justify-center overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white md:h-[220px] dark:from-[#26201D] dark:to-[#1A1A1A]">
+                  <img
+                    alt={item.heading}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    src={PLACEHOLDER_IMAGE}
+                  />
+                </div>
+                <div className="flex flex-1 flex-col items-center justify-start p-3 pb-8">
+                  <h3 className="text-lg font-bold uppercase tracking-tight text-slate-900 md:text-[19px] dark:text-white text-center">
+                    {item.heading}
+                  </h3>
+                </div>
+              </div>
 
-            {/* Content */}
-            <div className="flex flex-1 flex-col px-6 py-6 md:px-7 md:py-7">
-              <h3 className="text-base md:text-xl font-bold text-black leading-snug uppercase tracking-[0.06em]">
-                {item.heading}
-              </h3>
-              <p className="mt-2 text-sm md:text-base leading-relaxed">
-                {item.description}
-              </p>
+              {/* BACK FACE */}
+              <div className="absolute inset-0 flex h-full w-full flex-col items-start justify-start rounded-[24px] border border-gray-200/80 bg-white p-8 text-left [backface-visibility:hidden] [transform:rotateY(180deg)] dark:border-white/10 dark:bg-[#1A1A1A]">
+                <h3 className="mb-4 mt-2 text-lg font-bold uppercase tracking-tight text-slate-900 md:text-[20px] dark:text-white">
+                  {item.heading}
+                </h3>
+                <p className="text-sm font-normal leading-relaxed text-slate-500 md:text-[14.5px] dark:text-slate-400">
+                  {item.description}
+                </p>
+              </div>
             </div>
-          </div>
+          </Reveal>
         ))}
-      </div>
+      </RevealGroup>
     </section>
   );
 };
