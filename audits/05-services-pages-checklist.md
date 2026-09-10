@@ -306,7 +306,8 @@ The v7 content edits landed in `data/sericesDetailsList.json` but a source read 
 | S10 | `LandingWork` gallery is generic on every service page, no service-specific project, result metric, or testimonial (X7) | 🟡 | Needs real project/testimonial selection per service, a product decision + content, not a mechanical fix |
 | S7-b | The phase-label added in S7 sits above the decorative "rope" SVG on desktop, visually fine but not designed; a designer may want to reposition it | 🟡 | Cosmetic |
 | n/a | JSON-LD `areaServed` on service pages (`US, UK, SG, IN, AU`) still differs from `/about`'s Organization schema (`US, IN, FR, CA, UK, SG`), cross-audit item, tracked in `04-about-page.md` NF3 | 🟡 | Out of services scope |
-| n/a | Hero primary CTA label still reads "Start Your Product Journey, Book a 15-Min Call", fine, but if a shorter label is wanted it's hardcoded in `hero/index.tsx` | 🟡 | Cosmetic |
+| n/a | Hero primary CTA label still reads "Start Your Product Journey, Book a 15-Min Call", fine, but if a shorter label is wanted it's hardcoded in `hero/index.tsx` | 🟡 | Cosmetic, pending |
+| n/a | Service detail hero uses 13 raw `<img>` tags (confetti, free badge) instead of `next/image` | 🟡 | Performance/Cosmetic, pending to be fixed later |
 
 ### Won't-do (recorded)
 
