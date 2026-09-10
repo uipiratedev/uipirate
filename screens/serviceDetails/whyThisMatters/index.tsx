@@ -21,7 +21,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
       </div>
 
       {/* Content row */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 items-start autoShowBottom">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 items-stretch autoShowBottom">
         {/* Left column: Accordion */}
         <div className="flex flex-col gap-3">
           {data.card &&
@@ -108,10 +108,13 @@ const WhyThisMatters = ({ data }: { data: any }) => {
         </div>
 
         {/* Right column: Dynamic Content (desktop only) */}
-        <div className="hidden lg:flex lg:sticky lg:top-24 rounded-[20px] bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.08)] px-8 py-10 md:px-10 md:py-12 min-h-[300px] flex-col justify-center transition-all duration-500">
+        <div 
+          className="hidden lg:flex w-full rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full flex-col justify-center px-8 py-10 md:px-10 md:py-12 transition-all duration-500 relative overflow-hidden"
+          style={{ boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset" }}
+        >
           <div
             key={activeIndex}
-            className="animate-in fade-in slide-in-from-bottom-2 duration-500"
+            className="animate-in fade-in slide-in-from-bottom-2 duration-500 z-10"
           >
             <div className="space-y-4 mb-6">
               {Array.isArray(data.card[activeIndex].QuickWins) ? (
@@ -119,19 +122,19 @@ const WhyThisMatters = ({ data }: { data: any }) => {
                   (win: string, i: number) => (
                     <h3
                       key={i}
-                      className="text-xl md:text-2xl font-semibold leading-tight"
+                      className="text-xl md:text-2xl font-semibold leading-tight text-white"
                     >
                       {win}
                     </h3>
                   ),
                 )
               ) : (
-                <h3 className="text-xl md:text-2xl font-semibold leading-tight">
+                <h3 className="text-xl md:text-2xl font-semibold leading-tight text-white">
                   {data.card[activeIndex].QuickWins}
                 </h3>
               )}
             </div>
-            <div className="w-12 h-1 bg-[#FF5B04] mb-6 rounded-full opacity-20" />
+            <div className="w-12 h-1 bg-[#FF5B04] mb-6 rounded-full opacity-100" />
           </div>
         </div>
       </div>

@@ -174,7 +174,8 @@ Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-veri
 ### 3.3–3.5 WhyThisMatters / StreamlinedProcess / WhoThisIsFor
 | # | Item | Status |
 |---|------|--------|
-| 3.3a | ~~6~~ problem-first cards | ✅ Done (v8/C-f), consolidated to 4 (dropped "Messaging Drives Action" + "Users Scan"); QuickWins whitespace trimmed (C-d) |
+| 3.3a | ~~6~~ problem-first cards | ✅ Done (v8/C-f), consolidated to 4; ✅ Post-audit: Re-added a 5th card ("Trust & Credibility") to ensure consistency across all 4 pages |
+| 3.3b | Global `WhyThisMatters` redesign: accordion jumps vertically, right column plain white | ✅ Done, locked right card to full height, changed to premium `noise-texture` dark theme with inset shadow and white text |
 | 3.4a | "From idea to live website" 2×3 steps, accurate | ✅ Keep, group badges ("Website Strategy & Design" / "Website Development") now visible via S7 |
 | 3.5a | `whoThisIsFor` spanned SaaS → local business → portfolio | ✅ Done (v8/C-g), 3rd card retargeted to "Funded Startups & Scaleups" |
 | 3.5b | "Fully Responsive Experience" filler "…without extra effort later" | ✅ Done (v8/C-e) |
