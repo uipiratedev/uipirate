@@ -68,6 +68,8 @@ Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-veri
 |---|------|--------|
 | 1.2a | Card 3 `Idea to MVP`, desc is a noun-list (`Product strategy, Product thinking, Competitive analysis`) and omits the dominant real use case (redesign of a live product) | ✅ Done (C11), replaced with `New Build or Redesign` card + sentence description |
 | 1.2b | Cards 1, 2, 4 (`UX/UI Design & Prototype`, `UI Development & Integration`, `Mobile Optimization`) | ✅ Keep as-is |
+| 1.2c | Subtext length inconsistencies across the 4 cards | ✅ Done, lengthened `UI Development & Integration` and shortened `New Build or Redesign` to neatly span exactly 2 lines |
+| 1.2d | 4 card visuals upgraded from static SVG to highly specific Framer Motion glassmorphic components | ✅ Done |
 
 **V6-10 replacement copy (apply verbatim):**
 > **Heading:** New Build or Redesign

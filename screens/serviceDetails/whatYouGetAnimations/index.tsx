@@ -7,6 +7,7 @@ import * as Visuals from "@/components/visuals";
 import * as UxAuditVisuals from "@/components/visuals/UxAuditVisuals";
 import * as SaasDevVisuals from "@/components/visuals/SaasDevVisuals";
 import * as LandingVisuals from "@/components/visuals/LandingVisuals";
+import * as UxUiVisuals from "@/components/visuals/UxUiVisuals";
 
 /**
  * `whatYouGet` card `heading` strings are LOAD-BEARING: an exact match here swaps
@@ -19,11 +20,10 @@ import * as LandingVisuals from "@/components/visuals/LandingVisuals";
  */
 const VISUAL_MAPPING: Record<string, any> = {
   // UX/UI Design
-  "UX/UI Design & Prototype": Visuals.VisualUX,
-  "UI Development & Integration": Visuals.VisualCode,
-  "Idea to MVP": Visuals.VisualMVP,
-  "New Build or Redesign": Visuals.VisualMVP,
-  "Mobile Optimization": Visuals.VisualMobile,
+  "UX/UI Design & Prototype": UxUiVisuals.VisualUxUiNew,
+  "UI Development & Integration": UxUiVisuals.VisualUiDevNew,
+  "New Build or Redesign": UxUiVisuals.VisualRedesignNew,
+  "Mobile Optimization": UxUiVisuals.VisualMobileOptNew,
   // SaaS & AI Development
   "Full-Stack Architecture": SaasDevVisuals.VisualFullStackNew,
   "AI Models & API Integrations": SaasDevVisuals.VisualAILLMNew,
