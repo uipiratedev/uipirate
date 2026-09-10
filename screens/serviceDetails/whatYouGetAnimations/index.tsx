@@ -4,6 +4,7 @@ import Image from "next/image";
 import GlassBadge from "@/components/GlassBadge";
 import { ContainerScroll } from "@/components/container-scroll-animation";
 import * as Visuals from "@/components/visuals";
+import * as UxAuditVisuals from "@/components/visuals/UxAuditVisuals";
 
 /**
  * `whatYouGet` card `heading` strings are LOAD-BEARING: an exact match here swaps
@@ -30,10 +31,10 @@ const VISUAL_MAPPING: Record<string, any> = {
   "SEO Performance & AI-Readable Websites": Visuals.VisualSEO,
   "Fully Responsive Experience": Visuals.VisualResponsive,
   // UX Audits & Consultation
-  "Heuristic UX Audit Report": Visuals.VisualAudit,
-  "Drop-Off & Friction Insights": Visuals.VisualFriction,
-  "Flow & Interaction Review": Visuals.VisualFlow,
-  "Walkthrough Video": Visuals.VisualVideo,
+  "Heuristic UX Audit Report": UxAuditVisuals.VisualAuditNew,
+  "Drop-Off & Friction Insights": UxAuditVisuals.VisualFrictionNew,
+  "Flow & Interaction Review": UxAuditVisuals.VisualFlowNew,
+  "Walkthrough Video": UxAuditVisuals.VisualVideoNew,
 };
 
 const WhatYouGetCard = ({ heading, description, image, img }: any) => {

@@ -198,6 +198,7 @@ Highest real demand in both Upwork scans **and** still carrying leftover wrong-s
 |---|------|--------|
 | 4.2a | Heading is deliverable-first + ungrammatical | ✅ Done (C3), now `What You Get From a UX Audit` |
 | 4.2b | 4 cards (Heuristic Report · Drop-Off & Friction · Flow Review · Walkthrough Video) | ✅ Fixed since v3, keep |
+| 4.2c | 4 card visuals rewritten from static SVG to complex Framer Motion glassmorphic components (inspired by DNA section) | ✅ Done |
 
 ### 4.3 WhyThisMatters, heading references 3D
 | # | Item | Status |
