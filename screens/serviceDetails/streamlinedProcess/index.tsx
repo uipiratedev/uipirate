@@ -119,14 +119,6 @@ const StreamlinedProcess = ({ data }: any) => {
               </svg>
             </div>
 
-            {/* Workflow phase label */}
-            {row.badge && (
-              <div className="section-container relative z-10 mb-3 md:mb-4 max-md:pl-6">
-                <span className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#FF5B04]">
-                  {row.badge}
-                </span>
-              </div>
-            )}
 
             {/* Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 section-container gap-4 md:gap-6 relative z-10 pt-1 md:pt-0 md:mb-32">
