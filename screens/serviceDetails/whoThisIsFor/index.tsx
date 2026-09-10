@@ -1,6 +1,6 @@
 "use client";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
 import { Reveal, RevealGroup } from "@/components/motion";
 
 const PLACEHOLDER_IMAGE =
@@ -8,19 +8,13 @@ const PLACEHOLDER_IMAGE =
 
 const WhoThisIsFor = ({ data }: { data: any }) => {
   return (
-    <section>
-      {/* Header */}
+    <section className="section-container">
       <Reveal variant="up">
-        <div className="autoShow text-center mb-6 md:mb-10">
-          <div className="flex items-center justify-center mb-6">
-            <GlassBadge variant="gradient">{data.badge}</GlassBadge>
-          </div>
-          <h2 className="heading-center">{data.heading}</h2>
-        </div>
+        <SectionHeader chip={data.badge}>{data.heading}</SectionHeader>
       </Reveal>
 
       {/* Cards */}
-      <RevealGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 autoShowBottom">
+      <RevealGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.card?.map((item: any) => (
           <Reveal
             key={item.heading}

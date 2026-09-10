@@ -1,9 +1,8 @@
 "use client";
 import Image from "next/image";
 
-import GlassBadge from "@/components/GlassBadge";
-import { ContainerScroll } from "@/components/container-scroll-animation";
-import * as Visuals from "@/components/visuals";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal, RevealGroup } from "@/components/motion";
 import * as UxAuditVisuals from "@/components/visuals/UxAuditVisuals";
 import * as SaasDevVisuals from "@/components/visuals/SaasDevVisuals";
 import * as LandingVisuals from "@/components/visuals/LandingVisuals";
@@ -82,27 +81,17 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
 const WhatYouGetAnimations = ({ data }: any) => {
   return (
     <div className="section-container">
-      {/* Cards grid with ContainerScroll */}
-      <ContainerScroll
-        titleComponent={
-          <>
-            <div className="autoShow text-center mb-10 md:mb-1">
-              <div className="flex items-center justify-center mb-6">
-                <GlassBadge size="sm" variant="gradient">
-                  {data.badge}
-                </GlassBadge>
-              </div>
-              <h2 className="heading-center">{data.heading}</h2>
-            </div>
-          </>
-        }
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mt-6 max-md:mt-4 autoShowBottom">
-          {data.card.map((feature: any) => (
-            <WhatYouGetCard key={feature.heading} {...feature} />
-          ))}
-        </div>
-      </ContainerScroll>
+      <Reveal variant="up">
+        <SectionHeader chip={data.badge}>{data.heading}</SectionHeader>
+      </Reveal>
+
+      <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+        {data.card.map((feature: any) => (
+          <Reveal key={feature.heading} variant="up">
+            <WhatYouGetCard {...feature} />
+          </Reveal>
+        ))}
+      </RevealGroup>
     </div>
   );
 };

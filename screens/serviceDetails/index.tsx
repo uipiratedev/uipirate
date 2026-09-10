@@ -14,46 +14,34 @@ import WhatYouGain from "./whatYouGain";
 
 import PageWrapper from "@/components/PageWrapper";
 
-const ServiceDetails = ({ data, slug }: { data: any, slug?: string }) => {
+const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
   if (!data) notFound();
 
   return (
     <PageWrapper showFloatingButton={false}>
+      {/* One vertical rhythm for the whole page — identical to the landing
+          page's wrapper. Each section owns its own `.section-container`;
+          nothing here adds per-section padding or margin. */}
       <div className="space-y-20 max-md:space-y-16">
         {data.hero && <ServiceDetailsHero data={data.hero} />}
 
         {data.whatYouGet && <WhatYouGetAnimations data={data.whatYouGet} />}
 
-        {data.whyThisMatters && (
-          <div className="section-container">
-            <WhyThisMatters data={data.whyThisMatters} />
-          </div>
-        )}
+        {data.whyThisMatters && <WhyThisMatters data={data.whyThisMatters} />}
 
         {data.streamlinedProcess && (
           <StreamlinedProcess data={data.streamlinedProcess} />
         )}
 
-        {data.whatYouGain && (
-          <div className="section-container">
-            <WhatYouGain data={data.whatYouGain} />
-          </div>
-        )}
+        {data.whatYouGain && <WhatYouGain data={data.whatYouGain} />}
 
         {slug !== "UX-Audits-&-Consultation" && <LandingWork />}
 
-        {data.whoThisIsFor && (
-          <div className="section-container">
-            <WhoThisIsFor data={data.whoThisIsFor} />
-          </div>
-        )}
+        {data.whoThisIsFor && <WhoThisIsFor data={data.whoThisIsFor} />}
 
         {data.recommendedNextSteps && (
-          <div className="section-container pb-20">
-            <RecommendedNextSteps data={data.recommendedNextSteps} />
-          </div>
+          <RecommendedNextSteps data={data.recommendedNextSteps} />
         )}
-
       </div>
     </PageWrapper>
   );

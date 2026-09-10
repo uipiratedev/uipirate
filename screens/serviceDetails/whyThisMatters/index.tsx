@@ -1,27 +1,24 @@
 import { useState } from "react";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
 const WhyThisMatters = ({ data }: { data: any }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section>
-      {/* Header */}
-      <div className="autoShow text-center mb-6 md:mb-4">
-        <div className="flex items-center justify-center mb-6">
-          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
-        </div>
-        <h2 className="heading-center">
+    <section className="section-container">
+      <Reveal variant="up">
+        <SectionHeader chip={data.badge}>
           {data.heading} <br className="hidden md:block" /> {data.heading2}
-        </h2>
-        {/* <p className="mt-1 heading-center">
-          (And How We Fix It)
-        </p> */}
-      </div>
+        </SectionHeader>
+      </Reveal>
 
       {/* Content row */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 items-stretch autoShowBottom">
+      <Reveal
+        className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 items-stretch"
+        variant="up"
+      >
         {/* Left column: Accordion */}
         <div className="flex flex-col gap-3">
           {data.card &&
@@ -110,7 +107,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
         </div>
 
         {/* Right column: Dynamic Content (desktop only) */}
-        <div 
+        <div
           className="hidden lg:flex w-full rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full flex-col justify-center px-8 py-10 md:px-10 md:py-12 transition-all duration-500 relative overflow-hidden"
           style={{ boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset" }}
         >
@@ -139,7 +136,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
             <div className="w-12 h-1 bg-[#FF5B04] mb-6 rounded-full opacity-100" />
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };
