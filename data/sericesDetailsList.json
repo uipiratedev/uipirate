@@ -178,19 +178,18 @@
         "card": [
           {
             "heading": "Strategy to Screens, One Team",
-            "description": "Product strategy, information architecture, UX/UI design, and front-end build in React, Next.js, or Angular, handled together."
+            "description": "Product strategy, information architecture, UX/UI design, and front-end build in React, Next.js, or Angular, handled together.",
+            "icon": "layout"
           },
           {
             "heading": "You Steer, We Design",
-            "description": "Share the idea. We run the research, own the design decisions, and flag what to change and what to keep."
+            "description": "Share the idea. We run the research, own the design decisions, and flag what to change and what to keep.",
+            "icon": "compass"
           },
           {
-            "heading": "Interfaces Built to Convert",
-            "description": "Clean, usable SaaS and app screens designed for activation and retention, not just a polished look."
-          },
-          {
-            "heading": "A Handoff You Can Trust",
-            "description": "Dev-ready designs, a reusable design system, and documentation your team keeps."
+            "heading": "Built to Convert, Ready to Ship",
+            "description": "Usable screens designed for activation, delivered dev-ready with a design system and docs your team keeps.",
+            "icon": "send"
           }
         ]
       },
@@ -401,19 +400,18 @@
         "card": [
           {
             "heading": "Backend, AI, and Infra in One Team",
-            "description": "Full-stack SaaS development, AI agents and RAG pipelines, and production deployment on AWS, GCP, or Azure."
+            "description": "Full-stack SaaS development, AI agents and RAG pipelines, and production deployment on AWS, GCP, or Azure.",
+            "icon": "server"
           },
           {
             "heading": "You Steer, We Build",
-            "description": "Give us the idea. We own the architecture decisions, technical direction, and delivery timeline."
+            "description": "Give us the idea. We own the architecture decisions, technical direction, and delivery timeline.",
+            "icon": "gear"
           },
           {
-            "heading": "Built for Real Load",
-            "description": "Scalable data models and APIs, load-tested for the usage you're growing into, not just the demo."
-          },
-          {
-            "heading": "Code Your Team Can Own",
-            "description": "Readable, documented code and a clean handoff, with no lock-in to us."
+            "heading": "Built to Scale, Yours to Own",
+            "description": "Data models and APIs load-tested for real usage, shipped as documented code with no lock-in.",
+            "icon": "chart"
           }
         ]
       },
@@ -609,19 +607,18 @@
         "card": [
           {
             "heading": "Positioning to Published",
-            "description": "Messaging, landing page design, and a fast build in React, Next.js, Framer, or Webflow, handled end to end."
+            "description": "Messaging, landing page design, and a fast build in React, Next.js, Framer, or Webflow, handled end to end.",
+            "icon": "browser"
           },
           {
             "heading": "You Steer, We Run It",
-            "description": "Bring the rough idea. We handle positioning, copy direction, and project management."
+            "description": "Bring the rough idea. We handle positioning, copy direction, and project management.",
+            "icon": "compass"
           },
           {
-            "heading": "Pages Built to Convert",
-            "description": "Structured for signups and leads, with SEO and load speed built in, not bolted on after."
-          },
-          {
-            "heading": "Easy to Update Later",
-            "description": "A clean CMS setup and documentation so your team can edit the site without us."
+            "heading": "Built to Convert, Easy to Update",
+            "description": "Structured for signups with SEO and load speed built in, on a CMS your team can edit without us.",
+            "icon": "target"
           }
         ]
       },
@@ -825,19 +822,18 @@
         "card": [
           {
             "heading": "A Prioritised Fix List",
-            "description": "Every usability issue scored by impact and effort, sequenced into a roadmap you can execute."
+            "description": "Every usability issue scored by impact and effort, sequenced into a roadmap you can execute.",
+            "icon": "checklist"
           },
           {
             "heading": "You Point, We Investigate",
-            "description": "Share the metric you're worried about. We run the heuristic UX review and drop-off analysis."
+            "description": "Share the metric you're worried about. We run the heuristic UX review and drop-off analysis.",
+            "icon": "search"
           },
           {
             "heading": "Clarity Before You Spend",
-            "description": "Know what's blocking activation before you commit budget to a redesign or rebuild."
-          },
-          {
-            "heading": "Findings With the Reasoning",
-            "description": "An annotated report and walkthrough your design or dev team can act on directly."
+            "description": "Know what's blocking activation before a redesign, with findings your design or dev team can act on directly.",
+            "icon": "bulb"
           }
         ]
       },

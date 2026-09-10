@@ -2,8 +2,6 @@
 
 import { notFound } from "next/navigation";
 
-import LandingWork from "../landing/works";
-
 import ServiceDetailsHero from "./hero";
 import StreamlinedProcess from "./streamlinedProcess";
 import WhoThisIsFor from "./whoThisIsFor";
@@ -11,10 +9,30 @@ import RecommendedNextSteps from "./recommendedNextSteps";
 import WhyThisMatters from "./whyThisMatters";
 import WhatYouGetAnimations from "./whatYouGetAnimations";
 import WhatYouGain from "./whatYouGain";
+import FeaturedCaseStudy from "@/screens/landing/featuredCaseStudy";
 
 import PageWrapper from "@/components/PageWrapper";
 
-const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
+const xperitiCaseStudy = {
+  slug: "xperiti",
+  client: "Xperiti",
+  title: "Platform Redesign and Development",
+  excerpt:
+    "Xperiti needed a market research enterprise SaaS platform serving researchers, coordinators, clients, and experts, without anyone feeling completely overlooked.",
+  heroImage:
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348051/xperiti_gkefw0.svg",
+  highlights: [
+    "UI/UX",
+    "Market Research SaaS",
+    "Multi-role enterprise SaaS",
+    "Angular and Tailwind",
+  ],
+  clientLogo:
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+  industry: "Research SaaS",
+};
+
+const ServiceDetails = ({ data, slug }: { data: any, slug?: string }) => {
   if (!data) notFound();
 
   return (
@@ -35,7 +53,7 @@ const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
 
         {data.whatYouGain && <WhatYouGain data={data.whatYouGain} />}
 
-        {slug !== "UX-Audits-&-Consultation" && <LandingWork />}
+        <FeaturedCaseStudy study={xperitiCaseStudy} />
 
         {data.whoThisIsFor && <WhoThisIsFor data={data.whoThisIsFor} />}
 
