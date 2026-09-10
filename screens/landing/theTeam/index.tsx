@@ -69,140 +69,149 @@ const TheTeam = () => {
           stagger="base"
         >
           {teamMembers.map((member, index) => (
-            <Tooltip
+            <Reveal
               key={index}
-              showArrow
-              classNames={{
-                base: [
-                  // Arrow styling - glass effect for arrow
-                  "before:bg-white/70",
-                  "before:backdrop-blur-md",
-                  "before:shadow-sm",
-                  "before:z-50",
-                ],
-                content: [
-                  // Remove default NextUI background
-                  "p-0",
-                  "bg-transparent",
-                  "shadow-none",
-                  "backdrop-blur-none",
-                ],
-              }}
-              closeDelay={100}
-              content={
-                <div
-                  className="w-[200px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
-                    WebkitBackdropFilter:
-                      "blur(20px) saturate(180%) brightness(105%)",
-                    backdropFilter:
-                      "blur(20px) saturate(180%) brightness(105%)",
-                    boxShadow:
-                      "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
-                  }}
-                >
-                  {/* Frosted glass texture overlay */}
+              className={`group relative cursor-pointer ${hoveredIndex === index ? "z-[100]" : "z-10"}`}
+              distance="sm"
+              variant="up"
+            >
+              <Tooltip
+                showArrow
+                classNames={{
+                  base: [
+                    // Arrow styling - glass effect for arrow
+                    "before:bg-white/70",
+                    "before:backdrop-blur-md",
+                    "before:shadow-sm",
+                    "before:z-50",
+                  ],
+                  content: [
+                    // Remove default NextUI background
+                    "p-0",
+                    "bg-transparent",
+                    "shadow-none",
+                    "backdrop-blur-none",
+                  ],
+                }}
+                closeDelay={100}
+                content={
                   <div
-                    className="absolute inset-0 pointer-events-none z-0"
+                    className="w-[200px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
                     style={{
                       background:
-                        "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
-                      mixBlendMode: "soft-light",
+                        "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
+                      WebkitBackdropFilter:
+                        "blur(20px) saturate(180%) brightness(105%)",
+                      backdropFilter:
+                        "blur(20px) saturate(180%) brightness(105%)",
+                      boxShadow:
+                        "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
                     }}
-                  />
-                  {/* Content wrapper with relative positioning */}
-                  <div className="relative z-10 text-center">
-                    {/* Quote */}
-                    <p className="text-sm italic text-black mb-1 leading-relaxed font-semibold">
-                      &quot;{member.quote}&quot;
-                    </p>
-
-                    {/* Name and Title */}
-                    <div className="">
-                      <p className="text-[10px] text-gray-800 font-semibold opacity-70">
-                        {member.role}
+                  >
+                    {/* Frosted glass texture overlay */}
+                    <div
+                      className="absolute inset-0 pointer-events-none z-0"
+                      style={{
+                        background:
+                          "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
+                        mixBlendMode: "soft-light",
+                      }}
+                    />
+                    {/* Content wrapper with relative positioning */}
+                    <div className="relative z-10 text-center">
+                      {/* Quote */}
+                      <p className="text-sm italic text-black mb-1 leading-relaxed font-semibold">
+                        &quot;{member.quote}&quot;
                       </p>
+
+                      {/* Name and Title */}
+                      <div className="">
+                        <p className="text-[10px] text-gray-800 font-semibold opacity-70">
+                          {member.role}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              }
-              delay={200}
-              disableAnimation={false}
-              isOpen={hoveredIndex === index}
-              motionProps={{
-                variants: {
-                  exit: {
-                    opacity: 0,
-                    y: -8,
-                    scale: 0.96,
-                    transition: {
-                      duration: 0.15,
-                      ease: "easeIn",
-                    },
-                  },
-                  enter: {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    transition: {
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 30,
-                      mass: 0.8,
-                    },
-                  },
-                },
-              }}
-              offset={12}
-              placement="top"
-            >
-              <Reveal
-                className={`group relative cursor-pointer ${hoveredIndex === index ? "z-[100]" : "z-10"}`}
-                distance="sm"
-                variant="up"
-                onClick={() =>
-                  setHoveredIndex(hoveredIndex === index ? null : index)
                 }
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                delay={200}
+                disableAnimation={false}
+                isOpen={hoveredIndex === index}
+                onOpenChange={(open) => {
+                  if (!open && hoveredIndex === index) {
+                    setHoveredIndex(null);
+                  }
+                }}
+                motionProps={{
+                  variants: {
+                    exit: {
+                      opacity: 0,
+                      y: -8,
+                      scale: 0.96,
+                      transition: {
+                        duration: 0.15,
+                        ease: "easeIn",
+                      },
+                    },
+                    enter: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      transition: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30,
+                        mass: 0.8,
+                      },
+                    },
+                  },
+                }}
+                offset={12}
+                placement="top"
               >
-                <motion.div
-                  whileHover={{
-                    scale: 1.05,
-                    transition: { duration: 0.3, ease: "easeOut" },
-                  }}
+                <div
+                  className="w-full h-full"
+                  onClick={() =>
+                    setHoveredIndex(hoveredIndex === index ? null : index)
+                  }
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  <Card className="rounded-[30px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
-                    <CardBody className="p-0">
-                      <div
-                        className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}
-                      >
-                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                  <motion.div
+                    whileHover={{
+                      scale: 1.05,
+                      transition: { duration: 0.3, ease: "easeOut" },
+                    }}
+                  >
+                    <Card className="rounded-[30px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
+                      <CardBody className="p-0">
+                        <div
+                          className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}
+                        >
+                          <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
-                        {/* Hover Glow */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
-                          <div
-                            className="w-full h-full"
-                            style={{
-                              background:
-                                "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)",
-                            }}
+                          {/* Hover Glow */}
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                            <div
+                              className="w-full h-full"
+                              style={{
+                                background:
+                                  "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)",
+                              }}
+                            />
+                          </div>
+
+                          <img
+                            alt={member.name}
+                            className="relative z-10 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            src={member.image}
                           />
                         </div>
-
-                        <img
-                          alt={member.name}
-                          className="relative z-10 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          src={member.image}
-                        />
-                      </div>
-                    </CardBody>
-                  </Card>
-                </motion.div>
-              </Reveal>
-            </Tooltip>
+                      </CardBody>
+                    </Card>
+                  </motion.div>
+                </div>
+              </Tooltip>
+            </Reveal>
           ))}
         </RevealGroup>
       </div>

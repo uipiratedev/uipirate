@@ -1,21 +1,17 @@
-import React from "react";
-
 import RecentWorkCard from "./workCard";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
 const LandingWork = () => {
   return (
     <div className="overflow-hidden">
       <div className="section-container">
-        <div className="autoShow">
-          <div className="flex flex-row items-center justify-center mb-6 pt-3">
-            <GlassBadge variant="gradient">works</GlassBadge>
-          </div>
-          <h2 className="heading-center">Recent Works</h2>
-        </div>
+        <Reveal variant="up">
+          <SectionHeader chip="works">Recent Works</SectionHeader>
+        </Reveal>
       </div>
-      <div className="section-container pt-48 max-md:pt-0 autoShowBottom">
+      <div className="section-container">
         <RecentWorkCard />
       </div>
     </div>

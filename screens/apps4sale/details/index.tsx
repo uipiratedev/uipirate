@@ -277,7 +277,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
         <div className="mb-20 md:mb-32">
           <h2 className="heading-center mb-6">What you get</h2>
           <div className="bg-[#18181B] p-4 md:p-6 rounded-[32px] md:rounded-[48px] shadow-2xl overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
               {product.whatYouGet.slice(0, 3).map((item, idx) => (
                 <div
                   key={idx}
@@ -296,7 +296,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
                 </div>
               ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {product.whatYouGet.slice(3, 5).map((item, idx) => (
                 <div
                   key={idx}

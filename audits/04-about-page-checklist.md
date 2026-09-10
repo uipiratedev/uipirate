@@ -1,7 +1,8 @@
 # About Page Audit Checklist
 
 This document tracks the progress of all content, copy, SEO, and conversion changes on the About page.
-Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verified against live source files.
+Synced to **`04-about-page.md` v6 (2026-09-09)** — all statuses are code-verified against live source files.
+Sections 1–14 track the v1–v3 audit. **Section 15** tracks the v4–v6 market-demand (Upwork job scan) changes.
 
 **Files in scope:**
 - `app/about/page.tsx` — Body copy, JSON-LD schema, stats, industries, client grid
@@ -135,7 +136,8 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status |
 |---|------|--------|
-| 7a | Tech stack: Angular, React, Next.js, TypeScript, Tailwind, Framer, Figma, GSAP — correct | ✅ Keep as-is |
+| 7a | Tech stack: front-end + backend/cloud/AI, icons via `@thesvg/react` | ✅ Done (see §15 AD1) — Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP, Node.js, Python, AWS, Google Cloud, Azure, AI Agents / LLM APIs |
+| 7a-2 | Broken `<img>` logo chips (`nodejs.svg` / `python.svg` never existed) | ✅ Done — `<img>` removed, now `@thesvg/react` components |
 | 7b | Industries list has 8 items — trim to 5 client-backed verticals, remove E-commerce / EdTech / PropTech (NC5) | ✅ Done |
 | 7c | Rename `Fintech & Banking` → `FinTech & Quant Trading` to map to ArthAlpha | ✅ Done |
 | 7d | Rename `AI & Machine Learning` → `AI Products & Platforms` to map to RevUp AI, Sarge | ✅ Done |
@@ -222,7 +224,8 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 13a | `numberOfEmployees: "9"` — contradicts 7-person team grid and 6-person employee array; set to `"7"` (NF1) | ✅ Done |
 | 13b | `Syed Musaddiq` (schema) vs `Musuddiq` (team component) — standardize spelling (NF2) | ✅ Done |
 | 13c | Employee job titles for trimmed services (Kartik, Priyagni, Aman) — update or remove (NF3) | ✅ Keep as-is (per user) |
-| 13d | Schema description claims `Node.js and Python` — not shown in visible tech stack (NF8) | ✅ Done (added + 2017 applied) |
+| 13d | Schema description claims `Node.js and Python` — not shown in visible tech stack (NF8) | ✅ Done — Node.js + Python now visible in the Technology Stack (§15 AD1) |
+| 13h | `knowsAbout[]` has no cloud / backend / AI-agent entries | ✅ Done — added `Node.js Development`, `Python Development`, `Cloud Deployment`, `AWS`, `AI Agent Development` |
 | 13e | `foundingDate: "2015"` vs `9+ Years` stat — 2026−2015=11 years; reconcile (NF7) | ✅ Done (changed to 2017) |
 | 13f | `customer[]` name `Awesome Health Club` vs grid `Awesome Health` — align (NF9) | ✅ Done (kept as Awesome Health Club) |
 | 13g | `aggregateRating` absent for `5.0 Client Rating` stat — add with Clutch `url` (NC4) | ✅ Keep as-is (add URL later) |
@@ -237,5 +240,73 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 |---|------|--------|
 | 14a | No FAQ block — add 3-question FAQ: `What is UI Pirate?`, `Where is the team based?`, `Do you only design or do you build too?` (NC9) | ✅ Done |
 | 14b | Add `FAQPage` / `Question[]` JSON-LD schema to back the FAQ block | ✅ Done |
+
+---
+
+## 15. MARKET-DEMAND CHANGES (v4–v6 — Upwork job scan)
+
+Source: `04-about-page.md` v4 (NC-D1, NC-D2), v5 (AD1, AD2), v6 (AD1–AD3, final copy).
+Driver: live scan of ~80 Upwork postings — "AI SaaS" is ~1 in 4 buyer searches; AWS/GCP/Azure/Python/Node/"AI agents" recur in job skills; a distinct small-fast-cheap first-engagement buyer exists.
+
+### 15.1 Already shipped before v6 (no action — recorded so v4/v5 aren't re-done)
+
+| # | Item | Status |
+|---|------|--------|
+| 15.1a | Bento cards already renamed (Built to Convert / Design Through to Code / 50+ Products, Not Guesses) | ✅ Live |
+| 15.1b | "Design Through to Code" already names React/Angular/Next.js | ✅ Live |
+| 15.1c | Industries list already includes `AI Products & Platforms`, trimmed to 5 | ✅ Live |
+| 15.1d | Schema `description` already claims Node.js + Python full-stack | ✅ Live (but see 15.2) |
+
+### 15.2 AD1 — Technology Stack: real backend/cloud row + fix broken chips 🟠
+
+**File:** `app/about/page.tsx` — `technologies` array, Technology Stack render block, `knowsAbout[]`.
+
+| # | Item | Status |
+|---|------|--------|
+| 15.2a | Broken `<img>` chips (`/assets/logos/nodejs.svg`, `python.svg` never existed) | ✅ Done — dropped `<img>` entirely; icons now come from `@thesvg/react` brand components (`<Icon width={20} height={20} />`). No new asset files needed. |
+| 15.2b | Final `technologies` order: front-end (Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP) then back-end/cloud/AI (Node.js, Python, AWS, Google Cloud, Azure, AI Agents / LLM APIs) | ✅ Done |
+| 15.2c | Optional: split render into two labelled rows — "Design & Front-End" / "Back-End, Cloud & AI" | 🚫 Skipped — single wrapped flex row kept (acceptable per audit) |
+| 15.2d | Add to `knowsAbout[]`: `Node.js Development`, `Python Development`, `Cloud Deployment`, `AWS`, `AI Agent Development` | ✅ Done |
+| 15.2e | **Do NOT** add `.NET` / `C#` / `ASP.NET` anywhere; Angular stays as-is, no extra emphasis | ✅ Held — Angular unchanged, no .NET language added |
+
+**Icon notes:**
+- `React` imported as `ReactIcon` to avoid the React namespace clash; "AI Agents / LLM APIs" uses the `Langchain` mark.
+- `@thesvg/react` `default` variants: Angular / React / Python / Figma / Framer / Tailwind CSS / GSAP render in brand color; Next.js / TypeScript / Node.js / AWS / Google Cloud / Azure / Langchain render monochrome via `currentColor` (set to `text-gray-700`). Acceptable; revisit with `variant="color"` only where a variant exists (AWS) if brand color is wanted later.
+- `tsc --noEmit` passes.
+
+### 15.3 AD2 — Name AI product work + a low-commitment entry point in visible prose 🟠
+
+| # | Item | File (approx.) | Status |
+|---|------|------|--------|
+| 15.3a | Hero subheadline — add "AI product teams" + "blank page or a prototype built with an AI tool" clause | `page.tsx` L295–300 | ✅ Done (full version applied) |
+| 15.3b | Bento card 04 "Design Through to Code" desc — mention "an AI-generated prototype" | `page.tsx` L433–439 | ✅ Done (applied in addition to 15.3a, per user) |
+| 15.3c | CTA section subheadline — "Whether it's a quick UX audit or a full product build…" | `page.tsx` L784–787 | ✅ Done |
+
+**15.3a final copy (apply verbatim):**
+> We are a product design and development studio. We help SaaS founders, enterprise teams, and AI product teams think through the product, design for real users, and ship production-ready code — whether you're starting from a blank page or a prototype built with an AI tool.
+
+**15.3b alt copy (only if 15.3a clause is cut):**
+> Wireframes — or an AI-generated prototype — to production React, Angular, and Next.js. One team, no hand-offs.
+
+**15.3c final copy (apply verbatim):**
+> Book a free 15-minute call. Whether it's a quick UX audit or a full product build, tell us where you are — we'll tell you the fastest path forward.
+
+### 15.4 AD3 — SEO metadata keyword top-up 🟡
+
+**File:** `app/about/layout.tsx`
+
+| # | Item | Status |
+|---|------|--------|
+| 15.4a | Append to `keywords`: `AI SaaS development, Node.js Python backend, AWS GCP Azure deployment, take AI prototype to production` | ✅ Done |
+| 15.4b | `title`, `description`, OG, Twitter — no change (settled in §11) | ✅ Keep as-is |
+
+### 15.5 Explicitly NOT doing
+
+| # | Item | Status |
+|---|------|--------|
+| 15.5a | New "start small" section on About | 🚫 Won't do — handled by the one CTA line (15.3c) |
+| 15.5b | `/services` hub page (`05-services-pages.md` X2/NC8) | 🚫 Won't do — intentional (user decision 2026-09-09) |
+| 15.5c | Team / stats / client grid / process / FAQ changes | 🚫 Not touched by market findings |
+| 15.5d | Any `.NET` / `C#` language | 🚫 Out of scope (15.2e) |
 
 ---

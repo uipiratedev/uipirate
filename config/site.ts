@@ -32,6 +32,7 @@ export const siteConfig = {
 
         {
           category: "Landing Pages & Business Websites",
+          shortCategory: "Landing Pages & Websites",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334378/landingflip_duapct.svg",
           href: "/services/Landing-Pages-&-Business-Websites",
           isLargeCard: true,

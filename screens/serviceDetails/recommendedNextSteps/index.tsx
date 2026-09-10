@@ -1,18 +1,19 @@
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 import LetsTalkButton from "@/components/LetsTalkButton";
+
 const RecommendedNextSteps = ({ data }: any) => {
   return (
-    <section>
-      {/* Header */}
-      <div className="autoShow text-center mb-4 md:mb-6">
-        <div className="flex items-center justify-center mb-6">
-          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
-        </div>
-        <h2 className="heading-center">{data.heading}</h2>
-      </div>
+    <section className="section-container pb-16 max-md:pb-12">
+      <Reveal variant="up">
+        <SectionHeader chip={data.badge}>{data.heading}</SectionHeader>
+      </Reveal>
 
       {/* Content row */}
-      <div className=" max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-6 md:gap-8 items-stretch autoShowBottom">
+      <Reveal
+        className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-6 md:gap-8 items-stretch"
+        variant="up"
+      >
         {/* Left: Featured service card */}
         <div className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.06)]">
           <div className="bg-orange-500 text-white rounded-full max-md:rounded-xl w-full flex items-center justify-between px-2 max-md:px-4 py-2">
@@ -66,11 +67,17 @@ const RecommendedNextSteps = ({ data }: any) => {
               </div>
 
               <LetsTalkButton
-                children={data.featuredService.buttonText}
+                href={
+                  data.featuredService.slug
+                    ? `/services/${data.featuredService.slug}`
+                    : undefined
+                }
                 showArrow={true}
                 size="sm"
                 variant="dark"
-              />
+              >
+                {data.featuredService.buttonText}
+              </LetsTalkButton>
             </div>
           </div>
         </div>
@@ -81,16 +88,20 @@ const RecommendedNextSteps = ({ data }: any) => {
             Other Services You May Need
           </h3>
           <div className="space-y-3">
-            {data.otherServices.map((service: any) => (
+            {data.otherServices.map((service: any, index: number) => (
               <LetsTalkButton
-                children={service.title}
+                key={service.slug || service.title || index}
                 fullWidth
+                href={service.slug ? `/services/${service.slug}` : undefined}
+                showArrow={true}
                 variant="light"
-              />
+              >
+                {service.title}
+              </LetsTalkButton>
             ))}
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };

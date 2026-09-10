@@ -2,13 +2,16 @@
 
 import { motion, useInView } from "framer-motion";
 import { Link } from "@heroui/link";
-import { useRef, useState } from "react";
+import NextLink from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useRef, useState, useMemo } from "react";
 
 import ProPirateFooterSection from "./proPirate";
 import LeadCaptureModal from "./LeadCaptureModal";
 
 import JoinTactileButton from "@/components/JoinTactileButton";
 import { useClickSound } from "@/hooks/useClickSound";
+import { getCtaConfig, PageCTAConfig } from "@/config/ctaConfig";
 
 const footerSocialLinks = [
   {
@@ -50,19 +53,36 @@ const footerSocialLinks = [
  * Footer with CTA, social links, and branding.
  * Features a gradient button matching the design system.
  */
-export const Footer: React.FC = () => {
+interface FooterProps {
+  ctaOverride?: Partial<PageCTAConfig>;
+}
+
+export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const playClickSound = useClickSound();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  // The background "SAAS WEB APP" strip is an infinite marquee. A plain
-  // Framer `animate` loop keeps running (and compositing) even when the
-  // footer is scrolled out of view — gate it to on-screen only.
+  const cta = useMemo(() => {
+    const base = getCtaConfig(pathname);
+    return ctaOverride ? { ...base, ...ctaOverride } : base;
+  }, [pathname, ctaOverride]);
+
+  // The background marquee strip is an infinite marquee. Gated to on-screen only.
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marqueeInView = useInView(marqueeRef, { margin: "200px" });
 
-  const handleClick = () => {
+  const handlePrimaryClick = () => {
     playClickSound();
-    setIsModalOpen(true);
+    if (cta.primaryButton.action === "link" && cta.primaryButton.href) {
+      if (cta.primaryButton.isExternal) {
+        window.open(cta.primaryButton.href, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(cta.primaryButton.href);
+      }
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   return (
@@ -76,30 +96,165 @@ export const Footer: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-20  mx-auto text-center">
-        {/* CTA Section */}
+        {/* Dynamic CTA Section */}
         <motion.div
-          className="mb-24 max-md:mb-6"
+          className="mb-24 max-md:mb-6 relative"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
           {/* Heading */}
-          <h2 className="footer-heading">If you scrolled this far,</h2>
-          <h2 className="footer-heading">
-            It’s time to{" "}
-            <span className="text-orange-500">Build Something Together</span>
+          <h2 className="footer-heading max-w-4xl mx-auto px-4 leading-tight">
+            {cta.heading}
           </h2>
 
-          {/* "Lets Venture" button — opens lead capture modal */}
-          <div className="flex justify-center mb-16 max-md:mb-0 mt-6">
-            <div className="w-[600px] max-xl:w-[400px] max-md:w-[250px]">
-              <JoinTactileButton
-                label="LETS VENTURE"
-                variant="orange"
-                onClick={handleClick}
-              />
+          {/* Description (subheading) */}
+          {cta.description && (
+            <p className="text-gray-400 text-base max-md:text-sm max-w-xl mx-auto mt-4 px-4 leading-relaxed font-normal">
+              {cta.description}
+            </p>
+          )}
+
+          {/* Action Buttons & Marquee Section */}
+          <div className="flex flex-col items-center justify-center mb-16 max-md:mb-6 mt-10 max-md:mt-6">
+            {/* Tactile Button with Marquee centered directly behind it */}
+            <div className="relative w-full flex justify-center items-center">
+              {/* Background Text - Marquee - Perfectly Centered Behind Button */}
+              <div
+                ref={marqueeRef}
+                className="absolute top-1/2 left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",
+                  maskImage:
+                    "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",
+                }}
+              >
+                <motion.div
+                  animate={marqueeInView ? { x: ["0%", "-50%"] } : { x: "0%" }}
+                  className="flex whitespace-nowrap"
+                  transition={{
+                    x: {
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      duration: 25,
+                      ease: "linear",
+                    },
+                  }}
+                >
+                  {[...Array(4)].map((_, i) => (
+                    <span
+                      key={i}
+                      className="text-[100px] max-md:text-[50px] font-bold leading-[100%] tracking-[0px] align-middle uppercase text-white mx-12 font-jetbrains-mono"
+                      style={{
+                        // @ts-ignore
+                        leadingTrim: "none",
+                      }}
+                    >
+                      {cta.marqueeText || "SAAS WEB APP"}
+                    </span>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Primary JoinTactileButton with responsive sizing */}
+              <div
+                className={`relative z-20 flex justify-center w-full px-3 ${
+                  cta.primaryButton.label.length > 15
+                    ? "max-w-[660px] max-xl:max-w-[540px] max-lg:max-w-[460px] max-md:max-w-[340px] max-sm:max-w-[300px]"
+                    : "max-w-[560px] max-xl:max-w-[480px] max-lg:max-w-[420px] max-md:max-w-[320px] max-sm:max-w-[280px]"
+                }`}
+              >
+                <JoinTactileButton
+                  label={cta.primaryButton.label}
+                  size="auto"
+                  variant="orange"
+                  onClick={handlePrimaryClick}
+                />
+              </div>
             </div>
+
+            {/* Secondary Ghost Link Button */}
+            {cta.secondaryButton && (
+              <div className="relative z-30 mt-5">
+                {cta.secondaryButton.action === "modal" ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      playClickSound();
+                      setIsModalOpen(true);
+                    }}
+                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"
+                  >
+                    <span className="underline-offset-4 group-hover:underline">
+                      {cta.secondaryButton.label}
+                    </span>
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </button>
+                ) : cta.secondaryButton.isExternal ? (
+                  <a
+                    href={cta.secondaryButton.href || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => playClickSound()}
+                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    <span className="underline-offset-4 group-hover:underline">
+                      {cta.secondaryButton.label}
+                    </span>
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                      />
+                    </svg>
+                  </a>
+                ) : (
+                  <NextLink
+                    href={cta.secondaryButton.href || "#"}
+                    onClick={() => playClickSound()}
+                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200"
+                  >
+                    <span className="underline-offset-4 group-hover:underline">
+                      {cta.secondaryButton.label}
+                    </span>
+                    <svg
+                      className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </NextLink>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Lead Capture Modal */}
@@ -107,45 +262,8 @@ export const Footer: React.FC = () => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
           />
-
-          {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
-          <div
-            ref={marqueeRef}
-            className="absolute top-[27%] max-md:top-[19%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
-            style={{
-              WebkitMaskImage:
-                "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",
-              maskImage:
-                "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",
-            }}
-          >
-            <motion.div
-              animate={marqueeInView ? { x: ["0%", "-50%"] } : { x: "0%" }}
-              className="flex whitespace-nowrap"
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 25,
-                  ease: "linear",
-                },
-              }}
-            >
-              {[...Array(4)].map((_, i) => (
-                <span
-                  key={i}
-                  className="text-[100px] max-md:text-[50px] font-bold leading-[100%] tracking-[0px] align-middle uppercase text-white mx-12 font-jetbrains-mono"
-                  style={{
-                    // @ts-ignore
-                    leadingTrim: "none",
-                  }}
-                >
-                  SAAS WEB APP
-                </span>
-              ))}
-            </motion.div>
-          </div>
         </motion.div>
+
 
         {/* Footer Navigation Grid */}
         <motion.div

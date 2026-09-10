@@ -1077,3 +1077,131 @@ Preserve these exactly:
 ---
 
 *This file is the living audit for the About page. v1 → v2 (2026-08-27) → v3 (2026-08-31). Verify against current source before implementing — the code is the ground truth.*
+
+---
+---
+
+# v4 — Market Demand Findings (Upwork Job Scan) → About Page Implications
+**Audited:** 2026-09-09
+**Method:** Live scan of ~50 Upwork job postings across four searches (`SaaS UI UX product design`, `landing page design`, `UX audit`, `Next.js developer` / `product designer`), read for recurring buyer language, tooling, budget shape, and engagement pattern. This is demand-side evidence, not a copy audit — it tells us what buyers are actually typing and paying for right now, which the About page's positioning and keyword surface should reflect.
+
+## What the job market is actually saying
+
+| Pattern observed | Frequency in sample | What it implies for `/about` |
+|---|---|---|
+| "SaaS dashboard/platform" as the product type | Very high — the single most common noun phrase | The page should keep leading with SaaS/dashboard/enterprise-software framing (it already does — this is validated, not a gap) |
+| "AI SaaS", "AI integration", "AI-powered", "LLM" appearing in the job title or first line | High — roughly 1 in 4 postings across both design and dev searches | AI is not a niche add-on anymore, it's a primary buyer search term. The About page's Industries list already has "AI Products & Platforms" — but AI is never mentioned in the H1, subheadline, or differentiation cards. It should appear in visible prose, not just a tag. |
+| Specific tool names driving the ask: **Figma** (near-universal), **Framer** (recurring, especially landing/validation pages), **Next.js / TypeScript / Supabase / Firebase** (recurring in dev postings) | High | The About page's Technology Stack section lists `Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP` — this is already well-aligned. No change needed here; it's a confirmed strength, worth keeping exactly as-is. |
+| Buyers explicitly asking for a "**UX audit**" of an *existing* product before committing to more build work | High — a distinct, recurring job category with small budgets ($80–$300 fixed) and fast turnaround (`Less than 1 month`) | This is a low-commitment entry point into a relationship, not just a standalone service. The About page's trust-building job (per this doc's own Research Foundation — "the About page converts partial interest into intent") should make it easy for a skeptical, budget-cautious buyer to picture a small first engagement, not just a full "idea to shipped product" commitment. Currently the page only frames the relationship at full-build scale. |
+| "Conversion-focused", "CRO" language used by buyers themselves (not just agency marketing-speak) | High, especially in landing-page and audit postings | Validates the existing "Designed for Conversion" differentiation card (Section 3a) — keep it, and consider surfacing "conversion" once more near the fold, since buyers are literally searching this word. |
+| Budget/engagement split: many **small, fast, fixed-price jobs** ($15–$300, <1 month) for audits and single-page work, alongside a smaller set of **large hourly/fixed engagements** ($10k+, 3–6+ months, 30+ hrs/week) for full SaaS builds | Consistent across all four searches | The About page currently only speaks to the second buyer (full product partner, "9+ years, 50+ products"). It has no signal for the first buyer type — someone testing the water with a small, cheap, fast engagement. Losing that buyer at the About-page trust stage means losing the funnel that could convert them into the larger engagement later. |
+| High proposal counts (50–140+) on generic "UI/UX Designer" postings vs. low counts (5–30) on postings with a specific, named problem (e.g. "audit our SaaS dashboard before further dev", "AI SaaS full-stack") | Consistent | Generic positioning competes in the most crowded lane. The About page's differentiation cards and industries list are the tool for standing out — the audit's existing recommendation to sharpen and de-duplicate the "What Makes Us Different" cards (Section 3a) is reinforced by this: specificity is what wins in this market, not broader claims. |
+
+## New recommendations (additive to v1–v3, do not conflict)
+
+**NC-D1. Add one visible sentence naming AI product work, not just a tag in the industries list.**
+Given how often "AI SaaS" and "AI integration" appear as the buyer's own framing, the subheadline or a differentiation card should say it in plain language once — e.g. working "AI" into NC1's recommended subheadline ("We help SaaS founders, enterprise teams, and AI product teams…") or into differentiation card 06 ("50+ Products, Not Guesses — Across SaaS, AI, FinTech, HealthTech, and LegalTech" already does this well; no change needed there, but it's currently the *only* place AI appears in body copy — one more mention near the top of the page would matter more for scanning buyers who don't reach card 06).
+
+**NC-D2. Signal a low-commitment entry point somewhere on the About page, not only in the CTA's "Book a Free Call."**
+The job data shows a real, recurring buyer who wants a small, fast, cheap first engagement (a UX audit, a single landing page) before trusting an agency with a full build. Nothing on the About page currently tells that buyer they're welcome to start small. Consider one line in the CTA section or "Who We Work Best With" acknowledging this path — e.g. "Whether it's a quick audit or a full product build" — without adding a new section or restructuring the page.
+
+**NC-D3. No change needed to Technology Stack or Industries sections beyond what v2/v3 already recommended.**
+The live market confirms the current tech stack list (Figma, Framer, Next.js, TypeScript) and the trimmed industries list (SaaS, AI, FinTech, HealthTech, LegalTech from NC5) are the right ones — this is a rare case of the audit and the market agreeing without new action required.
+
+*Cross-reference: the sharper, more actionable version of this market-demand finding — the entry-point-for-small-engagements gap — applies most directly to the services pages, particularly UX Audits & Consultation. See `05-services-pages.md` v4 for the primary recommendation; this section only covers the About-page-specific implication.*
+
+---
+---
+
+# v5 — Angular Scope-Fit + "AI-Generated Code to Production" Findings (Upwork Job Scan) → About Page Implications
+**Audited:** 2026-09-09
+**Method:** Same follow-up scan documented in full in `05-services-pages.md` v5 (~30 additional postings targeting Angular-specific demand and "vibe coded"/AI-generated-code cleanup demand). This section covers only the two About-page-specific implications; the full evidence tables live in the services-pages file.
+
+## AD1. Technology Stack section overstates Angular/React parity — RESOLVED, scope confirmed by user 🟠→✅
+
+The live Angular job market is overwhelmingly an **enterprise .NET/C#/Azure buyer**, not a React/Next.js-adjacent buyer (full evidence: `05-services-pages.md` v5, Finding 1). The About page's Technology Stack (`Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP`) lists Angular in the same breath as React/Next.js/TypeScript, which v2/v3 of this audit already praised as "industry-standard and recognizable to US-based CTOs" with "no issues."
+
+**User decision (2026-09-09):** the agency does **not** want to chase the .NET/C# side of the Angular market — that stays explicitly out of scope. **Azure is in scope** (as a cloud/deployment target, not as a .NET-shop signal). The confirmed actual backend stack is **AWS, GCP, Azure (deploy targets), Python, Node.js, and AI agents** — not C#/.NET.
+
+**Action:**
+- **Do not** add .NET/C#/ASP.NET language anywhere on the site — this would attract a buyer segment the agency has decided not to serve.
+- **Do** correct the backend-claims-vs-visible-stack mismatch already flagged in v3 NF8 (JSON-LD `description` claims "Node.js, and Python" full-stack work that never appears in the visible Technology Stack list) — this is now confirmed accurate to the real stack and should be *added to the visible page*, not removed from the schema. The visible Technology Stack section currently shows only front-end (`Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP`) with zero backend/cloud/AI tooling shown anywhere on the page.
+- **Recommended addition to the visible Technology Stack section:** add a second row or a few chips covering the real backend: `Node.js, Python, AWS, GCP, Azure, AI Agents / LLM APIs`. This closes the NF8 gap with truthful content instead of walking back the schema claim, and it directly matches live buyer search terms from the v4 scan (AWS, GCP, Python, Node.js, and "AI agents" all appeared repeatedly in job titles/skills across both scans).
+- Angular itself stays in the stack list as-is — it's true and low-cost to list — but should **not** be given any additional emphasis or paired with .NET language anywhere on the site.
+
+## AD2. "AI-generated code, made production-ready" is a quotable buyer situation with zero surface area on this page 🔴
+
+Full evidence and recommended service-page copy is in `05-services-pages.md` v5, Finding 2 — this is the higher-leverage location for the fix. The About-page-specific note: this buyer situation ("I built something fast with an AI tool and need it taken to production") is *functionally identical* to the page's own core promise — the H1 "We Turn Ideas Into Shipped Products," differentiation card 04 "Design Through to Code" / "Wireframes to React, Angular, and Next.js. One team, no hand-offs," and card 06 "50+ Products, Not Guesses." None of these currently name AI-generated code or vibe-coded prototypes as a starting point, even though the promise already covers it. Adding one phrase to one of the existing differentiation cards (no new card needed, no section restructure) would let this page catch a real, currently-unaddressed search intent without touching anything v1–v4 already validated as strong.
+
+*Cross-reference: `05-services-pages.md` v5 carries the full job-title evidence table, budget data, and the primary services-page recommendations (adding a `whatYouGet` card to SaaS & AI Development, and an audit-page mention of AI-tool-built prototypes).*
+
+---
+---
+
+# v6 — Implementation Reconciliation + Final Copy (About Page)
+**Audited:** 2026-09-09
+**Method:** v4/v5 recommendations diffed against the **current** source (`app/about/page.tsx`, `app/about/layout.tsx`) rather than the code state the earlier versions were written against. Several v4/v5 items are already shipped; this section states only what is *still* open, with verbatim copy to apply. Nothing here conflicts with v1–v5 — it supersedes the open recommendations in v4 AD1/AD2 and v4 NC-D1/NC-D2 with a checked, final version.
+
+## Already done in code (no action — recorded so v4/v5 are not re-implemented)
+
+| v4/v5 item | Current state in `app/about/page.tsx` |
+|---|---|
+| Bento card rename (Built to Convert / Design Through to Code / 50+ Products, Not Guesses) | ✅ Live — cards already carry the NC2 titles and AI is already named in card 06 |
+| "Design Through to Code" names the stack | ✅ Live — "Wireframes to React, Angular, and Next.js. One team, no hand-offs." |
+| Industries list trimmed to 5, includes "AI Products & Platforms" | ✅ Live (`industries` array) |
+| Schema `description` claims Node.js + Python full-stack (NF8) | ✅ Still in JSON-LD — but see AD1 below, the visible stack now also needs the backend row |
+| `technologies` array already contains `Node.js` and `Python` entries | ⚠️ Present in the array **but the logo files `/assets/logos/nodejs.svg` and `/assets/logos/python.svg` do not exist** — these two chips currently render broken images. Fix is part of AD1. |
+
+## Still open — apply these
+
+### AD1 (final). Technology Stack: add the real backend/cloud row + fix the two broken logo chips 🟠
+**File:** `app/about/page.tsx` — `technologies` array (currently L36–47) and the Technology Stack render block (currently L666–692).
+
+**Problem:** The visible list is front-end only in practice (`Angular, React, Next.js, Node.js, Python, TypeScript, Tailwind CSS, Framer, Figma, GSAP`), and the two backend entries that *are* in the array (`Node.js`, `Python`) point at logo files that don't exist in `public/assets/logos/`, so they render broken. Meanwhile the JSON-LD and the confirmed real stack (user decision 2026-09-09) include cloud + AI-agent capability that appears **nowhere** visible. Live buyer search terms from the v4/v5 scans repeatedly name AWS, GCP, Azure, Python, Node.js, and "AI agents".
+
+**Do:**
+1. Add these logo assets to `public/assets/logos/`: `nodejs.svg`, `python.svg`, `aws.svg`, `gcp.svg`, `azure.svg`, `ai-agents.svg` (or a generic "LLM / AI Agents" mark). Until the SVGs exist, ship the new items as **text-only chips** (no `<img>`) rather than broken images.
+2. Final `technologies` list (front-end first, backend/cloud second — order matters for scanning):
+
+   ```
+   Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP,
+   Node.js, Python, AWS, GCP, Azure, AI Agents / LLM APIs
+   ```
+3. Optionally split the render into two labelled rows — "Design & Front-End" and "Back-End, Cloud & AI" — using the same chip component. Not required; a single wrapped flex row is acceptable.
+4. **Do not** add `.NET`, `C#`, or `ASP.NET` anywhere. Angular stays exactly as listed — no extra emphasis, no pairing with enterprise-.NET language. (User decision: the .NET/C# Angular buyer is out of scope; Azure is in scope only as a deploy target.)
+
+**Also update** `knowsAbout[]` in the Organization JSON-LD (currently L135–149) to add: `"Cloud Deployment"`, `"AWS"`, `"Node.js Development"`, `"Python Development"`, `"AI Agent Development"`. Keep existing entries.
+
+### AD2 (final). Name AI product work + a low-commitment entry point in visible prose 🟠
+Three small copy edits, no new sections, no restructure.
+
+**1. Hero subheadline** — **File:** `app/about/page.tsx` (currently L295–300). AI is a top buyer search term but never appears above the bento grid.
+
+- Current:
+  > We are a product design and development studio. We help SaaS founders and enterprise teams think through the product, design for real users, and ship production-ready code. No hand-offs, no gaps.
+- Change to:
+  > We are a product design and development studio. We help SaaS founders, enterprise teams, and AI product teams think through the product, design for real users, and ship production-ready code — whether you're starting from a blank page or a prototype built with an AI tool.
+
+  *(If the second clause makes the sentence too long in layout, drop it here and instead apply it to card 04 — see edit 2.)*
+
+**2. Bento card 04 "Design Through to Code"** — **File:** `app/about/page.tsx` (currently L433–439). Optional, use if the hero clause is cut.
+
+- Current desc: `Wireframes to React, Angular, and Next.js. One team, no hand-offs.`
+- Change to: `Wireframes — or an AI-generated prototype — to production React, Angular, and Next.js. One team, no hand-offs.`
+
+**3. CTA section subheadline** — **File:** `app/about/page.tsx` (currently L784–787). Nothing on the page tells the small-first-project buyer they're welcome; the CTA only frames a full build.
+
+- Current:
+  > Book a free 15-minute call. Tell us your vision — we'll bring it to life.
+- Change to:
+  > Book a free 15-minute call. Whether it's a quick UX audit or a full product build, tell us where you are — we'll tell you the fastest path forward.
+
+### AD3. SEO metadata — minor keyword top-up 🟡
+**File:** `app/about/layout.tsx`. The `keywords` string already has `AI product design agency` and `hire Next.js agency`. Add, comma-separated, to the end: `AI SaaS development, Node.js Python backend, AWS GCP Azure deployment, take AI prototype to production`. No change to `title`, `description`, OG, or Twitter — those are settled in v3 (checklist §11).
+
+## Explicitly NOT doing
+- **No `/services` hub page** and no new "start small" section on About — the low-commitment signal is handled by the one CTA line in AD2 edit 3. (User decision 2026-09-09: the missing `/services` hub in `05-services-pages.md` X2/NC8 is intentional and closed as won't-do.)
+- No change to the team section, stats strip, client grid, process, or FAQ — untouched by the market-demand findings.
+- No `.NET`/`C#` language anywhere (AD1).
+
+*Cross-reference: `05-services-pages.md` v6 carries the matching final copy for the four service pages and closes X2/NC8 as intentional-won't-do.*

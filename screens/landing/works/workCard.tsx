@@ -72,8 +72,8 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
     <div
       className={
         isEven
-          ? "flex flex-row-reverse justify-between mb-0 max-md:mb-6 max-w-full max-md:flex-col-reverse"
-          : "flex flex-row justify-between mb-0 max-md:mb-6 max-w-full max-md:flex-col-reverse py-32 max-md:py-0 max-lg:py-16 max-xl:py-28"
+          ? "flex flex-row-reverse justify-between mb-20 max-md:mb-10 last:mb-0 max-w-full max-md:flex-col-reverse"
+          : "flex flex-row justify-between mb-20 max-md:mb-10 last:mb-0 max-w-full max-md:flex-col-reverse"
       }
     >
       <motion.div

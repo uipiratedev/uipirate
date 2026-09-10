@@ -1,7 +1,16 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import services from "@/data/sericesDetailsList.json";
 import ServiceDetails from "@/screens/serviceDetails";
+
+// Clean, human-readable service names for structured data (not the raw hero badge).
+const SERVICE_NAME: Record<string, string> = {
+  "ux-ui-design": "UX/UI Design",
+  "saas-ai-development": "SaaS & AI Development",
+  "landing-pages-business-websites": "Landing Pages & Business Websites",
+  "ux-audits-consultation": "UX Audits & Consultation",
+};
 
 export async function generateStaticParams() {
   return services.map((item: any) => ({ id: item.slug }));
@@ -26,41 +35,32 @@ const SERVICE_META: Record<
   { title: string; description: string; keywords: string }
 > = {
   "ux-ui-design": {
-    title: "SaaS & Mobile App UX/UI Design | Idea to Product | Angular, React",
+    title: "SaaS & Mobile App UX/UI Design | UI Pirate",
     description:
-      "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, and UX/UI design — from a few lines of vision to dev-ready, high-fidelity screens.",
+      "Turn your SaaS or mobile app idea into a shipped product with product thinking, competitive analysis, information architecture, and UX/UI design in Angular, React & Next.js, from vision to dev-ready screens.",
     keywords:
-      "SaaS product design, idea to product, product thinking, UX/UI design, mobile app design, competitive analysis, information architecture, complex enterprise application, MVP to product, startup product agency USA",
+      "SaaS product design, UX/UI design, mobile app design, product thinking, information architecture, new build or redesign, startup product design agency",
   },
   "saas-ai-development": {
-    title:
-      "SaaS & AI Development | Full-Stack Engineering | Angular, React, Node.js",
+    title: "SaaS & AI Development | Full-Stack Engineering | UI Pirate",
     description:
-      "Full-stack development for SaaS platforms and AI-powered products. Backend architecture, database design, AI/LLM integration, APIs, and production deployment in Angular, React, Next.js, and Node.js.",
+      "Full-stack development for SaaS and AI products: backend architecture, database design, AI/LLM integration, APIs, and production deployment on Node.js, Python, AWS, GCP & Azure. Plus AI-generated code taken to production.",
     keywords:
-      "SaaS development, AI development, full-stack engineering, AI integration, LLM integration, backend architecture, API development, Angular development, React development, Node.js development, startup engineering agency USA",
+      "SaaS development, AI development, full-stack engineering, AI/LLM integration, backend architecture, API development, AI-generated code to production, Node.js, Python",
   },
   "landing-pages-business-websites": {
-    title:
-      "Landing Page & Website Design & Development | Angular, React & Webflow",
+    title: "Landing Page Design & Development | UI Pirate",
     description:
-      "High-converting landing pages and business websites that turn visitors into customers. We think through your product positioning, competitive landscape, and user journey — then design + develop in Angular, React, Next.js, Framer, or Webflow.",
+      "High-converting landing pages and business websites that turn visitors into customers, built around your positioning and user journey in React, Next.js, Framer, or Webflow.",
     keywords:
-      "landing page design and development, business website development, Angular website development, high-converting landing page, product positioning, competitive analysis, startup website design",
-  },
-  "design-system-component-library": {
-    title: "Design Systems & Component Libraries | Scalable UI Kits",
-    description:
-      "Custom design systems with design tokens, branded UI kits, and documented dev-ready components for Angular, React, and other frameworks. Built for enterprise teams that need consistency at scale.",
-    keywords:
-      "design system agency, Angular component library, component library, design tokens, UI kit, scalable design system, enterprise design system, Angular design system, React component library, Figma component library",
+      "landing page design and development, business website development, high-converting landing page, conversion-focused web design, Framer, Webflow",
   },
   "ux-audits-consultation": {
-    title: "UX Audit & Consultation | Improve Your Product's Usability",
+    title: "UX Audit & Consultation | UI Pirate",
     description:
-      "Expert UX audits with heuristic analysis, usability testing, and actionable recommendations. Identify friction points and improve conversion rates in your SaaS product.",
+      "Heuristic UX audits with drop-off analysis and a prioritised, actionable roadmap. Find the friction blocking growth before you build more. Most audits run 1 to 2 weeks.",
     keywords:
-      "UX audit service, usability testing, UX consultation, SaaS UX review, heuristic analysis, product usability audit",
+      "UX audit service, usability review, UX consultation, SaaS UX review, heuristic analysis, product usability audit, conversion audit",
   },
 };
 
@@ -71,9 +71,9 @@ export async function generateMetadata({
   const normalizedSlug = normalize(urlSlug);
 
   const meta = SERVICE_META[normalizedSlug] || {
-    title: `${urlSlug.replace(/-/g, " ")} | Design Services`,
-    description: `Professional ${urlSlug.replace(/-/g, " ").toLowerCase()} services by UI Pirate. Enterprise-grade design trusted by Fortune 500 companies.`,
-    keywords: `${urlSlug.replace(/-/g, " ").toLowerCase()}, UI Pirate, design services`,
+    title: `${urlSlug.replace(/-/g, " ")} | UI Pirate`,
+    description: `${urlSlug.replace(/-/g, " ")} services by UI Pirate, a product design and development studio for SaaS and AI teams.`,
+    keywords: `${urlSlug.replace(/-/g, " ").toLowerCase()}, UI Pirate, product design and development`,
   };
 
   return {
@@ -98,18 +98,19 @@ const ServicesByIdPage = ({ params }: PageProps) => {
   // URL params are automatically decoded by Next.js
   const urlSlug = decodeURIComponent(params.id);
 
+  const normalizedSlug = normalize(urlSlug);
   const service = services.find(
-    (s: any) => normalize(s.slug) === normalize(urlSlug),
+    (s: any) => normalize(s.slug) === normalizedSlug,
   );
 
-  if (!service) {
-    return (
-      <div className="text-center py-24 text-gray-500">
-        <h1 className="text-3xl font-semibold">Service not found</h1>
-        <p className="mt-2">Please check the URL or select a valid service.</p>
-      </div>
-    );
-  }
+  if (!service) notFound();
+
+  const serviceName =
+    SERVICE_NAME[normalizedSlug] || urlSlug.replace(/-/g, " ");
+  const serviceDescription =
+    SERVICE_META[normalizedSlug]?.description ||
+    (service.data as any).hero?.description ||
+    "";
 
   return (
     <div>
@@ -119,9 +120,9 @@ const ServicesByIdPage = ({ params }: PageProps) => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            name:
-              (service.data as any).hero?.badge || urlSlug.replace(/-/g, " "),
-            description: (service.data as any).hero?.description || "",
+            name: serviceName,
+            serviceType: serviceName,
+            description: serviceDescription,
             provider: {
               "@type": "Organization",
               name: "UI Pirate by Vishal Anand",
@@ -139,7 +140,7 @@ const ServicesByIdPage = ({ params }: PageProps) => {
         }}
         type="application/ld+json"
       />
-      <ServiceDetails data={service.data} />
+      <ServiceDetails data={service.data} slug={service.slug} />
     </div>
   );
 };

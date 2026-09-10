@@ -81,7 +81,7 @@ interface ScrubProps {
 
 const RevealScrub = forwardRef<HTMLElement, ScrubProps>(function RevealScrub(
   { as, variant, distance, isMobile, className, children, rest },
-  _ref,
+  forwardedRef,
 ) {
   const ref = useRef<HTMLDivElement>(null);
   const t = useMemo(
@@ -133,7 +133,19 @@ const RevealScrub = forwardRef<HTMLElement, ScrubProps>(function RevealScrub(
   const Comp = motion[as] as React.ElementType;
 
   return (
-    <Comp ref={ref} className={className} style={style} {...rest}>
+    <Comp
+      ref={(node: HTMLDivElement | null) => {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        if (typeof forwardedRef === "function") {
+          forwardedRef(node);
+        } else if (forwardedRef) {
+          (forwardedRef as React.MutableRefObject<HTMLElement | null>).current = node;
+        }
+      }}
+      className={className}
+      style={style}
+      {...rest}
+    >
       {children}
     </Comp>
   );

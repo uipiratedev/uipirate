@@ -1,6 +1,6 @@
 "use client";
 
-import FaqsAccordion from "./accordion";
+import FaqsAccordion from "@/components/FaqsAccordion";
 
 import SectionHeader from "@/components/SectionHeader";
 import { Reveal } from "@/components/motion";

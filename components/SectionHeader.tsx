@@ -23,6 +23,12 @@ interface SectionHeaderProps {
    * Extra classes for the <h2> (e.g. "text-white" on dark sections).
    */
   headingClassName?: string;
+
+  /**
+   * Optional muted line under the heading (e.g. a one-sentence qualifier).
+   * Sits inside the header block so the mb-12 / max-md:mb-8 gap still applies below it.
+   */
+  subcopy?: React.ReactNode;
 }
 
 /**
@@ -40,6 +46,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
   children,
   className = "",
   headingClassName = "",
+  subcopy,
 }) => {
   return (
     <div className={`text-center mb-12 max-md:mb-8 ${className}`}>
@@ -50,6 +57,11 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       )}
       {children && (
         <h2 className={`heading-center ${headingClassName}`}>{children}</h2>
+      )}
+      {subcopy && (
+        <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-gray-500">
+          {subcopy}
+        </p>
       )}
     </div>
   );
