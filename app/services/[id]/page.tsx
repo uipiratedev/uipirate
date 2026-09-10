@@ -37,28 +37,28 @@ const SERVICE_META: Record<
   "ux-ui-design": {
     title: "SaaS & Mobile App UX/UI Design | UI Pirate",
     description:
-      "Turn your SaaS or mobile app idea into a shipped product — product thinking, competitive analysis, information architecture, and UX/UI design in Angular, React & Next.js, from vision to dev-ready screens.",
+      "Turn your SaaS or mobile app idea into a shipped product with product thinking, competitive analysis, information architecture, and UX/UI design in Angular, React & Next.js, from vision to dev-ready screens.",
     keywords:
       "SaaS product design, UX/UI design, mobile app design, product thinking, information architecture, new build or redesign, startup product design agency",
   },
   "saas-ai-development": {
     title: "SaaS & AI Development | Full-Stack Engineering | UI Pirate",
     description:
-      "Full-stack development for SaaS and AI products — backend architecture, database design, AI/LLM integration, APIs, and production deployment on Node.js, Python, AWS, GCP & Azure. Plus AI-generated code taken to production.",
+      "Full-stack development for SaaS and AI products: backend architecture, database design, AI/LLM integration, APIs, and production deployment on Node.js, Python, AWS, GCP & Azure. Plus AI-generated code taken to production.",
     keywords:
       "SaaS development, AI development, full-stack engineering, AI/LLM integration, backend architecture, API development, AI-generated code to production, Node.js, Python",
   },
   "landing-pages-business-websites": {
     title: "Landing Page Design & Development | UI Pirate",
     description:
-      "High-converting landing pages and business websites that turn visitors into customers — built around your positioning and user journey in React, Next.js, Framer, or Webflow.",
+      "High-converting landing pages and business websites that turn visitors into customers, built around your positioning and user journey in React, Next.js, Framer, or Webflow.",
     keywords:
       "landing page design and development, business website development, high-converting landing page, conversion-focused web design, Framer, Webflow",
   },
   "ux-audits-consultation": {
     title: "UX Audit & Consultation | UI Pirate",
     description:
-      "Heuristic UX audits with drop-off analysis and a prioritised, actionable roadmap. Find the friction blocking growth before you build more. Most audits run 1–2 weeks.",
+      "Heuristic UX audits with drop-off analysis and a prioritised, actionable roadmap. Find the friction blocking growth before you build more. Most audits run 1 to 2 weeks.",
     keywords:
       "UX audit service, usability review, UX consultation, SaaS UX review, heuristic analysis, product usability audit, conversion audit",
   },
@@ -72,7 +72,7 @@ export async function generateMetadata({
 
   const meta = SERVICE_META[normalizedSlug] || {
     title: `${urlSlug.replace(/-/g, " ")} | UI Pirate`,
-    description: `${urlSlug.replace(/-/g, " ")} services by UI Pirate — a product design and development studio for SaaS and AI teams.`,
+    description: `${urlSlug.replace(/-/g, " ")} services by UI Pirate, a product design and development studio for SaaS and AI teams.`,
     keywords: `${urlSlug.replace(/-/g, " ").toLowerCase()}, UI Pirate, product design and development`,
   };
 

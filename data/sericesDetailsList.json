@@ -26,7 +26,7 @@
             }
           ]
         ],
-        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, and mobile-first products — from MVP Figma wireframes to fully developed, enterprise-grade products."
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, and mobile-first products, from MVP Figma wireframes to fully developed, enterprise-grade products."
       },
       "whatYouGet": {
         "badge": "WHAT YOU GET",
@@ -44,7 +44,7 @@
           },
           {
             "heading": "New Build or Redesign",
-            "description": "Whether you're going idea-to-MVP or modernising a live SaaS product that's outgrown its interface — product strategy, IA, and competitive analysis included.",
+            "description": "Whether you're going idea-to-MVP or modernising a live SaaS product that's outgrown its interface; product strategy, IA, and competitive analysis included.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
           },
           {
@@ -63,7 +63,7 @@
             "heading": "Hidden Churn",
             "description": "Why do users leave without obvious problems?",
             "QuickWins": [
-              "They didn’t get stuck — they got confused. Confusion creates silent churn"
+              "They didn’t get stuck; they got confused. Confusion creates silent churn"
             ]
           },
           {
@@ -223,7 +223,7 @@
             }
           ]
         ],
-        "description": "Full-stack development for SaaS platforms and AI-powered products — architecture, APIs, database design, AI/LLM integration, and production deployment. We build what the interface runs on."
+        "description": "Full-stack development for SaaS platforms and AI-powered products: architecture, APIs, database design, AI/LLM integration, and production deployment. We build what the interface runs on."
       },
       "whatYouGet": {
         "badge": "WHAT YOU GET",
@@ -246,7 +246,7 @@
           },
           {
             "heading": "Cloud Deployment & Scaling",
-            "description": "Production deployment on AWS, GCP, or Azure — CI/CD, monitoring, and infrastructure that scales with usage",
+            "description": "Production deployment on AWS, GCP, or Azure, with CI/CD, monitoring, and infrastructure that scales with usage",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622283/mobile_ior7xh.svg"
           },
           {
@@ -265,7 +265,7 @@
             "heading": "Fragile Foundations",
             "description": "Why does adding one feature break three others?",
             "QuickWins": [
-              "Because the architecture — often scaffolded fast by an AI tool — wasn't built to extend. We re-lay the data models and services so change is absorbed, not fought."
+              "Because the architecture, often scaffolded fast by an AI tool, wasn't built to extend. We re-lay the data models and services so change is absorbed, not fought."
             ]
           },
           {
@@ -382,7 +382,7 @@
           "title": "UX/UI Design",
           "tagline": "Design the interface your product deserves",
           "description": "Great engineering needs a great interface to sit behind.",
-          "description2": "We design intuitive, premium user interfaces for SaaS and AI products — from wireframes to dev-ready UI.",
+          "description2": "We design intuitive, premium user interfaces for SaaS and AI products, from wireframes to dev-ready UI.",
           "buttonText": "Explore",
           "slug": "ux-ui-design"
         },
@@ -431,7 +431,7 @@
           },
           {
             "heading": "Design & Frontend Development",
-            "description": "Clean, fast, production-ready builds in React, Next.js, Framer, or Webflow — your design translated exactly into a live site.",
+            "description": "Clean, fast, production-ready builds in React, Next.js, Framer, or Webflow; your design translated exactly into a live site.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151360/corporate_szit3w.svg"
           },
           {
@@ -464,7 +464,7 @@
             "description": "Why isn’t a good-looking website enough?",
             "QuickWins": [
               "A site can look great and still confuse users.",
-              "Visitors scan headlines and buttons — if the meaning isn’t instant, they leave without acting."
+              "Visitors scan headlines and buttons; if the meaning isn’t instant, they leave without acting."
             ]
           },
           {
@@ -501,7 +501,7 @@
           },
           {
             "heading": "Funded Startups & Scaleups",
-            "description": "Raising or launching and need a site that matches the pitch — clear positioning, fast load, and a page built to convert investor and customer traffic.",
+            "description": "Raising or launching and need a site that matches the pitch: clear positioning, fast load, and a page built to convert investor and customer traffic.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
           }
         ]
@@ -587,7 +587,7 @@
             }
           ]
         ],
-        "description": "We identify where users hesitate, drop off, or lose confidence — and tell you exactly what to fix, why it matters, and what to do next. Most audits run 1–2 weeks."
+        "description": "We identify where users hesitate, drop off, or lose confidence, and tell you exactly what to fix, why it matters, and what to do next. Most audits run 1 to 2 weeks."
       },
       "whatYouGet": {
         "heading": "What You Get From a UX Audit",
@@ -600,7 +600,7 @@
           },
           {
             "heading": "Drop-Off & Friction Insights",
-            "description": "Pinpoint where users hesitate, abandon actions, or lose trust — and understand why it’s happening.",
+            "description": "Pinpoint where users hesitate, abandon actions, or lose trust, and understand why it’s happening.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
           },
           {
@@ -656,7 +656,7 @@
             "heading": "Silent Churn",
             "description": "Why do users churn without complaining?",
             "QuickWins": [
-              "Confusion doesn’t trigger feedback — it triggers exits.",
+              "Confusion doesn’t trigger feedback; it triggers exits.",
               "People leave quietly when effort outweighs value."
             ]
           }
@@ -678,7 +678,7 @@
           },
           {
             "heading": "Teams With Stalled Growth",
-            "description": "Signups or activation have flattened and you're not sure which friction points are costing you — you want a prioritised fix list before the next redesign.",
+            "description": "Signups or activation have flattened and you're not sure which friction points are costing you; you want a prioritised fix list before the next redesign.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
           }
         ]
@@ -705,7 +705,7 @@
               {
                 "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Prioritised Findings",
-                "description": "Every issue is scored by impact and effort, so you know what to fix first — not just a list of everything wrong.",
+                "description": "Every issue is scored by impact and effort, so you know what to fix first, not just a list of everything wrong.",
                 "gradientId": 3
               }
             ]

@@ -215,7 +215,7 @@ const ServiceDetailsHero = ({ data }: any) => {
                 </div>
                 <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
-                  Start Your Product Journey — Book a 15-Min Call
+                  Start Your Product Journey, Book a 15-Min Call
                 </p>
               </div>
             </a>
