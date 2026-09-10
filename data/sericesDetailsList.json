@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "slug": "UX-UI-Design",
     "data": {
@@ -235,14 +235,9 @@
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
           },
           {
-            "heading": "AI & LLM Integration",
-            "description": "Model integration, prompt pipelines, and AI features wired into your product",
+            "heading": "AI Models & API Integrations",
+            "description": "LLM integration, prompt pipelines, REST/GraphQL APIs, payments, and auth wired into your product",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
-          },
-          {
-            "heading": "API & Third-Party Integrations",
-            "description": "REST/GraphQL APIs, payments, auth, and integrations with the tools you rely on",
-            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622257/ux_wfeudq.svg"
           },
           {
             "heading": "Cloud Deployment & Scaling",

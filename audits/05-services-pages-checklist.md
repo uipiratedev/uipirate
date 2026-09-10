@@ -112,11 +112,11 @@ Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-veri
 ### 2.2 WhatYouGet, "Everything You Need to Ship a Working SaaS or AI Product"
 | # | Item | Status |
 |---|------|--------|
-| 2.2a | 4 cards (Full-Stack Architecture · AI & LLM Integration · API & Third-Party Integrations · Cloud Deployment & Scaling) | ✅ Now 5 cards, see 2.2b |
-| 2.2b | No card names "AI-generated code → production", highest-intent unaddressed keyword in both Upwork scans (v5 Finding 2) | ✅ Done (C8), 5th card `AI-Generated Code, Production-Ready` appended (Lovable / Bolt / Replit / Claude Code) |
+| 2.2a | 4 cards (Full-Stack Architecture · AI Models & API Integrations · Cloud Deployment & Scaling · AI-Generated Code, Production-Ready) | ✅ Combined AI/LLM with API/Auth into a single card to keep it to 4 total |
+| 2.2b | No card names "AI-generated code → production", highest-intent unaddressed keyword in both Upwork scans (v5 Finding 2) | ✅ Done (C8), card `AI-Generated Code, Production-Ready` appended |
 | 2.2c | `Full-Stack Architecture` + `Cloud Deployment & Scaling` descriptions are provider-generic | ✅ Done (C10), Full-Stack Architecture → "on Node.js or Python"; Cloud Deployment & Scaling → "on AWS, GCP, or Azure" |
-| 2.2d | Adding a 5th card may break the heading→animation map (X4) | ✅ Checked, SaaS & AI Dev's 4 headings were never in the map; 5th card falls back to `image` like the others. Appended, not swapped |
-| 2.2e | 5 card visuals upgraded from static SVG to complex Framer Motion glassmorphic components | ✅ Done |
+| 2.2d | Adding a 5th card may break the heading→animation map (X4) | ✅ Checked |
+| 2.2e | 4 card visuals upgraded from static SVG to complex Framer Motion glassmorphic components | ✅ Done |
 
 **V6-7 new card copy (apply verbatim):**
 > **Heading:** AI-Generated Code, Production-Ready

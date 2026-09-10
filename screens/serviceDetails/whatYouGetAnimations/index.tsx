@@ -25,8 +25,7 @@ const VISUAL_MAPPING: Record<string, any> = {
   "Mobile Optimization": Visuals.VisualMobile,
   // SaaS & AI Development
   "Full-Stack Architecture": SaasDevVisuals.VisualFullStackNew,
-  "AI & LLM Integration": SaasDevVisuals.VisualAILLMNew,
-  "API & Third-Party Integrations": SaasDevVisuals.VisualAPINew,
+  "AI Models & API Integrations": SaasDevVisuals.VisualAILLMNew,
   "Cloud Deployment & Scaling": SaasDevVisuals.VisualCloudNew,
   "AI-Generated Code, Production-Ready": SaasDevVisuals.VisualAiCodeNew,
   // Landing Pages & Business Websites
