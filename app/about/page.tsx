@@ -299,7 +299,7 @@ export default function AboutPage() {
           className="absolute pointer-events-none inset-0"
           style={{
             background:
-              "linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 40%)",
+              "linear-gradient(to top, rgba(255, 255, 255, 1) 0%, transparent 40%)",
           }}
         />
 
@@ -387,14 +387,14 @@ export default function AboutPage() {
             {/* Card 1: Tall */}
             <div className="premium-card md:row-span-2 md:col-span-2">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <StrategyBeforePixelsAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Strategy Before Pixels
                   </h3>
@@ -409,14 +409,14 @@ export default function AboutPage() {
             {/* Card 2: Wide */}
             <div className="premium-card md:col-span-4 h-full min-h-[240px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <ComplexMadeSimpleAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Complex Made Simple
                   </h3>
@@ -432,14 +432,14 @@ export default function AboutPage() {
             {/* Card 3: Standard */}
             <div className="premium-card md:col-span-2 h-full min-h-[240px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <BuiltToConvertAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Built to Convert
                   </h3>
@@ -454,14 +454,14 @@ export default function AboutPage() {
             {/* Card 4: Standard */}
             <div className="premium-card md:col-span-2 h-full min-h-[240px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <DesignToCodeAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Design Through to Code
                   </h3>
@@ -773,7 +773,7 @@ export default function AboutPage() {
 
         {/* About FAQ Section */}
         <section className="section-container">
-          <div className="max-w-3xl mx-auto">
+          <div className=" mx-auto">
             <Reveal variant="up">
               <SectionHeader chip="FAQs">
                 Everything you need to know

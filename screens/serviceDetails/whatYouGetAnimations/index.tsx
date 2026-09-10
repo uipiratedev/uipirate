@@ -25,6 +25,7 @@ const VISUAL_MAPPING: Record<string, any> = {
   "Mobile Optimization": UxUiVisuals.VisualMobileOptNew,
   // SaaS & AI Development
   "Full-Stack Architecture": SaasDevVisuals.VisualFullStackNew,
+  "Full-Stack Development, Idea to Production": SaasDevVisuals.VisualFullStackNew,
   "AI Models & API Integrations": SaasDevVisuals.VisualAILLMNew,
   "Cloud Deployment & Scaling": SaasDevVisuals.VisualCloudNew,
   "AI-Generated Code, Production-Ready": SaasDevVisuals.VisualAiCodeNew,
@@ -45,9 +46,9 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
   const VisualComponent = VISUAL_MAPPING[heading];
 
   return (
-    <div className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <div className="relative flex flex-col h-full rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
       {/* Image/Visual area */}
-      <div className="flex-1 flex items-center justify-center bg-[#F8F9FB] overflow-hidden">
+      <div className="w-full h-[200px] md:h-[220px] flex-shrink-0 flex items-center justify-center bg-[#F8F9FB] overflow-hidden">
         {VisualComponent ? (
           <div className="w-full h-full">
             <VisualComponent />
@@ -66,7 +67,7 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
       </div>
 
       {/* Content */}
-      <div className="px-5 py-4 md:px-6 md:py-5 bg-white relative z-10">
+      <div className="flex-1 flex flex-col justify-start px-5 py-4 md:px-6 md:py-5 bg-white relative z-10">
         <h3 className="text-[18px] md:text-[22px] font-semibold text-[#111827] leading-snug tracking-tight">
           {heading}
         </h3>
@@ -87,7 +88,7 @@ const WhatYouGetAnimations = ({ data }: any) => {
 
       <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
         {data.card.map((feature: any) => (
-          <Reveal key={feature.heading} variant="up">
+          <Reveal key={feature.heading} className="h-full flex flex-col" variant="up">
             <WhatYouGetCard {...feature} />
           </Reveal>
         ))}

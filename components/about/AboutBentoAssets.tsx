@@ -15,7 +15,7 @@ const STRATEGY_NODES = [
 
 export const StrategyBeforePixelsAsset = () => {
   return (
-    <div className="flex-1 rounded-xl mb-6 bg-gradient-to-b from-gray-50 to-white border border-gray-100 overflow-hidden relative min-h-[220px] select-none">
+    <div className="w-full flex-1 overflow-hidden relative min-h-[240px] select-none">
       {/* Animated Path / Road */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
@@ -100,7 +100,7 @@ export const ComplexMadeSimpleAsset = () => {
   const left = useTransform(percent, (v) => `${v}%`);
 
   return (
-    <div className="flex-1 rounded-xl mb-6 bg-gray-100 overflow-hidden relative min-h-[120px] select-none">
+    <div className="w-full flex-1 overflow-hidden relative min-h-[170px] select-none">
 
       {/* Background: Bloated UI */}
       <div className="absolute inset-0 p-4 bg-gray-100 flex flex-col gap-2">
@@ -175,7 +175,7 @@ export const ComplexMadeSimpleAsset = () => {
 // Card 3: Built to Convert (Standard) - Multi-layered Funnel
 export const BuiltToConvertAsset = () => {
   return (
-    <div className="flex-1 rounded-xl mb-6 bg-gradient-to-b from-gray-50 to-white border border-gray-100 overflow-hidden relative min-h-[100px] flex items-center justify-center p-4">
+    <div className="w-full flex-1 overflow-hidden relative min-h-[160px] flex items-center justify-center p-4">
       <div className="relative w-full max-w-[160px] h-[120px] flex flex-col items-center">
 
         {/* Layer 1: Traffic */}
@@ -238,7 +238,7 @@ export const BuiltToConvertAsset = () => {
 // Card 4: Design Through to Code (Standard) - Kept Same
 export const DesignToCodeAsset = () => {
   return (
-    <div className="flex-1 rounded-xl mb-6 overflow-hidden relative min-h-[100px] flex shadow-inner">
+    <div className="w-full flex-1 overflow-hidden relative min-h-[160px] flex shadow-inner">
       {/* Design Side */}
       <div className="w-1/2 bg-[#f5f5f5] border-r border-dashed border-gray-300 relative p-4 flex items-center justify-center">
         {/* Figma Toolbar */}

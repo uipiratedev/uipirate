@@ -7,38 +7,23 @@ import GlassSurface from "@/components/GlassSurface";
 const ServiceDetailsHero = ({ data }: any) => {
   return (
     <>
-      <div className="hero-wrapper">
-        {/* Subtle Grid Background Pattern */}
+      <section className="hero-wrapper max-md:!pt-14 max-md:gap-y-0 pb-12">
+        {/* Grid Background */}
         <div
-          className="absolute pointer-events-none -mt-20 "
+          className="absolute pointer-events-none inset-0"
           style={{
             backgroundImage: `
               linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
-
             `,
             backgroundSize: "40px 40px",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            marginLeft: "calc(-50vw + 50%)",
           }}
         />
-        {/* Layered gradient with gentle mist animation */}
         <div
-          className="absolute pointer-events-none -mt-20 "
+          className="absolute pointer-events-none inset-0"
           style={{
-            backgroundImage: `
-              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
-              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
-            `,
-            animation: "gentle-mist 8s ease-in-out infinite",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            marginLeft: "calc(-50vw + 50%)",
+            background:
+              "linear-gradient(to top, rgba(255, 255, 255, 1) 0%, transparent 40%)",
           }}
         />
         <div
@@ -245,7 +230,7 @@ const ServiceDetailsHero = ({ data }: any) => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

@@ -137,7 +137,6 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
     22,
     Math.max(13, Math.floor(maxAvailableWidth / (charCount * 0.58))),
   );
-  const computedReflectionSize = Math.max(9, Math.round(computedFontSize * 0.64));
   const computedLetterSpacing = computedFontSize < 17 ? "0.03em" : "0.06em";
   const computedTextX = showArrow
     ? cleanLabel.length > 15
@@ -527,39 +526,17 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
           </g>
 
           <g clipPath={`url(#clip5_${id})`}>
-            {isDefaultLabel ? (
+            {showArrow && (
               <>
-                {showArrow && (
-                  <>
-                    <path
-                      d="M322.666 88.835V97.3877H319.327V91.0387L302.207 97.4549H299.846L299.846 96.57L317.145 90.0866H299.846V88.835H322.666Z"
-                      fill={v.textColor}
-                    />
-                    <path
-                      d="M316.723 93.4248L305.412 97.4555H316.723V93.4248Z"
-                      fill={v.textColor}
-                    />
-                  </>
-                )}
+                <path
+                  d="M322.666 88.835V97.3877H319.327V91.0387L302.207 97.4549H299.846L299.846 96.57L317.145 90.0866H299.846V88.835H322.666Z"
+                  fill={v.textColor}
+                />
+                <path
+                  d="M316.723 93.4248L305.412 97.4555H316.723V93.4248Z"
+                  fill={v.textColor}
+                />
               </>
-            ) : (
-              <text
-                dominantBaseline="middle"
-                fill={v.textColor}
-                opacity={0.45}
-                style={{
-                  fontFamily: "var(--font-jakarta), sans-serif",
-                  fontWeight: 600,
-                  fontSize: `${computedReflectionSize}px`,
-                  letterSpacing: computedLetterSpacing,
-                  textTransform: "uppercase",
-                }}
-                textAnchor="middle"
-                x={computedTextX}
-                y="98"
-              >
-                {label}
-              </text>
             )}
           </g>
 
