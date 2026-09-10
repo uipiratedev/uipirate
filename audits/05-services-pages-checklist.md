@@ -163,7 +163,7 @@ Synced to **`05-services-pages.md` v8 (2026-09-09)** — all statuses are code-v
 | # | Item | Status |
 |---|------|--------|
 | 3.2a | 4 cards incl. `SEO Performance & AI-Readable Websites` | ✅ Keep as-is (differentiator praised in v1–v3) |
-| 3.2b | Framer / Webflow named as buyer search terms (v4 D4) | ⚠️ Re-open — this was satisfied only by `youWillGet.rightBadges` ("Webflow or Framer setup"), which is now **removed** (v8). Framer/Webflow are still named in `streamlinedProcess` ("Frameworks, CMS, and integrations are set up…") but not explicitly. 🟡 Consider naming Framer/Webflow in a `whatYouGet` card description if the tool-name keyword matters. |
+| 3.2b | Framer / Webflow named as buyer search terms (v4 D4) | ✅ Done (v8) — "Design & Frontend Development" `whatYouGet` card description now reads "…builds in React, Next.js, Framer, or Webflow…". Keyword is back in visible body copy after the `youWillGet` badge removal. |
 
 ### 3.3–3.5 WhyThisMatters / StreamlinedProcess / WhoThisIsFor
 | # | Item | Status |

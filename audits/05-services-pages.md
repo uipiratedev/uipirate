@@ -1335,14 +1335,15 @@ After the "What we provide" removal, every remaining open item from the v1–v7 
 |---|---|
 | **UX/UI Design** | Badge `SAAS & AI PRODUCT DESIGN`; "New Build or Redesign" card (animated); cross-links standardised; hero copy + SEO title fixed. Clean. |
 | **SaaS & AI Development** | 5-card `whatYouGet` incl. "AI-Generated Code, Production-Ready" (2 now animated); real provider names in copy; "Fragile Foundations" names AI scaffolding; SEO description names the stack. Clean. |
-| **Landing Pages** | `whyThisMatters` 4 cards; `whoThisIsFor` retargeted commercial; typo/whitespace/filler fixed; cross-link `ux-ui-design`. **Note:** Framer/Webflow are named in the process step copy but no longer in a badge (the `youWillGet` badge set was removed) — surfacing them in a `whatYouGet` card is the only remaining 🟡. |
+| **Landing Pages** | `whyThisMatters` 4 cards; `whoThisIsFor` retargeted commercial; typo/whitespace/filler fixed; cross-link `ux-ui-design`; "Design & Frontend Development" card now names React / Next.js / Framer / Webflow. Clean. |
 | **UX Audits & Consultation** | Full wrong-service content replaced; real audit process with visible heading + phase labels; 3 audience cards; hero turnaround line; cross-links fixed. Clean. |
 
 ## Still open (product / content decisions, not mechanical)
 
 1. **S10 / X7** — `LandingWork` gallery is generic on every service page. Needs a per-service project + result metric + testimonial (content the team must supply).
-2. **Landing Pages** — optionally name Framer/Webflow in a `whatYouGet` card (keyword lost with the badge-set removal).
-3. **Cross-audit** — service-page JSON-LD `areaServed` (`US, UK, SG, IN, AU`) still differs from `/about`'s Organization schema; tracked in `04-about-page.md` NF3.
-4. **S7 cosmetic** — the new phase label sits above the decorative rope SVG on desktop; a designer may want to reposition it.
+2. **Cross-audit** — service-page JSON-LD `areaServed` (`US, UK, SG, IN, AU`) still differs from `/about`'s Organization schema; tracked in `04-about-page.md` NF3.
+3. **S7 cosmetic** — the new phase label sits above the decorative rope SVG on desktop; a designer may want to reposition it.
+
+**Content/text is complete.** Everything remaining is either code/cosmetic or needs real assets (case studies, testimonials) that only the team can provide.
 
 Full item-by-item status: `05-services-pages-checklist.md`.
