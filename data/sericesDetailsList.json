@@ -26,7 +26,7 @@
             }
           ]
         ],
-        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, and mobile-first products, from MVP Figma wireframes to fully developed, enterprise-grade products."
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, data-heavy dashboards, and mobile-first products, from MVP Figma wireframes to fully developed, enterprise-grade products."
       },
       "whatYouGet": {
         "badge": "WHAT YOU GET",
@@ -44,7 +44,7 @@
           },
           {
             "heading": "New Build or Redesign",
-            "description": "From idea-to-MVP to modernizing live SaaS products, including comprehensive product strategy and IA",
+            "description": "From idea-to-MVP to modernizing live SaaS products: product strategy, information architecture, and planning how complex, data-heavy metrics and analytics get structured and displayed",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
           },
           {
@@ -172,6 +172,28 @@
           }
         ]
       },
+      "whatYouGain": {
+        "badge": "WHAT YOU GAIN",
+        "heading": "What You Gain Working With Us",
+        "card": [
+          {
+            "heading": "You Don't Have to Manage Us",
+            "description": "Give us the initial gist of your idea. We take the brainstorming, research, direction, and end-to-end project management from there, and tell you what needs improvement and what stays as it is."
+          },
+          {
+            "heading": "One Team, Idea to Production",
+            "description": "Planning, research, documentation, design, and development under one roof, so you're not stitching separate vendors together or filling the gaps yourself."
+          },
+          {
+            "heading": "Built to Convert, and Fast",
+            "description": "Not just a product that looks beautiful. We design and build for sign-ups, activation, and load speed, so the work pays back."
+          },
+          {
+            "heading": "Research and Docs You Keep",
+            "description": "Proper research and documentation handed over alongside the design and code, yours to use whether you continue with us or not."
+          }
+        ]
+      },
       "recommendedNextSteps": {
         "badge": "RECOMMENDED NEXT STEPS",
         "heading": "What Most Product Teams Require Next",
@@ -226,20 +248,15 @@
             }
           ]
         ],
-        "description": "Full-stack development for SaaS platforms and AI-powered products: architecture, APIs, database design, AI/LLM integration, and production deployment. We build what the interface runs on."
+        "description": "Full-stack development for SaaS platforms and AI-powered products: architecture, APIs, database design, AI agents and RAG pipelines tuned to your data, and production deployment. We build what the interface runs on."
       },
       "whatYouGet": {
         "badge": "WHAT YOU GET",
         "heading": "Everything You Need to Ship a Working SaaS or AI Product",
         "card": [
           {
-            "heading": "Full-Stack Architecture",
-            "description": "Scalable backend and database architecture on Node.js or Python, built to handle real growth",
-            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
-          },
-          {
-            "heading": "AI Models & API Integrations",
-            "description": "LLM integration, prompt pipelines, REST/GraphQL APIs, payments, and auth wired into your product",
+            "heading": "AI-Generated Code, Production-Ready",
+            "description": "Built a prototype with Lovable, Bolt, or Claude Code? We restructure it into a secure, scalable, production-grade product.",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
           },
           {
@@ -248,9 +265,14 @@
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622283/mobile_ior7xh.svg"
           },
           {
-            "heading": "AI-Generated Code, Production-Ready",
-            "description": "Built a prototype with Lovable, Bolt, or Claude Code? We restructure it into a secure, scalable, production-grade product.",
+            "heading": "AI Models & API Integrations",
+            "description": "LLM integration, AI agents, and RAG pipelines tailored to your company's data, plus REST/GraphQL APIs, payments, and auth wired into your product",
             "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
+          },
+          {
+            "heading": "Full-Stack Development, Idea to Production",
+            "description": "Backend, database, and APIs on Node.js or Python, planned and built from your first rough idea to production code that handles real growth.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
           }
         ]
       },
@@ -271,7 +293,7 @@
             "description": "Why do AI features stay stuck in a demo?",
             "QuickWins": [
               "Because integrating a model into a real product is a different problem than a prototype.",
-              "We handle the pipeline, cost, latency, and edge cases that production requires."
+              "We build the agents and RAG pipelines on your own data and handle the cost, latency, and edge cases that production requires."
             ]
           },
           {
@@ -370,6 +392,28 @@
                 "gradientId": 3
               }
             ]
+          }
+        ]
+      },
+      "whatYouGain": {
+        "badge": "WHAT YOU GAIN",
+        "heading": "What You Gain Working With Us",
+        "card": [
+          {
+            "heading": "You Don't Have to Manage Us",
+            "description": "Give us the initial gist of your idea. We take the brainstorming, research, technical direction, and end-to-end project management from there, and tell you what needs improvement and what stays as it is."
+          },
+          {
+            "heading": "One Team, Idea to Production",
+            "description": "Architecture, research, documentation, backend, AI, and deployment under one roof, so you're not stitching separate vendors together or filling the gaps yourself."
+          },
+          {
+            "heading": "Built to Scale, and Fast",
+            "description": "Not just code that runs in a demo. We build for real load, real usage, and response times that hold up as you grow."
+          },
+          {
+            "heading": "Research and Docs You Keep",
+            "description": "Proper research and documentation handed over alongside the code, yours to use whether you continue with us or not."
           }
         ]
       },
@@ -556,6 +600,28 @@
                 "description": "Site goes live with documentation and support so you’re never stuck post-launch."
               }
             ]
+          }
+        ]
+      },
+      "whatYouGain": {
+        "badge": "WHAT YOU GAIN",
+        "heading": "What You Gain Working With Us",
+        "card": [
+          {
+            "heading": "You Don't Have to Manage Us",
+            "description": "Give us the initial gist of your idea. We take the brainstorming, positioning, research, and end-to-end project management from there, and tell you what needs improvement and what stays as it is."
+          },
+          {
+            "heading": "One Team, Idea to Live Site",
+            "description": "Positioning, research, copy direction, design, and development under one roof, so you're not stitching separate vendors together or filling the gaps yourself."
+          },
+          {
+            "heading": "Built to Convert, and Fast",
+            "description": "Not just a site that looks beautiful. We design and build for signups, leads, and load speed, so the page pays back."
+          },
+          {
+            "heading": "Research and Docs You Keep",
+            "description": "Proper research and documentation handed over alongside the design and code, yours to use whether you continue with us or not."
           }
         ]
       },
@@ -750,6 +816,28 @@
                 "gradientId": 3
               }
             ]
+          }
+        ]
+      },
+      "whatYouGain": {
+        "badge": "WHAT YOU GAIN",
+        "heading": "What You Gain Working With Us",
+        "card": [
+          {
+            "heading": "You Don't Have to Manage Us",
+            "description": "Point us at the product and the metric you're worried about. We take the research, analysis, and prioritisation from there, and tell you what needs fixing and what stays as it is."
+          },
+          {
+            "heading": "Findings You Can Act On",
+            "description": "Not a list of everything wrong. Every issue is scored by impact and effort, sequenced into a roadmap your team or ours can execute."
+          },
+          {
+            "heading": "Clarity Before You Spend",
+            "description": "Know what's blocking growth before you commit budget to a redesign or a new build, so the next investment lands."
+          },
+          {
+            "heading": "Research and Docs You Keep",
+            "description": "An annotated report and walkthrough handed over, with the reasoning behind each finding, yours to use whether you continue with us or not."
           }
         ]
       },

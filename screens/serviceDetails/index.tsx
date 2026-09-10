@@ -10,6 +10,7 @@ import WhoThisIsFor from "./whoThisIsFor";
 import RecommendedNextSteps from "./recommendedNextSteps";
 import WhyThisMatters from "./whyThisMatters";
 import WhatYouGetAnimations from "./whatYouGetAnimations";
+import WhatYouGain from "./whatYouGain";
 
 import PageWrapper from "@/components/PageWrapper";
 
@@ -31,6 +32,12 @@ const ServiceDetails = ({ data, slug }: { data: any, slug?: string }) => {
 
         {data.streamlinedProcess && (
           <StreamlinedProcess data={data.streamlinedProcess} />
+        )}
+
+        {data.whatYouGain && (
+          <div className="section-container">
+            <WhatYouGain data={data.whatYouGain} />
+          </div>
         )}
 
         {slug !== "UX-Audits-&-Consultation" && <LandingWork />}
