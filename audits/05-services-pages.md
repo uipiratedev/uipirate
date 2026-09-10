@@ -216,6 +216,13 @@ Only Design System's hero badge carries a delivery estimate ("1–4 Week Deliver
 
 ---
 
+### X10. Navbar Services dropdown label is too long when unflipped 🟡
+
+- The label for "Landing Pages & Business Websites" is too long when the card is in its unflipped state.
+**Fix:** Use `shortCategory: "Landing Pages & Websites"` for the unflipped state and keep the full name for the flipped state.
+
+---
+
 ## Section-by-Section Audit, Per Service
 
 ---

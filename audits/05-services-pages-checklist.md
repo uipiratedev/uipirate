@@ -1,4 +1,4 @@
-# Services Pages Audit Checklist
+Perfect# Services Pages Audit Checklist
 
 This document tracks the progress of all content, copy, SEO, and conversion changes on the 4 service detail pages.
 Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-verified against live source files.
@@ -51,6 +51,7 @@ Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-veri
 | X9 | SEO metadata keyword-stuffed / partly stale | ✅ Done (v8/C-i), 4 titles tightened + `| UI Pirate`; keyword lists trimmed; Fortune 500 fallback claim removed; Design System entry deleted |
 | NF1 | `RecommendedNextSteps` buttons were undisclosed WhatsApp links | ✅ Done, `recommendedNextSteps/index.tsx` passes `href={`/services/${slug}`}`; WhatsApp only as fallback when `slug` is absent |
 | NF4 | Unknown service slug returns HTTP 200 (soft 404) | ✅ Done (v8/S3), `if (!service) notFound()` in `app/services/[id]/page.tsx` |
+| X10 | Navbar Services dropdown "Landing Pages & Business Websites" card label is too long when unflipped | ✅ Done, added shortCategory "Landing Pages & Websites" for unflipped state |
 
 ---
 

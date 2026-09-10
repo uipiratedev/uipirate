@@ -8,6 +8,7 @@ import clsx from "clsx";
 
 interface DropdownItem {
   category: string;
+  shortCategory?: string;
   icon?: string;
   href?: string;
   isLargeCard?: boolean;
@@ -200,7 +201,7 @@ export const NavbarDropdown = ({
 
                                     <div className="absolute inset-0 p-5 flex flex-col justify-end">
                                       <h3 className="text-gray-900 font-semibold text-base group-hover:text-brand-orange transition-colors duration-300">
-                                        {item.category}
+                                        {item.shortCategory || item.category}
                                       </h3>
                                     </div>
                                   </div>
