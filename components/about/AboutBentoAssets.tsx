@@ -348,6 +348,16 @@ interface GlobeLocation {
 
 const GLOBE_LOCATIONS: GlobeLocation[] = [
   {
+    id: "usa",
+    name: "USA",
+    flag: "🇺🇸",
+    lat: 38,
+    lon: -97,
+    timezone: "EST",
+    time: "12:00 PM",
+    utc: "UTC-5",
+  },
+  {
     id: "uk",
     name: "UK",
     flag: "🇬🇧",
@@ -367,26 +377,16 @@ const GLOBE_LOCATIONS: GlobeLocation[] = [
     time: "10:30 PM",
     utc: "UTC+5:30",
   },
-  {
-    id: "usa",
-    name: "USA",
-    flag: "🇺🇸",
-    lat: 38,
-    lon: -97,
-    timezone: "EST",
-    time: "12:00 PM",
-    utc: "UTC-5",
-  },
 ];
 
 // Card 5: Same Hours as Your Team - Interactive 3D Globe with Location Navigation
 export const TimezoneAsset = () => {
-  const [selected, setSelected] = useState<"uk" | "india" | "usa">("usa");
+  const [selected, setSelected] = useState<"usa" | "uk" | "india">("usa");
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const pinRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   // Target longitude in radians based on selected country
-  const selectedLoc = GLOBE_LOCATIONS.find((l) => l.id === selected) || GLOBE_LOCATIONS[2];
+  const selectedLoc = GLOBE_LOCATIONS.find((l) => l.id === selected) || GLOBE_LOCATIONS[0];
 
   // Store rotation states
   const rotationRef = useRef({
@@ -487,12 +487,12 @@ export const TimezoneAsset = () => {
           const clientPx = (cx + x * radius) * scaleRatio;
           const clientPy = (cy + yPrime * radius) * scaleRatio;
 
-          pinEl.style.display = "block";
           pinEl.style.transform = `translate3d(${clientPx}px, ${clientPy}px, 0)`;
           pinEl.style.opacity = `${Math.min(1, (zPrime - 0.05) * 3)}`;
+          pinEl.style.pointerEvents = "auto";
         } else {
-          pinEl.style.display = "none";
           pinEl.style.opacity = "0";
+          pinEl.style.pointerEvents = "none";
         }
       }
 
@@ -535,7 +535,7 @@ export const TimezoneAsset = () => {
   };
 
   return (
-    <div className="flex-1 w-full -mx-6 -mb-6 relative flex items-end justify-between pr-6 select-none pt-6 mt-1">
+    <div className="flex-1 w-full -mx-6 -mb-6 relative flex items-end justify-between pr-0 select-none pt-4 min-h-[190px]">
       {/* Left Column: 3D Dotted Dark Globe Sphere */}
       <div
         className="relative w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] -ml-6 sm:-ml-8 -mb-6 sm:-mb-8 flex-shrink-0 flex items-center justify-center self-end"
@@ -565,11 +565,14 @@ export const TimezoneAsset = () => {
               ref={(el) => {
                 pinRefs.current[loc.id] = el;
               }}
-              onClick={() => setSelected(loc.id)}
-              className="absolute left-0 top-0 pointer-events-auto cursor-pointer z-30"
+              onClick={(e) => {
+                e.preventDefault();
+                setSelected(loc.id as "usa" | "uk" | "india");
+              }}
+              className="absolute left-0 top-0 z-30 cursor-pointer"
               style={{
-                display: "none",
-                transform: "translate3d(0, 0, 0)",
+                opacity: 0,
+                pointerEvents: "none",
                 willChange: "transform, opacity",
               }}
             >
@@ -586,7 +589,7 @@ export const TimezoneAsset = () => {
 
               {/* Flag Badge Connected Directly Above Pinpoint */}
               <div
-                className={`absolute bottom-2 left-0 -translate-x-1/2 flex flex-col items-center transition-all duration-300 pointer-events-auto ${isActive ? "opacity-100 scale-100" : "opacity-40 hover:opacity-90 scale-90"
+                className={`absolute bottom-2 left-0 -translate-x-1/2 flex flex-col items-center pointer-events-auto ${isActive ? "opacity-100 scale-100" : "opacity-40 hover:opacity-90 scale-90"
                   }`}
               >
                 <div className="bg-[#1E222B] text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-lg border border-white/20 flex items-center gap-1 whitespace-nowrap">
@@ -601,7 +604,7 @@ export const TimezoneAsset = () => {
       </div>
 
       {/* Right Column: Interactive Location Pills & Remote Badge */}
-      <div className="flex flex-col items-end justify-between h-full z-20 pt-2 pb-6 pl-2 ml-auto self-stretch">
+      <div className="flex flex-col items-end justify-between h-full z-20 pb-6 ml-auto self-stretch">
         {/* Country Selector Buttons */}
         <div className="flex flex-col gap-2 my-auto">
           {GLOBE_LOCATIONS.map((loc) => {
@@ -609,29 +612,33 @@ export const TimezoneAsset = () => {
             return (
               <button
                 key={loc.id}
-                onClick={() => setSelected(loc.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between gap-3 transition-all duration-300 shadow-sm min-w-[96px] sm:min-w-[106px] ${isActive
-                  ? "bg-white text-gray-900 border-2 border-[#1E60FF] shadow-md scale-105"
-                  : "bg-[#14161C] text-gray-200 border border-white/10 hover:bg-[#20242E] hover:text-white"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelected(loc.id as "usa" | "uk" | "india");
+                }}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between gap-3 transition-colors duration-150 shadow-sm w-[114px] h-[34px] border-2 cursor-pointer ${isActive
+                    ? "bg-white text-gray-900 border-[#1E60FF] shadow-md"
+                    : "bg-[#14161C] text-gray-200 border-transparent hover:bg-[#20242E] hover:text-white"
                   }`}
               >
-                <span>{loc.name}</span>
+                <span className="font-semibold">{loc.name}</span>
                 <span className="text-sm leading-none">{loc.flag}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Remote Info Tag (Bottom-Right) */}
-        <div className="flex items-center gap-1.5 text-right mt-3">
-          <svg className="w-3.5 h-3.5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
+        {/* Remote Info Tag (Bottom-Right, Fixed Size) */}
+        <div className="flex items-center gap-1.5 text-right mt-3 h-[32px] pr-0.5">
+          <svg className="w-3.5 h-3.5 text-gray-600 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z" />
           </svg>
           <div className="flex flex-col">
             <span className="text-[8px] uppercase tracking-wider text-gray-400 font-bold leading-tight">
               REMOTE
             </span>
-            <span className="text-[11px] font-bold text-gray-800 tracking-tight leading-tight">
+            <span className="text-[11px] font-bold text-gray-800 tracking-tight leading-tight whitespace-nowrap">
               {selectedLoc.name} · {selectedLoc.time}
             </span>
           </div>

@@ -27,7 +27,7 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
   if (!study) return null;
 
   return (
-    <div className="section-container">
+    <div className="section-container pt-8">
       <Reveal
         className="relative overflow-hidden rounded-[20px] border border-2 border-gray-200/80 bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] sm:rounded-[20px] dark:border-white/10 dark:bg-[#141414] dark:shadow-none"
         scrub={false}

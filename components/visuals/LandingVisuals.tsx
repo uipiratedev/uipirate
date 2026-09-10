@@ -322,7 +322,7 @@ export const VisualResponsiveNew = () => {
         animate={{
           width: ["240px", "240px", "240px", "140px", "84px", "240px"],
         }}
-        className="h-[156px] bg-white border-2 border-gray-800 rounded-xl shadow-lg flex flex-col overflow-hidden mt-4"
+        className="h-[156px] bg-white border border-gray-100 rounded-xl shadow-lg flex flex-col overflow-hidden mt-4"
         transition={{
           duration: 8,
           repeat: Infinity,

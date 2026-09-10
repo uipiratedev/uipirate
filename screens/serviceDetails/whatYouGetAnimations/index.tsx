@@ -86,7 +86,7 @@ const WhatYouGetAnimations = ({ data }: any) => {
         <SectionHeader chip={data.badge}>{data.heading}</SectionHeader>
       </Reveal>
 
-      <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+      <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {data.card.map((feature: any) => (
           <Reveal key={feature.heading} className="h-full flex flex-col" variant="up">
             <WhatYouGetCard {...feature} />
