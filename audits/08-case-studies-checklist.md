@@ -99,10 +99,10 @@ The CTA should evoke a **placeholder slot in the case study grid**: dashed borde
 
 | # | Item | Priority | Status |
 |---|------|----------|--------|
-| 4a | **Move section down**: Relocate from Position 2 (after hero, before case studies) → after "What's Next" CTA | 🔴 | ❌ |
-| 4b | **Replace component**: Replace the bare `ClientLogosMarquee` (just "Trusted by teams at" + logos) with the full **About page "Our Clients" section** using `SectionHeader` chip=`OUR CLIENTS`, subcopy `60% of our clients are US-based startups and enterprises`, H2 `Trusted by Teams Worldwide`, and `<ClientLogosGrid />` | 🔴 | ❌ |
-| 4c | Remove old `<ClientLogosMarquee />` from `index.tsx` | 🔴 | ❌ |
-| 4d | Verify 10 client logo cards match About page exactly | 🟠 | ❌ |
+| 4a | **Move section down**: Relocate from Position 2 (after hero, before case studies) → after "What's Next" CTA | 🔴 | ✅ |
+| 4b | **Replace component**: Replace the bare `ClientLogosMarquee` (just "Trusted by teams at" + logos) with the full **About page "Our Clients" section** using `SectionHeader` chip=`OUR CLIENTS`, subcopy `60% of our clients are US-based startups and enterprises`, H2 `Trusted by Teams Worldwide`, and `<ClientLogosGrid />` | 🔴 | ✅ |
+| 4c | Remove old `<ClientLogosMarquee />` from `index.tsx` | 🔴 | ✅ |
+| 4d | Verify 10 client logo cards match About page exactly | 🟠 | ✅ |
 
 ---
 

@@ -6,7 +6,9 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import ClientLogosMarquee from "./ClientLogosMarquee";
+import { ClientLogosGrid } from "@/components/ClientLogos";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion/Reveal";
 import CaseStudiesFAQ from "./CaseStudiesFAQ";
 
 import PageWrapper from "@/components/PageWrapper";
@@ -151,8 +153,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         {/* Hero — portfolio + case studies positioning */}
         <CaseStudiesHero />
 
-        {/* Client Logos Marquee */}
-        <ClientLogosMarquee />
+
 
         {/* Featured deep-dive case studies (from the CMS) */}
         <section className="section-container pt-12 max-md:pt-6">
@@ -429,6 +430,20 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
               </Link>
             </div>
           </div>
+        </section>
+
+        {/* Trusted By Clients Grid - Logo-based */}
+        <section className="section-container">
+          <Reveal variant="up">
+            <SectionHeader
+              chip="OUR CLIENTS"
+              subcopy="60% of our clients are US-based startups and enterprises"
+            >
+              Trusted by Teams Worldwide
+            </SectionHeader>
+          </Reveal>
+
+          <ClientLogosGrid />
         </section>
 
         {/* Client Testimonials */}
