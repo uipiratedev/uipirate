@@ -1,11 +1,13 @@
 Perfect# Services Pages Audit Checklist
 
 This document tracks the progress of all content, copy, SEO, and conversion changes on the 4 service detail pages.
-Synced to **`05-services-pages.md` v8 (2026-09-09)**, all statuses are code-verified against live source files.
+Synced to **`05-services-pages.md` v9 (2026-09-11)**, all statuses are code-verified against live source files.
 
 **2026-09-09, v7 consolidated change list (C1–C12) applied to `data/sericesDetailsList.json`.** All C1–C12 textual/content edits are in the data file; JSON validated. The `model landing pages` → `modern` typo was also fixed in `data/sericesDetailsList.json` **and** `data/servicesTopList.json`.
 
 **2026-09-09, v8 "What we provide" removal + render reconciliation.** The `youWillGet` block ("What we provide") duplicated the `whatYouGet` ("WHAT YOU GET") section, so it was **removed entirely**: the `youWillGet` key is deleted from all 5 entries in `data/sericesDetailsList.json`, and no component renders it. Consequences: **C6, C7, and the optional C10 "AI Agents / LLM APIs" badge are now VOID**, they only ever touched `youWillGet`. The short-lived `YouWillGet` component from the v7 render pass was deleted. The three other v7 render-pass fixes (streamlinedProcess heading, RecommendedNextSteps `href`, animation-map key) stay. Also fixed the dead SEO-footer / sitemap links to the killed Design System + `SaaS-Web-&-Mobile-Apps` slugs (`app/layout.tsx` noscript, `app/sitemap.ts`).
+
+**2026-09-11, v9 post-v8 code additions recorded.** Two changes made after v8 were not in any prior audit: (1) new `WhatYouGain` section (component + data) added to all 4 pages, and (2) `LandingWork` generic gallery replaced by hardcoded `FeaturedCaseStudy` (Xperiti study). Render map updated accordingly.
 
 **Pages in scope (`/services/[id]`):**
 
@@ -310,11 +312,18 @@ The v7 content edits landed in `data/sericesDetailsList.json` but a source read 
 
 | # | Item | Priority | Note |
 |---|---|---|---|
-| S10 | `LandingWork` gallery is generic on every service page, no service-specific project, result metric, or testimonial (X7) | 🟡 | Needs real project/testimonial selection per service, a product decision + content, not a mechanical fix |
-| S7-b | The phase-label added in S7 sits above the decorative "rope" SVG on desktop, visually fine but not designed; a designer may want to reposition it | 🟡 | Cosmetic |
-| n/a | JSON-LD `areaServed` on service pages (`US, UK, SG, IN, AU`) still differs from `/about`'s Organization schema (`US, IN, FR, CA, UK, SG`), cross-audit item, tracked in `04-about-page.md` NF3 | 🟡 | Out of services scope |
-| n/a | Hero primary CTA label still reads "Start Your Product Journey, Book a 15-Min Call", fine, but if a shorter label is wanted it's hardcoded in `hero/index.tsx` | 🟡 | Cosmetic, pending |
-| n/a | Service detail hero uses 13 raw `<img>` tags (confetti, free badge) instead of `next/image` | 🟡 | Performance/Cosmetic, pending to be fixed later |
+| S10 / X7 | Generic social proof on service pages | 🟡 | ⚠️ Partially addressed (v9/N2): `LandingWork` replaced by `FeaturedCaseStudy` showing the Xperiti case study, which is one real, client-named study with highlights and a logo. **Still open:** the same Xperiti study shows on all 4 pages regardless of service, and it is hardcoded in `screens/serviceDetails/index.tsx` (not data-driven). To show a different case study per service, either add a `caseStudy` key to `sericesDetailsList.json` and pass it from `page.tsx`, or maintain separate constants per slug in `index.tsx`. Needs content + product decision on which study to show per service. |
+| S7-b | Phase-label position in `StreamlinedProcess` sits above the decorative rope SVG on desktop | 🟡 | Cosmetic, designer decision |
+| n/a | JSON-LD `areaServed` on service pages (`US, UK, SG, IN, AU`) differs from `/about` Organization schema (`US, IN, FR, CA, UK, SG`); cross-audit item tracked in `04-about-page.md` NF3 | 🟡 | Out of services scope |
+| n/a | Hero primary CTA label "Start Your Product Journey, Book a 15-Min Call" is fine; if a shorter label is wanted it is hardcoded in `hero/index.tsx` | 🟡 | Cosmetic, pending |
+| n/a | Service detail hero uses 13 raw `<img>` tags (confetti, free badge) instead of `next/image` | 🟡 | Performance, fix later |
+
+### v9, Post-v8 code additions (2026-09-11)
+
+| Change | Files | Status |
+|---|---|---|
+| **N1, `WhatYouGain` section added.** New `WhatYouGain` component + `whatYouGain` data key on all 4 slugs. Rendered between `StreamlinedProcess` and `FeaturedCaseStudy`. Content is service-specific, concise, and parallel. | `screens/serviceDetails/whatYouGain/index.tsx` (new component), `data/sericesDetailsList.json` (new key per entry), `screens/serviceDetails/index.tsx` (import + render line 54) | ✅ |
+| **N2, `LandingWork` generic gallery → `FeaturedCaseStudy` (Xperiti).** The generic portfolio scroll was removed and replaced with a hardcoded Xperiti case-study card (client logo, title, excerpt, highlights, industry). Partially addresses X7 (generic social proof). | `screens/serviceDetails/index.tsx` | ⚠️ Partially, still same study on all 4 pages |
 
 ### Won't-do (recorded)
 
