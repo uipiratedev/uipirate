@@ -6,17 +6,12 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import { ClientLogosGrid } from "@/components/ClientLogos";
-import SectionHeader from "@/components/SectionHeader";
-import { Reveal } from "@/components/motion/Reveal";
 import CaseStudiesFAQ from "./CaseStudiesFAQ";
 
 import PageWrapper from "@/components/PageWrapper";
-import ProjectEstimate from "@/components/ProjectEstimate";
 import GlassBadge from "@/components/GlassBadge";
 import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
-import LandingTestimonials from "@/screens/landing/testimonials";
 
 const DEFAULT_CASE_STUDY_IMAGE = "/assets/blog-banner-default.svg";
 
@@ -404,43 +399,11 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
           </div>
         </section>
 
-        {/* Trusted By Clients Grid - Logo-based */}
-        <section className="section-container">
-          <Reveal variant="up">
-            <SectionHeader
-              chip="OUR CLIENTS"
-              subcopy="60% of our clients are US-based startups and enterprises"
-            >
-              Trusted by Teams Worldwide
-            </SectionHeader>
-          </Reveal>
-
-          <ClientLogosGrid />
-        </section>
-
-        {/* Client Testimonials */}
-        <LandingTestimonials />
-
         {/* Why Choose Us */}
         <WhyChooseUs />
 
         {/* FAQ Section */}
         <CaseStudiesFAQ />
-
-        {/* Pricing CTA */}
-        <div className="section-container pb-16">
-          <div className="mb-12">
-            <div className="autoShow">
-              <div className="mb-6 flex flex-row items-center justify-center">
-                <GlassBadge variant="gradient">pricing</GlassBadge>
-              </div>
-              <h2 className="heading-center">Pricing That Makes Sense</h2>
-            </div>
-            <div className="autoShowBottom mt-6 max-md:mt-4 max-w-2xl mx-auto">
-              <ProjectEstimate className="min-h-[600px]" />
-            </div>
-          </div>
-        </div>
       </div>
     </PageWrapper>
   );
