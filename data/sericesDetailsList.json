@@ -179,17 +179,17 @@
           {
             "heading": "Strategy to Screens, One Team",
             "description": "Product strategy, information architecture, UX/UI design, and front-end build in React, Next.js, or Angular, handled together.",
-            "icon": "layout"
+            "icon": "screens"
           },
           {
             "heading": "You Steer, We Design",
             "description": "Share the idea. We run the research, own the design decisions, and flag what to change and what to keep.",
-            "icon": "compass"
+            "icon": "pen-tool"
           },
           {
             "heading": "Built to Convert, Ready to Ship",
             "description": "Usable screens designed for activation, delivered dev-ready with a design system and docs your team keeps.",
-            "icon": "send"
+            "icon": "rocket"
           }
         ]
       },
