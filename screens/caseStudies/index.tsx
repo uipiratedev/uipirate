@@ -2,7 +2,7 @@
 
 import type { ReaderPost } from "@/lib/pirateCOS/public-client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -11,6 +11,7 @@ import CaseStudiesFAQ from "./CaseStudiesFAQ";
 import PageWrapper from "@/components/PageWrapper";
 import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 const DEFAULT_CASE_STUDY_IMAGE = "/assets/blog-banner-default.svg";
 
@@ -75,6 +76,86 @@ function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
 interface CaseStudiesProps {
   cmsCaseStudies?: ReaderPost[];
 }
+
+const CaseStudiesNextCTA = () => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tileStyle, setTileStyle] = useState<{ backgroundSize?: string }>({
+    backgroundSize: "113px 113px",
+  });
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+
+    const computeGrid = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      if (!w || !h) return;
+
+      // Target square size ~56.5px (matching 113px tile)
+      const targetSquare = 56.5;
+
+      const cols = Math.max(2, Math.round(w / targetSquare));
+      const rows = Math.max(2, Math.round(h / targetSquare));
+
+      // Exact square dimensions so each row and column ends cleanly without cut-off
+      const squareW = w / cols;
+      const squareH = h / rows;
+
+      // 2 squares per repeating tile
+      const tileW = squareW * 2;
+      const tileH = squareH * 2;
+
+      setTileStyle({
+        backgroundSize: `${tileW.toFixed(2)}px ${tileH.toFixed(2)}px`,
+      });
+    };
+
+    computeGrid();
+    const ro = new ResizeObserver(computeGrid);
+    ro.observe(el);
+
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className="relative rounded-3xl border border-gray-200 overflow-hidden p-16 max-md:p-8 flex flex-col items-center text-center mx-auto hover:border-gray-300 transition-all duration-500 shadow-sm"
+      style={{
+        backgroundImage: `conic-gradient(#ebebeb 90deg, #ffffff 90deg 180deg, #ebebeb 180deg 270deg, #ffffff 270deg)`,
+        backgroundPosition: "0 0",
+        ...tileStyle,
+      }}
+    >
+      <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 mb-4">
+        Your product could be featured here next.
+      </h2>
+
+      <p className="text-gray-600 text-base max-md:text-sm max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+        Every case study here started as a simple conversation. Tell us about the product you are building, and we will walk through how we approach it from idea to ship. Whether you need deep product thinking, UI/UX design, or a full Angular and React frontend carried out, we are here to help. Our typical response time is under 2 hours.
+      </p>
+
+      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <LetsTalkButton
+          href="https://cal.com/ui-pirate/15min"
+          showArrow={true}
+          variant="color"
+          target="_blank"
+        >
+          Book a Free 15-Min Call
+        </LetsTalkButton>
+        <LetsTalkButton
+          href="/pricing"
+          showArrow={true}
+          variant="light"
+        >
+          See Pricing
+        </LetsTalkButton>
+      </div>
+    </div>
+  );
+};
 
 const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -343,44 +424,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
         {/* What's Next CTA (Placeholder Style) */}
         <section className="section-container pt-12 max-md:pt-6 pb-24">
-          <div className="relative rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-16 max-md:p-8 flex flex-col items-center text-center max-w-4xl mx-auto hover:border-gray-400 hover:bg-gray-50 transition-colors duration-500">
-            <div className="mb-6">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 mx-auto opacity-50">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-              </svg>
-            </div>
-            
-            <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.18em] text-gray-500 font-bold mb-4">
-              Your project
-            </p>
-            
-            <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 mb-4 max-w-xl">
-              Your product could be featured here next.
-            </h2>
-            
-            <p className="text-gray-600 text-base max-md:text-sm max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-              Every case study here started as a simple conversation. Tell us about the product you are building, and we will walk through how we approach it from idea to ship. Whether you need deep product thinking, UI/UX design, or a full Angular and React frontend carried out, we are here to help. Our typical response time is under 2 hours.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                className="px-8 py-4 bg-[#FF5B04] text-white font-bold rounded-full hover:bg-[#e04e00] transition-all duration-300 shadow-md hover:shadow-lg"
-                href="https://cal.com/ui-pirate/15min"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Book a Free 15-Min Call →
-              </Link>
-              <Link
-                className="px-8 py-4 bg-white text-gray-800 font-bold rounded-full hover:bg-gray-50 transition-all duration-300 border border-gray-200 shadow-sm hover:shadow-md"
-                href="/pricing"
-              >
-                See Pricing
-              </Link>
-            </div>
-          </div>
+          <CaseStudiesNextCTA />
         </section>
 
         {/* Why Choose Us */}

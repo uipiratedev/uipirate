@@ -108,7 +108,7 @@ const CaseStudiesHero = ({
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <div className="flex bg-white rounded-lg border border-gray-200 p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-[#FF5B04]/20 focus-within:border-[#FF5B04] transition-all duration-300">
+          <div className="flex bg-white rounded-medium border border-gray-200 p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-[#FF5B04]/20 focus-within:border-[#FF5B04] transition-all duration-300">
             <input
               className="flex-grow bg-transparent px-4 py-3 text-sm text-gray-800 placeholder-gray-500 focus:outline-none"
               placeholder="Search by topic, problem, or keyword..."
@@ -122,7 +122,7 @@ const CaseStudiesHero = ({
                 {category === "All" ? "ALL CATEGORIES" : category.toUpperCase()}
               </span>
               <select
-                className="absolute inset-0 appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3 pr-10 rounded-md cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
+                className="absolute inset-0 appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3 pr-10 rounded-medium cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -140,11 +140,11 @@ const CaseStudiesHero = ({
               </div>
             </div>
           </div>
-          
+
           {/* Mobile Category Select */}
           <div className="mt-3 md:hidden relative">
             <select
-              className="appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3.5 pr-10 rounded-md cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
+              className="appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3.5 pr-10 rounded-medium cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
