@@ -74,12 +74,12 @@ Synced to **`08-case-studies-page.md` v2 (2026-09-11)**. Combines the original c
 
 | # | Item | Priority | Status |
 |---|------|----------|--------|
-| 3a | Keep this CTA section. The concept is right: your project could be featured here. | 🟢 Keep | ❌ |
-| 3b | Redesign visuals: Change from dark bg card → **placeholder/wireframe aesthetic** that gives the sense the visitor's project will be spotlighted once built | 🟠 | ❌ |
-| 3c | H2: Update copy (see recommended below) | 🟠 | ❌ |
-| 3d | Para: Update copy (see recommended below) | 🟠 | ❌ |
-| 3e | Primary button: Change `Start Your Project →` / `/contact` → `Book a Free 15-Min Call →` / `https://cal.com/ui-pirate/15min` | 🔴 | ❌ |
-| 3f | Secondary button: Change `View Pricing` → `See Pricing` / `/pricing` | 🟢 Keep | ❌ |
+| 3a | Keep this CTA section. The concept is right: your project could be featured here. | 🟢 Keep | ✅ |
+| 3b | Redesign visuals: Change from dark bg card → **placeholder/wireframe aesthetic** that gives the sense the visitor's project will be spotlighted once built | 🟠 | ✅ |
+| 3c | H2: Update copy (see recommended below) | 🟠 | ✅ |
+| 3d | Para: Update copy (see recommended below) | 🟠 | ✅ |
+| 3e | Primary button: Change `Start Your Project →` / `/contact` → `Book a Free 15-Min Call →` / `https://cal.com/ui-pirate/15min` | 🔴 | ✅ |
+| 3f | Secondary button: Change `View Pricing` → `See Pricing` / `/pricing` | 🟢 Keep | ✅ |
 
 ### 3b: Visual Design Concept
 The CTA should evoke a **placeholder slot in the case study grid**: dashed border, ghost layout that mirrors a real case study card, with a "Your project here" treatment. Psychological message: "We did all of these. Your product could be next."

@@ -341,32 +341,43 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
           </div>
         </section>
 
-        {/* What's Next CTA */}
-        <section className="section-container pt-12 max-md:pt-6">
-          <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#212121] to-[#151514] noise-texture px-12 py-20 max-md:px-6 max-md:py-12 text-center">
-            <p className="text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-[#FF5B04] mb-3">
-              What&apos;s next
+        {/* What's Next CTA (Placeholder Style) */}
+        <section className="section-container pt-12 max-md:pt-6 pb-24">
+          <div className="relative rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-16 max-md:p-8 flex flex-col items-center text-center max-w-4xl mx-auto hover:border-gray-400 hover:bg-gray-50 transition-colors duration-500">
+            <div className="mb-6">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 mx-auto opacity-50">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+            </div>
+            
+            <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.18em] text-gray-500 font-bold mb-4">
+              Your project
             </p>
-            <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4">
-              Let&apos;s Build Something Like This For You
+            
+            <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 mb-4 max-w-xl">
+              Your product could be featured here next.
             </h2>
-            <p className="text-gray-500 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
-              From idea to shipped product — product thinking, IA, UX/UI, and
-              Angular/React frontend carried end-to-end. Typical response under
-              2 hours.
+            
+            <p className="text-gray-600 text-base max-md:text-sm max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+              Every case study here started as a simple conversation. Tell us about the product you are building, and we will walk through how we approach it from idea to ship. Whether you need deep product thinking, UI/UX design, or a full Angular and React frontend carried out, we are here to help. Our typical response time is under 2 hours.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                className="px-8 py-4 bg-[#FF5B04] text-white font-bold rounded-full hover:bg-[#e04e00] transition-all duration-300 shadow-lg hover:shadow-xl"
-                href="/contact"
+                className="px-8 py-4 bg-[#FF5B04] text-white font-bold rounded-full hover:bg-[#e04e00] transition-all duration-300 shadow-md hover:shadow-lg"
+                href="https://cal.com/ui-pirate/15min"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Start Your Project →
+                Book a Free 15-Min Call →
               </Link>
               <Link
-                className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 border border-white/20"
+                className="px-8 py-4 bg-white text-gray-800 font-bold rounded-full hover:bg-gray-50 transition-all duration-300 border border-gray-200 shadow-sm hover:shadow-md"
                 href="/pricing"
               >
-                View Pricing
+                See Pricing
               </Link>
             </div>
           </div>
