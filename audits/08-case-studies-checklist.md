@@ -32,13 +32,13 @@ Synced to **`08-case-studies-page.md` v2 (2026-09-11)**. Combines the original c
 
 | # | Item | Priority | Status |
 |---|------|----------|--------|
-| 1a | Badge: Change `PORTFOLIO & CASE STUDIES` → `CASE STUDIES` (entity name unification) | 🟠 | ❌ |
-| 1b | H1: Keep "Real Projects. Real Results." (tagline is good) | 🟢 Keep | ❌ Verify |
-| 1c | Subtext: Rewrite to be more specific (see updated copy below) | 🟠 | ❌ |
-| 1d | Testimonial cards: Change rainbow gradient border → shimmery orange gradient to match brand style | 🟠 | ❌ |
-| 1e | Testimonial card quotes: Remove the hard-coded `"...{review}..."` ellipsis; render a clean clamped quote | 🟡 | ❌ |
-| 1f | Stats: Replace current inline layout with the **About page stats design**: 4 white rectangle cards, `grid-cols-4` desktop / `grid-cols-2` mobile, `bg-white border border-gray-200 rounded-xl p-6 text-center` | 🔴 | ❌ |
-| 1g | Stats content: Match About page exactly: `9+` Years of Experience, `50+` Products Shipped, `5.0` Client Rating, `6` Countries Served | 🔴 | ❌ |
+| 1a | Badge: Change `PORTFOLIO & CASE STUDIES` → `CASE STUDIES` (entity name unification) | 🟠 | ✅ |
+| 1b | H1: Keep "Real Projects. Real Results." (tagline is good) | 🟢 Keep | ✅ Verified |
+| 1c | Subtext: Rewrite to be more specific (see updated copy below) | 🟠 | ✅ |
+| 1d | Testimonial cards: Change rainbow gradient border → shimmery orange gradient to match brand style | 🟠 | ✅ |
+| 1e | Testimonial card quotes: Remove the hard-coded `"...{review}..."` ellipsis; render a clean clamped quote | 🟡 | ✅ |
+| 1f | Stats: Replace current inline layout with the **About page stats design**: 4 white rectangle cards, `grid-cols-4` desktop / `grid-cols-2` mobile, `bg-white border border-gray-200 rounded-xl p-6 text-center` | 🔴 | ✅ |
+| 1g | Stats content: Match About page exactly: `9+` Years of Experience, `50+` Products Shipped, `5.0` Client Rating, `6` Countries Served | 🔴 | ✅ |
 
 ### 1c: Updated Hero Subtext
 **Current:** `See how we've helped startups, SaaS teams, and global brands turn ideas into fully functional digital products.`
