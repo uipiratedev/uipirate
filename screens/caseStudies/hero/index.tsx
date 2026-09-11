@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 
+import BorderGlow from "@/components/BorderGlow";
 import GlassSurface from "@/components/GlassSurface";
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";
@@ -21,17 +21,19 @@ const StarRating = ({
     >
       {[...Array(5)].map((_, index) => (
         <div key={index} className="relative h-[14px] w-[14px]">
-          <img
-            alt="5 star rating"
+          <svg
+            viewBox="0 0 24 24"
+            fill="#FF5B04"
             className="absolute left-0 top-0 h-[14px] w-[14px] transition-transform duration-300 hover:scale-110"
-            src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
             style={{
               animation: `starSlideUp 0.5s ease-out forwards`,
               animationDelay: `${delay / 1000 + index * 0.12}s`,
               opacity: 0,
               transform: "translateY(40px)",
             }}
-          />
+          >
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+          </svg>
         </div>
       ))}
     </div>
@@ -105,7 +107,7 @@ const CaseStudiesHero = () => {
         >
           {/* Text */}
           <p className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
-            PORTFOLIO & CASE STUDIES
+            CASE STUDIES
           </p>
         </GlassSurface>
         {/* Headline */}
@@ -117,12 +119,12 @@ const CaseStudiesHero = () => {
         </div>
         {/* Subheading */}
         <p className="sub-header text-[#11181C]">
-          See how we’ve helped startups, SaaS teams, and global brands turn
-          ideas into fully functional digital products.
+          SaaS platforms, enterprise dashboards, AI products, fintech tools. For
+          each project: the problem, what we built, and what it looked like after.
         </p>
         {/* ✅ Reveal Animation for Card Section */}
         <motion.div
-          className="relative flex justify-center items-center my-8 max-md:hidden z-10"
+          className="relative flex justify-center items-center mt-16 mb-8 max-md:hidden z-10"
           initial={{ opacity: 0, y: 40 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.3 }}
@@ -154,36 +156,17 @@ const CaseStudiesHero = () => {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <Card
-                  className="relative overflow-hidden w-[300px] h-[200px]"
-                  style={{
-                    borderRadius: "40px",
-                    backdropFilter: "blur(10px)",
-                    position: "relative",
-                    boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.1)",
-                  }}
+                <BorderGlow
+                  className="w-[300px] h-[200px]"
+                  borderRadius={40}
+                  colors={["#FFB75E", "#FF5B04", "#ED8F03"]}
+                  glowColor="30 100 50"
+                  backgroundColor="#ffffff"
+                  animated={true}
                 >
-                  {/* Gradient Border */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: "40px",
-                      padding: "2px",
-                      background:
-                        "linear-gradient(90deg, #F7DE04 4.58%, #11C781 27.52%, #05A2FB 48.18%, #5E72E4 72.05%, #F04800 92.7%)",
-                      WebkitMask:
-                        "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                      WebkitMaskComposite: "xor",
-                      maskComposite: "exclude",
-                      pointerEvents: "none",
-                      zIndex: 1,
-                    }}
-                  />
-
                   {/* Card Content */}
-                  <CardBody
-                    className="relative z-0 flex flex-col items-center justify-center gap-4 p-4"
+                  <div
+                    className="relative z-0 flex flex-col items-center justify-center gap-4 p-4 h-full"
                     style={{
                       borderRadius: "38px",
                       background: "rgba(255,255,255,0.85)",
@@ -196,37 +179,37 @@ const CaseStudiesHero = () => {
                       size={48}
                     />
                     <p className="line-clamp-3 text-center text-sm ">
-                      &quot;...{item.review}...&quot;
+                      &quot;{item.review}&quot;
                     </p>
                     <div className="flex flex-row items-start gap-1 overflow-hidden">
                       <StarRating delay={300} />
                     </div>
-                  </CardBody>
-                </Card>
+                  </div>
+                </BorderGlow>
               </motion.div>
             </div>
           ))}
         </motion.div>
         {/* Stats Section */}
-        <div className="flex flex-wrap justify-between w-full items-center gap-10 text-center py-10 z-10 relative mt-6">
+        <div className="grid grid-cols-4 max-md:grid-cols-2 gap-4 w-full py-10 z-10 relative mt-6">
           {[
             { num: "9+", text: "Years of Experience" },
-            { num: "50+", text: "Projects Completed" },
-            { num: "$150M+", text: "Made by our clients" },
-            { num: "6+", text: "Countries Served" },
+            { num: "50+", text: "Products Shipped" },
+            { num: "5.0", text: "Client Rating" },
+            { num: "6", text: "Countries Served" },
           ].map((item, index) => (
             <motion.div
               key={index}
-              className="flex flex-col items-center"
+              className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:border-brand-orange/30 transition-all duration-300"
               initial={{ opacity: 0, y: 30 }}
               transition={{ delay: index * 0.15, duration: 0.6 }}
               viewport={{ once: true }}
               whileInView={{ opacity: 1, y: 0 }}
             >
-              <h3 className="text-5xl max-md:text-2xl font-bold text-black text-orange-500">
+              <h3 className="text-4xl max-md:text-3xl font-bold text-brand-orange font-jetbrains-mono">
                 {item.num}
               </h3>
-              <p className="text-lg max-md:text-xs text-[#777777] font-jetbrains-mono">
+              <p className="text-xs text-gray-500 mt-2 font-medium uppercase tracking-wider">
                 {item.text}
               </p>
             </motion.div>
