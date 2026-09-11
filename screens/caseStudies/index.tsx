@@ -9,7 +9,6 @@ import { motion } from "framer-motion";
 import CaseStudiesFAQ from "./CaseStudiesFAQ";
 
 import PageWrapper from "@/components/PageWrapper";
-import GlassBadge from "@/components/GlassBadge";
 import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
 
@@ -171,18 +170,6 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
         {/* Featured deep-dive case studies (from the CMS) */}
         <section className="section-container pt-12 max-md:pt-6">
-          <div className="autoShow">
-            <div className="mb-6 flex flex-row items-center justify-center">
-              <GlassBadge variant="gradient">case studies</GlassBadge>
-            </div>
-            <h2 className="heading-center">
-              Product design & development in practice
-            </h2>
-            <p className="text-gray-500 text-center max-w-2xl mx-auto mt-4 mb-10">
-              Deep dives into how we turn ideas into shipped products — from
-              product thinking and IA to UX/UI and Angular/React development.
-            </p>
-          </div>
 
 
 
