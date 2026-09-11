@@ -6,7 +6,7 @@ import { Reveal } from "@/components/motion";
 
 const LandingMarquee = () => {
   return (
-    <div className="relative overflow-hidden bg-white py-6 max-md:py-6">
+    <div className="relative overflow-hidden py-6 max-md:py-6">
       {/* Subtle grid background - much softer, fades at edges, almost invisible */}
       <div
         className="pointer-events-none absolute inset-0"
