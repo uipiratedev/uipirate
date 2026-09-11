@@ -2,25 +2,9 @@ import SectionHeader from "@/components/SectionHeader";
 import { Reveal } from "@/components/motion";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
-const SERVICE_IMAGES: Record<string, string> = {
-  "saas-ai-development":
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128869/saassteps_g81e1k.svg",
-  "ui-ux-design":
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128869/uiuxsteps_iczi8s.svg",
-  "ux-ui-design":
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128869/uiuxsteps_iczi8s.svg",
-  "landing-pages-business-websites":
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128856/landingsteps_pl8pzf.svg",
-  "ux-audits-consultation":
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128850/uxauditsteps_l8xhdm.svg",
-};
-
 const RecommendedNextSteps = ({ data }: any) => {
   const featuredImage =
-    data.featuredService?.image ||
-    (data.featuredService?.slug &&
-      SERVICE_IMAGES[data.featuredService.slug.toLowerCase()]) ||
-    "/assets/servicesBanner.svg";
+    data.featuredService?.image || "/assets/servicesBanner.svg";
 
   return (
     <section className="section-container pb-16 max-md:pb-12">
