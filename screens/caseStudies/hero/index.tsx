@@ -1,46 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-import BorderGlow from "@/components/BorderGlow";
 import GlassSurface from "@/components/GlassSurface";
-import testimonials from "@/data/testimonials.json";
-import Avatar from "@/components/Avatar";
 
-const StarRating = ({
-  className = "",
-  delay = 0,
-}: {
-  className?: string;
-  delay?: number;
-}) => {
-  return (
-    <div
-      className={`flex flex-row gap-1 h-[14px] ${className}`}
-      style={{ overflow: "visible" }}
-    >
-      {[...Array(5)].map((_, index) => (
-        <div key={index} className="relative h-[14px] w-[14px]">
-          <svg
-            viewBox="0 0 24 24"
-            fill="#FF5B04"
-            className="absolute left-0 top-0 h-[14px] w-[14px] transition-transform duration-300 hover:scale-110"
-            style={{
-              animation: `starSlideUp 0.5s ease-out forwards`,
-              animationDelay: `${delay / 1000 + index * 0.12}s`,
-              opacity: 0,
-              transform: "translateY(40px)",
-            }}
-          >
-            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-          </svg>
-        </div>
-      ))}
-    </div>
-  );
-};
+interface CaseStudiesHeroProps {
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  category: string;
+  setCategory: (c: string) => void;
+  categories: string[];
+}
 
-const CaseStudiesHero = () => {
+const CaseStudiesHero = ({
+  searchQuery,
+  setSearchQuery,
+  category,
+  setCategory,
+  categories,
+}: CaseStudiesHeroProps) => {
   return (
     <div className="hero-wrapper">
       {/* Subtle Grid Background Pattern */}
@@ -76,7 +53,7 @@ const CaseStudiesHero = () => {
         }}
       />
       <div
-        className="flex flex-col items-center justify-center w-full relative z-10 section-container"
+        className="flex flex-col items-center justify-center w-full relative z-10 section-container pb-24"
         style={{ overflow: "visible" }}
       >
         {" "}
@@ -118,103 +95,73 @@ const CaseStudiesHero = () => {
           </h1>
         </div>
         {/* Subheading */}
-        <p className="sub-header text-[#11181C]">
+        <p className="sub-header text-[#11181C] mb-12">
           SaaS platforms, enterprise dashboards, AI products, fintech tools. For
           each project: the problem, what we built, and what it looked like after.
         </p>
-        {/* ✅ Reveal Animation for Card Section */}
+
+        {/* Search Bar matching reference image */}
         <motion.div
-          className="relative flex justify-center items-center mt-16 mb-8 max-md:hidden z-10"
-          initial={{ opacity: 0, y: 40 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.3 }}
+          className="relative max-w-4xl w-full mx-auto z-10 mt-4"
+          initial={{ opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          {testimonials.slice(0, 3).map((item, index) => (
-            <div
-              key={index}
-              className="relative transition-transform duration-700 ease-in-out hover:scale-105"
-              style={{
-                zIndex: 3 - index,
-                marginLeft: index === 0 ? "0px" : "-75px",
-                transform:
-                  index === 0
-                    ? "rotate(-10deg)"
-                    : index === 1
-                      ? "rotate(5deg)"
-                      : "rotate(18deg)",
-                marginTop: index === 0 ? "0px" : index === 1 ? "-50px" : "0px",
-              }}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                transition={{
-                  delay: index * 0.2,
-                  duration: 0.6,
-                  ease: "easeOut",
-                }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
+          <div className="flex bg-white rounded-lg border border-gray-200 p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-[#FF5B04]/20 focus-within:border-[#FF5B04] transition-all duration-300">
+            <input
+              className="flex-grow bg-transparent px-4 py-3 text-sm text-gray-800 placeholder-gray-500 focus:outline-none"
+              placeholder="Search by topic, problem, or keyword..."
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="relative shrink-0 hidden md:inline-block">
+              {/* This invisible span dictates the width of the container strictly based on current selection */}
+              <span className="invisible whitespace-nowrap text-xs font-bold uppercase tracking-wide px-5 py-3 pr-10 inline-block pointer-events-none">
+                {category === "All" ? "ALL CATEGORIES" : category.toUpperCase()}
+              </span>
+              <select
+                className="absolute inset-0 appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3 pr-10 rounded-md cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
               >
-                <BorderGlow
-                  className="w-[300px] h-[200px]"
-                  borderRadius={40}
-                  colors={["#FFB75E", "#FF5B04", "#ED8F03"]}
-                  glowColor="30 100 50"
-                  backgroundColor="#ffffff"
-                  animated={true}
-                >
-                  {/* Card Content */}
-                  <div
-                    className="relative z-0 flex flex-col items-center justify-center gap-4 p-4 h-full"
-                    style={{
-                      borderRadius: "38px",
-                      background: "rgba(255,255,255,0.85)",
-                      backdropFilter: "blur(10px)",
-                    }}
-                  >
-                    <Avatar
-                      avatar={item.profileImage}
-                      name={item.name}
-                      size={48}
-                    />
-                    <p className="line-clamp-3 text-center text-sm ">
-                      &quot;{item.review}&quot;
-                    </p>
-                    <div className="flex flex-row items-start gap-1 overflow-hidden">
-                      <StarRating delay={300} />
-                    </div>
-                  </div>
-                </BorderGlow>
-              </motion.div>
+                <option value="All">ALL CATEGORIES</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
             </div>
-          ))}
-        </motion.div>
-        {/* Stats Section */}
-        <div className="grid grid-cols-4 max-md:grid-cols-2 gap-4 w-full py-10 z-10 relative mt-6">
-          {[
-            { num: "9+", text: "Years of Experience" },
-            { num: "50+", text: "Products Shipped" },
-            { num: "5.0", text: "Client Rating" },
-            { num: "6", text: "Countries Served" },
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:border-brand-orange/30 transition-all duration-300"
-              initial={{ opacity: 0, y: 30 }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
-              viewport={{ once: true }}
-              whileInView={{ opacity: 1, y: 0 }}
+          </div>
+          
+          {/* Mobile Category Select */}
+          <div className="mt-3 md:hidden relative">
+            <select
+              className="appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3.5 pr-10 rounded-md cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             >
-              <h3 className="text-4xl max-md:text-3xl font-bold text-brand-orange font-jetbrains-mono">
-                {item.num}
-              </h3>
-              <p className="text-xs text-gray-500 mt-2 font-medium uppercase tracking-wider">
-                {item.text}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+              <option value="All">ALL CATEGORIES</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat.toUpperCase()}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

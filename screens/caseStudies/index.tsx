@@ -84,13 +84,26 @@ interface CaseStudiesProps {
 
 const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("All");
 
   const caseStudies: CaseStudyCard[] = useMemo(
     () => cmsCaseStudies.map(normalizeCmsCaseStudy),
     [cmsCaseStudies],
   );
 
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    caseStudies.forEach(s => {
+      if (s.industry) cats.add(s.industry);
+    });
+    return Array.from(cats).sort();
+  }, [caseStudies]);
+
   const filteredStudies = caseStudies.filter((study) => {
+    if (category !== "All" && study.industry !== category) {
+      return false;
+    }
+
     if (searchQuery === "") return true;
 
     const query = searchQuery.toLowerCase().trim();
@@ -151,7 +164,13 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
       <div>
         {/* Hero — portfolio + case studies positioning */}
-        <CaseStudiesHero />
+        <CaseStudiesHero
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          category={category}
+          setCategory={setCategory}
+          categories={categories}
+        />
 
 
 
@@ -170,54 +189,10 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             </p>
           </div>
 
-          {/* Search Bar */}
-          <div className="autoShow max-w-xl mx-auto mb-8 max-md:mb-6">
-            <div className="relative">
-              <input
-                className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-sm"
-                placeholder="Search by client, industry, or technology..."
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-              {searchQuery && (
-                <button
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600 transition-colors"
-                  onClick={() => setSearchQuery("")}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M6 18L18 6M6 6l12 12"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </div>
+
 
           {/* Results Count */}
-          {searchQuery && (
+          {(searchQuery || category !== "All") && (
             <div className="flex items-center justify-between mb-6 max-md:mb-4 text-sm">
               <p className="text-gray-600 font-medium">
                 Showing{" "}
@@ -225,22 +200,16 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   {filteredStudies.length}
                 </span>{" "}
                 of <span className="font-bold">{caseStudies.length}</span>{" "}
-                projects
-                {searchQuery && (
-                  <span className="ml-2 text-gray-500">
-                    matching "
-                    <span className="font-semibold text-gray-700">
-                      {searchQuery}
-                    </span>
-                    "
-                  </span>
-                )}
+                projects matching filters
               </p>
               <button
                 className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
-                onClick={() => setSearchQuery("")}
+                onClick={() => {
+                  setSearchQuery("");
+                  setCategory("All");
+                }}
               >
-                Clear search
+                Clear filters
               </button>
             </div>
           )}
@@ -272,13 +241,16 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                       ? "Try adjusting your search term"
                       : "Check back soon"}
                   </p>
-                  {searchQuery && (
+                  {(searchQuery || category !== "All") && (
                     <div className="flex gap-3 justify-center">
                       <button
                         className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-full hover:border-[#FF5B04] hover:text-[#FF5B04] transition-all duration-300 font-semibold text-sm"
-                        onClick={() => setSearchQuery("")}
+                        onClick={() => {
+                          setSearchQuery("");
+                          setCategory("All");
+                        }}
                       >
-                        Clear search
+                        Clear filters
                       </button>
                     </div>
                   )}
