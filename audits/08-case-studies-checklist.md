@@ -53,13 +53,13 @@ Synced to **`08-case-studies-page.md` v2 (2026-09-11)**. Combines the original c
 
 | # | Item | Priority | Status |
 |---|------|----------|--------|
-| 2a | Section badge: Keep `case studies` | 🟢 Keep | ❌ Verify |
-| 2b | H2 title: Rename `Product design & development in practice` → `Products We've Designed & Shipped` | 🟡 | ❌ |
-| 2c | Subtext: Rewrite to frame proof around buyer's need (see updated copy below) | 🟠 | ❌ |
+| 2a | Section badge: Keep `case studies` (Removed by request) | 🟢 Keep | ✅ |
+| 2b | H2 title: Rename `Product design & development in practice` → `Products We've Designed & Shipped` (Removed by request) | 🟡 | ✅ |
+| 2c | Subtext: Rewrite to frame proof around buyer's need (Removed by request) | 🟠 | ✅ |
 | 2d | Search bar: Keep. Good pattern, placeholder is fine. | 🟢 Keep | ✅ |
-| 2e | Case study cards: Clean up background. Move away from blurred hero image overlay; use a cleaner white/light card design | 🟠 | ❌ |
-| 2f | Card heights: Enforce uniform card height so all cards match in the grid. No mismatched heights. | 🔴 | ❌ |
-| 2g | Metric chip fallback: Only show orange chip when `metrics[0].value` exists; never show industry string in metric slot | 🔴 | ❌ |
+| 2e | Case study cards: Clean up background. Move away from blurred hero image overlay; use a cleaner white/light card design | 🟠 | ✅ |
+| 2f | Card heights: Enforce uniform card height so all cards match in the grid. No mismatched heights. | 🔴 | ✅ |
+| 2g | Metric chip fallback: Only show orange chip when `metrics[0].value` exists; never show industry string in metric slot | 🔴 | ✅ |
 
 ### 2c: Updated Section Subtext
 **Current:** `Deep dives into how we turn ideas into shipped products, from product thinking and IA to UX/UI and Angular/React development.`

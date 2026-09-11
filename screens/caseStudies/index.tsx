@@ -240,13 +240,13 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
               </div>
             ) : (
               filteredStudies.map((study, index) => {
-                const primaryMetric =
-                  study.metrics?.[0]?.value || study.industry;
+                const primaryMetric = study.metrics?.[0]?.value;
                 const isNew = isNewCaseStudy(study.publishedAt);
 
                 return (
                   <motion.div
                     key={study.slug}
+                    className="flex h-full"
                     animate={{ opacity: 1, y: 0 }}
                     initial={{ opacity: 0, y: 20 }}
                     transition={{
@@ -256,25 +256,9 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                     }}
                   >
                     <Link
-                      className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
+                      className="group flex flex-col w-full relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
                       href={`/case-studies/${study.slug}`}
                     >
-                      {/* Blurred background image - more visible.
-                          Not next/image: heroImage is SVG (needs
-                          dangerouslyAllowSVG) and CMS-sourced ones may come
-                          from domains outside next.config's image allowlist.
-                          loading="lazy" still defers every off-screen card. */}
-                      <div className="absolute inset-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          alt={`${study.client} background`}
-                          className="w-full h-full object-cover blur-sm scale-110 opacity-60"
-                          decoding="async"
-                          loading="lazy"
-                          src={study.heroImage}
-                        />
-                      </div>
-
                       {isNew && (
                         <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
                           <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
@@ -283,25 +267,27 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                         </div>
                       )}
 
-                      {/* Glass overlay with content */}
-                      <div className="relative z-10 bg-gradient-to-br from-white/80 to-white/70 backdrop-blur-sm p-8 max-md:p-6 h-full">
+                      {/* Card content with pure white background */}
+                      <div className="relative z-10 p-8 max-md:p-6 flex flex-col flex-grow bg-white">
                         {/* Top row: Industry chip + Metric chip */}
-                        <div className="flex items-center justify-between mb-6 max-md:mb-4">
-                          <div className="px-3 py-1.5 bg-white/90 backdrop-blur-xl border border-gray-200/70 rounded-full shadow-sm">
+                        <div className="flex items-start justify-between gap-4 mb-6 max-md:mb-4">
+                          <div className="px-3 py-1.5 bg-gray-50 border border-gray-200/70 rounded-full shadow-sm shrink-0">
                             <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
                               {study.industry}
                               {study.region ? ` · ${study.region}` : ""}
                             </p>
                           </div>
-                          <div className="px-3 py-1.5 bg-[#FF5B04] backdrop-blur-xl rounded-full shadow-md">
-                            <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
-                              {primaryMetric}
-                            </p>
-                          </div>
+                          {primaryMetric && (
+                            <div className="px-3 py-1.5 bg-[#FF5B04] rounded-full shadow-md text-right">
+                              <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
+                                {primaryMetric}
+                              </p>
+                            </div>
+                          )}
                         </div>
 
                         {/* Company name + Project title + Excerpt */}
-                        <div className="mb-6 max-md:mb-4">
+                        <div className="mb-6 max-md:mb-4 flex-grow">
                           <h3 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-1.5 group-hover:text-[#FF5B04] transition-colors">
                             {study.client}
                           </h3>
@@ -314,7 +300,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                         </div>
 
                         {/* Tech stack pills + CTA */}
-                        <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-300/60">
+                        <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200/60 mt-auto">
                           <div className="flex gap-1.5 flex-wrap">
                             {study.technologies
                               ?.slice(0, 3)
