@@ -203,6 +203,7 @@
           "description2": "We build scalable backends, integrate AI models, and deliver production-ready code.",
           "buttonText": "Explore",
           "slug": "saas-ai-development",
+          "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128869/saassteps_g81e1k.svg",
           "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
@@ -425,6 +426,7 @@
           "description2": "We design and build marketing sites that clearly explain your value and drive sign-ups.",
           "buttonText": "Explore",
           "slug": "landing-pages-business-websites",
+          "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128856/landingsteps_pl8pzf.svg",
           "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
@@ -632,6 +634,7 @@
           "description2": "Now build out the core product, web app, or AI platform that your users are signing up for.",
           "buttonText": "Explore",
           "slug": "saas-ai-development",
+          "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128869/saassteps_g81e1k.svg",
           "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
@@ -847,6 +850,7 @@
           "description2": "We apply the audit fixes with structure, building flows that hold up as the product grows.",
           "buttonText": "Explore",
           "slug": "ux-ui-design",
+          "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789128869/uiuxsteps_iczi8s.svg",
           "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
         },
         "otherServices": [
