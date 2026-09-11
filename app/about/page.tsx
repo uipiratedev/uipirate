@@ -569,15 +569,6 @@ export default function AboutPage() {
                   >
                     {/* 3D Glossy Orange Icon */}
                     <div className="relative flex items-center justify-center">
-                      {/* Blurred Drop Shadow */}
-                      <svg
-                        className="w-[24px] h-[24px] absolute blur-[3px] opacity-60 translate-y-[2px]"
-                        fill="#ff7a2e"
-                        viewBox="0 0 24 24"
-                      >
-                        {item.icon()}
-                      </svg>
-
                       {/* Main Glossy Icon */}
                       <svg
                         className="w-[24px] h-[24px] relative z-10"

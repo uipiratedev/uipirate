@@ -130,7 +130,7 @@ const fadeUp = {
 const TermsAndConditionsScreen = () => {
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="relative min-h-screen bg-white">
+      <div className="relative min-h-screen">
         {/* Consistent Hero Component */}
         <div className="hero-wrapper">
           {/* Subtle Grid Background Pattern */}

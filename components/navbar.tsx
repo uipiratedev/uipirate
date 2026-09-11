@@ -156,25 +156,25 @@ export const Navbar = () => {
     };
   }, [isMenuOpen]);
 
+  const isNavbarHidden = isFooterVisible || isScrollHidden;
+
   return (
     <>
       {/* ✅ Navbar */}
       <div
         className="fixed top-3 left-0 right-0 z-[100000001] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
         style={{
-          opacity: isFooterVisible ? 0 : 1,
-          transform: isScrollHidden
-            ? "translateY(-120%)"
-            : isFooterVisible
-              ? "translateY(-16px)"
-              : "translateY(0)",
-          pointerEvents: isFooterVisible ? "none" : undefined,
+          opacity: isNavbarHidden ? 0 : 1,
+          transform: isNavbarHidden ? "translateY(-150%)" : "translateY(0)",
+          pointerEvents: isNavbarHidden ? "none" : undefined,
+          visibility: isNavbarHidden ? "hidden" : "visible",
         }}
       >
         {!loading && (
           <div
             className={clsx(
-              "section-container max-md:px-0 pointer-events-auto",
+              "section-container max-md:px-0",
+              isNavbarHidden ? "pointer-events-none" : "pointer-events-auto",
             )}
           >
             <GlassSurface
@@ -282,6 +282,7 @@ export const Navbar = () => {
                         {item.hasDropdown && item.dropdownItems ? (
                           <NavbarDropdown
                             isDarkSection={isDarkSection}
+                            isDisabled={isNavbarHidden}
                             isServicesMenu={item.label === "Services"}
                             items={item.dropdownItems}
                             label={item.label}

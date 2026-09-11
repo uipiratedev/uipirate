@@ -16,10 +16,70 @@
 
 **Research basis:** Apple HIG, Google Material UX Writing, Nielsen Norman Group, Copyhackers / Jobs-to-be-Done, Google E-E-A-T + Helpful Content, plus sources specific to portfolio / case-study pages: NN/g portfolio & case-study research, B2B agency-portfolio conversion playbooks (case-study = problem → approach → measurable result), CRO research on proof pages, and GEO / AI-citation-readiness guidance (`CreativeWork` / `ItemList` / `FAQPage` structured data, named entities, itemized results).
 
-**Last audited:** 2026-08-31
-**Note:** New page — first audit. No prior v1/v2. This is a single first-pass audit written to the same shape as the v3 sections in the existing audit files, not a "what changed" delta.
+**Last audited:** 2026-08-31 (v1 content audit) / **2026-09-11 (v2 design & structural decisions)**
+**Note:** v1 was the first-pass content-only audit. v2 (this update) adds design direction, structural reorder, and section-level copy decisions from the 2026-09-11 discussion. Implementation tracked in `08-case-studies-checklist.md`.
 
 ---
+
+## v2 Design & Structural Decisions: 2026-09-11
+
+> These decisions were made in a design discussion on 2026-09-11 and are the authoritative instruction set for the redesign pass. They supersede or extend the v1 recommendations below where there is overlap.
+
+### Page Identity & Navigation
+- The page lives at `/case-studies`. The "Works" nav label and the "Resources → Case Studies" path both point to this same URL. **This dual-entry flow is intentional and stays as-is.** No changes to routing.
+
+### Section Order (revised)
+The current order buries the actual case studies behind stats, decorative testimonial cards, and a logo strip. The new order: show the work first, companies second.
+
+| New Position | Section | Key Change |
+|---|---|---|
+| 1 | Hero | Subtext updated; testimonial card borders → orange-shimmery; stats → About-page style (4 rectangle cards) |
+| 2 | Case Studies Grid | Moved up from position 3; card design cleaned up; uniform heights |
+| 3 | "What's Next" CTA | Redesigned as a placeholder / "your project goes here" visual |
+| 4 | Our Clients | Moved down from position 2; replaced with full About-page "OUR CLIENTS" section |
+| 5 | Client Testimonials | Stays (spacing to be fixed) |
+| 6 | Why Choose Us | Stays (icon quality to be improved) |
+| 7 | FAQ | Moved to just above footer |
+| — | Pricing CTA | **REMOVED**: pricing belongs on `/pricing` only |
+
+### Hero Changes
+1. **H1 "Real Projects. Real Results."** Tagline is kept. It is good.
+2. **Subtext**: rewrite to be specific: `SaaS platforms, enterprise dashboards, AI products, fintech tools. For each project: the problem, what we built, and what it looked like after.`
+3. **Testimonial card borders**: change from rainbow gradient (`#F7DE04 → #11C781 → #05A2FB → #5E72E4 → #F04800`) to a **shimmery orange gradient** that matches the brand palette.
+4. **Stats row**: replace current vertical list with the **About page stats design**: 4 white rectangle cards (`bg-white border border-gray-200 rounded-xl p-6 text-center hover:border-brand-orange/30`), `grid-cols-4` desktop / `grid-cols-2` mobile. **Content to match About page exactly:** `9+` Years of Experience · `50+` Products Shipped · `5.0` Client Rating · `6` Countries Served.
+
+### Case Studies Grid Changes
+- **H2**: `Product design & development in practice` → `Products We've Designed & Shipped`
+- **Subtext**: `Each project below is a complete story: the brief, the decisions, and the shipped result. Search by client, industry, or technology.`
+- **Cards**: Clean up background. Remove the blurred hero image overlay; use a clean white/light card (`bg-white border border-gray-100 rounded-2xl`). Every card must be the same height.
+- **Metric chip**: Only render the orange chip when `metrics[0].value` exists. Never show industry as a metric fallback.
+
+### "What's Next" CTA: Placeholder Redesign
+The dark-background CTA becomes a **placeholder card**: dashed border, wireframe-aesthetic treatment that looks like an empty slot in the case study grid. The message: "We built all of these. Your product could be next."
+- **H2**: `Ready to build something like this?`
+- **Para**: `From product thinking and UX/UI to Angular and React, we take the idea from a whiteboard to a shipped product. Most clients hear back within 2 hours of reaching out.`
+- **Primary CTA**: `Book a Free 15-Min Call →` → `https://cal.com/ui-pirate/15min`
+- **Secondary CTA**: `See Pricing` → `/pricing`
+
+### Our Clients Section: Replace and Move
+- Replace `ClientLogosMarquee` (bare `Trusted by teams at` + logos) with the **full About page "Our Clients" component pattern**: `SectionHeader` with `chip="OUR CLIENTS"`, `subcopy="60% of our clients are US-based startups and enterprises"`, H2 `Trusted by Teams Worldwide`, and `<ClientLogosGrid />`.
+- Move this section **below** the case studies grid and CTA (not above it).
+
+### FAQ: Move and Update
+- Move FAQ to **just above the footer** (last section).
+- Fix `We've helped 20+ startups` → `We've shipped 50+ products, including 20+ startup MVPs built from scratch.`
+- Add 3 proof-specific questions: "Can I see work in my industry?", "Are the results verified?", "Do you have NDA work?"
+- Add `FAQPage` JSON-LD schema.
+
+### Pricing Section: Remove
+- **Remove entirely** the "Pricing That Makes Sense" block with embedded `<ProjectEstimate />`. Pricing belongs on `/pricing` only.
+
+### Why Choose Us
+- Keep the section. The stacking card animation is fine.
+- The icon on the right side needs to be replaced. Current version is low resolution. Use a high-quality SVG.
+
+---
+
 
 ## Research Foundation
 
@@ -93,7 +153,7 @@ Currently it under-delivers on all three: the proof is buried below a stats-and-
 - **Current (verified, `hero/index.tsx:107-109`):** `PORTFOLIO & CASE STUDIES`
 - **Wrong:** Third distinct name for this page (nav says "Works", `<title>` says "Case Studies & Portfolio"). Word order flipped vs. the title.
 - **Why it matters:** Apple HIG label consistency; entity-name drift weakens the page as a named entity for AI engines and confuses returning users.
-- **Rewrite:** `CASE STUDIES` (and align every other surface to that — see NC1).
+- **Rewrite:** `CASE STUDIES` (and align every other surface to that; see NC1).
 
 #### 1b. H1
 - **Current (verified, `hero/index.tsx:113-116`):** `Real Projects. Real Results.`
@@ -104,7 +164,7 @@ Currently it under-delivers on all three: the proof is buried below a stats-and-
 #### 1c. Subhead
 - **Current (verified, `hero/index.tsx:119-122`):** `See how we've helped startups, SaaS teams, and global brands turn ideas into fully functional digital products.`
 - **Wrong:** Fine in tone but redundant with the H1 and the block-3 intro, which says almost the same thing a third time.
-- **Rewrite:** Make it do work the H1 can't — name the range: `Deep dives into SaaS platforms, enterprise dashboards, AI apps and fintech tools — the problem, what we did, and what changed for the client.`
+- **Rewrite:** Make it do work the H1 cannot. Name the range: `Deep dives into SaaS platforms, enterprise dashboards, AI apps and fintech tools. The problem, what we did, and what changed for the client.`
 
 #### 1d. Stats row
 - **Current (verified, `hero/index.tsx:211-217`):** `9+ Years of Experience` · `50+ Projects Completed` · `$150M+ Made by our clients` · `6+ Countries Served`
@@ -126,20 +186,20 @@ Currently it under-delivers on all three: the proof is buried below a stats-and-
 ### 2. Case studies grid — heading & intro (`screens/caseStudies/index.tsx:160-172`)
 
 - **Current H2 (verified, `:165-167`):** `Product design & development in practice`
-- **Current intro (verified, `:168-171`):** `Deep dives into how we turn ideas into shipped products — from product thinking and IA to UX/UI and Angular/React development.`
+- **Current intro (verified, `:168-171`):** `Deep dives into how we turn ideas into shipped products, from product thinking and IA to UX/UI and Angular/React development.`
 - **Wrong:**
   - "in practice" is vague; "product thinking and IA to UX/UI and Angular/React development" is a process list, not a reason to read.
   - This is the **third** near-identical restatement of "we turn ideas into products" (H1, hero subhead, here).
   - **Angular** is foregrounded here and in the meta keywords ("Angular development projects") — an unusual lead for a design-forward agency; confirm this is deliberate positioning and not stale copy. If React is the primary stack, lead with it.
 - **Why it matters:** Material — write the visitor's reason to scroll, not the service breakdown. Copyhackers — the intro should frame the proof around the buyer's situation.
-- **Rewrite (H2):** `Case studies` (the badge above it already says "case studies" — dedupe; make the H2 the useful line). **Intro:** `Each one covers the problem the client had, what we designed and built, and the measurable change after launch. Filter by industry or stack below.`
+- **Rewrite (H2):** `Case studies` (the badge above already says "case studies"; make the H2 the useful line). **Intro:** `Each one covers the problem the client had, what we designed and built, and the measurable change after launch. Filter by industry or stack below.`
 
 #### 2a. Search box
 - **Current placeholder (verified, `:179`):** `Search by client, industry, or technology...`
 - **Verdict:** Good pattern. Minor: with a small catalog, add **filter chips** (SaaS / Enterprise / AI / Fintech / Design system) alongside search — matches how buyers self-qualify (JTBD). Copy-only add, defer if it touches layout.
 
 #### 2b. Results count / empty state
-- **Current (verified, `:266-275`):** `No case studies published yet` / `Check back soon` (no search) — `No matching projects found` / `Try adjusting your search term` (with search).
+- **Current (verified, `:266-275`):** `No case studies published yet` / `Check back soon` (no search). `No matching projects found` / `Try adjusting your search term` (with search).
 - **Wrong:** "No case studies published yet / Check back soon" is the **fallback content of the whole page** if the CMS call returns empty. A proof page that can render with zero proof and an apologetic message is a real risk for both users and crawlers.
 - **Why it matters:** GEO / crawlability — primary content must not be conditional on a client-side CMS fetch resolving with data. E-E-A-T — "check back soon" on a flagship page reads as abandoned.
 - **Recommendation:** (a) ensure at least 3–6 evergreen case studies always render (server-rendered fallback), (b) if truly empty, swap copy to route forward: `Case studies are being migrated. See selected work on the homepage or book a call to discuss projects like yours.` + the canonical call link.
@@ -251,7 +311,7 @@ Currently it under-delivers on all three: the proof is buried below a stats-and-
 | Element | Current value (verified) | file:line | Verdict | Recommended |
 |---|---|---|---|---|
 | `<title>` | `Case Studies & Portfolio \| 50+ Shipped Products` | `page.tsx:11` | 🟡 OK length (~47 chars); "Portfolio" + "Shipped Products" slightly redundant; no brand token | `Case Studies: SaaS & Enterprise Product Design \| UI Pirate` |
-| `meta description` | `Explore 50+ shipped products and deep-dive case studies — SaaS platforms, enterprise dashboards, AI apps, fintech, and design systems.` | `page.tsx:12-13` | 🟢 Good — specific, ~145 chars. Keep the industry list here as the **canonical** one and sync §6/§3a to it | Minor: lead with the outcome — `See how we design and ship SaaS platforms, enterprise dashboards, AI apps and fintech tools — deep-dive case studies with the problem, the work, and the result.` |
+| `meta description` | `Explore 50+ shipped products and deep-dive case studies: SaaS platforms, enterprise dashboards, AI apps, fintech, and design systems.` | `page.tsx:12-13` | 🟢 Good — specific, ~145 chars. Keep the industry list here as the **canonical** one and sync §6/§3a to it | Minor: lead with the outcome — `See how we design and ship SaaS platforms, enterprise dashboards, AI apps and fintech tools — deep-dive case studies with the problem, the work, and the result.` |
 | `keywords` | `UI/UX case studies, product design portfolio, SaaS design case study, ..., Angular development projects, ...` | `page.tsx:14-15` | 🟡 Ignored by Google; "Angular development projects" over-weights Angular (see §2). Harmless but review | Trim to the phrases actually reflected in copy; drop Angular unless it's deliberate positioning |
 | `canonical` | `https://uipirate.com/case-studies` | `page.tsx:33-35` | 🟢 Correct. "Works" is only a nav label pointing to this same URL — **no duplicate-content issue**, no separate `/works` route exists (`find app` confirms). No action. | — |
 | OG `title` | `Case Studies & Portfolio \| 50+ Shipped Products \| UI Pirate` | `page.tsx:17` | 🟡 Fifth variant of the name; double `|` stacking | Match `<title>` + ` | UI Pirate` once |
@@ -304,8 +364,8 @@ Currently it under-delivers on all three: the proof is buried below a stats-and-
 
 > Format: exact current copy → exact recommended copy, with file:line. Copy/content only. No layout or component-structure change implied unless noted.
 
-### NC1 — Unify the entity name (one canonical name + slug)
-Canonical: **"Case Studies"** (page), slug stays `/case-studies`, nav label may remain **"Works"** *only if* treated as a synonym link — but every content surface below uses "Case Studies":
+### NC1: Unify the entity name (one canonical name + slug)
+Canonical: **"Case Studies"** (page), slug stays `/case-studies`, nav label may remain **"Works"** *only if* treated as a synonym link. Every content surface below uses "Case Studies":
 
 | Surface | Current | file:line | → Recommended |
 |---|---|---|---|
@@ -316,22 +376,22 @@ Canonical: **"Case Studies"** (page), slug stays `/case-studies`, nav label may 
 | OG `siteName` | `UI Pirate by Vishal Anand` | `app/case-studies/page.tsx:21` | `UI Pirate` (match site-wide canonical) |
 | Grid H2 | `Product design & development in practice` | `screens/caseStudies/index.tsx:166` | `Case studies` |
 
-### NC2 — Hero H1
+### NC2: Hero H1
 - **Current (`screens/caseStudies/hero/index.tsx:113-116`):** `Real <span>Projects.</span> Real <span>Results.</span>`
 - **Recommended:** `SaaS & enterprise products we designed <span>and shipped</span>`
-- *(If "Results" is kept, every card must show a real metric — see NC4.)*
+- *(If "Results" is kept, every card must show a real metric. See NC4.)*
 
-### NC3 — Hero subhead
+### NC3: Hero subhead
 - **Current (`screens/caseStudies/hero/index.tsx:119-122`):** `See how we've helped startups, SaaS teams, and global brands turn ideas into fully functional digital products.`
-- **Recommended:** `Deep dives into SaaS platforms, enterprise dashboards, AI apps and fintech tools — the problem the client had, what we designed and built, and what changed after launch.`
+- **Recommended:** `SaaS platforms, enterprise dashboards, AI products, fintech tools. For each project: the problem, what we built, and what it looked like after.`
 
-### NC4 — Grid intro + card metric fallback
-- **Current intro (`screens/caseStudies/index.tsx:168-171`):** `Deep dives into how we turn ideas into shipped products — from product thinking and IA to UX/UI and Angular/React development.`
-- **Recommended intro:** `Every case study covers the problem, the work, and the measurable result. Search by client, industry or stack.`
+### NC4: Grid intro + card metric fallback
+- **Current intro (`screens/caseStudies/index.tsx:168-171`):** `Deep dives into how we turn ideas into shipped products, from product thinking and IA to UX/UI and Angular/React development.`
+- **Recommended intro:** `Each project below is a complete story: the brief, the decisions, and the shipped result. Search by client, industry, or technology.`
 - **Current logic (`screens/caseStudies/index.tsx:290-291`):** `const primaryMetric = study.metrics?.[0]?.value || study.industry;`
-- **Recommended (implementation pass):** render the orange result chip **only** when `study.metrics?.[0]?.value` exists; when absent, show region or a neutral `Case study` label — never the industry string in the result slot.
+- **Recommended (implementation pass):** render the orange result chip **only** when `study.metrics?.[0]?.value` exists; when absent, show region or a neutral `Case study` label. Never show the industry string in the result slot.
 
-### NC5 — Reconcile headline numbers (pick one canonical set)
+### NC5: Reconcile headline numbers (pick one canonical set)
 Decide the true figures once, then apply everywhere:
 
 | Claim | Locations to sync | Suggested canonical |
@@ -341,42 +401,42 @@ Decide the true figures once, then apply everywhere:
 | Countries | hero `6+ Countries Served` (`hero/index.tsx:216`) | Confirm vs. About page; state one number |
 | Industries served | `CaseStudiesFAQ.tsx:42`; `index.tsx:118`; `page.tsx:13` | Use the meta list as canonical: `SaaS platforms, enterprise dashboards, AI apps, fintech, and design systems` |
 
-### NC6 — "What's next" CTA → canonical call
+### NC6: "What's next" CTA
 - **Current (`screens/caseStudies/index.tsx:411-431`):**
   - H2 `Let's Build Something Like This For You`
-  - Para `From idea to shipped product — product thinking, IA, UX/UI, and Angular/React frontend carried end-to-end. Typical response under 2 hours.`
+  - Para `From idea to shipped product: product thinking, IA, UX/UI, and Angular/React frontend carried end-to-end. Typical response under 2 hours.`
   - Button `Start Your Project →` → `/contact`; Button `View Pricing` → `/pricing`
 - **Recommended:**
-  - H2 `Want results like these for your product?`
-  - Para `Tell us what you're building. We'll walk through how we'd approach it and what it would take — no pitch.`
+  - H2 `Ready to build something like this?`
+  - Para `From product thinking and UX/UI to Angular and React, we take the idea from a whiteboard to a shipped product. Most clients hear back within 2 hours of reaching out.`
   - Primary button `Book a Free 15-Min Call →` → `https://cal.com/ui-pirate/15min`
   - Secondary button `See pricing` → `/pricing`
-- *(Drop "Typical response under 2 hours" unless it's a real, tracked SLA used consistently site-wide.)*
+- *("Typical response under 2 hours" is retained if this is a real, monitored commitment — verify before publishing.)*
 
-### NC7 — Client logo alt-text accuracy
+### NC7: Client logo alt-text accuracy
 - **Current (`screens/caseStudies/ClientLogosMarquee.tsx:16`):** `alt: "Khaitan & Co - APAC's largest law firm"`
 - **Recommended:** `alt: "Khaitan & Co - one of India's largest law firms"`
 - **Current heading (`:54`):** `Trusted by teams at` → keep only if all 9 are active clients; otherwise `Selected clients`.
 
-### NC8 — FAQ: add schema + proof-specific questions + links
+### NC8: FAQ: add schema, proof-specific questions, and links
 - Add `FAQPage` JSON-LD built from the `faqs` array in `screens/caseStudies/CaseStudiesFAQ.tsx:13-44` (mirror the services/tools page pattern).
-- **Current subhead (`:70`):** `Everything you need to know about working with us` → `Questions about our work and how we engage.`
+- **Current subhead (`:70`):** `Everything you need to know about working with us` → `Common questions about our work and how we engage with clients.`
 - Replace 2–3 generic entries with:
-  - `Can I see work in my industry?` → *"Yes — filter the case studies above by SaaS, fintech, AI, enterprise or design systems, or ask us and we'll send the two or three closest to your situation."*
-  - `Are the results in these case studies verified?` → *"The metrics come from the client or from analytics we had access to during the engagement. For several clients we can arrange a direct reference call."*
-  - `Do you have work you can't show publicly?` → *"Yes. Some enterprise and fintech work is under NDA. We can walk through it on a call."*
-- **Current (`:21`):** `We've helped 20+ startups validate and ship their MVPs.` → `We've shipped 50+ products, including 20+ startup MVPs built from scratch.`
+  - `Can I see work in my industry?` → *"Yes. Search the case studies above by industry or technology, or reach out and we will point you to the two or three projects most relevant to your situation."*
+  - `Are the results in these case studies accurate?` → *"The metrics are pulled from client reports or from the analytics we had access to during the engagement. For a number of clients, we can also arrange a direct reference conversation."*
+  - `Do you have work you can't show publicly?` → *"Yes, some enterprise and fintech projects are covered by NDAs. We can discuss the nature of that work on a call without sharing anything confidential."*
+- **Current (`:21`):** `We've helped 20+ startups validate and ship their MVPs.` → `We have shipped 50+ products, 20+ of which were startup MVPs built from the ground up.`
 
-### NC9 — Empty-state copy (route forward, don't apologize)
+### NC9: Empty-state copy (route forward, not apologize)
 - **Current (`screens/caseStudies/index.tsx:269`, `:274`):** `No case studies published yet` / `Check back soon`
-- **Recommended:** `Case studies are being added.` / `See selected work on the homepage, or book a call to discuss projects like yours.` + link `Book a Free 15-Min Call` → `https://cal.com/ui-pirate/15min`
-- *(Primary fix is server-rendering an evergreen set so this state is unreachable in normal operation — see §2b / §3a.)*
+- **Recommended:** `Case studies are being migrated.` / `In the meantime, you can view selected work on the homepage or book a call to talk through projects similar to yours.` + link `Book a Free 15-Min Call` → `https://cal.com/ui-pirate/15min`
+- *(Primary fix is server-rendering an evergreen set so this state is unreachable in normal operation. See §2b / §3a.)*
 
-### NC10 — Hero testimonial snippet punctuation
+### NC10: Hero testimonial snippet punctuation
 - **Current (`screens/caseStudies/hero/index.tsx:198-200`):** `&quot;...{item.review}...&quot;` renders `"...fragment..."`
-- **Recommended:** `&quot;{item.review}&quot;` (clean clamped quote) — or curate a one-line pull-quote field per testimonial.
+- **Recommended:** `&quot;{item.review}&quot;` (clean clamped quote). Or curate a one-line pull-quote field per testimonial.
 
-### NC11 — Remove stray backslash (not copy, but visible text)
+### NC11: Remove stray backslash (not copy, but visible text)
 - **Current (`screens/caseStudies/index.tsx:443`):** a literal `\` on its own line before `<WhyChooseUs />`, which renders on the page.
 - **Recommended:** delete the `\`.
 
@@ -397,17 +457,17 @@ Decide the true figures once, then apply everywhere:
 | 9 | Three inconsistent "industries we serve" lists | `CaseStudiesFAQ.tsx:42`; `index.tsx:118`; `page.tsx:13` | 🟠 | ✅ |
 | 10 | No Twitter card block | `app/case-studies/page.tsx:10-36` | 🟠 | ✅ |
 | 11 | `numberOfItems` in JSON-LD can render `0` | `screens/caseStudies/index.tsx:125` | 🟠 | ✅ |
-| 12 | H1 "Real Projects. Real Results." — no keyword, no specificity | `hero/index.tsx:113-116` | 🟠 | ✅ |
+| 12 | H1 "Real Projects. Real Results." (no keyword, no specificity) | `hero/index.tsx:113-116` | 🟠 | ✅ |
 | 13 | "we turn ideas into shipped products" / process list repeated 4× (H1, subhead, grid intro, What's next) | `hero/index.tsx:119-122`; `index.tsx:168-171,414-418` | 🟠 | ✅ |
 | 14 | OG image is a raw screenshot, not a designed card | `app/case-studies/page.tsx:24` | 🟠 | ✅ |
 | 15 | Proof is section 3 of 8; hero leads with stats + decorative testimonial cards | `screens/caseStudies/index.tsx:142-403` (order) | 🟠 | ✅ |
 | 16 | Hero testimonial snippets render as `"...fragment..."` | `hero/index.tsx:198-200` | 🟡 | ✅ |
 | 17 | Client logos not linked to their case studies | `ClientLogosMarquee.tsx:59-77` | 🟡 | ✅ |
 | 18 | FAQ answers say "many of our case studies" with no links | `CaseStudiesFAQ.tsx:22,32` | 🟡 | ✅ |
-| 19 | Angular over-weighted vs React (meta keywords + 3× body) — confirm intent | `page.tsx:15`; `index.tsx:170,417` | 🟡 | ✅ |
+| 19 | Angular over-weighted vs React (meta keywords + 3× body): confirm intent | `page.tsx:15`; `index.tsx:170,417` | 🟡 | ✅ |
 | 20 | Stray literal `\` renders before "Why Choose Us" | `screens/caseStudies/index.tsx:443` | 🟡 | ✅ |
-| 21 | Card sub-line assumes every CMS title contains ` — ` | `screens/caseStudies/index.tsx:356` | 🟡 | ✅ |
-| 22 | Case-study **detail** page renders via blog components — needs its own audit | `app/case-studies/[slug]/page.tsx:8-9` | 🟡 | ✅ |
+| 21 | Card sub-line assumes every CMS title contains a ` — ` separator | `screens/caseStudies/index.tsx:356` | 🟡 | ✅ |
+| 22 | Case-study **detail** page renders via blog components (needs its own audit) | `app/case-studies/[slug]/page.tsx:8-9` | 🟡 | ✅ |
 | 23 | `keywords` meta list broader than on-page copy | `app/case-studies/page.tsx:14-15` | 🟡 | ✅ |
 | 24 | Grid intro says "Deep dives" but nothing enforces problem/approach/result in excerpts | `screens/caseStudies/index.tsx:168-171` | 🟡 | ✅ |
 
@@ -423,19 +483,19 @@ Decide the true figures once, then apply everywhere:
 
 ## What's Working Well (preserve as-is)
 
-- ✅ **`CollectionPage` + per-item `CreativeWork` JSON-LD** (`index.tsx:113-140`) — right structure, just needs the `length>0` guard, name alignment, and a `FAQPage` sibling.
-- ✅ **Strong, specific meta description** (`page.tsx:12-13`) — keep it as the canonical industry list.
+- ✅ **`CollectionPage` + per-item `CreativeWork` JSON-LD** (`index.tsx:113-140`): right structure, just needs the `length>0` guard, name alignment, and a `FAQPage` sibling.
+- ✅ **Strong, specific meta description** (`page.tsx:12-13`): keep it as the canonical industry list.
 - ✅ **Canonical is correct and there is no duplicate `/works` route** — "Works" is purely a nav synonym pointing at `/case-studies`. No SEO action needed here; leave the two nav entry points as they are (per instruction).
-- ✅ **Client-side search with a clear placeholder and results count** (`index.tsx:174-247`) — good pattern for a catalog this size.
-- ✅ **"New" badge on recent case studies** (30-day window, `index.tsx:38-42`) — nice freshness signal.
-- ✅ **Real client logos** (Ipsos, Khaitan & Co, Bioptex Medical, ArthAlpha) with descriptive alt text — genuine authority once the one overstatement is fixed.
-- ✅ **ISR `revalidate = 60`** (`page.tsx:8`) — new CMS case studies appear without a rebuild.
+- ✅ **Client-side search with a clear placeholder and results count** (`index.tsx:174-247`): good pattern for a catalog this size.
+- ✅ **"New" badge on recent case studies** (30-day window, `index.tsx:38-42`): nice freshness signal.
+- ✅ **Real client logos** (Ipsos, Khaitan & Co, Bioptex Medical, ArthAlpha) with descriptive alt text: genuine authority once the one overstatement is fixed.
+- ✅ **ISR `revalidate = 60`** (`page.tsx:8`): new CMS case studies appear without a rebuild.
 - ✅ **Consistent card CTA** ("Read case study" / "Read") and honest empty/no-match states.
-- ✅ **Testimonials + Why-Choose-Us reuse** — consistent with the landing page; keep, just de-dupe against the hero's decorative cards.
+- ✅ **Testimonials + Why-Choose-Us reuse**: consistent with the landing page. Keep, just de-dupe against the hero's decorative cards.
 
 ---
 
-## Copy Tone Reference — Case-Studies-Specific
+## Copy Tone Reference: Case-Studies-Specific
 
 | ✅ Do | ❌ Avoid | Example from current code |
 |---|---|---|

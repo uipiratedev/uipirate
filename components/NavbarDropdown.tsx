@@ -20,6 +20,7 @@ interface NavbarDropdownProps {
   items: DropdownItem[];
   isDarkSection?: boolean;
   isServicesMenu?: boolean;
+  isDisabled?: boolean;
 }
 
 export const NavbarDropdown = ({
@@ -27,6 +28,7 @@ export const NavbarDropdown = ({
   items,
   isDarkSection = false,
   isServicesMenu = false,
+  isDisabled = false,
 }: NavbarDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -40,7 +42,16 @@ export const NavbarDropdown = ({
     };
   }, []);
 
+  // Force close dropdown if navbar becomes disabled/hidden (e.g. at footer or scrolled away)
+  useEffect(() => {
+    if (isDisabled) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setIsOpen(false);
+    }
+  }, [isDisabled]);
+
   const handleMouseEnter = () => {
+    if (isDisabled) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
   };
@@ -111,6 +122,7 @@ export const NavbarDropdown = ({
 
       {/* Dropdown Menu - Portal to Body to escape overflow/stacking contexts */}
       {mounted &&
+        !isDisabled &&
         typeof document !== "undefined" &&
         (createPortal(
           /* @ts-ignore - AnimatePresence type issue with TypeScript strict mode */

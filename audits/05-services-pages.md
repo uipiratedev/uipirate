@@ -1354,3 +1354,94 @@ After the "What we provide" removal, every remaining open item from the v1–v7 
 **Content/text is complete.** Everything remaining is either code/cosmetic or needs real assets (case studies, testimonials) that only the team can provide.
 
 Full item-by-item status: `05-services-pages-checklist.md`.
+
+---
+---
+
+# v9, Post-v8 Code Additions (Services Pages)
+**Audited:** 2026-09-11
+**Method:** Direct source-code inspection of `screens/serviceDetails/index.tsx`, `screens/serviceDetails/whatYouGain/index.tsx`, and `data/sericesDetailsList.json` to capture changes made after the v8 pass. No structural issues found; this is a documentation update to record what shipped.
+
+---
+
+## What changed after v8 (not recorded in any prior audit)
+
+### N1. New `WhatYouGain` section added to all 4 service pages ✅
+
+**Files:** `screens/serviceDetails/whatYouGain/index.tsx` (new component), `data/sericesDetailsList.json` (new `whatYouGain` key per entry), `screens/serviceDetails/index.tsx` (import + render at line 54)
+
+A fourth "benefit" section was added after `StreamlinedProcess`, before the `FeaturedCaseStudy`. It renders a badge + heading + 3-card grid, where each card has a keyed icon (stroke SVG), a heading, and a description. The section is data-driven; content lives in `data.whatYouGain`.
+
+**Current data per slug:**
+
+| Slug | `heading` | Card 1 | Card 2 | Card 3 |
+|---|---|---|---|---|
+| UX-UI-Design | What You Gain Building With Us | Strategy to Screens, One Team | You Steer, We Design | Built to Convert, Ready to Ship |
+| SaaS-&-AI-Development | What You Gain Shipping With Us | Backend, AI, and Infra in One Team | You Steer, We Build | Built to Scale, Yours to Own |
+| Landing-Pages-&-Business-Websites | What You Gain Launching With Us | Positioning to Published | You Steer, We Run It | Built to Convert, Easy to Update |
+| UX-Audits-&-Consultation | What You Gain From the Audit | A Prioritised Fix List | You Point, We Investigate | Clarity Before You Spend |
+
+All 4 slugs share `badge: "WHAT YOU GAIN"`. Icons are keyed by name string (`layout`, `compass`, `send`, `server`, `gear`, `chart`, `browser`, `target`, `checklist`, `search`, `bulb`) and fall back to `layout` if missing. Content quality is ✅ concise, parallel, and on-message for each service.
+
+---
+
+### N2. `LandingWork` generic gallery replaced by `FeaturedCaseStudy` (Xperiti) ✅
+
+**File:** `screens/serviceDetails/index.tsx` line 56
+
+The v8 render map stated: `Hero → WhatYouGet → WhyThisMatters → StreamlinedProcess → LandingWork (generic) → WhoThisIsFor → RecommendedNextSteps → GlobalCTA`
+
+That is no longer accurate. The `LandingWork` import has been removed and replaced with `FeaturedCaseStudy` (imported from `@/screens/landing/featuredCaseStudy`), rendering a **hardcoded Xperiti case study** on every service page:
+
+```tsx
+const xperitiCaseStudy = {
+  slug: "xperiti",
+  client: "Xperiti",
+  title: "Platform Redesign and Development",
+  excerpt: "Xperiti needed a market research enterprise SaaS platform …",
+  heroImage: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348051/xperiti_gkefw0.svg",
+  highlights: ["UI/UX", "Market Research SaaS", "Multi-role enterprise SaaS", "Angular and Tailwind"],
+  clientLogo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+  industry: "Research SaaS",
+};
+```
+
+This partially addresses **X7** (generic social proof), replacing a generic portfolio scroll with one concrete case study. However:
+- 🟡 The case study is **the same on all 4 pages**, not filtered per service. A visitor on the UX Audits page still sees a design + dev case study, not an audit engagement.
+- 🟡 The case study is **hardcoded in the component**, not data-driven via `sericesDetailsList.json`, so it cannot be changed per service without a code edit.
+- ✅ The `xperiti` study does include a `highlights` array, a logo, and an excerpt — more proof substance than the old generic gallery.
+
+**S10 / X7 status update:** partially addressed (one real case study vs. generic gallery), but still open for per-service selection.
+
+---
+
+## Updated render map (current live sequence)
+
+`Hero → WhatYouGet → WhyThisMatters → StreamlinedProcess → WhatYouGain → FeaturedCaseStudy (Xperiti, hardcoded) → WhoThisIsFor → RecommendedNextSteps`
+
+*(No `GlobalCTA` component is rendered; the page ends after `RecommendedNextSteps`.)*
+
+| Section | Component | Fields rendered | Data source |
+|---|---|---|---|
+| Hero | `ServiceDetailsHero` | `badge`, `heading[]`, `description`; CTAs hardcoded to cal.com + `/pricing` | `data.hero` |
+| What You Get | `WhatYouGetAnimations` | `badge`, `heading`, `card[].{heading, description, image}` + animation by heading string | `data.whatYouGet` |
+| Why This Matters | `WhyThisMatters` | `badge`, `heading`, `heading2`, `card[].{heading, description, QuickWins[]}` | `data.whyThisMatters` |
+| How We Work | `StreamlinedProcess` | `badge`, `heading`, `workflow[].{badge, card[].{heading, description, gradientId}}` | `data.streamlinedProcess` |
+| What You Gain | `WhatYouGain` | `badge`, `heading`, `card[].{icon, heading, description}` | `data.whatYouGain` |
+| Case Study | `FeaturedCaseStudy` | Hardcoded Xperiti study (slug, client, title, excerpt, heroImage, highlights, clientLogo, industry) | Hardcoded in `index.tsx` |
+| Who This Is For | `WhoThisIsFor` | `badge`, `heading`, `card[].{image, heading, description}` | `data.whoThisIsFor` |
+| Recommended Next Steps | `RecommendedNextSteps` | `featuredService.{title, tagline, description, description2, buttonText, slug}` + `otherServices[].{title, slug}` | `data.recommendedNextSteps` |
+
+---
+
+## Still open (carried from v8, updated status)
+
+| # | Item | Priority | Note |
+|---|---|---|---|
+| S10 / X7 | Per-service proof: `FeaturedCaseStudy` is one real study (Xperiti) but identical on all 4 pages and hardcoded. To show a different case study per service, either make the prop data-driven from `sericesDetailsList.json` or pass a per-service study from `page.tsx`. | 🟡 | Needs content + product decision |
+| Cross-audit | JSON-LD `areaServed` on service pages (`US, UK, SG, IN, AU`) differs from `/about` Organization schema; tracked in `04-about-page.md` NF3 | 🟡 | Out of services scope |
+| Cosmetic | Phase label in `StreamlinedProcess` sits above the rope SVG on desktop | 🟡 | Designer decision |
+| Cosmetic | Hero primary CTA label ("Start Your Product Journey, Book a 15-Min Call") is fine; if a shorter label is wanted it is hardcoded in `hero/index.tsx` | 🟡 | Pending |
+| Performance | Service detail hero uses raw `<img>` tags (confetti, free badge) instead of `next/image` | 🟡 | Performance, fix later |
+
+Full item-by-item status: `05-services-pages-checklist.md`.
