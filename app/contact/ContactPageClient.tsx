@@ -52,7 +52,7 @@ export default function ContactPageClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white pt-24 max-md:pt-20">
+    <div className="min-h-screen pt-24 max-md:pt-20">
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="container mx-auto px-8 max-md:px-4 pt-12 pb-8 text-center">
         <motion.p

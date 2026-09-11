@@ -106,6 +106,7 @@
 html,
 body {
   font-family: var(--font-jakarta), sans-serif !important;
+  background-color: #fafafa;
 
   /* scroll-behavior: smooth; */
 }
