@@ -250,7 +250,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
 
         {/* Featured deep-dive case studies (from the CMS) */}
-        <section className="section-container pt-12 max-md:pt-6">
+        <section className="section-container ">
 
 
 
