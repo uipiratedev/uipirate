@@ -535,7 +535,7 @@ export const TimezoneAsset = () => {
   };
 
   return (
-    <div className="flex-1 w-full -mx-6 -mb-6 relative flex items-end justify-between pr-0 select-none pt-4 min-h-[190px]">
+    <div className="flex-1 w-[calc(100%+3rem)] -mx-6 -mb-6 relative flex items-end justify-between pr-6 select-none pt-4 min-h-[190px]">
       {/* Left Column: 3D Dotted Dark Globe Sphere */}
       <div
         className="relative w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] -ml-6 sm:-ml-8 -mb-6 sm:-mb-8 flex-shrink-0 flex items-center justify-center self-end"
@@ -671,9 +671,9 @@ export const ProductsGridAsset = () => {
   ];
 
   return (
-    <div className="flex-1 w-full flex items-end justify-center relative -mx-6 -mb-6 overflow-hidden pt-8 mt-1 min-h-[180px]">
+    <div className="flex-1 w-[calc(100%+3rem)] flex items-end justify-center relative -mx-6 -mb-6 overflow-hidden pt-8 mt-1 min-h-[180px]">
       {/* Concentric Circles with Gradients and Shadows - Rotating */}
-      <div className="absolute -bottom-36 sm:-bottom-36 flex items-center justify-center scale-[0.72] sm:scale-[0.75] origin-bottom pointer-events-none">
+      <div className="w-96 absolute left-1/2 -translate-x-1/2 -bottom-36 sm:-bottom-36 flex items-center justify-center scale-[0.72] sm:scale-[0.75] origin-bottom pointer-events-none">
         {/* Outer Circle - Largest - Slow rotation */}
         <div className="w-96 h-96 rounded-full absolute bg-gradient-to-br from-orange-50/30 via-amber-50/20 to-yellow-50/10 shadow-[0_0_40px_rgba(255,91,4,0.08)] animate-[spin_20s_linear_infinite]" />
 
