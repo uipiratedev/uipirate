@@ -9,31 +9,33 @@ import RecommendedNextSteps from "./recommendedNextSteps";
 import WhyThisMatters from "./whyThisMatters";
 import WhatYouGetAnimations from "./whatYouGetAnimations";
 import WhatYouGain from "./whatYouGain";
-import FeaturedCaseStudy from "@/screens/landing/featuredCaseStudy";
 
 import PageWrapper from "@/components/PageWrapper";
+import { Reveal } from "@/components/motion";
 
-const xperitiCaseStudy = {
-  slug: "xperiti",
-  client: "Xperiti",
-  title: "Platform Redesign and Development",
-  excerpt:
-    "Xperiti needed a market research enterprise SaaS platform serving researchers, coordinators, clients, and experts, without anyone feeling completely overlooked.",
-  heroImage:
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348051/xperiti_gkefw0.svg",
-  highlights: [
-    "UI/UX",
-    "Market Research SaaS",
-    "Multi-role enterprise SaaS",
-    "Angular and Tailwind",
-  ],
-  clientLogo:
-    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
-  industry: "Research SaaS",
+// Per-service images — keyed by normalized slug
+const SERVICE_IMAGE: Record<string, string> = {
+  "ux-ui-design":
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789369607/ui_uxdesign_hzqdia.svg",
+  "ux-audits-consultation":
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789369608/uxaudit_yc9hfj.svg",
+  "saas-ai-development":
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789369607/saasai_pgbj2d.svg",
+  "landing-pages-business-websites":
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789369606/landing_hbsqbz.svg",
 };
 
-const ServiceDetails = ({ data, slug }: { data: any, slug?: string }) => {
+const normalizeSlug = (str: string) =>
+  str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
   if (!data) notFound();
+
+  const normalizedSlug = slug ? normalizeSlug(slug) : "";
+  const serviceImage = normalizedSlug ? SERVICE_IMAGE[normalizedSlug] : undefined;
 
   return (
     <PageWrapper showFloatingButton={false}>
@@ -53,7 +55,19 @@ const ServiceDetails = ({ data, slug }: { data: any, slug?: string }) => {
 
         {data.whatYouGain && <WhatYouGain data={data.whatYouGain} />}
 
-        <FeaturedCaseStudy study={xperitiCaseStudy} />
+        {/* Service preview image */}
+        {serviceImage && (
+          <section className="section-container">
+            <Reveal variant="fade" scrub={false}>
+              <img
+                alt="Service preview"
+                className="w-full h-auto select-none border border-gray-200 rounded-[36px]"
+                loading="lazy"
+                src={serviceImage}
+              />
+            </Reveal>
+          </section>
+        )}
 
         {data.whoThisIsFor && <WhoThisIsFor data={data.whoThisIsFor} />}
 
