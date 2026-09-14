@@ -123,7 +123,7 @@ const CaseStudiesNextCTA = () => {
       ref={cardRef}
       className="relative rounded-3xl border border-gray-200 overflow-hidden p-16 max-md:p-8 flex flex-col items-center text-center mx-auto hover:border-gray-300 transition-all duration-500 shadow-sm"
       style={{
-        backgroundImage: `conic-gradient(#ebebeb 90deg, #ffffff 90deg 180deg, #ebebeb 180deg 270deg, #ffffff 270deg)`,
+        backgroundImage: `conic-gradient(#f5f5f5 90deg, #ffffff 90deg 180deg, #f5f5f5 180deg 270deg, #ffffff 270deg)`,
         backgroundPosition: "0 0",
         ...tileStyle,
       }}

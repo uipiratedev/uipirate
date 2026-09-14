@@ -29,10 +29,10 @@ const WhyThisMatters = ({ data }: { data: any }) => {
                 <div
                   key={item.number}
                   aria-pressed={isActive}
-                  className={`group cursor-pointer w-full rounded-3xl border transition-all duration-300 flex flex-col ${
+                  className={`group cursor-pointer w-full rounded-3xl transition-all duration-300 flex flex-col overflow-hidden ${
                     isActive
-                      ? "bg-[#F0F0F0] border-white/8 "
-                      : "bg-white border-transparent hover:bg-white/50"
+                      ? "bg-[#F0F0F0]"
+                      : "bg-white hover:bg-white/50"
                   }`}
                   role="button"
                   tabIndex={0}
@@ -45,20 +45,18 @@ const WhyThisMatters = ({ data }: { data: any }) => {
                   }}
                 >
                   {/* Header */}
-                  <div className="flex items-center gap-4 bg-white rounded-full border border-black/10 p-2">
+                  <div className="flex items-center gap-4 bg-white rounded-3xl border border-black/10 p-2">
                     <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors duration-300 ${
-                        isActive
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors duration-300 ${isActive
                           ? "bg-[#FF5B04] text-white"
                           : " text-white bg-[#FF5B04] group-hover:text-white"
-                      }`}
+                        }`}
                     >
                       {idx + 1}
                     </span>
                     <span
-                      className={`text-[13px] font-bold tracking-[0.12em] uppercase transition-colors duration-300 ${
-                        isActive ? "text-[#0F172A]" : "text-gray-500"
-                      }`}
+                      className={`text-[13px] font-bold tracking-[0.12em] uppercase transition-colors duration-300 ${isActive ? "text-[#0F172A]" : "text-gray-500"
+                        }`}
                     >
                       {item.heading}
                     </span>
@@ -66,11 +64,10 @@ const WhyThisMatters = ({ data }: { data: any }) => {
 
                   {/* Expanded Content (Accordion Body) */}
                   <div
-                    className={`grid transition-all duration-300 ease-in-out ${
-                      isActive
+                    className={`grid transition-all duration-300 ease-in-out ${isActive
                         ? "grid-rows-[1fr] opacity-100 mt-3"
                         : "grid-rows-[0fr] opacity-0 mt-0"
-                    }`}
+                      }`}
                   >
                     <div className="overflow-hidden">
                       <div className="pb-4">

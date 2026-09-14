@@ -29,7 +29,7 @@ const WhoThisIsFor = ({ data }: { data: any }) => {
                   <img
                     alt={item.heading}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    src={PLACEHOLDER_IMAGE}
+                    src={item.image}
                   />
                 </div>
                 <div className="flex flex-1 flex-col items-center justify-start p-3 pb-8">
