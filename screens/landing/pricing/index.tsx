@@ -90,7 +90,7 @@ const Pricing = () => {
         </div>
         <p className="mx-auto max-w-2xl text-sm leading-relaxed text-gray-600 md:text-base">
           Not happy with the first milestone? We&apos;ll refund your deposit, no
-          questions asked. 100+ projects delivered for companies like Ipsos,
+          questions asked. 50+ projects delivered for companies like Ipsos,
           Khaitan &amp; Co, and RevUp AI.
         </p>
       </Reveal>
