@@ -288,6 +288,7 @@ body {
 
 /* Gentle mist animation - flowing gradient effect */
 @keyframes gentle-mist {
+
   /* opacity-only: animating `filter: blur()` on a full-viewport layer
      forces a non-compositable full raster every frame. The breathing
      effect reads fine from opacity alone. */
@@ -1497,6 +1498,7 @@ reveal-text span {
    mobile GPUs. Desktop behaviour is untouched.
    ======================================== */
 @media (max-width: 768px) {
+
   /* Hero mist: animated filter: blur()/brightness() on a full-viewport
      layer = continuous full-raster every frame. Keep the gradient, drop
      the animation. */
@@ -1511,6 +1513,7 @@ reveal-text span {
   .star-confetti-container {
     will-change: auto;
   }
+
   .star-confetti-revolve,
   .star-confetti-revolve .star-confetti {
     animation: none !important;
@@ -2331,7 +2334,7 @@ body.modal-open .main-navbar {
   font-weight: 700;
   line-height: 1.2;
   color: #111 !important;
-  margin-top: 2.5rem;
+  /* margin-top: 2.5rem; */
   margin-bottom: 0.85rem;
   letter-spacing: -0.025em;
 }
