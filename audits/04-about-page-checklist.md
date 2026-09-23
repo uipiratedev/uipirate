@@ -190,7 +190,7 @@ Sections 1–14 track the v1–v3 audit. **Section 15** tracks the v4–v6 marke
 
 | # | Item | Current Value | Status |
 |---|------|---------------|--------|
-| 11a | Page title opens with `About \|` — no brand name (NF6) | `About UI Pirate — Product Design & Development Agency` | 🔴 Fix now |
+| 11a | Page title opens with `About \|` — no brand name (NF6) | `About UI Pirate — Product Design & Development Agency` | ✅ Done |
 | 11b | Meta description ~270 chars — truncates before key differentiators (NF5) | Optimized to ~160 chars | ✅ Done |
 | 11c | OG title — functional, brand name present | `About UI Pirate \| Product Design — From Idea to Shipped Product` | — |
 | 11d | Twitter card — functional and on-message | `summary_large_image` | ✅ Keep as-is |

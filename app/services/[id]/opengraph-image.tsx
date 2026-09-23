@@ -35,16 +35,9 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
     description:
       "High-converting landing pages and business websites in React, Next.js, Framer, or Webflow. Built around your positioning.",
   },
-  "design-system-component-library": {
-    badge: "Design Systems",
-    title: "Design Systems at",
-    titleHighlight: "Enterprise Scale",
-    description:
-      "Custom design tokens, branded UI kits, and dev-ready component libraries for Angular, React & beyond.",
-  },
   "ux-audits-consultation": {
     badge: "UX Audits",
-    title: "UX Audit —",
+    title: "UX Audit:",
     titleHighlight: "Find & Fix Friction",
     description:
       "Heuristic analysis, usability testing & actionable recommendations. Improve conversion rates in your SaaS product.",
@@ -61,7 +54,7 @@ export function generateImageMetadata({ params }: { params: { id: string } }) {
   return [
     {
       id: slug,
-      alt: meta ? meta.title : `${params.id} — UI Pirate`,
+      alt: meta ? meta.title : `${params.id} | UI Pirate`,
     },
   ];
 }

@@ -2,8 +2,8 @@
 
 import { Accordion, AccordionItem } from "@heroui/react";
 import React from "react";
+import Link from "next/link";
 
-import LetsTalkButton from "@/components/LetsTalkButton";
 import { Reveal } from "@/components/motion";
 
 export interface FaqItem {
@@ -153,6 +153,7 @@ export interface FaqsAccordionProps {
   items?: FaqItem[];
   limit?: number;
   defaultExpandedKeys?: string[];
+  selectionMode?: "single" | "multiple";
   showCta?: boolean;
   ctaText?: string;
   ctaHref?: string;
@@ -163,6 +164,7 @@ export default function FaqsAccordion({
   items,
   limit,
   defaultExpandedKeys = ["0"],
+  selectionMode = "single",
   showCta = true,
   ctaText = "See all FAQ’s",
   ctaHref = "/faqs",
@@ -181,7 +183,7 @@ export default function FaqsAccordion({
         <Accordion
           className="mb-0 p-0 -px-2"
           defaultExpandedKeys={defaultExpandedKeys}
-          selectionMode="multiple"
+          selectionMode={selectionMode}
           style={{ padding: 0 }}
           variant="splitted"
         >
@@ -241,13 +243,16 @@ export default function FaqsAccordion({
 
       {showCta && (
         <Reveal
-          className="mt-6 flex flex-row items-center justify-center"
-          delay={0.1}
+          className="mt-10 flex justify-center"
+          delay={0.15}
           variant="fade"
         >
-          <LetsTalkButton href={ctaHref} target="_self" variant="light">
-            {ctaText}
-          </LetsTalkButton>
+          <Link
+            className="text-brand-orange font-semibold text-sm hover:underline flex items-center gap-1.5 transition-all hover:gap-2.5"
+            href={ctaHref}
+          >
+            {ctaText} <span>→</span>
+          </Link>
         </Reveal>
       )}
     </div>

@@ -1205,3 +1205,48 @@ Three small copy edits, no new sections, no restructure.
 - No `.NET`/`C#` language anywhere (AD1).
 
 *Cross-reference: `05-services-pages.md` v6 carries the matching final copy for the four service pages and closes X2/NC8 as intentional-won't-do.*
+
+---
+---
+
+# v7, Final Status Snapshot (About Page)
+**Audited:** 2026-09-11
+**Method:** Direct source-code inspection of `app/about/page.tsx`, `app/about/layout.tsx`, `app/about/opengraph-image.tsx` to verify all v6 AD items are applied. This is a documentation-only update.
+
+---
+
+## AD items — final status
+
+| Item | Status |
+|------|--------|
+| AD1a — Broken `<img>` chips (`nodejs.svg` / `python.svg`) replaced with `@thesvg/react` icons | ✅ Done |
+| AD1b — Final `technologies` list: Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP, Node.js, Python, AWS, Google Cloud, Azure, AI Agents / LLM APIs | ✅ Done |
+| AD1c — `knowsAbout[]` in Organization JSON-LD: added Cloud Deployment, AWS, Node.js Development, Python Development, AI Agent Development | ✅ Done |
+| AD1d — No `.NET` / `C#` language anywhere | ✅ Confirmed |
+| AD2a — Hero subheadline: added "AI product teams" + "blank page or a prototype built with an AI tool" clause | ✅ Done |
+| AD2b — Bento card 04 "Design Through to Code": added "an AI-generated prototype" | ✅ Done |
+| AD2c — CTA subheadline: "Whether it's a quick UX audit or a full product build…" | ✅ Done |
+| AD3a — `layout.tsx` keywords: appended AI SaaS development, Node.js Python backend, AWS GCP Azure deployment, take AI prototype to production | ✅ Done |
+| 11a — Page title: "About UI Pirate — Product Design & Development Agency" | ✅ Done |
+
+---
+
+## Still open (intentionally deferred)
+
+| # | Item | Status |
+|---|------|--------|
+| 2c | `5.0 Client Rating` — no source URL (Clutch / Upwork / Google) added yet | ⚠️ Pending — no source URL set |
+| 12a | OG image still renders `We Design, Build & Ship Products.` (a third tagline not used on the page) | ⚠️ Skipped — visual change, later |
+
+---
+
+## Shared components on About page (not in original audit scope)
+
+The About page (`app/about/page.tsx`) also renders two shared components that are not unique to About:
+- **`PricingPerfectFor`** — same component rendered on the landing page; appears in the About page scroll below the hero.
+- **`LandingWhoWeAre`** — the same "who we are" section from `screens/landing/whoWeAre/index.tsx` (copy: "We are a product design and development agency.").
+
+Changes to these components affect both the landing page and the About page simultaneously.
+
+Full item-by-item status: `04-about-page-checklist.md`.
+

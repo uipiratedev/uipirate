@@ -1,48 +1,14 @@
+"use client";
+
 import GlassBadge from "@/components/GlassBadge";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
-
-const features = [
-  {
-    id: 1,
-    title: "Simplifying SaaS Complexity",
-    description:
-      "We understand data-heavy workflows, permissions, onboarding, multi-roles, and enterprise behaviour patterns.",
-    image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1772517931/Dashboard_V2_1_fct6cl.svg",
-  },
-  {
-    id: 2,
-    title: "Premium UI + Precise Handoff",
-    description:
-      "Documentation, tokens, spacing, states — developers love working with us.",
-    image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1772517931/Dashboard_V2_1_fct6cl.svg",
-  },
-  {
-    id: 3,
-    title: "AI-First UX Expertise",
-    description:
-      "We design predictable, trustworthy AI interactions — prompt flows, confidence UI, output validation and more.",
-    image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1772517931/Dashboard_V2_1_fct6cl.svg",
-  },
-  {
-    id: 4,
-    title: "Designs that scale & convert",
-    description:
-      "We deliver clean, documented systems that reduce dev effort by 30–40%.",
-    image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1772517931/Dashboard_V2_1_fct6cl.svg",
-  },
-  {
-    id: 5,
-    title: "Fast & Structured Delivery",
-    description:
-      "Weekly milestones, clean communication, and consistent delivery make your product move 2× faster.",
-    image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1772517931/Dashboard_V2_1_fct6cl.svg",
-  },
-];
+import {
+  VisualSaaSComplexity,
+  VisualDesignHandoff,
+  VisualAIFirstUX,
+  VisualScaleConvert,
+  VisualFastDelivery,
+} from "./WhyChooseUsVisuals";
 
 const WhyChooseUs = () => {
   return (
@@ -61,7 +27,7 @@ const WhyChooseUs = () => {
         <ScrollStack useWindowScroll={true}>
           <ScrollStackItem itemClassName="bg-[#1E1B4B] text-white">
             <div className="flex flex-row max-md:flex-col justify-between h-full items-center gap-6 max-md:gap-4">
-              <div className="flex flex-col justify-between h-full w-[60%] max-md:w-full">
+              <div className="flex flex-col justify-between h-full w-[55%] max-md:w-full">
                 <div className="flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight leading-tight">
                     Simplifying SaaS Complexity
@@ -75,19 +41,17 @@ const WhyChooseUs = () => {
                   1
                 </p>
               </div>
-              <div className="w-[38%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
-                <img
-                  alt="Simplifying SaaS Complexity"
-                  className="w-full max-w-[180px] sm:max-w-[210px] md:max-w-[240px] lg:max-w-[280px] h-auto max-h-[160px] sm:max-h-[190px] md:max-h-[220px] lg:max-h-[250px] object-contain drop-shadow-sm"
-                  src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1772521662/dashboard_pgl0ez.gif"
-                />
+              <div className="w-[42%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
+                <div className="w-full max-w-[320px] lg:max-w-[360px] h-[200px] sm:h-[220px] md:h-[240px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
+                  <VisualSaaSComplexity />
+                </div>
               </div>
             </div>
           </ScrollStackItem>
 
           <ScrollStackItem itemClassName="bg-[#111111] text-white">
             <div className="flex flex-row max-md:flex-col justify-between h-full items-center gap-6 max-md:gap-4">
-              <div className="flex flex-col justify-between h-full w-[58%] max-md:w-full">
+              <div className="flex flex-col justify-between h-full w-[55%] max-md:w-full">
                 <div className="flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight leading-tight">
                     Premium UI + Precise Handoff
@@ -101,19 +65,17 @@ const WhyChooseUs = () => {
                   2
                 </p>
               </div>
-              <div className="w-[38%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
-                <img
-                  alt="Premium UI + Precise Handoff"
-                  className="w-full max-w-[180px] sm:max-w-[210px] md:max-w-[240px] lg:max-w-[280px] h-auto max-h-[160px] sm:max-h-[190px] md:max-h-[220px] lg:max-h-[250px] object-contain drop-shadow-sm"
-                  src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1772089531/8330154b778d772b061934e86daf7c528f835b5f_esonfn.gif"
-                />
+              <div className="w-[42%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
+                <div className="w-full max-w-[320px] lg:max-w-[360px] h-[200px] sm:h-[220px] md:h-[240px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
+                  <VisualDesignHandoff />
+                </div>
               </div>
             </div>
           </ScrollStackItem>
 
           <ScrollStackItem itemClassName="bg-[#2563EB] text-white">
             <div className="flex flex-row max-md:flex-col justify-between h-full items-center gap-6 max-md:gap-4">
-              <div className="flex flex-col justify-between h-full w-[58%] max-md:w-full">
+              <div className="flex flex-col justify-between h-full w-[55%] max-md:w-full">
                 <div className="flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight leading-tight">
                     AI-First UX Expertise
@@ -127,19 +89,17 @@ const WhyChooseUs = () => {
                   3
                 </p>
               </div>
-              <div className="w-[38%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
-                <img
-                  alt="AI-First UX Expertise"
-                  className="w-full max-w-[180px] sm:max-w-[210px] md:max-w-[240px] lg:max-w-[280px] h-auto max-h-[160px] sm:max-h-[190px] md:max-h-[220px] lg:max-h-[250px] object-contain drop-shadow-sm"
-                  src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1772089532/a8881425d16e3562d9d18ab0cce3acb904bd1f0e_n0dvqj.gif"
-                />
+              <div className="w-[42%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
+                <div className="w-full max-w-[320px] lg:max-w-[360px] h-[200px] sm:h-[220px] md:h-[240px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
+                  <VisualAIFirstUX />
+                </div>
               </div>
             </div>
           </ScrollStackItem>
 
           <ScrollStackItem itemClassName="bg-[#E40063] text-white">
             <div className="flex flex-row max-md:flex-col justify-between h-full items-center gap-6 max-md:gap-4">
-              <div className="flex flex-col justify-between h-full w-[58%] max-md:w-full">
+              <div className="flex flex-col justify-between h-full w-[55%] max-md:w-full">
                 <div className="flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight leading-tight">
                     Designs that scale & convert
@@ -153,19 +113,17 @@ const WhyChooseUs = () => {
                   4
                 </p>
               </div>
-              <div className="w-[38%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
-                <img
-                  alt="Designs that scale & convert"
-                  className="w-full max-w-[180px] sm:max-w-[210px] md:max-w-[240px] lg:max-w-[280px] h-auto max-h-[160px] sm:max-h-[190px] md:max-h-[220px] lg:max-h-[250px] object-contain drop-shadow-sm"
-                  src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1772089531/0287988b27a45e56730a9b65e9ebab48b65f7c88_cmxya1.gif"
-                />
+              <div className="w-[42%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
+                <div className="w-full max-w-[320px] lg:max-w-[360px] h-[200px] sm:h-[220px] md:h-[240px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
+                  <VisualScaleConvert />
+                </div>
               </div>
             </div>
           </ScrollStackItem>
 
           <ScrollStackItem itemClassName="bg-[#FF5B04] text-white">
             <div className="flex flex-row max-md:flex-col justify-between h-full items-center gap-6 max-md:gap-4">
-              <div className="flex flex-col justify-between h-full w-[58%] max-md:w-full">
+              <div className="flex flex-col justify-between h-full w-[55%] max-md:w-full">
                 <div className="flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight leading-tight">
                     Fast & Structured Delivery
@@ -179,12 +137,10 @@ const WhyChooseUs = () => {
                   5
                 </p>
               </div>
-              <div className="w-[38%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
-                <img
-                  alt="Fast & Structured Delivery"
-                  className="w-full max-w-[180px] sm:max-w-[210px] md:max-w-[240px] lg:max-w-[280px] h-auto max-h-[160px] sm:max-h-[190px] md:max-h-[220px] lg:max-h-[250px] object-contain drop-shadow-sm"
-                  src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1772089531/88d4d7ae4f6a15a6dc9f1791b88b2147069cb230_zs7x5t.gif"
-                />
+              <div className="w-[42%] max-md:w-full flex items-center justify-center flex-shrink-0 mt-4 md:mt-0">
+                <div className="w-full max-w-[320px] lg:max-w-[360px] h-[200px] sm:h-[220px] md:h-[240px] rounded-2xl overflow-hidden bg-black/20 backdrop-blur-md border border-white/20 shadow-2xl flex items-center justify-center">
+                  <VisualFastDelivery />
+                </div>
               </div>
             </div>
           </ScrollStackItem>

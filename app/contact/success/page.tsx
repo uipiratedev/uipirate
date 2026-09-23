@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const ContactSuccessPage = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 pt-24 max-md:pt-20 pb-16 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-24 max-md:pt-20 pb-16 text-center">
       <div className="mb-8">
         <svg
           fill="none"

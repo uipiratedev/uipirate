@@ -60,7 +60,7 @@ export default function NotFound() {
   const iconsToShow = iconSets[activeTab] || iconSets.default;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-center relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen text-center relative overflow-hidden">
       <h1 className="text-5xl font-bold mb-4 z-10">404!</h1>
       <p className="text-lg font-medium mb-6 z-10">
         This page was not found, but you can stay and pet our dog
@@ -77,33 +77,29 @@ export default function NotFound() {
 
         <div className="flex flex-col gap-3 mb-8">
           <button
-            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
-              activeTab === "pet" ? "bg-green-100" : ""
-            }`}
+            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${activeTab === "pet" ? "bg-green-100" : ""
+              }`}
             onClick={() => handleTabClick("pet")}
           >
             Pet Him
           </button>
           <button
-            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
-              activeTab === "feed" ? "bg-green-100" : ""
-            }`}
+            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${activeTab === "feed" ? "bg-green-100" : ""
+              }`}
             onClick={() => handleTabClick("feed")}
           >
             Feed Him
           </button>
           <button
-            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
-              activeTab === "slap" ? "bg-green-100" : ""
-            }`}
+            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${activeTab === "slap" ? "bg-green-100" : ""
+              }`}
             onClick={() => handleTabClick("slap")}
           >
             Slap Him
           </button>
           <button
-            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
-              activeTab === "goodboy" ? "bg-green-100" : ""
-            }`}
+            className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${activeTab === "goodboy" ? "bg-green-100" : ""
+              }`}
             onClick={() => handleTabClick("goodboy")}
           >
             Call Him a Good Boy

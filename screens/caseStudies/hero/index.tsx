@@ -1,44 +1,23 @@
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
-
 import GlassSurface from "@/components/GlassSurface";
-import testimonials from "@/data/testimonials.json";
-import Avatar from "@/components/Avatar";
 
-const StarRating = ({
-  className = "",
-  delay = 0,
-}: {
-  className?: string;
-  delay?: number;
-}) => {
-  return (
-    <div
-      className={`flex flex-row gap-1 h-[14px] ${className}`}
-      style={{ overflow: "visible" }}
-    >
-      {[...Array(5)].map((_, index) => (
-        <div key={index} className="relative h-[14px] w-[14px]">
-          <img
-            alt="5 star rating"
-            className="absolute left-0 top-0 h-[14px] w-[14px] transition-transform duration-300 hover:scale-110"
-            src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-            style={{
-              animation: `starSlideUp 0.5s ease-out forwards`,
-              animationDelay: `${delay / 1000 + index * 0.12}s`,
-              opacity: 0,
-              transform: "translateY(40px)",
-            }}
-          />
-        </div>
-      ))}
-    </div>
-  );
-};
+interface CaseStudiesHeroProps {
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  category: string;
+  setCategory: (c: string) => void;
+  categories: string[];
+}
 
-const CaseStudiesHero = () => {
+const CaseStudiesHero = ({
+  searchQuery,
+  setSearchQuery,
+  category,
+  setCategory,
+  categories,
+}: CaseStudiesHeroProps) => {
   return (
     <div className="hero-wrapper">
       {/* Subtle Grid Background Pattern */}
@@ -74,7 +53,7 @@ const CaseStudiesHero = () => {
         }}
       />
       <div
-        className="flex flex-col items-center justify-center w-full relative z-10 section-container"
+        className="flex flex-col items-center justify-center w-full relative z-10 section-container pb-24"
         style={{ overflow: "visible" }}
       >
         {" "}
@@ -105,7 +84,7 @@ const CaseStudiesHero = () => {
         >
           {/* Text */}
           <p className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
-            PORTFOLIO & CASE STUDIES
+            CASE STUDIES
           </p>
         </GlassSurface>
         {/* Headline */}
@@ -116,122 +95,73 @@ const CaseStudiesHero = () => {
           </h1>
         </div>
         {/* Subheading */}
-        <p className="sub-header text-[#11181C]">
-          See how we’ve helped startups, SaaS teams, and global brands turn
-          ideas into fully functional digital products.
+        <p className="sub-header text-[#11181C] mb-12">
+          SaaS platforms, enterprise dashboards, AI products, fintech tools. For
+          each project: the problem, what we built, and what it looked like after.
         </p>
-        {/* ✅ Reveal Animation for Card Section */}
+
+        {/* Search Bar matching reference image */}
         <motion.div
-          className="relative flex justify-center items-center my-8 max-md:hidden z-10"
-          initial={{ opacity: 0, y: 40 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.3 }}
+          className="relative max-w-4xl w-full mx-auto z-10 mt-4"
+          initial={{ opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          {testimonials.slice(0, 3).map((item, index) => (
-            <div
-              key={index}
-              className="relative transition-transform duration-700 ease-in-out hover:scale-105"
-              style={{
-                zIndex: 3 - index,
-                marginLeft: index === 0 ? "0px" : "-75px",
-                transform:
-                  index === 0
-                    ? "rotate(-10deg)"
-                    : index === 1
-                      ? "rotate(5deg)"
-                      : "rotate(18deg)",
-                marginTop: index === 0 ? "0px" : index === 1 ? "-50px" : "0px",
-              }}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                transition={{
-                  delay: index * 0.2,
-                  duration: 0.6,
-                  ease: "easeOut",
-                }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
+          <div className="flex bg-white rounded-medium border border-gray-200 p-1.5 shadow-sm focus-within:ring-2 focus-within:ring-[#FF5B04]/20 focus-within:border-[#FF5B04] transition-all duration-300">
+            <input
+              className="flex-grow bg-transparent px-4 py-3 text-sm text-gray-800 placeholder-gray-500 focus:outline-none"
+              placeholder="Search by topic, problem, or keyword..."
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="relative shrink-0 hidden md:inline-block">
+              {/* This invisible span dictates the width of the container strictly based on current selection */}
+              <span className="invisible whitespace-nowrap text-xs font-bold uppercase tracking-wide px-5 py-3 pr-10 inline-block pointer-events-none">
+                {category === "All" ? "ALL CATEGORIES" : category.toUpperCase()}
+              </span>
+              <select
+                className="absolute inset-0 appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3 pr-10 rounded-medium cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
               >
-                <Card
-                  className="relative overflow-hidden w-[300px] h-[200px]"
-                  style={{
-                    borderRadius: "40px",
-                    backdropFilter: "blur(10px)",
-                    position: "relative",
-                    boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  {/* Gradient Border */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: "40px",
-                      padding: "2px",
-                      background:
-                        "linear-gradient(90deg, #F7DE04 4.58%, #11C781 27.52%, #05A2FB 48.18%, #5E72E4 72.05%, #F04800 92.7%)",
-                      WebkitMask:
-                        "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                      WebkitMaskComposite: "xor",
-                      maskComposite: "exclude",
-                      pointerEvents: "none",
-                      zIndex: 1,
-                    }}
-                  />
-
-                  {/* Card Content */}
-                  <CardBody
-                    className="relative z-0 flex flex-col items-center justify-center gap-4 p-4"
-                    style={{
-                      borderRadius: "38px",
-                      background: "rgba(255,255,255,0.85)",
-                      backdropFilter: "blur(10px)",
-                    }}
-                  >
-                    <Avatar
-                      avatar={item.profileImage}
-                      name={item.name}
-                      size={48}
-                    />
-                    <p className="line-clamp-3 text-center text-sm ">
-                      &quot;...{item.review}...&quot;
-                    </p>
-                    <div className="flex flex-row items-start gap-1 overflow-hidden">
-                      <StarRating delay={300} />
-                    </div>
-                  </CardBody>
-                </Card>
-              </motion.div>
+                <option value="All">ALL CATEGORIES</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
             </div>
-          ))}
-        </motion.div>
-        {/* Stats Section */}
-        <div className="flex flex-wrap justify-between w-full items-center gap-10 text-center py-10 z-10 relative mt-6">
-          {[
-            { num: "9+", text: "Years of Experience" },
-            { num: "50+", text: "Projects Completed" },
-            { num: "$150M+", text: "Made by our clients" },
-            { num: "6+", text: "Countries Served" },
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              className="flex flex-col items-center"
-              initial={{ opacity: 0, y: 30 }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
-              viewport={{ once: true }}
-              whileInView={{ opacity: 1, y: 0 }}
+          </div>
+
+          {/* Mobile Category Select */}
+          <div className="mt-3 md:hidden relative">
+            <select
+              className="appearance-none w-full bg-[#FF5B04] text-white text-xs font-bold uppercase tracking-wide px-5 py-3.5 pr-10 rounded-medium cursor-pointer hover:bg-[#e04e00] transition-colors outline-none"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             >
-              <h3 className="text-5xl max-md:text-2xl font-bold text-black text-orange-500">
-                {item.num}
-              </h3>
-              <p className="text-lg max-md:text-xs text-[#777777] font-jetbrains-mono">
-                {item.text}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+              <option value="All">ALL CATEGORIES</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat.toUpperCase()}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

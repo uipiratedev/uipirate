@@ -299,7 +299,7 @@ export default function AboutPage() {
           className="absolute pointer-events-none inset-0"
           style={{
             background:
-              "linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 40%)",
+              "linear-gradient(to top, rgba(255, 255, 255, 1) 0%, transparent 40%)",
           }}
         />
 
@@ -387,14 +387,14 @@ export default function AboutPage() {
             {/* Card 1: Tall */}
             <div className="premium-card md:row-span-2 md:col-span-2">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <StrategyBeforePixelsAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Strategy Before Pixels
                   </h3>
@@ -409,14 +409,14 @@ export default function AboutPage() {
             {/* Card 2: Wide */}
             <div className="premium-card md:col-span-4 h-full min-h-[240px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <ComplexMadeSimpleAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Complex Made Simple
                   </h3>
@@ -432,14 +432,14 @@ export default function AboutPage() {
             {/* Card 3: Standard */}
             <div className="premium-card md:col-span-2 h-full min-h-[240px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <BuiltToConvertAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Built to Convert
                   </h3>
@@ -454,14 +454,14 @@ export default function AboutPage() {
             {/* Card 4: Standard */}
             <div className="premium-card md:col-span-2 h-full min-h-[240px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
                 <DesignToCodeAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Design Through to Code
                   </h3>
@@ -474,7 +474,7 @@ export default function AboutPage() {
             </div>
 
             {/* Card 5: Standard */}
-            <div className="premium-card md:col-span-3 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-3 h-full">
               <motion.div
                 className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
@@ -482,8 +482,7 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <TimezoneAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative mb-2 text-left">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     Same Hours as Your Team
                   </h3>
@@ -492,20 +491,20 @@ export default function AboutPage() {
                     gaps.
                   </p>
                 </div>
+                <TimezoneAsset />
               </motion.div>
             </div>
 
             {/* Card 6: Wide */}
-            <div className="premium-card md:col-span-3 h-full min-h-[240px]">
+            <div className="premium-card md:col-span-3 h-full">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <ProductsGridAsset />
-                <div className="z-10 relative">
+                <div className="z-10 relative mb-2 text-left">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     50+ Products, Not Guesses
                   </h3>
@@ -514,6 +513,7 @@ export default function AboutPage() {
                     solved this type of problem before.
                   </p>
                 </div>
+                <ProductsGridAsset />
               </motion.div>
             </div>
           </div>
@@ -569,15 +569,6 @@ export default function AboutPage() {
                   >
                     {/* 3D Glossy Orange Icon */}
                     <div className="relative flex items-center justify-center">
-                      {/* Blurred Drop Shadow */}
-                      <svg
-                        className="w-[24px] h-[24px] absolute blur-[3px] opacity-60 translate-y-[2px]"
-                        fill="#ff7a2e"
-                        viewBox="0 0 24 24"
-                      >
-                        {item.icon()}
-                      </svg>
-
                       {/* Main Glossy Icon */}
                       <svg
                         className="w-[24px] h-[24px] relative z-10"
@@ -634,14 +625,14 @@ export default function AboutPage() {
             <SectionHeader chip="THE PROCESS">Our Approach</SectionHeader>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-6">
             {PROCESS_STEPS.map((step, i) => {
               const icons = [
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/listen_oravew.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/plan_fuk5ac.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
-                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788950313/desing_tsipbf.svg",
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334941/saasflip_rhxxax.svg",
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
               ];
 
@@ -655,7 +646,7 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                 >
                   {/* Step watermark touching top-right */}
-                  <span className="absolute -top-3 md:-top-3 -right-1 text-[72px] md:text-[84px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
+                  <span className="absolute -top-3 md:-top-3 -right-[0.65rem] text-[72px] md:text-[90px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
                     {step.step}
                   </span>
 
@@ -773,7 +764,7 @@ export default function AboutPage() {
 
         {/* About FAQ Section */}
         <section className="section-container">
-          <div className="max-w-3xl mx-auto">
+          <div className=" mx-auto">
             <Reveal variant="up">
               <SectionHeader chip="FAQs">
                 Everything you need to know
@@ -782,57 +773,7 @@ export default function AboutPage() {
             <FaqsAccordion items={ABOUT_FAQS} />
           </div>
         </section>
-
-        {/* CTA Section - Dark Card */}
-        <section className="section-container">
-          <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture overflow-hidden">
-            <CardBody className="p-12 max-md:p-6 text-center relative">
-              {/* Glow effect */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-brand-orange/10 blur-3xl pointer-events-none" />
-
-              <div className="relative z-10">
-                <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4 tracking-tight">
-                  Ready to Turn Your Idea Into a{" "}
-                  <span className="text-brand-orange">Product</span>?
-                </h2>
-                <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-                  Book a free 15-minute call. Whether it&apos;s a quick UX audit
-                  or a full product build, tell us where you are — we&apos;ll
-                  tell you the fastest path forward.
-                </p>
-                <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
-                  <Link
-                    className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
-                    href="https://cal.com/vishal-anand-3w8233/15min"
-                    target="_blank"
-                  >
-                    Book a Free Call
-                  </Link>
-                  <Link
-                    className="bg-white/10 border border-white/20 text-white px-6 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all duration-300"
-                    href="/pricing"
-                  >
-                    See Pricing
-                  </Link>
-                </div>
-
-                {/* Trust indicators */}
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-gray-500 text-sm">
-                  <span className="flex items-center gap-2">
-                    <CheckIcon /> No commitment required
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <CheckIcon /> Response within 2 hours
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <CheckIcon /> US timezone friendly
-                  </span>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-        </section>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }

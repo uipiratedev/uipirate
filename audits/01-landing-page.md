@@ -1187,4 +1187,51 @@ These 3 changes have the highest E-E-A-T return for the least effort — each is
 
 ---
 
-*This file is the living audit for the landing page. v1 (2026-08-XX) → v2 (2026-08-27) → v3 (2026-08-31). Always verify against current source code before implementing — the code is the ground truth.*
+*This file is the living audit for the landing page. v1 (2026-08-XX) → v2 (2026-08-27) → v3 (2026-08-31) → v4 (2026-09-11). Always verify against current source code before implementing — the code is the ground truth.*
+
+---
+---
+
+# v4, Current Ground-Truth Render Map (Landing Page)
+**Audited:** 2026-09-11
+**Method:** Direct source-code inspection of `screens/landing/index.tsx` to record the actual component render sequence as it stands after all v3 checklist work. This is a documentation-only update; no code changes were made.
+
+---
+
+## Current component render sequence (`screens/landing/index.tsx`)
+
+```
+1.  LandingHero              — hero/index.tsx
+2.  LandingMarquee           — marquee/index.tsx
+3.  PricingPerfectFor        — screens/pricing/perfectFor/index.tsx  (imported from pricing module)
+4.  MiniService + BentoGrid  — miniService/miniService.tsx + bentoGrid/bentoGrid.tsx (wrapped together in a single <div>)
+5.  MiniProcess              — miniProcess/index.tsx
+6.  LandingBehanceFramor     — behance/LandingBehance.tsx  (dynamic import)
+7.  FeaturedCaseStudy        — featuredCaseStudy/index.tsx  (receives featuredCaseStudy prop from page.tsx)
+8.  LandingWhoWeAre          — whoWeAre/index.tsx
+9.  LandingAbout             — about/index.tsx  (dynamic import)
+10. LandingBusinessHelp      — businessHelp/index.tsx  (dynamic import; wraps in <div id="Services">)
+11. Pricing                  — pricing/index.tsx  (wraps in <div id="pricing">)
+12. LandingTestimonials      — testimonials/index.tsx  (dynamic import; wraps in <div className="overflow-hidden">)
+13. LandingFaqs              — faqs/index.tsx  (dynamic import; wraps in <div id="FAQs">)
+```
+
+The earlier v1–v3 audit sections described a different order (e.g. implied Services came before Works, and didn't include `PricingPerfectFor` in the landing page sequence). The above is the current order verified in code.
+
+---
+
+## Overall status after v3 checklist work
+
+**All 🔴 and 🟠 items from v1–v3 are done.** The only open items are intentionally deferred:
+
+| # | Section | Item | Status |
+|---|---------|------|--------|
+| 9a | Stats / About Cards | 9+ Years sub-label describes shipped projects, not years | ⚠️ Pending — deferred |
+| 9c | Stats / About Cards | $150M+ sub-label lists industries instead of what "made by clients" means | ⚠️ Pending — deferred |
+| 9d | Stats / About Cards | 6 Locations sub-label describes product quality, not geography | ⚠️ Pending — deferred |
+| 3c | Marquee | Company name text labels under client logos | ⚠️ Needs rethink — deferred |
+| 12a | OG Image | OG image renders a third tagline not used on the page | ⚠️ Skipped — visual change, later |
+
+**Content/copy is complete.** The page is clean on all 🔴 and 🟠 items.
+
+Full item-by-item status: `01-landing-page-checklist.md`.

@@ -19,7 +19,7 @@ const PRICING_FAQS = [
   {
     question: "What if I'm not satisfied with the work?",
     answer:
-      "We offer a 100% satisfaction guarantee. If you're not happy with the first milestone, we'll refund your deposit — no questions asked. We've done this 100+ times and stand behind our quality.",
+      "We offer a 100% satisfaction guarantee. If you're not happy with the first milestone, we'll refund your deposit — no questions asked. We've done this many times and stand behind our quality.",
   },
   {
     question: "How fast is the turnaround?",

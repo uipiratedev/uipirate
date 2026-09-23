@@ -8,6 +8,7 @@ import clsx from "clsx";
 
 interface DropdownItem {
   category: string;
+  shortCategory?: string;
   icon?: string;
   href?: string;
   isLargeCard?: boolean;
@@ -19,6 +20,7 @@ interface NavbarDropdownProps {
   items: DropdownItem[];
   isDarkSection?: boolean;
   isServicesMenu?: boolean;
+  isDisabled?: boolean;
 }
 
 export const NavbarDropdown = ({
@@ -26,6 +28,7 @@ export const NavbarDropdown = ({
   items,
   isDarkSection = false,
   isServicesMenu = false,
+  isDisabled = false,
 }: NavbarDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -39,7 +42,16 @@ export const NavbarDropdown = ({
     };
   }, []);
 
+  // Force close dropdown if navbar becomes disabled/hidden (e.g. at footer or scrolled away)
+  useEffect(() => {
+    if (isDisabled) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setIsOpen(false);
+    }
+  }, [isDisabled]);
+
   const handleMouseEnter = () => {
+    if (isDisabled) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
   };
@@ -110,6 +122,7 @@ export const NavbarDropdown = ({
 
       {/* Dropdown Menu - Portal to Body to escape overflow/stacking contexts */}
       {mounted &&
+        !isDisabled &&
         typeof document !== "undefined" &&
         (createPortal(
           /* @ts-ignore - AnimatePresence type issue with TypeScript strict mode */
@@ -200,7 +213,7 @@ export const NavbarDropdown = ({
 
                                     <div className="absolute inset-0 p-5 flex flex-col justify-end">
                                       <h3 className="text-gray-900 font-semibold text-base group-hover:text-brand-orange transition-colors duration-300">
-                                        {item.category}
+                                        {item.shortCategory || item.category}
                                       </h3>
                                     </div>
                                   </div>

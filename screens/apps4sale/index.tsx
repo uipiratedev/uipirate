@@ -73,7 +73,7 @@ const Apps4Sale = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white hero-page-container px-4 md:px-8">
+    <div className="min-h-screen hero-page-container px-4 md:px-8">
       {/* Grid Background */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.05]"
@@ -154,11 +154,10 @@ const Apps4Sale = () => {
             {categories.map((category) => (
               <button
                 key={category}
-                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border ${
-                  activeCategory === category
+                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border ${activeCategory === category
                     ? "bg-[#FF5B04] border-[#FF5B04] text-white shadow-lg shadow-[#FF5B04]/20 scale-105"
                     : "bg-white border-zinc-100 text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50"
-                }`}
+                  }`}
                 onClick={() => setActiveCategory(category)}
               >
                 {category}
