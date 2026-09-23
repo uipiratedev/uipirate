@@ -2919,3 +2919,45 @@ pre.code-block-pre code {
 .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] li {
   display: flex !important;
 }
+
+/* ========================================
+   PRICING FLIP CORNER SLOT HANG FLAPS
+   Ensures SVG polygon corner hangs match
+   outer background colors in light, dark,
+   and custom modes without Tailwind JIT issues.
+   ======================================== */
+.hang-corner-custom {
+  fill: #282828 !important;
+  color: #282828 !important;
+}
+
+.hang-corner-monthly {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.dark .hang-corner-monthly {
+  fill: #141414 !important;
+  color: #141414 !important;
+}
+
+.hang-ear-shadow {
+  fill: rgba(0, 0, 0, 0.22) !important;
+}
+
+.dark .hang-ear-shadow,
+.hang-ear-shadow-dark {
+  fill: rgba(0, 0, 0, 0.7) !important;
+}
+
+.hang-slit-line-light {
+  stroke: rgba(0, 0, 0, 0.12) !important;
+}
+
+.dark .hang-slit-line-light {
+  stroke: rgba(255, 255, 255, 0.15) !important;
+}
+
+.hang-slit-line-dark {
+  stroke: rgba(255, 255, 255, 0.15) !important;
+}

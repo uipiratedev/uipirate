@@ -190,9 +190,8 @@ function highlightCode(rawCode: string, _language = "CSS"): string {
           );
       }
 
-      return `${indent}<span class="token-prop">${prop}</span><span class="token-punct">${colon}</span>${formattedVal}${
-        semi ? '<span class="token-punct">;</span>' : ""
-      }`;
+      return `${indent}<span class="token-prop">${prop}</span><span class="token-punct">${colon}</span>${formattedVal}${semi ? '<span class="token-punct">;</span>' : ""
+        }`;
     }
 
     return escapeHtml(line);
@@ -838,7 +837,7 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
       </div>
 
       {/* CTA Banner — convert engaged readers into leads */}
-      <GlobalCTA topic={blog.title} />
+      {/* <GlobalCTA topic={blog.title} /> */}
     </article>
   );
 };
