@@ -119,7 +119,7 @@ const PricingHero = () => {
           >
             Book a Call →
           </Link>
-          <a
+          {/* <a
             className="px-6 py-3 rounded-full bg-gray-900 text-white font-bold hover:bg-black transition-all duration-300 text-sm shadow-sm hover:shadow-md whitespace-nowrap flex items-center gap-2"
             download="uipirate-pricing-2026.pdf"
             href="/uipirate-pricing-2026.pdf"
@@ -141,7 +141,7 @@ const PricingHero = () => {
               <path d="M7 11l5 5l5 -5" />
               <path d="M12 4l0 12" />
             </svg>
-          </a>
+          </a> */}
         </div>
       </div>
     </div>
