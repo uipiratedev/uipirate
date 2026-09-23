@@ -46,6 +46,13 @@ export async function generateMetadata({
   // Held/unreleased concepts must never be indexable, regardless of CMS SEO.
   const noIndex = HELD_DRAFT_SLUGS.has(concept.slug) || !!concept.seo?.noIndex;
 
+  // Next does NOT auto-wire the file-based opengraph-image route once a page
+  // defines its own `openGraph` object, so point at it explicitly when there's
+  // no CMS photo (the route's generateImageMetadata id is the slug itself).
+  const fallbackImage = `${url}/opengraph-image/${concept.slug}`;
+
+  const ogImage = concept.featuredImage || fallbackImage;
+
   return {
     title: concept.seo?.metaTitle || `${concept.title} | Concept`,
     description,
@@ -55,9 +62,13 @@ export async function generateMetadata({
       description,
       url,
       type: "article",
-      images: concept.featuredImage
-        ? [{ url: concept.featuredImage, alt: concept.title }]
-        : undefined,
+      images: [{ url: ogImage, alt: concept.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: concept.seo?.ogTitle || concept.title,
+      description,
+      images: [ogImage],
     },
     robots: noIndex ? { index: false, follow: false } : undefined,
   };
