@@ -34,6 +34,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     permanentRedirect(`/case-studies/${slug}`);
   }
 
+  if ((blog as any)?.postType === "concept") {
+    permanentRedirect(`/concepts/${slug}`);
+  }
+
   try {
     if (!blog) {
       return {
@@ -155,6 +159,12 @@ export default async function DynamicBlogPage({ params }: Props) {
   // and that catch block would otherwise swallow the redirect as a 404.)
   if ((blog as any).postType === "case-study") {
     permanentRedirect(`/case-studies/${slug}`);
+  }
+
+  // Concepts/proposals are authored here with postType "concept" but belong
+  // under /concepts, not the blog template — same reasoning as case studies.
+  if ((blog as any).postType === "concept") {
+    permanentRedirect(`/concepts/${slug}`);
   }
 
   try {

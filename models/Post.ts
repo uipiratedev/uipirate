@@ -33,6 +33,7 @@ export interface IPost extends Document {
     | "blog"
     | "tutorial"
     | "case-study"
+    | "concept"
     | "community-insight"
     | "product-review"
     | "product-launch"
@@ -208,6 +209,7 @@ const PostSchema: Schema = new Schema(
         "blog",
         "tutorial",
         "case-study",
+        "concept",
         "community-insight",
         "product-review",
         "product-launch",

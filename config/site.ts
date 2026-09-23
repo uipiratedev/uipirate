@@ -144,6 +144,7 @@ export const siteConfig = {
       subItems: [
         { label: "Blog", href: "/blogs" },
         { label: "Case Studies", href: "/case-studies" },
+        { label: "Concepts & Proposals", href: "/concepts" },
         { label: "FAQs", href: "/faqs" },
         { label: "Free Tools", href: "/tools" },
         { label: "Component Lab", href: "/componentlab" },
