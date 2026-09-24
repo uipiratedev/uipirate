@@ -20,7 +20,7 @@ export const siteConfig = {
             "IA, user flows, and high-fidelity UI from first sketch to Figma handoff.",
         },
         {
-          category: "Saas & AI Development",
+          category: "SaaS & AI Development",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334941/saasflip_rhxxax.svg",
           href: "/services/SaaS-&-AI-Development",
           isLargeCard: true,
@@ -143,12 +143,11 @@ export const siteConfig = {
       label: "Resources",
       href: "#",
       subItems: [
-        { label: "Blog", href: "/blogs" },
+        { label: "Blog & Tutorials", href: "/blogs" },
         { label: "Case Studies", href: "/case-studies" },
-        { label: "FAQs", href: "/faqs" },
-        { label: "Free Tools", href: "/tools" },
+        { label: "Concepts & Proposals", href: "/concepts" },
+        { label: "Tools", href: "/tools" },
         { label: "Component Lab", href: "/componentlab" },
-        { label: "3D Buttons", href: "/buttons" },
       ],
     },
     {

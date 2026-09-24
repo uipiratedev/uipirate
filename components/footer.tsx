@@ -344,7 +344,7 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
                     className="footer-text"
                     href="/services/Landing-Pages-&-Business-Websites"
                   >
-                    Landing Pages
+                    Landing Pages & Business Websites
                   </Link>
                 </li>
                 <li>
@@ -352,7 +352,7 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
                     className="footer-text"
                     href="/services/UX-Audits-&-Consultation"
                   >
-                    UX Audits
+                    UX Audits & Consultation
                   </Link>
                 </li>
               </ul>
@@ -364,28 +364,22 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
               <ul className="flex flex-col gap-1">
                 <li>
                   <Link className="footer-text" href="/blogs">
-                    Blogs
+                    Blog & Tutorials
                   </Link>
                 </li>
-                {/* <li><Link href="/case-studies" className="footer-text">Case Studies</Link></li> */}
                 <li>
-                  <Link className="footer-text" href="/apps4sale">
-                    Apps 4 Sale
+                  <Link className="footer-text" href="/case-studies">
+                    Case Studies
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/tools">
+                    Tools
                   </Link>
                 </li>
                 <li>
                   <Link className="footer-text" href="/componentlab">
                     Component Lab
-                  </Link>
-                </li>
-                <li>
-                  <Link className="footer-text" href="/buttons">
-                    3D Tactile Buttons
-                  </Link>
-                </li>
-                <li>
-                  <Link className="footer-text" href="/faqs">
-                    FAQ’s
                   </Link>
                 </li>
               </ul>
@@ -417,7 +411,7 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
           {/* Copyright Strip */}
           <div className="mt-24 max-md:mt-12 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[13px] text-white/30 font-medium">
-              Copyright©2023 UI Pirate. All Rights Reserved.
+              Copyright©{new Date().getFullYear()} UI Pirate. All Rights Reserved.
             </p>
             {/* Social Links Sub-section */}
             <div className="flex items-center gap-4 mt-2">

@@ -85,8 +85,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Enterprise Dashboard UX Analyzer",
     category: "saas-product",
     categoryLabel: "SaaS & Product UX",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Analyze a Dashboard",
     description:
       "Audit information density, KPI prominence, table usability, and multi-role action discovery.",
     icon: (
@@ -224,8 +224,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Website Readability & Clarity Checker",
     category: "website-conversion",
     categoryLabel: "Website & Conversion",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Check Readability",
     description:
       "Analyze Flesch-Kincaid reading grade, jargon density, and cognitive processing load.",
     icon: (
@@ -411,8 +411,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Smooth Layered CSS Box-Shadow Generator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Generate Shadows",
     description:
       "Create realistic, non-muddy elevation levels (sm to 2xl) using multi-layer key & ambient lighting.",
     icon: (
@@ -436,8 +436,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Concentric Border-Radius & Squircle Generator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Generate Corners",
     description:
       "Generate nested radius curves and continuous iOS squircle scales with zero border pinching.",
     icon: (
@@ -466,8 +466,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Modular Typography Scale Generator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Generate Type Scale",
     description:
       "Generate mathematical typographic ratios (Minor Third, Golden Ratio) and fluid CSS clamp() type.",
     icon: (
@@ -494,8 +494,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "CSS to Tailwind CSS Utility Converter",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Convert CSS",
     description:
       "Paste raw CSS declaration blocks and convert them instantly into idiomatic Tailwind classes.",
     icon: (
@@ -550,8 +550,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Responsive Breakpoint & Layout Calculator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Calculate Breakpoints",
     description:
       "Generate synchronized media queries, container query tokens, and aspect-ratio dimensions to kill CLS.",
     icon: (

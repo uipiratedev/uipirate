@@ -34,6 +34,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     permanentRedirect(`/case-studies/${slug}`);
   }
 
+  if ((blog as any)?.postType === "concept") {
+    permanentRedirect(`/concepts/${slug}`);
+  }
+
   try {
     if (!blog) {
       return {
@@ -82,6 +86,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const twitterCard = seo?.twitterCard || "summary_large_image";
 
+    // Next does NOT auto-wire the file-based opengraph-image route once a
+    // page defines its own `openGraph`/`twitter` objects, so point at it
+    // explicitly when there's no CMS photo (the route's generateImageMetadata
+    // id is the slug itself).
+    const fallbackImage = `https://uipirate.com/${slug}/opengraph-image/${slug}`;
+    const finalImage = imageUrl || fallbackImage;
+
     return {
       title,
       description,
@@ -91,16 +102,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: ogDescription,
         url: `https://uipirate.com/${slug}`,
         siteName: "UI Pirate by Vishal Anand",
-        images: imageUrl
-          ? [
-              {
-                url: imageUrl,
-                width: 1200,
-                height: 630,
-                alt: ogTitle,
-              },
-            ]
-          : [],
+        images: [
+          {
+            url: finalImage,
+            width: 1200,
+            height: 630,
+            alt: ogTitle,
+          },
+        ],
         locale: "en_US",
         type: "article",
       },
@@ -108,7 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: twitterCard,
         title: ogTitle,
         description: ogDescription,
-        images: imageUrl ? [imageUrl] : [],
+        images: [finalImage],
       },
       alternates: {
         canonical: seo?.canonicalUrl?.trim() || `https://uipirate.com/${slug}`,
@@ -155,6 +164,12 @@ export default async function DynamicBlogPage({ params }: Props) {
   // and that catch block would otherwise swallow the redirect as a 404.)
   if ((blog as any).postType === "case-study") {
     permanentRedirect(`/case-studies/${slug}`);
+  }
+
+  // Concepts/proposals are authored here with postType "concept" but belong
+  // under /concepts, not the blog template — same reasoning as case studies.
+  if ((blog as any).postType === "concept") {
+    permanentRedirect(`/concepts/${slug}`);
   }
 
   try {

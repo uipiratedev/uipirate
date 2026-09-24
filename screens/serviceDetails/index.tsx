@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import ServiceDetailsHero from "./hero";
@@ -25,6 +26,14 @@ const SERVICE_IMAGE: Record<string, string> = {
     "https://res.cloudinary.com/dvk9ttiym/image/upload/v1789369606/landing_hbsqbz.svg",
 };
 
+// Per-service case study links — update each slug/link as needed
+const SERVICE_CASE_STUDY: Record<string, string> = {
+  "ux-ui-design": "/case-studies/designing-sarge-law-enforcement-software",
+  "ux-audits-consultation": "",
+  "saas-ai-development": "/case-studies/ai-knowledge-management-platform-redesign",
+  "landing-pages-business-websites": "",
+};
+
 const normalizeSlug = (str: string) =>
   str
     .toLowerCase()
@@ -36,6 +45,7 @@ const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
 
   const normalizedSlug = slug ? normalizeSlug(slug) : "";
   const serviceImage = normalizedSlug ? SERVICE_IMAGE[normalizedSlug] : undefined;
+  const caseStudyLink = normalizedSlug ? SERVICE_CASE_STUDY[normalizedSlug] : undefined;
 
   return (
     <PageWrapper showFloatingButton={false}>
@@ -59,12 +69,26 @@ const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
         {serviceImage && (
           <section className="section-container">
             <Reveal variant="fade" scrub={false}>
-              <img
-                alt="Service preview"
-                className="w-full h-auto select-none border border-gray-200 rounded-[36px]"
-                loading="lazy"
-                src={serviceImage}
-              />
+              {caseStudyLink ? (
+                <Link
+                  href={caseStudyLink}
+                  className="block group overflow-hidden rounded-[36px] transition-all duration-300"
+                >
+                  <img
+                    alt="Service preview"
+                    className="w-full h-auto select-none border border-gray-200 rounded-[36px] transition-transform duration-300 group-hover:scale-[1.01]"
+                    loading="lazy"
+                    src={serviceImage}
+                  />
+                </Link>
+              ) : (
+                <img
+                  alt="Service preview"
+                  className="w-full h-auto select-none border border-gray-200 rounded-[36px]"
+                  loading="lazy"
+                  src={serviceImage}
+                />
+              )}
             </Reveal>
           </section>
         )}

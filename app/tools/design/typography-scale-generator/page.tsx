@@ -1,71 +1,91 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import TypographyScaleGeneratorClient from "@/components/TypographyScaleGenerator/TypographyScaleGeneratorClient";
 
 export const metadata: Metadata = {
-  title: "Modular Typography Scale & Font Ramp Generator | UI Pirate",
+  title: "Modular Typography Scale & Fluid Font Generator | UI Pirate",
   description:
-    "Generate harmonious typography scales, line-height ratios, and CSS clamp() fluid type rules for web and product UI design.",
+    "Free tool to generate modular typography scales, proportional line-height ramps, and CSS clamp() fluid font sizes. Export to CSS variables or a Tailwind config instantly.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/typography-scale-generator",
   },
+  openGraph: {
+    title: "Modular Typography Scale & Fluid Font Generator | UI Pirate",
+    description:
+      "Generate mathematical typographic scales and responsive clamp() fluid type rules for web and product UI design.",
+    url: "https://uipirate.com/tools/design/typography-scale-generator",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "typography-scale-generator",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · In Development",
-  title: "Modular Typography Scale & Font Ramp Generator",
-  subtitle:
-    "Generate mathematical typographic scales (Minor Third, Major Third, Perfect Fourth) and responsive fluid clamp() font-size rules.",
-  agencyService: "Design Systems & Typography Engineering",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Modular Typography Scale & Fluid Font Generator",
+  url: "https://uipirate.com/tools/design/typography-scale-generator",
+  description:
+    "Generate modular typographic scales, proportional line-height ramps, and CSS clamp() fluid font-size rules. Export as CSS variables or a Tailwind config.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Modular Scale Ratio (1.200 – 1.618)",
-      desc: "Calculates proportional heading sizes from base 16px text up to display 72px titles.",
+      "@type": "Question",
+      name: "What is a modular typography scale?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A modular typography scale multiplies a base font size by a fixed ratio (like 1.25 or 1.333) to generate a harmonious sequence of heading and body text sizes, instead of picking arbitrary pixel values by eye.",
+      },
     },
     {
-      name: "Proportional Line-Height Ramps",
-      desc: "Automatically tightens leading for large display titles (1.1) and relaxes body text leading (1.5).",
+      "@type": "Question",
+      name: "What's the difference between a modular scale and fluid typography?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A modular scale defines the ratio between sizes at any single moment. Fluid typography, built with CSS clamp(), makes those sizes interpolate smoothly between a minimum and maximum value as the viewport width changes, removing the need for font-size media queries.",
+      },
     },
     {
-      name: "CSS clamp() Fluid Typography",
-      desc: "Outputs viewport-responsive font sizing without requiring multiple breakpoint media queries.",
+      "@type": "Question",
+      name: "Which scale ratio should I use for a SaaS product?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Dense, data-heavy dashboards usually work best with subtle ratios like Minor Second (1.067) or Major Second (1.125). Marketing and landing pages read better with Major Third (1.25) or Perfect Fourth (1.333) for stronger visual hierarchy.",
+      },
     },
     {
-      name: "Tailwind Typography Config",
-      desc: "Exports custom fontSize tokens ready to paste into tailwind.config.js.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Base & Scale Selection",
-      title: "Set Scale Ratio",
-      desc: "Pick your base font size and choose from classic musical/mathematical scale intervals.",
-    },
-    {
-      step: "02. Visual Preview & Tuning",
-      title: "Real-Time Hierarchy Test",
-      desc: "Inspect H1 through caption scale in realistic UI mockups and dashboard components.",
-    },
-    {
-      step: "03. Export Token Bundle",
-      title: "CSS & Tailwind Ready",
-      desc: "Copy CSS custom properties, clamp() rules, or Tailwind theme configs.",
-    },
-  ],
-  faqs: [
-    {
-      q: "What is modular typography scaling?",
-      a: "A modular scale uses a fixed mathematical multiplier to derive harmonious heading sizes instead of picking arbitrary numbers.",
+      "@type": "Question",
+      name: "Do I need JavaScript to use clamp() typography in production?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. clamp() is native CSS, supported in every modern browser. Paste the generated CSS variables or Tailwind config straight into your stylesheet — no runtime cost or JavaScript required.",
+      },
     },
   ],
 };
 
-export default function TypographyScaleGeneratorNestedPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+export default function TypographyScaleGeneratorPage() {
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <TypographyScaleGeneratorClient />
+    </>
+  );
 }

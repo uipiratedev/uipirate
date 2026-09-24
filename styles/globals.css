@@ -2308,17 +2308,6 @@ body.modal-open .main-navbar {
   color: #FF5B04;
 }
 
-/* Editorial Drop Cap for First Paragraph */
-.blog-prose>p:first-of-type::first-letter {
-  font-size: 3.5rem;
-  font-weight: 700;
-  float: left;
-  line-height: 0.85;
-  margin-right: 0.55rem;
-  margin-top: 0.15rem;
-  color: #FF5B04;
-  font-family: var(--font-geist), var(--font-sans), sans-serif;
-}
 
 .blog-prose p {
   margin-top: 0;
@@ -2451,26 +2440,169 @@ body.modal-open .main-navbar {
   font-weight: 500;
 }
 
-/* Dark Terminal Codeblock */
-.blog-prose pre {
-  background-color: #0c0c0d;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f4f4f5;
+.hex-color-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: 0.5px;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.blog-prose code:has(.hex-color-dot),
+.blog-prose code.inline-hex-code {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.blog-prose code:has(.hex-color-dot) .hex-color-dot,
+.blog-prose code.inline-hex-code .hex-color-dot {
+  margin-right: 5px;
+  vertical-align: unset;
+}
+
+/* Modern Light Code Block Card (Screenshot 2 Match) */
+.blog-prose .code-block-wrapper,
+.code-block-wrapper {
+  margin: 2rem 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.blog-prose .code-block-header,
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  user-select: none;
+}
+
+.code-block-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #334155;
+}
+
+.code-lang-icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.copy-code-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  color: #94a3b8;
+  transition: all 0.15s ease-in-out;
+}
+
+.copy-code-btn:hover {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.copy-code-btn .check-icon {
+  display: none;
+}
+
+.copy-code-btn.copied {
+  color: #16a34a;
+}
+
+.copy-code-btn.copied .copy-icon {
+  display: none;
+}
+
+.copy-code-btn.copied .check-icon {
+  display: block;
+}
+
+.blog-prose pre.code-block-pre,
+pre.code-block-pre {
+  background-color: #ffffff !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 1.25rem 1.5rem !important;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-size: 0.875rem !important;
+  line-height: 1.75 !important;
+  color: #1e293b !important;
+}
+
+.blog-prose pre.code-block-pre code,
+pre.code-block-pre code {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+}
+
+/* Fallback for unformatted pre blocks */
+.blog-prose pre:not(.code-block-pre) {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
   border-radius: 14px;
   padding: 1.5rem 1.75rem;
   overflow-x: auto;
   margin: 2.25rem 0;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   line-height: 1.75;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
 }
 
-.blog-prose pre code {
+.blog-prose pre:not(.code-block-pre) code {
   background: none;
   border: none;
   padding: 0;
   color: inherit;
   font-size: inherit;
+}
+
+/* Syntax Highlight Tokens */
+.token-prop {
+  color: #dc2626 !important;
+  font-weight: 400 !important;
+}
+.token-punct {
+  color: #475569 !important;
+}
+.token-val {
+  color: #c2410c !important;
+}
+.token-func {
+  color: #2563eb !important;
+}
+.token-var {
+  color: #334155 !important;
+}
+.token-comment {
+  color: #94a3b8 !important;
+  font-style: italic !important;
 }
 
 /* Gradient Fade Divider */
@@ -2786,4 +2918,46 @@ body.modal-open .main-navbar {
 
 .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] li {
   display: flex !important;
+}
+
+/* ========================================
+   PRICING FLIP CORNER SLOT HANG FLAPS
+   Ensures SVG polygon corner hangs match
+   outer background colors in light, dark,
+   and custom modes without Tailwind JIT issues.
+   ======================================== */
+.hang-corner-custom {
+  fill: #282828 !important;
+  color: #282828 !important;
+}
+
+.hang-corner-monthly {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.dark .hang-corner-monthly {
+  fill: #141414 !important;
+  color: #141414 !important;
+}
+
+.hang-ear-shadow {
+  fill: rgba(0, 0, 0, 0.22) !important;
+}
+
+.dark .hang-ear-shadow,
+.hang-ear-shadow-dark {
+  fill: rgba(0, 0, 0, 0.7) !important;
+}
+
+.hang-slit-line-light {
+  stroke: rgba(0, 0, 0, 0.12) !important;
+}
+
+.dark .hang-slit-line-light {
+  stroke: rgba(255, 255, 255, 0.15) !important;
+}
+
+.hang-slit-line-dark {
+  stroke: rgba(255, 255, 255, 0.15) !important;
 }

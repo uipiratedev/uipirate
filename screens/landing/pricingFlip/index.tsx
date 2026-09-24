@@ -11,6 +11,7 @@ interface Plan {
   id: PlanId;
   head: string;
   accent: string;
+  logo: string;
   /** Illustration shown in the left panel. Swap for a real asset per plan. */
   image: string;
   imageAlt: string;
@@ -28,6 +29,7 @@ const PLANS: Record<PlanId, Plan> = {
     id: "monthly",
     head: "Monthly",
     accent: "Retainer",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1790158834/t-2_nyguuz.svg",
     image: "/assets/gif/kite.gif",
     imageAlt: "Monthly retainer plan",
     priceLabel: "Starting from",
@@ -49,6 +51,7 @@ const PLANS: Record<PlanId, Plan> = {
     id: "custom",
     head: "Custom",
     accent: "Quote",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1790158834/t_fnmgru.svg",
     image: "/assets/gif/headquater.gif",
     imageAlt: "Custom project quote plan",
     priceLabel: "Starting from",
@@ -105,7 +108,7 @@ const SCANNER_SEGMENTS = [
   { h: 3, rounded: "rounded-[1px]" },
 ];
 
-const ScannerIndicator = () => {
+const ScannerIndicator = ({ isDark }: { isDark?: boolean }) => {
   const reduce = useReducedMotion();
 
   return (
@@ -120,22 +123,22 @@ const ScannerIndicator = () => {
             reduce
               ? { opacity: 0.3 }
               : {
-                  opacity: [0.25, 0.95, 0.25],
-                }
+                opacity: [0.25, 0.95, 0.25],
+              }
           }
-          className={`w-[22px] bg-gray-900 dark:bg-white ${seg.rounded}`}
+          className={`w-[22px] ${isDark ? "bg-white/60" : "bg-gray-900 dark:bg-white"} ${seg.rounded}`}
           initial={{ opacity: 0.28 }}
           style={{ height: seg.h }}
           transition={
             reduce
               ? undefined
               : {
-                  duration: 1.6,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  ease: "easeInOut",
-                  delay: i * 0.12,
-                }
+                duration: 1.6,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+                delay: i * 0.12,
+              }
           }
         />
       ))}
@@ -143,74 +146,252 @@ const ScannerIndicator = () => {
   );
 };
 
-// Left half of the card — identity, price + scanner indicator.
-const LeftSection = ({ plan }: { plan: Plan }) => (
-  <div className="relative flex h-full min-h-[200px] flex-col justify-between overflow-hidden rounded-[16px] md:rounded-r-none md:rounded-l-[16px] bg-[#ECECEC] p-6 sm:p-8 dark:bg-[#181818]">
-    {/* Square box at the top corner, right side */}
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute right-0 top-0 aspect-square w-[66%] max-w-[300px] min-w-[180px] bg-[#D8D8D8] dark:bg-[#252525]"
-    />
+// Corner slit fold geometry matching reference image
+const FOLD = 24;
+const EAR = 6;
 
-    {/* stacked plan name, sitting over the top */}
-    <h3 className="relative z-10 font-jakarta text-[30px] font-semibold leading-[1.05] tracking-tight text-gray-900 sm:text-[36px] dark:text-white">
-      {plan.head}
-      <br />
-      {plan.accent}
-    </h3>
+const TopLeftCornerSlot = ({ isDark }: { isDark?: boolean }) => {
+  const shadowFilterId = isDark ? "ear-shadow-tl-dark" : "ear-shadow-tl-light";
+  const shadowColor = isDark ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.22)";
 
-    {/* price */}
-    <div className="relative z-10 pt-10">
-      <p className="font-jakarta text-[13px] text-gray-500 dark:text-gray-400">
-        {plan.priceLabel}
-      </p>
-      <p className="font-jetbrains text-[44px] font-black leading-none tracking-tight text-gray-900 sm:text-[52px] dark:text-white">
-        <span className="text-brand-orange">{plan.price.charAt(0)}</span>
-        {plan.price.slice(1)}
-      </p>
-      {plan.unit ? (
-        <p className="mt-2 font-jetbrains text-[11px] font-bold uppercase tracking-wider text-gray-600 dark:text-gray-300">
-          {plan.unit}
-        </p>
-      ) : null}
-      {plan.note ? (
-        <p className="mt-1 font-jakarta text-[11px] leading-snug text-gray-500 sm:text-[12px] dark:text-gray-400">
-          {plan.note}
-        </p>
-      ) : null}
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute left-0 top-0  overflow-visible">
+      <svg className="overflow-visible" height={FOLD} style={{ overflow: "visible" }} width={FOLD}>
+        <defs>
+          <filter id={shadowFilterId} height="200%" width="200%" x="-50%" y="-50%">
+            <feDropShadow dx="1" dy="1.5" floodColor={shadowColor} floodOpacity="1" stdDeviation="1.2" />
+          </filter>
+        </defs>
+
+        {/* Soft shadow under top protruding ear fold */}
+        <polygon
+          className={isDark ? "hang-ear-shadow-dark" : "hang-ear-shadow"}
+          fill={shadowColor}
+          filter={`url(#${shadowFilterId})`}
+          points={`${FOLD},0 ${FOLD + EAR},${-EAR} ${FOLD + EAR},0`}
+        />
+
+        {/* Soft shadow under left protruding ear fold */}
+        <polygon
+          className={isDark ? "hang-ear-shadow-dark" : "hang-ear-shadow"}
+          fill={shadowColor}
+          filter={`url(#${shadowFilterId})`}
+          points={`0,${FOLD} ${-EAR},${FOLD + EAR} 0,${FOLD + EAR}`}
+        />
+
+        {/* Outer background corner flap with protruding ear tabs */}
+        <polygon
+          className={isDark ? "hang-corner-custom" : "hang-corner-monthly"}
+          fill={isDark ? "#282828" : undefined}
+          points={`
+            0,0
+            ${FOLD},0
+            ${FOLD + EAR},${-EAR}
+            ${-EAR},${FOLD + EAR}
+            0,${FOLD}
+          `}
+          style={{
+            fill: isDark ? "#282828" : undefined,
+          }}
+        />
+
+        {/* Straight diagonal slit cut crease line */}
+        <line
+          className={isDark ? "hang-slit-line-dark" : "hang-slit-line-light"}
+          stroke={isDark ? "rgba(255,255,255,0.15)" : undefined}
+          strokeLinecap="round"
+          strokeWidth="1.2"
+          x1={-EAR}
+          x2={FOLD + EAR}
+          y1={FOLD + EAR}
+          y2={-EAR}
+        />
+      </svg>
     </div>
+  );
+};
 
-    {/* Scanner indicator animation at bottom right */}
-    <ScannerIndicator />
-  </div>
-);
+const BottomRightCornerSlot = ({ isDark }: { isDark?: boolean }) => {
+  const shadowFilterId = isDark ? "ear-shadow-br-dark" : "ear-shadow-br-light";
+  const shadowColor = isDark ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.22)";
 
-// Right half of the card — what's included + CTA.
-const RightSection = ({ plan }: { plan: Plan }) => (
-  <div className="flex h-full flex-col overflow-hidden rounded-[16px] md:rounded-l-none md:rounded-r-[16px] bg-white p-6 sm:p-8 dark:bg-[#141414]">
-    <span className="mb-4 inline-flex w-fit items-center rounded-full border border-brand-orange/40 px-3 py-1 font-jetbrains text-[11px] font-semibold uppercase tracking-wider text-brand-orange">
-      What&apos;s included
-    </span>
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0  overflow-visible">
+      <svg className="overflow-visible" height={FOLD} style={{ overflow: "visible" }} width={FOLD}>
+        <defs>
+          <filter id={shadowFilterId} height="200%" width="200%" x="-50%" y="-50%">
+            <feDropShadow dx="1" dy="1.5" floodColor={shadowColor} floodOpacity="1" stdDeviation="1.2" />
+          </filter>
+        </defs>
 
-    <ul className="flex flex-col divide-y divide-dashed divide-gray-200/90 dark:divide-white/10">
-      {plan.features.map((f) => (
-        <li
-          key={f}
-          className="flex items-center gap-3 py-[11px] font-jakarta text-[14px] leading-tight text-gray-800 sm:text-[15px] dark:text-gray-200"
+        {/* Soft shadow under bottom protruding ear fold */}
+        <polygon
+          className={isDark ? "hang-ear-shadow-dark" : "hang-ear-shadow"}
+          fill={shadowColor}
+          filter={`url(#${shadowFilterId})`}
+          points={`0,${FOLD} ${-EAR},${FOLD + EAR} ${-EAR},${FOLD}`}
+        />
+
+        {/* Soft shadow under right protruding ear fold */}
+        <polygon
+          className={isDark ? "hang-ear-shadow-dark" : "hang-ear-shadow"}
+          fill={shadowColor}
+          filter={`url(#${shadowFilterId})`}
+          points={`${FOLD},0 ${FOLD + EAR},${-EAR} ${FOLD},${-EAR}`}
+        />
+
+        {/* Outer background corner flap with protruding ear tabs */}
+        <polygon
+          className={isDark ? "hang-corner-custom" : "hang-corner-monthly"}
+          fill={isDark ? "#282828" : undefined}
+          points={`
+            ${FOLD},${FOLD}
+            0,${FOLD}
+            ${-EAR},${FOLD + EAR}
+            ${FOLD + EAR},${-EAR}
+            ${FOLD},0
+          `}
+          style={{
+            fill: isDark ? "#282828" : undefined,
+          }}
+        />
+
+        {/* Straight diagonal slit cut crease line */}
+        <line
+          className={isDark ? "hang-slit-line-dark" : "hang-slit-line-light"}
+          stroke={isDark ? "rgba(255,255,255,0.15)" : undefined}
+          strokeLinecap="round"
+          strokeWidth="1.2"
+          x1={-EAR}
+          x2={FOLD + EAR}
+          y1={FOLD + EAR}
+          y2={-EAR}
+        />
+      </svg>
+    </div>
+  );
+};
+
+// Left half of the card — outer area + inset inner sub-card (dark-themed for Custom).
+const LeftSection = ({ plan }: { plan: Plan }) => {
+  const isDark = plan.id === "custom";
+  const outerBg = isDark ? "bg-[#282828]" : "bg-white dark:bg-[#141414]";
+  const innerBg = isDark ? "bg-[#505050]" : "bg-[#ECECEC] dark:bg-[#181818]";
+
+  return (
+    <div className={`relative flex h-full min-h-[380px] sm:min-h-full items-stretch overflow-hidden md:rounded-l-[16px] p-5 sm:p-9 ${outerBg}`}>
+      {/* Relative wrapper holding both the inner card and the protruding corner slots */}
+      <div className="relative flex flex-1 items-stretch">
+        {/* Inner sub-card */}
+        <div
+          className={`relative flex flex-1 flex-col justify-between overflow-hidden shadow-sm ${innerBg}`}
+          style={{
+            borderRadius: 12,
+            clipPath: `polygon(
+              ${FOLD}px 0%,
+              100% 0%,
+              100% calc(100% - ${FOLD}px),
+              calc(100% - ${FOLD}px) 100%,
+              0% 100%,
+              0% ${FOLD}px
+            )`,
+          }}
         >
-          <CheckBadge />
-          <span>{f}</span>
-        </li>
-      ))}
-    </ul>
+          {/* Content */}
+          <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
+            {/* Logo */}
+            <img
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute right-0 top-0 aspect-[156/210] w-[55%] max-w-[200px] min-w-[120px] select-none object-contain object-top"
+              src={plan.logo}
+            />
 
-    <div className="mt-auto pt-5">
-      <LetsTalkButton fullWidth showArrow href={plan.href} variant="color">
-        {plan.cta}
-      </LetsTalkButton>
+            {/* Plan name */}
+            <h3
+              className={`relative z-10 font-jakarta text-[30px] font-semibold leading-[1.05] tracking-tight sm:text-[36px] ${isDark ? "text-white" : "text-gray-900 dark:text-white"
+                }`}
+            >
+              {plan.head}
+              <br />
+              {plan.accent}
+            </h3>
+
+            {/* Price */}
+            <div className="relative z-10 pt-10">
+              <p className={`font-jakarta text-[13px] ${isDark ? "text-gray-400" : "text-gray-500 dark:text-gray-400"}`}>
+                {plan.priceLabel}
+              </p>
+              <p
+                className={`font-jetbrains text-[44px] font-black leading-none tracking-tight sm:text-[52px] ${isDark ? "text-white" : "text-gray-900 dark:text-white"
+                  }`}
+              >
+                <span className="text-brand-orange">{plan.price.charAt(0)}</span>
+                {plan.price.slice(1)}
+              </p>
+              <p
+                className={`mt-2 min-h-[16px] font-jetbrains text-[11px] font-bold uppercase tracking-wider ${isDark ? "text-gray-400" : "text-gray-600 dark:text-gray-300"
+                  }`}
+              >
+                {plan.unit || "\u00A0"}
+              </p>
+              <p
+                className={`mt-1 min-h-[16px] max-w-[180px] sm:max-w-[210px] font-jakarta text-[11px] leading-snug sm:text-[12px] ${isDark ? "text-gray-500" : "text-gray-500 dark:text-gray-400"
+                  }`}
+              >
+                {plan.note || "\u00A0"}
+              </p>
+            </div>
+
+            <ScannerIndicator isDark={isDark} />
+          </div>
+        </div>
+
+        {/* Top-left corner slot with protruding ears and soft drop-shadow */}
+        <TopLeftCornerSlot isDark={isDark} />
+
+        {/* Bottom-right corner slot with protruding ears and soft drop-shadow */}
+        <BottomRightCornerSlot isDark={isDark} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+// Right half of the card — features + CTA (dark-themed for Custom).
+const RightSection = ({ plan }: { plan: Plan }) => {
+  const isDark = plan.id === "custom";
+
+  return (
+    <div
+      className={`flex h-full flex-col overflow-hidden md:rounded-r-[16px] p-6 sm:p-8 md:rounded-l-none ${isDark ? "bg-[#282828]" : "bg-white dark:bg-[#141414]"
+        }`}
+    >
+      <span className="mb-4 inline-flex w-fit items-center rounded-full border border-brand-orange/40 px-3 py-1 font-jetbrains text-[11px] font-semibold uppercase tracking-wider text-brand-orange">
+        What&apos;s included
+      </span>
+
+      <ul className={`flex flex-col divide-y divide-dashed ${isDark ? "divide-white/10" : "divide-gray-200/90 dark:divide-white/10"
+        }`}>
+        {plan.features.map((f) => (
+          <li
+            key={f}
+            className={`flex items-center gap-3 py-[11px] font-jakarta text-[14px] leading-tight sm:text-[15px] ${isDark ? "text-gray-200" : "text-gray-800 dark:text-gray-200"
+              }`}
+          >
+            <CheckBadge />
+            <span>{f}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-auto pt-5">
+        <LetsTalkButton fullWidth showArrow href={plan.href} variant={isDark ? "light" : "color"}>
+          {plan.cta}
+        </LetsTalkButton>
+      </div>
+    </div>
+  );
+};
 
 // A shadow that sweeps across while the leaf is mid-turn, then clears.
 const FoldShadow = ({ trigger }: { trigger: string }) => (
@@ -264,20 +445,18 @@ const PricingFlip = () => {
                 )}
                 <span className="relative z-10 flex items-center gap-2 whitespace-nowrap max-md:gap-1">
                   <span
-                    className={`font-jakarta text-[15px] max-md:text-[12px] sm:text-[16px] ${
-                      isActive
-                        ? "font-semibold text-gray-950 dark:text-white"
-                        : "font-medium text-gray-700 dark:text-gray-300"
-                    }`}
+                    className={`font-jakarta text-[15px] max-md:text-[12px] sm:text-[16px] ${isActive
+                      ? "font-semibold text-gray-950 dark:text-white"
+                      : "font-medium text-gray-700 dark:text-gray-300"
+                      }`}
                   >
                     {tab.label}
                   </span>
                   <span
-                    className={`font-jakarta text-[15px] max-md:text-[12px] sm:text-[16px] ${
-                      isActive
-                        ? "font-normal text-gray-500 dark:text-gray-400"
-                        : "font-normal text-gray-400 dark:text-gray-500"
-                    }`}
+                    className={`font-jakarta text-[15px] max-md:text-[12px] sm:text-[16px] ${isActive
+                      ? "font-normal text-gray-500 dark:text-gray-400"
+                      : "font-normal text-gray-400 dark:text-gray-500"
+                      }`}
                   >
                     {tab.hint}
                   </span>
@@ -291,7 +470,7 @@ const PricingFlip = () => {
       {/* Book */}
       <div className="mx-auto max-w-3xl">
         {/* Main card wrapper */}
-        <div className="rounded-[24px] border border-black/[0.08] bg-white p-2 shadow-[0_10px_24px_-4px_rgba(0,0,0,0.18),0_4px_10px_-2px_rgba(0,0,0,0.08)] sm:p-2.5 dark:border-white/10 dark:bg-[#141414] dark:shadow-[0_12px_28px_rgba(0,0,0,0.7)]">
+        <div className="rounded-[24px] border border-black/[0.08] bg-white p-2 shadow-[0_10px_24px_-4px_rgba(0,0,0,0.18),0_4px_10px_-2px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-[#141414] dark:shadow-[0_12px_28px_rgba(0,0,0,0.7)] sm:p-2.5">
           {/* ---- md+ : a real book. One leaf turns on the centre spine. ---- */}
           <div className="relative hidden [perspective:2400px] md:block">
             {/* Height sizer — tracks the taller plan so nothing resizes. */}
@@ -309,11 +488,10 @@ const PricingFlip = () => {
             {/* LEFT page — Monthly's identity. Stays put; the leaf covers it
                 once Custom is open. Only casts shadow when uncovered. */}
             <div
-              className={`absolute inset-y-0 left-0 w-1/2 rounded-l-[16px] ${
-                !isCustom
-                  ? "shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]"
-                  : ""
-              }`}
+              className={`absolute inset-y-0 left-0 w-1/2 rounded-l-[16px] ${!isCustom
+                ? "shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]"
+                : ""
+                }`}
             >
               <LeftSection plan={PLANS.monthly} />
             </div>
@@ -321,11 +499,10 @@ const PricingFlip = () => {
             {/* RIGHT page — Custom's checklist. Stays put; the leaf covers it
                 while Monthly is open. Only casts shadow when uncovered (isCustom). */}
             <div
-              className={`absolute inset-y-0 right-0 w-1/2 rounded-r-[16px] ${
-                isCustom
-                  ? "shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]"
-                  : ""
-              }`}
+              className={`absolute inset-y-0 right-0 w-1/2 rounded-r-[16px] ${isCustom
+                ? "shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]"
+                : ""
+                }`}
             >
               <RightSection plan={PLANS.custom} />
             </div>
@@ -340,22 +517,20 @@ const PricingFlip = () => {
             >
               {/* Front of leaf: Monthly checklist (on right side when !isCustom) */}
               <div
-                className={`absolute inset-0 rounded-r-[16px] [backface-visibility:hidden] ${
-                  !isCustom
-                    ? "shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]"
-                    : ""
-                }`}
+                className={`absolute inset-0 rounded-r-[16px] [backface-visibility:hidden] ${!isCustom
+                  ? "shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]"
+                  : ""
+                  }`}
               >
                 <RightSection plan={PLANS.monthly} />
               </div>
 
               {/* Back of leaf: Custom identity (on left side when isCustom) */}
               <div
-                className={`absolute inset-0 rounded-l-[16px] [backface-visibility:hidden] ${
-                  isCustom
-                    ? "shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]"
-                    : ""
-                }`}
+                className={`absolute inset-0 rounded-l-[16px] [backface-visibility:hidden] ${isCustom
+                  ? "shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]"
+                  : ""
+                  }`}
                 style={{ transform: "rotateY(180deg)" }}
               >
                 <LeftSection plan={PLANS.custom} />
@@ -372,15 +547,13 @@ const PricingFlip = () => {
           <motion.div
             key={active}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col gap-3 md:hidden"
+            className="flex flex-col md:hidden"
             initial={{ opacity: 0, y: 6 }}
             transition={{ duration: reduce ? 0 : 0.25, ease: "easeOut" }}
           >
-            <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-              <RightSection plan={PLANS[active]} />
-            </div>
-            <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+            <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
               <LeftSection plan={PLANS[active]} />
+              <RightSection plan={PLANS[active]} />
             </div>
           </motion.div>
         </div>

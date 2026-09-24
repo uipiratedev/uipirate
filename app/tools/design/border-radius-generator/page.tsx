@@ -1,67 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import BorderRadiusGeneratorClient from "@/components/BorderRadiusGenerator/BorderRadiusGeneratorClient";
 
 export const metadata: Metadata = {
-  title: "Smooth Corner & Border-Radius Scale Generator | UI Pirate",
+  title: "Concentric Border-Radius & Squircle Generator | UI Pirate",
   description:
-    "Generate mathematical border-radius tokens and iOS-style continuous corner squircle curves for modern web UI.",
+    "Free tool to calculate nested (concentric) border-radius values that don't pinch at the corners, plus an iOS-style superellipse squircle generator with clip-path and SVG export.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/border-radius-generator",
   },
+  openGraph: {
+    title: "Concentric Border-Radius & Squircle Generator | UI Pirate",
+    description:
+      "Generate nested radius scales and iOS-style continuous-curvature squircle corners for modern web UI.",
+    url: "https://uipirate.com/tools/design/border-radius-generator",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "border-radius-generator",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · CSS Utility",
-  title: "Smooth Corner & Border-Radius Scale Generator",
-  subtitle:
-    "Generate nested radius scales where outer container curves harmoniously wrap inner children without awkward border pinching.",
-  agencyService: "Frontend Engineering & Design Systems",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Concentric Border-Radius & Squircle Generator",
+  url: "https://uipirate.com/tools/design/border-radius-generator",
+  description:
+    "Calculate nested (concentric) border-radius values that don't pinch at the corners, plus an iOS-style superellipse squircle generator with clip-path and SVG export.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Nested Radius Formula",
-      desc: "Calculates inner radius = outer radius - container padding.",
+      "@type": "Question",
+      name: "What is concentric (nested) border-radius?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "It's the practice of setting a padded child element's radius to outerRadius minus padding, so both the outer and inner curves share the same center point and run parallel instead of pinching together at the corners.",
+      },
     },
     {
-      name: "Radius Token Scale (none–full)",
-      desc: "Outputs tokens for badges, inputs, cards, and dialogs.",
+      "@type": "Question",
+      name: "What exactly is a squircle?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A squircle is a shape between a square and a circle, mathematically a superellipse. Apple popularized it for iOS app icons because it has continuous curvature, which a normal rounded rectangle corner doesn't have.",
+      },
     },
     {
-      name: "Tailwind CSS Config Output",
-      desc: "Exports custom borderRadius theme object.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Base Radius",
-      title: "Select Geometry Style",
-      desc: "Choose between sharp, modern rounded, or playful pills.",
-    },
-    {
-      step: "02. Nested Math",
-      title: "Calculate Insets",
-      desc: "Ensures nested inner elements fit seamlessly.",
-    },
-    {
-      step: "03. Code Export",
-      title: "Copy Tailwind",
-      desc: "Copy radius tokens for your CSS/Tailwind system.",
-    },
-  ],
-  faqs: [
-    {
-      q: "What is concentric border radius?",
-      a: "Concentric radius ensures that a card's inner element radius perfectly matches the outer border curve minus padding.",
+      "@type": "Question",
+      name: "Why use clip-path instead of border-radius for a squircle?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "border-radius can only draw circular arcs. A superellipse needs an arbitrary path, so it's built as an SVG path string and applied with CSS clip-path: path(...), which every evergreen browser supports.",
+      },
     },
   ],
 };
 
 export default function BorderRadiusGeneratorPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <BorderRadiusGeneratorClient />
+    </>
+  );
 }

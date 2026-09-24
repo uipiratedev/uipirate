@@ -73,7 +73,7 @@ const TryBeforeCommit = () => {
             <div className="bg-white/5 border border-white/10 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center">
-                  <span className="text-xl">🧩</span>
+                  <i className="ti ti-puzzle text-brand-orange text-xl" />
                 </div>
                 <h4 className="text-white font-semibold">
                   Low-Risk, High-Value
@@ -88,7 +88,7 @@ const TryBeforeCommit = () => {
             <div className="bg-white/5 border border-white/10 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center">
-                  <span className="text-xl">⚡</span>
+                  <i className="ti ti-bolt text-brand-orange text-xl" />
                 </div>
                 <h4 className="text-white font-semibold">Real Deliverables</h4>
               </div>

@@ -68,6 +68,13 @@ const nextConfig = {
         destination: "/componentlab/:slug",
         permanent: true,
       },
+      // /type-scale-generator was an orphaned duplicate of the live tool at
+      // /typography-scale-generator (flagged in audits/07 as duplicate content).
+      {
+        source: "/tools/design/type-scale-generator",
+        destination: "/tools/design/typography-scale-generator",
+        permanent: true,
+      },
     ];
   },
 

@@ -45,6 +45,13 @@ export async function generateMetadata({
   // Held/unreleased case studies must never be indexable, regardless of CMS SEO.
   const noIndex = HELD_DRAFT_SLUGS.has(study.slug) || !!study.seo?.noIndex;
 
+  // Next does NOT auto-wire the file-based opengraph-image route once a page
+  // defines its own `openGraph` object, so point at it explicitly when there's
+  // no CMS photo (the route's generateImageMetadata id is the slug itself).
+  const fallbackImage = `${url}/opengraph-image/${study.slug}`;
+
+  const ogImage = study.featuredImage || fallbackImage;
+
   return {
     title: study.seo?.metaTitle || `${study.title} | Case Study`,
     description,
@@ -54,9 +61,13 @@ export async function generateMetadata({
       description,
       url,
       type: "article",
-      images: study.featuredImage
-        ? [{ url: study.featuredImage, alt: study.title }]
-        : undefined,
+      images: [{ url: ogImage, alt: study.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: study.seo?.ogTitle || study.title,
+      description,
+      images: [ogImage],
     },
     robots: noIndex ? { index: false, follow: false } : undefined,
   };
