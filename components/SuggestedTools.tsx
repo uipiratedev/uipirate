@@ -550,8 +550,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Responsive Breakpoint & Layout Calculator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Calculate Breakpoints",
     description:
       "Generate synchronized media queries, container query tokens, and aspect-ratio dimensions to kill CLS.",
     icon: (

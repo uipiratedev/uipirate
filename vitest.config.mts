@@ -20,6 +20,7 @@ export default defineConfig({
       "__tests__/lib/ssrfGuard.test.ts",
       "__tests__/lib/dashboardAudit.test.ts",
       "__tests__/lib/readability.test.ts",
+      "__tests__/lib/breakpointLayout.test.ts",
       "__tests__/indexing.test.ts",
     ],
   },

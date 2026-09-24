@@ -1,76 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import BreakpointLayoutCalculatorClient from "@/components/BreakpointLayoutCalculator/BreakpointLayoutCalculatorClient";
 
 export const metadata: Metadata = {
-  title:
-    "Responsive Breakpoint, Container Query & Aspect Ratio Calculator | UI Pirate",
+  title: "Responsive Breakpoint, Container Query & Aspect Ratio Calculator | UI Pirate",
   description:
-    "Generate responsive media queries, CSS @container query tokens, aspect-ratio dimensional bounds, and CLS-prevention rules.",
+    "Free tool to generate synchronized media query breakpoints, modern CSS @container query tokens, and exact aspect-ratio dimensions that eliminate Cumulative Layout Shift.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/breakpoint-generator",
   },
+  openGraph: {
+    title: "Responsive Breakpoint, Container Query & Aspect Ratio Calculator | UI Pirate",
+    description:
+      "Generate responsive media queries, CSS @container query tokens, and aspect-ratio dimensions to eliminate Cumulative Layout Shift.",
+    url: "https://uipirate.com/tools/design/breakpoint-generator",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "breakpoint-generator",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · Responsive Engine",
-  title: "Responsive Breakpoint, Container Query & Aspect Ratio Calculator",
-  subtitle:
-    "Configure synchronized media query breakpoints (sm, md, lg, xl, 2xl), modern CSS @container query tokens, and aspect-ratio dimensions to eliminate Cumulative Layout Shift (CLS).",
-  agencyService: "Responsive Web Engineering & Design Systems",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Responsive Breakpoint & Layout Calculator",
+  url: "https://uipirate.com/tools/design/breakpoint-generator",
+  description:
+    "Generate synchronized media query breakpoints, modern CSS @container query tokens, and exact aspect-ratio dimensions that eliminate Cumulative Layout Shift.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Screen Breakpoints (Mobile/Tablet/Desktop/Ultrawide)",
-      desc: "Synchronizes 390px, 768px, 1024px, 1440px, and 1920px viewports.",
+      "@type": "Question",
+      name: "What's the difference between @media and @container?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "@media reads the browser viewport - the same styles apply everywhere on the page. @container reads the width of a specific parent element, so the same component can respond differently depending on where it's placed.",
+      },
     },
     {
-      name: "CSS @container Query Tokens",
-      desc: "Generates component-level container queries that adapt to column width.",
+      "@type": "Question",
+      name: "Do I need container-type: inline-size for @container to work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes - a container query only works on an ancestor that has explicitly opted in with container-type, which is why this tool generates that declaration alongside the queries themselves.",
+      },
     },
     {
-      name: "Aspect-Ratio & CLS Prevention Math",
-      desc: "Calculates precise width/height dimensions for Next.js Image and CSS containers.",
-    },
-    {
-      name: "Tailwind screens & CSS Output",
-      desc: "Exports ready-to-paste tailwind.config.js and CSS media rules.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Device & Grid Profile",
-      title: "Select Viewports",
-      desc: "Define responsive screen thresholds and column constraints.",
-    },
-    {
-      step: "02. Container Math",
-      title: "Calculate Breakpoints & Ratios",
-      desc: "Computes component boundary rules and proportional aspect ratios.",
-    },
-    {
-      step: "03. Code Export",
-      title: "Copy Tailwind & CSS",
-      desc: "Copy drop-in theme configuration for your Next.js project.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Why combine media queries with container queries?",
-      a: "Media queries respond to the entire browser window, while container queries allow individual components (e.g. cards in a sidebar) to adapt to their parent container width.",
-    },
-    {
-      q: "How does setting aspect ratio eliminate Cumulative Layout Shift?",
-      a: "Setting CSS aspect-ratio reserves the exact container space before image bytes download, preventing unwanted page jumps.",
+      "@type": "Question",
+      name: "How does aspect-ratio prevent Cumulative Layout Shift?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Setting an explicit aspect-ratio (or width/height attributes) lets the browser calculate and reserve the exact box before the image loads, so the layout never moves once the image bytes arrive.",
+      },
     },
   ],
 };
 
 export default function BreakpointGeneratorPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <BreakpointLayoutCalculatorClient />
+    </>
+  );
 }
