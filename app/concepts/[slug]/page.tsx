@@ -10,20 +10,20 @@ interface PageProps {
   params: { slug: string };
 }
 
-// ISR: revalidate every 60s so newly published/edited CMS case studies show
+// ISR: revalidate every 60s so newly published/edited CMS concepts show
 // up without a full rebuild (matches /case-studies and /blogs).
 export const revalidate = 60;
 
-async function getCaseStudy(slug: string) {
+async function getConcept(slug: string) {
   const post = await getPostBySlug(slug);
 
-  if (!post || post.postType !== "case-study") return null;
+  if (!post || post.postType !== "concept") return null;
 
   return post;
 }
 
 export async function generateStaticParams() {
-  const slugs = await listPostSlugs({ postType: "case-study" });
+  const slugs = await listPostSlugs({ postType: "concept" });
 
   return slugs.map((slug) => ({ slug }));
 }
@@ -33,39 +33,40 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const study = await getCaseStudy(params.slug);
+  const concept = await getConcept(params.slug);
 
-  if (!study) {
-    return { title: "Case Study Not Found | UI Pirate" };
+  if (!concept) {
+    return { title: "Concept Not Found | UI Pirate" };
   }
 
-  const url = `https://uipirate.com/case-studies/${study.slug}`;
-  const description = study.seo?.metaDescription || study.excerpt || undefined;
+  const url = `https://uipirate.com/concepts/${concept.slug}`;
+  const description =
+    concept.seo?.metaDescription || concept.excerpt || undefined;
 
-  // Held/unreleased case studies must never be indexable, regardless of CMS SEO.
-  const noIndex = HELD_DRAFT_SLUGS.has(study.slug) || !!study.seo?.noIndex;
+  // Held/unreleased concepts must never be indexable, regardless of CMS SEO.
+  const noIndex = HELD_DRAFT_SLUGS.has(concept.slug) || !!concept.seo?.noIndex;
 
   // Next does NOT auto-wire the file-based opengraph-image route once a page
   // defines its own `openGraph` object, so point at it explicitly when there's
   // no CMS photo (the route's generateImageMetadata id is the slug itself).
-  const fallbackImage = `${url}/opengraph-image/${study.slug}`;
+  const fallbackImage = `${url}/opengraph-image/${concept.slug}`;
 
-  const ogImage = study.featuredImage || fallbackImage;
+  const ogImage = concept.featuredImage || fallbackImage;
 
   return {
-    title: study.seo?.metaTitle || `${study.title} | Case Study`,
+    title: concept.seo?.metaTitle || `${concept.title} | Concept`,
     description,
-    alternates: { canonical: study.seo?.canonicalUrl || url },
+    alternates: { canonical: concept.seo?.canonicalUrl || url },
     openGraph: {
-      title: study.seo?.ogTitle || study.title,
+      title: concept.seo?.ogTitle || concept.title,
       description,
       url,
       type: "article",
-      images: [{ url: ogImage, alt: study.title }],
+      images: [{ url: ogImage, alt: concept.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: study.seo?.ogTitle || study.title,
+      title: concept.seo?.ogTitle || concept.title,
       description,
       images: [ogImage],
     },
@@ -73,10 +74,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function CaseStudyDetailPage({ params }: PageProps) {
-  const study = await getCaseStudy(params.slug);
+export default async function ConceptDetailPage({ params }: PageProps) {
+  const concept = await getConcept(params.slug);
 
-  if (!study) notFound();
+  if (!concept) notFound();
 
   return (
     <div>
@@ -85,9 +86,9 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
-            headline: study.title,
-            description: study.excerpt,
-            image: study.featuredImage || undefined,
+            headline: concept.title,
+            description: concept.excerpt,
+            image: concept.featuredImage || undefined,
             author: {
               "@type": "Organization",
               name: "UI Pirate by Vishal Anand",
@@ -98,17 +99,17 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
               name: "UI Pirate by Vishal Anand",
               url: "https://uipirate.com",
             },
-            url: `https://uipirate.com/case-studies/${study.slug}`,
+            url: `https://uipirate.com/concepts/${concept.slug}`,
           }),
         }}
         type="application/ld+json"
       />
       <BlogsDetailsHero
-        imageUrl={study.bannerImage || study.featuredImage}
-        tag="Case Study"
-        title={study.title}
+        imageUrl={concept.bannerImage || concept.featuredImage}
+        tag="Concept"
+        title={concept.title}
       />
-      <BlogContents blog={study} />
+      <BlogContents blog={concept} />
     </div>
   );
 }
