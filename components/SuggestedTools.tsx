@@ -224,8 +224,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Website Readability & Clarity Checker",
     category: "website-conversion",
     categoryLabel: "Website & Conversion",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Check Readability",
     description:
       "Analyze Flesch-Kincaid reading grade, jargon density, and cognitive processing load.",
     icon: (
