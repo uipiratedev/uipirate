@@ -1,83 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import DashboardAnalyzerClient from "@/components/DashboardAnalyzer/DashboardAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "SaaS & Enterprise Dashboard UX Analyzer | UI Pirate",
+  title: "Enterprise Dashboard UX Analyzer | UI Pirate",
   description:
-    "Analyze SaaS dashboard interfaces for information density, KPI hierarchy, table usability, filtering, and empty states. Built by UI Pirate.",
+    "Free tool to audit a dashboard or admin UI's information density, KPI prominence, table usability, filter discoverability, and multi-role navigation from its real server-rendered HTML.",
   alternates: {
     canonical: "https://uipirate.com/tools/saas/dashboard-analyzer",
   },
+  openGraph: {
+    title: "Enterprise Dashboard UX Analyzer | UI Pirate",
+    description:
+      "Audit information density, KPI prominence, table usability, and multi-role action discovery from a real page fetch — no mock data.",
+    url: "https://uipirate.com/tools/saas/dashboard-analyzer",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "dashboard-analyzer",
-  category: "saas-product",
-  categoryLabel: "SaaS & Product Design",
-  badgeText: "Upcoming Tool · In Development",
-  title: "Enterprise Dashboard UX & Information Density Analyzer",
-  subtitle:
-    "Audit complex SaaS dashboards and web app interfaces. Score KPI prominence, table usability, filter architecture, and information density.",
-  agencyService: "SaaS & Complex Enterprise Products",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Enterprise Dashboard UX Analyzer",
+  url: "https://uipirate.com/tools/saas/dashboard-analyzer",
+  description:
+    "Audit a dashboard or admin UI's information density, KPI prominence, table usability, filter discoverability, and multi-role navigation from its real server-rendered HTML.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Information Density & Clutter Score",
-      desc: "Evaluates whitespace ratio, card padding, and cognitive load across high-density data views.",
+      "@type": "Question",
+      name: "Can this analyze a dashboard that requires login?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Not directly - the analyzer makes a single unauthenticated server-side request. If your product has a public demo or preview route, point the tool at that instead.",
+      },
     },
     {
-      name: "Top-Level KPI Prominence",
-      desc: "Scores whether primary business metrics are immediately actionable within 3 seconds of dashboard load.",
+      "@type": "Question",
+      name: "Why did my score come back low with a low-confidence warning?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Your page's initial HTML response was very small, almost certainly because it's a client-rendered single-page app that fetches data and renders the real UI after JavaScript loads, which this tool doesn't execute.",
+      },
     },
     {
-      name: "Data Table & Grid Usability",
-      desc: "Audits sorting indicators, sticky column headers, inline actions, and row pagination controls.",
-    },
-    {
-      name: "Filter & Search Discoverability",
-      desc: "Checks faceted search usability, active filter chips, and multi-parameter query response.",
-    },
-    {
-      name: "Empty States & Error Recovery",
-      desc: "Inspects zero-data onboarding states to ensure users are guided with high-converting setup actions.",
-    },
-    {
-      name: "Multi-Role Navigation Depth",
-      desc: "Measures click depth for admin, manager, and viewer permission roles.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Dashboard Ingestion",
-      title: "URL or Screenshot Upload",
-      desc: "Paste your authenticated preview link or upload dashboard screen captures for visual layout parsing.",
-    },
-    {
-      step: "02. Density & Hierarchy Scan",
-      title: "Data Visualization Audit",
-      desc: "Our heuristic engine identifies chart readability, table crowding, and action discoverability flaws.",
-    },
-    {
-      step: "03. Enterprise Teardown Blueprint",
-      title: "UX Architecture Plan",
-      desc: "Receive component-level redesign recommendations to transform complex data into intuitive workflows.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Can this analyze password-protected enterprise applications?",
-      a: "Yes. In the upcoming release you can either upload high-resolution screenshots or use a secure one-time session token.",
-    },
-    {
-      q: "Why is dashboard information density so tricky to get right?",
-      a: "Power users want maximum data density without scrolling, while casual users get overwhelmed by clutter. High-performing dashboards use progressive disclosure to balance both needs.",
+      "@type": "Question",
+      name: "Why can't I analyze a localhost or internal URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Allowing arbitrary internal addresses would let anyone use this tool to probe private networks from the server, a class of vulnerability called SSRF. Only URLs that resolve to public IP addresses are accepted.",
+      },
     },
   ],
 };
 
-export default function SaasDashboardAnalyzerNestedPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+export default function DashboardAnalyzerPage() {
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <DashboardAnalyzerClient />
+    </>
+  );
 }

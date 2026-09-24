@@ -1,67 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import CssToTailwindConverterClient from "@/components/CssToTailwindConverter/CssToTailwindConverterClient";
 
 export const metadata: Metadata = {
   title: "CSS to Tailwind CSS Class Converter | UI Pirate",
   description:
-    "Convert raw CSS rules and styles into clean, idiomatic Tailwind CSS utility classes instantly.",
+    "Free tool to convert raw CSS — including shorthand, pseudo-classes, and media queries — into idiomatic Tailwind CSS utility classes, instantly in your browser.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/css-to-tailwind-converter",
   },
+  openGraph: {
+    title: "CSS to Tailwind CSS Class Converter | UI Pirate",
+    description:
+      "Convert raw CSS rules and styles into clean, idiomatic Tailwind CSS utility classes instantly.",
+    url: "https://uipirate.com/tools/design/css-to-tailwind-converter",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "css-to-tailwind-converter",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · Developer Utility",
-  title: "Raw CSS to Tailwind CSS Utility Converter",
-  subtitle:
-    "Paste any CSS block, style attribute, or stylesheet rules and convert them into clean, optimized Tailwind utility classes.",
-  agencyService: "Frontend Architecture & Code Migration",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "CSS to Tailwind CSS Class Converter",
+  url: "https://uipirate.com/tools/design/css-to-tailwind-converter",
+  description:
+    "Convert raw CSS — including shorthand, pseudo-classes, and media queries — into idiomatic Tailwind CSS utility classes, instantly in your browser.",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Full CSS Property Coverage",
-      desc: "Converts flexbox, grid, typography, colors, borders, and transforms.",
+      "@type": "Question",
+      name: "What is Tailwind's arbitrary value syntax?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Square-bracket syntax like p-[13px] or bg-[#ff5b04] lets you use a one-off CSS value with a Tailwind utility, without adding it to your config. It's an official, fully-supported part of Tailwind CSS v3 and v4.",
+      },
     },
     {
-      name: "Arbitrary Value Syntax Support",
-      desc: "Falls back to custom values like w-[342px] when outside standard scales.",
+      "@type": "Question",
+      name: "What's the difference between arbitrary values and arbitrary properties?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Arbitrary values (p-[13px]) customize the value for a utility Tailwind already knows about. Arbitrary properties ([mask-type:luminance]) let you use a raw CSS property Tailwind has no utility for at all — both compile to real, valid CSS.",
+      },
     },
     {
-      name: "JSX / HTML className Output",
-      desc: "Outputs ready-to-paste JSX className strings.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Paste CSS",
-      title: "Input Style Rules",
-      desc: "Paste standard CSS declaration blocks.",
-    },
-    {
-      step: "02. AST Tokenizer",
-      title: "Map to Tailwind",
-      desc: "Matches properties to closest Tailwind utility equivalents.",
-    },
-    {
-      step: "03. Copy Output",
-      title: "Copy Utility Classes",
-      desc: "Paste directly into React/Next.js components.",
-    },
-  ],
-  faqs: [
-    {
-      q: "How does it handle unsupported CSS properties?",
-      a: "It uses Tailwind's arbitrary value syntax or inline CSS variables.",
+      "@type": "Question",
+      name: "Can I paste an entire stylesheet?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You can, but this tool is tuned for component-level CSS — a button, a card, a nav bar. Very large stylesheets with deep nesting or hundreds of rules will still parse, but the output is easier to review in smaller chunks.",
+      },
     },
   ],
 };
 
 export default function CssToTailwindConverterPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <CssToTailwindConverterClient />
+    </>
+  );
 }
