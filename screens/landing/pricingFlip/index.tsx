@@ -279,7 +279,7 @@ const LeftSection = ({ plan }: { plan: Plan }) => {
   const innerBg = isDark ? "bg-[#505050]" : "bg-[#ECECEC] dark:bg-[#181818]";
 
   return (
-    <div className={`relative flex h-full min-h-[380px] sm:min-h-full items-stretch overflow-hidden rounded-l-[16px] p-5 sm:p-9 ${outerBg}`}>
+    <div className={`relative flex h-full min-h-[380px] sm:min-h-full items-stretch overflow-hidden md:rounded-l-[16px] p-5 sm:p-9 ${outerBg}`}>
       {/* Relative wrapper holding both the inner card and the protruding corner slots */}
       <div className="relative flex flex-1 items-stretch">
         {/* Inner sub-card */}
@@ -363,7 +363,7 @@ const RightSection = ({ plan }: { plan: Plan }) => {
 
   return (
     <div
-      className={`flex h-full flex-col overflow-hidden rounded-r-[16px] p-6 sm:p-8 md:rounded-l-none ${isDark ? "bg-[#282828]" : "bg-white dark:bg-[#141414]"
+      className={`flex h-full flex-col overflow-hidden md:rounded-r-[16px] p-6 sm:p-8 md:rounded-l-none ${isDark ? "bg-[#282828]" : "bg-white dark:bg-[#141414]"
         }`}
     >
       <span className="mb-4 inline-flex w-fit items-center rounded-full border border-brand-orange/40 px-3 py-1 font-jetbrains text-[11px] font-semibold uppercase tracking-wider text-brand-orange">
@@ -547,15 +547,13 @@ const PricingFlip = () => {
           <motion.div
             key={active}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col gap-3 md:hidden"
+            className="flex flex-col md:hidden"
             initial={{ opacity: 0, y: 6 }}
             transition={{ duration: reduce ? 0 : 0.25, ease: "easeOut" }}
           >
             <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-              <RightSection plan={PLANS[active]} />
-            </div>
-            <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
               <LeftSection plan={PLANS[active]} />
+              <RightSection plan={PLANS[active]} />
             </div>
           </motion.div>
         </div>
