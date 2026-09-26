@@ -133,7 +133,7 @@ export default function RootLayout({
         <meta content="ai-assisted" name="ai-content-declaration" />
         <meta content="text/html; charset=utf-8" name="content-type" />
         <meta content="English" name="language" />
-        <meta content="Vishal Anand - UI Pirate" name="author" />
+        <meta content="UI Pirate" name="author" />
         <meta
           content="UI/UX Design Services, SaaS Design, AI Application Design"
           name="subject"
@@ -156,7 +156,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               "@id": "https://uipirate.com/#organization",
-              name: "UI Pirate by Vishal Anand",
+              name: "UI Pirate",
               alternateName: ["UI Pirate", "uipirate", "uipirates"],
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
