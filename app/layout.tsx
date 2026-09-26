@@ -133,7 +133,7 @@ export default function RootLayout({
         <meta content="ai-assisted" name="ai-content-declaration" />
         <meta content="text/html; charset=utf-8" name="content-type" />
         <meta content="English" name="language" />
-        <meta content="Vishal Anand - UI Pirate" name="author" />
+        <meta content="UI Pirate" name="author" />
         <meta
           content="UI/UX Design Services, SaaS Design, AI Application Design"
           name="subject"
@@ -156,7 +156,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               "@id": "https://uipirate.com/#organization",
-              name: "UI Pirate by Vishal Anand",
+              name: "UI Pirate",
               alternateName: ["UI Pirate", "uipirate", "uipirates"],
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
@@ -401,75 +401,6 @@ export default function RootLayout({
           fontJetBrainsMono.variable,
         )}
       >
-        {/* noscript fallback — ensures AI crawlers that don't execute JS see real content */}
-        <noscript>
-          <div
-            style={{
-              padding: "2rem",
-              fontFamily: "sans-serif",
-              maxWidth: "900px",
-              margin: "0 auto",
-            }}
-          >
-            <h1>UI Pirate | SaaS &amp; AI Product Design Agency</h1>
-            <p>
-              Product design &amp; development agency. We turn SaaS and AI ideas
-              into shipped products. UX/UI design, Angular &amp; React
-              development. Serving clients in USA, UK, Singapore, India, and
-              Australia.
-            </p>
-            <h2>Services</h2>
-            <ul>
-              <li>
-                <a href="/services/UX-UI-Design">UX/UI Design</a>
-              </li>
-              <li>
-                <a href="/services/SaaS-&amp;-AI-Development">
-                  SaaS &amp; AI Development
-                </a>
-              </li>
-              <li>
-                <a href="/services/Landing-Pages-&amp;-Business-Websites">
-                  Landing Pages &amp; Business Websites
-                </a>
-              </li>
-              <li>
-                <a href="/services/UX-Audits-&amp;-Consultation">
-                  UX Audits &amp; Consultation
-                </a>
-              </li>
-            </ul>
-            <h2>Navigation</h2>
-            <ul>
-              <li>
-                <a href="/case-studies">Case Studies &amp; Portfolio</a>
-              </li>
-              <li>
-                <a href="/pricing">Pricing</a>
-              </li>
-              <li>
-                <a href="/blogs">Blog</a>
-              </li>
-              <li>
-                <a href="/about">About</a>
-              </li>
-              <li>
-                <a href="/faqs">FAQs</a>
-              </li>
-              <li>
-                <a href="/tools">Free Tools</a>
-              </li>
-              <li>
-                <a href="/contact">Contact</a>
-              </li>
-            </ul>
-            <p>
-              Founded by Vishal Anand. 50+ products shipped. 5.0 rating.{" "}
-              <a href="/contact">Contact us</a>
-            </p>
-          </div>
-        </noscript>
-
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           {/* Skip Link for Keyboard Navigation */}
           <a
