@@ -300,6 +300,11 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
                   </Link>
                 </li>
                 <li>
+                  <Link className="footer-text" href="/products">
+                    Our Products
+                  </Link>
+                </li>
+                <li>
                   <Link className="footer-text" href="/pricing">
                     Pricing
                   </Link>

@@ -18,6 +18,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   apps4sale: "Apps for Sale",
   componentlab: "Component Lab",
   buttons: "Buttons",
+  products: "Our Products",
 };
 
 // Service detail page slug labels
