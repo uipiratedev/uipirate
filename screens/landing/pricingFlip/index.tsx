@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 import LetsTalkButton from "@/components/LetsTalkButton";
+import { Logo } from "@/components/icons";
 
 type PlanId = "monthly" | "custom";
 
@@ -11,7 +12,8 @@ interface Plan {
   id: PlanId;
   head: string;
   accent: string;
-  logo: string;
+  logoHex: string;
+
   /** Illustration shown in the left panel. Swap for a real asset per plan. */
   image: string;
   imageAlt: string;
@@ -29,7 +31,8 @@ const PLANS: Record<PlanId, Plan> = {
     id: "monthly",
     head: "Monthly",
     accent: "Retainer",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1790158834/t-2_nyguuz.svg",
+    logoHex: "#E0E0E0",
+
     image: "/assets/gif/kite.gif",
     imageAlt: "Monthly retainer plan",
     priceLabel: "Starting from",
@@ -51,7 +54,8 @@ const PLANS: Record<PlanId, Plan> = {
     id: "custom",
     head: "Custom",
     accent: "Quote",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1790158834/t_fnmgru.svg",
+    logoHex: "#666666",
+
     image: "/assets/gif/headquater.gif",
     imageAlt: "Custom project quote plan",
     priceLabel: "Starting from",
@@ -300,12 +304,12 @@ const LeftSection = ({ plan }: { plan: Plan }) => {
           {/* Content */}
           <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
             {/* Logo */}
-            <img
-              alt=""
-              aria-hidden="true"
-              className="pointer-events-none absolute right-0 top-0 aspect-[156/210] w-[55%] max-w-[200px] min-w-[120px] select-none object-contain object-top"
-              src={plan.logo}
-            />
+            <div className="pointer-events-none absolute right-0 top-0 aspect-[156/210] w-[55%] max-w-[200px] min-w-[120px] select-none object-contain object-top">
+              <Logo
+                color={plan.logoHex}
+              />
+
+            </div>
 
             {/* Plan name */}
             <h3
