@@ -1,75 +1,75 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import SpacingCalculatorClient from "@/components/SpacingCalculator/SpacingCalculatorClient";
 
 export const metadata: Metadata = {
-  title: "8pt Grid & Figma Auto-Layout Spacing Calculator | UI Pirate",
+  title: "8pt Grid & Figma Spacing Calculator | UI Pirate",
   description:
-    "Calculate consistent 8pt/4pt spatial multiples, Figma auto-layout padding, component insets, and standardized layer naming specs.",
+    "Free tool to generate an 8pt/4pt spacing scale with exact px/rem values, check any pixel value for grid alignment, and export CSS variables, Tailwind config, or Figma variables.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/figma-spacing-calculator",
   },
+  openGraph: {
+    title: "8pt Grid & Figma Spacing Calculator | UI Pirate",
+    description:
+      "Calculate 8pt/4pt layout scales, auto-layout container padding, and Figma spacing variables.",
+    url: "https://uipirate.com/tools/design/figma-spacing-calculator",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "figma-spacing-calculator",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · Spatial & Grid Engine",
-  title: "8pt Grid & Figma Auto-Layout Spacing Calculator",
-  subtitle:
-    "Standardize Figma auto-layout padding, 8pt/4pt spatial increments, nested container insets, and BEM/variant component naming conventions.",
-  agencyService: "Design Systems & Figma Architecture",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "8pt Grid & Figma Spacing Calculator",
+  url: "https://uipirate.com/tools/design/figma-spacing-calculator",
+  description:
+    "Generate an 8pt/4pt spacing scale with exact px/rem values, check any pixel value for grid alignment, and export CSS variables, Tailwind config, or Figma variables.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "8pt & 4pt Spatial Multiple Scales",
-      desc: "Calculates mathematical spacing ramps (4px to 128px) for cohesive vertical cadence.",
+      "@type": "Question",
+      name: "Why isn't my design's spacing landing on exact px values in Figma?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Figma's Auto Layout can produce fractional pixel values when nested frames use percentage-based resizing or when a parent frame's width isn't itself a multiple of your base unit.",
+      },
     },
     {
-      name: "Auto-Layout Padding & Insets",
-      desc: "Calculates proportional vertical and horizontal button, card, and modal insets.",
-    },
-    {
-      name: "Figma Component & Layer Naming Specs",
-      desc: "Generates standardized variant properties (Type=Primary, State=Hover, Size=L).",
-    },
-    {
-      name: "Figma Variables & Tokens Studio Export",
-      desc: "Outputs importable JSON token collections for Figma local variables.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Spatial Density Setting",
-      title: "Select Compact or Spacious",
-      desc: "Choose baseline spatial increment (4pt, 8pt, or fluid).",
-    },
-    {
-      step: "02. Auto-Layout Formula",
-      title: "Calculate Insets & Gaps",
-      desc: "Produces proportional button, card, and grid spacing tokens.",
-    },
-    {
-      step: "03. Figma Variable Sync",
-      title: "Export JSON & Tokens",
-      desc: "Import directly into Figma local variables and Tailwind CSS config.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Why use an 8pt grid for digital UI?",
-      a: "The 8pt grid aligns with standard screen pixel densities and creates natural visual rhythm across typography, padding, and layout blocks.",
-    },
-    {
-      q: "How does nested container math prevent misalignment?",
-      a: "It calculates inner container padding and child radius so nested elements fit flush with zero optical distortion.",
+      "@type": "Question",
+      name: "What root font size does the rem conversion use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "16px, the browser default. The px values are correct regardless of your project's root font-size; only the rem conversion assumes 16px.",
+      },
     },
   ],
 };
 
 export default function FigmaSpacingCalculatorPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <SpacingCalculatorClient />
+    </>
+  );
 }

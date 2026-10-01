@@ -1,71 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import ColorPaletteGeneratorClient from "@/components/ColorPaletteGenerator/ColorPaletteGeneratorClient";
 
 export const metadata: Metadata = {
   title: "Accessible SaaS Color Palette Generator | UI Pirate",
   description:
-    "Generate harmonious 10-shade UI color palettes (50–950) with built-in WCAG contrast validation and Tailwind CSS export.",
+    "Free tool to generate a full 50-950 brand color ramp and matching neutral scale from one input color, with a real WCAG contrast ratio and recommended text color computed for every shade.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/color-palette-generator",
   },
+  openGraph: {
+    title: "Accessible SaaS Color Palette Generator | UI Pirate",
+    description:
+      "Generate a harmonious 10-shade UI color ramp with automated WCAG contrast validation for every step.",
+    url: "https://uipirate.com/tools/design/color-palette-generator",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "color-palette-generator",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · Design Utility",
-  title: "Accessible SaaS Color Palette Generator",
-  subtitle:
-    "Generate harmonious 10-shade UI color ramps (50–950) with APCA perceptual lightness and instant Tailwind CSS & Figma token exports.",
-  agencyService: "Design Systems & Component Libraries",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Accessible SaaS Color Palette Generator",
+  url: "https://uipirate.com/tools/design/color-palette-generator",
+  description:
+    "Generate a full 50-950 brand color ramp and matching neutral scale from one input color, with a WCAG contrast ratio computed for every shade.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "10-Step Shade Generation (50–950)",
-      desc: "Generates tint and shade scales with constant perceptual lightness.",
+      "@type": "Question",
+      name: "Why does my neutral ramp still look slightly tinted?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "By design - it caps saturation at 8% of your base hue rather than going to 0%, which is how most modern design systems build a neutral scale that still feels cohesive with the brand color.",
+      },
     },
     {
-      name: "Automatic WCAG Contrast Verification",
-      desc: "Flags which shades meet AA/AAA compliance against white and dark backgrounds.",
+      "@type": "Question",
+      name: "Is step 500 exactly my input color?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Step 500 uses your input color's hue and saturation, but its lightness is set by a fixed curve rather than your input's raw lightness, keeping every generated palette's midtone at a consistent, accessible lightness.",
+      },
     },
     {
-      name: "Semantic Role Mapping",
-      desc: "Maps brand shades to primary, success, warning, and error UI tokens.",
-    },
-    {
-      name: "Tailwind CSS & CSS Variable Export",
-      desc: "1-click copy for tailwind.config.js and CSS Custom Properties.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Base Color Input",
-      title: "Brand HEX / HSL",
-      desc: "Enter your primary brand color to calculate shades.",
-    },
-    {
-      step: "02. Scale Tuning",
-      title: "Curve Adjustment",
-      desc: "Fine-tune saturation and lightness progression curves.",
-    },
-    {
-      step: "03. Multi-Format Export",
-      title: "Copy Code Tokens",
-      desc: "Export to Tailwind, CSS Variables, or Figma Tokens Studio.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Why use a 10-shade scale for SaaS UI?",
-      a: "A standardized 50–950 scale ensures predictable contrast for backgrounds, borders, hover states, and active text.",
+      "@type": "Question",
+      name: "Are the contrast ratios shown real WCAG numbers?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes - the exact relative-luminance formula from WCAG 2.1 Success Criterion 1.4.3, computed live for every shade against both pure white and pure black.",
+      },
     },
   ],
 };
 
 export default function ColorPaletteGeneratorPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <ColorPaletteGeneratorClient />
+    </>
+  );
 }

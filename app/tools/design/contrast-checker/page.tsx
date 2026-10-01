@@ -1,71 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import ContrastCheckerClient from "@/components/ContrastChecker/ContrastCheckerClient";
 
 export const metadata: Metadata = {
-  title: "WCAG Color Contrast & Accessibility Checker | UI Pirate",
+  title: "WCAG & APCA Color Contrast Checker | UI Pirate",
   description:
-    "Test color pairings against WCAG 2.1 AA/AAA contrast ratios and APCA standards for web and SaaS UI accessibility.",
+    "Free tool to check text and background color pairs against WCAG 2.1 AA/AAA contrast ratios and the newer perceptual APCA (Lc) algorithm, computed live from the exact published formulas.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/contrast-checker",
   },
+  openGraph: {
+    title: "WCAG & APCA Color Contrast Checker | UI Pirate",
+    description:
+      "Check any text/background color pair against WCAG 2.1 AA/AAA and the perceptually-calibrated APCA algorithm.",
+    url: "https://uipirate.com/tools/design/contrast-checker",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "contrast-checker",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · In Development",
-  title: "WCAG Color Contrast & APCA Accessibility Checker",
-  subtitle:
-    "Check foreground and background color combinations against WCAG 2.1 AA/AAA ratios and modern APCA perceptual contrast algorithms.",
-  agencyService: "Design Systems & Frontend Architecture",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "WCAG & APCA Color Contrast Checker",
+  url: "https://uipirate.com/tools/design/contrast-checker",
+  description:
+    "Check text and background color pairs against WCAG 2.1 AA/AAA contrast ratios and the newer perceptual APCA (Lc) algorithm.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "WCAG 2.1 AA Ratio (4.5:1)",
-      desc: "Validates minimum contrast ratio for normal text and interactive form inputs.",
+      "@type": "Question",
+      name: "Which number should I actually use to ship a design?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "For legal/compliance purposes, WCAG 2.1 AA (4.5:1 normal text, 3:1 large text) is what auditors and lawsuits currently reference. Use APCA's Lc as an additional perceptual sanity check, especially for grays and dark mode.",
+      },
     },
     {
-      name: "WCAG 2.1 AAA Ratio (7:1)",
-      desc: "Tests enhanced accessibility benchmarks for enterprise compliance and high-legibility UI.",
+      "@type": "Question",
+      name: "Why did swapping my two colors change the APCA number so much?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "APCA models text-on-light and light-on-text perception differently on purpose, unlike WCAG's single symmetric ratio. Always pass the actual text color as the foreground.",
+      },
     },
     {
-      name: "APCA Perceptual Lightness (Lc)",
-      desc: "Calculates modern context-sensitive contrast based on font weight and spatial frequency.",
-    },
-    {
-      name: "Color Blindness Simulation",
-      desc: "Simulates Protanopia, Deuteranopia, and Tritanopia to ensure accessible visual state indicators.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Color Input",
-      title: "HEX, RGB, or HSL",
-      desc: "Input your brand colors or import full Tailwind / Figma color palettes.",
-    },
-    {
-      step: "02. Multi-Standard Verification",
-      title: "Real-Time Contrast Math",
-      desc: "Calculates standard luminance ratios and perceptual APCA scores simultaneously.",
-    },
-    {
-      step: "03. 1-Click Code Export",
-      title: "Accessible Design Tokens",
-      desc: "Export validated color combinations directly into Tailwind CSS or CSS Custom Properties.",
-    },
-  ],
-  faqs: [
-    {
-      q: "What is the difference between WCAG 2.1 and APCA?",
-      a: "WCAG 2.1 uses a simple mathematical luminance ratio, whereas APCA accounts for human vision physiology, font sizes, and weight.",
+      "@type": "Question",
+      name: "What counts as large text for the lower 3:1 WCAG threshold?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "18pt (24px) or larger at regular weight, or 14pt (about 19px) or larger at bold weight.",
+      },
     },
   ],
 };
 
-export default function ContrastCheckerNestedPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+export default function ContrastCheckerPage() {
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <ContrastCheckerClient />
+    </>
+  );
 }

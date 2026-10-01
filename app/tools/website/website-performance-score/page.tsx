@@ -1,71 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import PerformanceCheckerClient from "@/components/PerformanceChecker/PerformanceCheckerClient";
 
 export const metadata: Metadata = {
-  title: "Website Performance & UX Score Checker | UI Pirate",
+  title: "Website Performance & UX Signals Score | UI Pirate",
   description:
-    "Audit Core Web Vitals, speed bottlenecks, Cumulative Layout Shift (CLS), and human UX responsiveness in one unified report.",
+    "Free tool that measures real time-to-first-byte and payload size for a live request, then checks render-blocking resources, layout-shift risk, and third-party weight from the page's real HTML.",
   alternates: {
     canonical: "https://uipirate.com/tools/website/website-performance-score",
   },
+  openGraph: {
+    title: "Website Performance & UX Signals Score | UI Pirate",
+    description:
+      "Measure real network timing plus render-blocking resources, layout-shift risk, and third-party weight - not a simulated Lighthouse score.",
+    url: "https://uipirate.com/tools/website/website-performance-score",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "website-performance-score",
-  category: "website-conversion",
-  categoryLabel: "Website & Conversion",
-  badgeText: "Upcoming Tool · Performance",
-  title: "Website Performance & UX Experience Score",
-  subtitle:
-    "Combine Google Core Web Vitals (LCP, INP, CLS) with human UX perception metrics to eliminate conversion-killing speed bottlenecks.",
-  agencyService: "Technical Web Architecture & Next.js",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Website Performance & UX Signals Score",
+  url: "https://uipirate.com/tools/website/website-performance-score",
+  description:
+    "Measures real time-to-first-byte and payload size for a live request, then checks render-blocking resources, layout-shift risk, and third-party weight from the page's real HTML.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Largest Contentful Paint (LCP)",
-      desc: "Measures when the main content block is visible.",
+      "@type": "Question",
+      name: "Why isn't this the same score as Google PageSpeed Insights?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "PageSpeed Insights renders the page in real Chrome and measures actual paint/input timing plus real visitor field data. This tool measures one real network request plus deterministic static-HTML proxies for the same underlying problems - a narrower signal, not a replacement.",
+      },
     },
     {
-      name: "Interaction to Next Paint (INP)",
-      desc: "Scores UI responsiveness during user taps and clicks.",
+      "@type": "Question",
+      name: "Why does TTFB matter so much?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Everything else - parsing, rendering, script execution - can only start after the first byte arrives, so a slow TTFB delays every other performance metric by the same amount.",
+      },
     },
     {
-      name: "Cumulative Layout Shift (CLS)",
-      desc: "Flags visual instability that causes accidental clicks.",
-    },
-    {
-      name: "Asset & Font Payload",
-      desc: "Audits uncompressed imagery and render-blocking scripts.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Synthetic Test Run",
-      title: "Real-Device Emulation",
-      desc: "Runs mobile & desktop network throttling tests.",
-    },
-    {
-      step: "02. Core Web Vitals Scan",
-      title: "Chrome UX Metric Audit",
-      desc: "Extracts field and lab performance data.",
-    },
-    {
-      step: "03. Engineering Blueprint",
-      title: "Next.js & Asset Fixes",
-      desc: "Prescriptive code optimizations for sub-second speeds.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Why does site speed affect conversion rate?",
-      a: "Every 100ms delay in website load time drops conversion rates by roughly 7%.",
+      "@type": "Question",
+      name: "Why can't I check a localhost or internal URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Allowing arbitrary internal addresses would let anyone use this tool to probe private networks from the server, a class of vulnerability called SSRF. Only URLs that resolve to public IP addresses are accepted.",
+      },
     },
   ],
 };
 
 export default function WebsitePerformanceScorePage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <PerformanceCheckerClient />
+    </>
+  );
 }

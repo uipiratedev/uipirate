@@ -1,67 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import SvgOptimizerClient from "@/components/SvgOptimizer/SvgOptimizerClient";
 
 export const metadata: Metadata = {
-  title: "Fast SVG Optimizer & React Component Exporter | UI Pirate",
+  title: "Fast SVG Optimizer & React Exporter | UI Pirate",
   description:
-    "Compress and clean SVG vectors, remove unnecessary metadata, and export clean JSX React components with Tailwind classes.",
+    "Free tool to strip editor bloat and comments from exported SVG markup, round coordinate precision, and export a clean React/JSX component - processed on the fly, never stored.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/svg-optimizer",
   },
+  openGraph: {
+    title: "Fast SVG Optimizer & React Exporter | UI Pirate",
+    description:
+      "Compress SVG vector files, strip Figma/Illustrator bloat, and export clean JSX React components.",
+    url: "https://uipirate.com/tools/design/svg-optimizer",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "svg-optimizer",
-  category: "design-system",
-  categoryLabel: "Design Systems & Code",
-  badgeText: "Upcoming Tool · Asset Utility",
-  title: "Fast SVG Optimizer & React Component Exporter",
-  subtitle:
-    "Clean vector files, strip editor metadata (Illustrator/Figma), reduce byte weight by up to 70%, and export clean React SVG components.",
-  agencyService: "Frontend Performance & Asset Pipeline",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Fast SVG Optimizer & React Exporter",
+  url: "https://uipirate.com/tools/design/svg-optimizer",
+  description:
+    "Strip editor bloat and comments from exported SVG markup, round coordinate precision, and export a clean React/JSX component.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "SVGO Precision Compression",
-      desc: "Strips hidden metadata, unused defs, and redundant path coordinates.",
+      "@type": "Question",
+      name: "Is my SVG uploaded anywhere?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The markup is sent to the server to be parsed and optimized, the same as any other tool on this site, and the preview renders back in your browser - nothing is stored after the response is sent.",
+      },
     },
     {
-      name: "React / Next.js Component Output",
-      desc: "Converts attributes to camelCase (strokeWidth, viewBox) for JSX.",
+      "@type": "Question",
+      name: "Will lowering the precision distort my icon?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "At precision 1-2 (the default), the difference is invisible at any icon size - a coordinate error under 0.01px is far smaller than a single screen pixel.",
+      },
     },
     {
-      name: "currentColor Replacement",
-      desc: "Replaces hardcoded fills with currentColor for dynamic theme styling.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Drop SVG File",
-      title: "Upload or Paste XML",
-      desc: "Drop your raw SVG icon or illustration.",
-    },
-    {
-      step: "02. Optimize Nodes",
-      title: "Lossless Compression",
-      desc: "Cleans path precision and strips comments.",
-    },
-    {
-      step: "03. Copy React Code",
-      title: "JSX Ready",
-      desc: "Copy clean component code directly into your stack.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Why optimize SVGs before shipping to production?",
-      a: "Unoptimized SVGs exported from Figma contain up to 60% bloat like comments, xmlns tags, and unnecessary clipPaths.",
+      "@type": "Question",
+      name: "Why did some of my <g> groups disappear?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Only attribute-less groups are touched: a fully empty one is deleted, and one wrapping exactly one child is replaced by that child. A group with a transform, opacity, class, or any other attribute is always preserved.",
+      },
     },
   ],
 };
 
 export default function SvgOptimizerPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <SvgOptimizerClient />
+    </>
+  );
 }

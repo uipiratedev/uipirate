@@ -1,67 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import GeoCompetitorBenchmarkClient from "@/components/GeoCompetitorBenchmark/GeoCompetitorBenchmarkClient";
 
 export const metadata: Metadata = {
-  title: "GEO Competitor & AI Search Benchmark Checker | UI Pirate",
+  title: "GEO Competitor & AI Search Benchmark | UI Pirate",
   description:
-    "Compare your brand's AI search visibility, crawler permissions, schema markup, and llms.txt adoption directly against top competitors.",
+    "Free tool to benchmark your domain's AI bot access, llms.txt adoption, and structured-data depth against a competitor's, fetched live from both sites' real robots.txt and homepage HTML.",
   alternates: {
     canonical: "https://uipirate.com/tools/ai/geo-competitor-checker",
   },
+  openGraph: {
+    title: "GEO Competitor & AI Search Benchmark | UI Pirate",
+    description:
+      "Benchmark your domain's AI readiness, schema graph depth, and llms.txt adoption against top competitors.",
+    url: "https://uipirate.com/tools/ai/geo-competitor-checker",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "geo-competitor-checker",
-  category: "ai-geo",
-  categoryLabel: "AI & GEO Visibility",
-  badgeText: "Upcoming Tool · Competitive GEO",
-  title: "GEO Competitor & AI Search Benchmark Checker",
-  subtitle:
-    "Audit your website alongside up to 5 competitors to compare AI visibility scores, crawler firewall rules, and structured schema graphs.",
-  agencyService: "Generative Engine Optimization (GEO) & Competitive Strategy",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "GEO Competitor & AI Search Benchmark",
+  url: "https://uipirate.com/tools/ai/geo-competitor-checker",
+  description:
+    "Benchmark a domain's AI bot access, llms.txt adoption, and structured-data depth against a competitor's, fetched live from both sites.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Side-by-Side GEO Visibility Score",
-      desc: "Compares overall AI readiness across 26+ crawlers.",
+      "@type": "Question",
+      name: "Does this use any Google/Search Console/PageSpeed API?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No - everything is derived from fetching each domain's own public robots.txt, llms.txt/llms-full.txt, and homepage HTML directly. No API keys or account access are required.",
+      },
     },
     {
-      name: "llms.txt Adoption Benchmark",
-      desc: "Checks which competitors provide dedicated markdown context.",
+      "@type": "Question",
+      name: "Why does the bot-access pillar carry the most weight?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "If an AI crawler is blocked entirely, nothing else about a page can matter to that system, since it never gets read in the first place.",
+      },
     },
     {
-      name: "Schema.org Entity Graph Depth",
-      desc: "Evaluates competitor structured markup richness.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Input Competitor Domains",
-      title: "Add Target URLs",
-      desc: "Enter your domain and up to 5 competitor websites.",
-    },
-    {
-      step: "02. Parallel Crawl & Audit",
-      title: "Automated Benchmarks",
-      desc: "Inspects headers, robots.txt, and schema in parallel.",
-    },
-    {
-      step: "03. Competitive Gap Analysis",
-      title: "Actionable Roadmap",
-      desc: "Reveals competitive advantages to outrank competitors in AI search.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Why compare GEO readiness against competitors?",
-      a: "AI engines often recommend only 1 or 2 top solutions for buyer queries. Outperforming competitors in technical GEO ensures your brand is chosen.",
+      "@type": "Question",
+      name: "Why can't I check a localhost or internal URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Allowing arbitrary internal addresses would let anyone use this tool to probe private networks from the server, a class of vulnerability called SSRF. Only URLs that resolve to public IP addresses are accepted.",
+      },
     },
   ],
 };
 
 export default function GeoCompetitorCheckerPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <GeoCompetitorBenchmarkClient />
+    </>
+  );
 }
