@@ -207,6 +207,11 @@ const STATIC_PAGES: {
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/tools/ai/geo-competitor-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/tools/ai/bot-directory",
     priority: 0.85,
     changeFrequency: "monthly" as const,
