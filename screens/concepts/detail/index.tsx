@@ -3,6 +3,7 @@ import Link from "next/link";
 import PageWrapper from "@/components/PageWrapper";
 
 import { CONCEPTS } from "../data";
+import { CONCEPT_DETAILS } from "../details";
 import type { ConceptDetail } from "../details";
 
 interface ConceptDetailScreenProps {
@@ -401,24 +402,46 @@ const ConceptDetailScreen = ({ detail }: ConceptDetailScreenProps) => {
               <section className="mb-16 max-md:mb-12">
                 <SectionTitle eyebrow="Keep reading" id="related" title="Related concepts" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {related.map((r) => (
-                    <div
-                      key={r.slug}
-                      className="rounded-2xl border border-gray-200/70 bg-white p-6"
-                    >
-                      <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-500 mb-2">
-                        {r.industry}
-                      </p>
-                      <h3 className="font-bold text-gray-900 mb-1">{r.title}</h3>
-                      <p className="text-sm text-gray-600 mb-3">{r.problem}</p>
+                  {related.map((r) => {
+                    const live = !!CONCEPT_DETAILS[r.slug];
+                    const cardClass =
+                      "block h-full rounded-2xl border border-gray-200/70 bg-white p-6";
+
+                    const inner = (
+                      <>
+                        <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-500 mb-2">
+                          {r.industry}
+                        </p>
+                        <h3 className="font-bold text-gray-900 mb-1">
+                          {r.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3">{r.problem}</p>
+                        {live ? (
+                          <span className="text-sm font-bold text-[#FF5B04]">
+                            Read concept →
+                          </span>
+                        ) : (
+                          <span className="text-xs font-jetbrains-mono uppercase tracking-wider text-gray-400">
+                            Write-up coming soon
+                          </span>
+                        )}
+                      </>
+                    );
+
+                    return live ? (
                       <Link
-                        className="text-sm font-bold text-[#FF5B04]"
-                        href="/concepts"
+                        key={r.slug}
+                        className={`${cardClass} hover:border-gray-300 hover:shadow-md transition-all`}
+                        href={`/concepts/${r.slug}`}
                       >
-                        Browse all concepts →
+                        {inner}
                       </Link>
-                    </div>
-                  ))}
+                    ) : (
+                      <div key={r.slug} className={cardClass}>
+                        {inner}
+                      </div>
+                    );
+                  })}
                 </div>
               </section>
             )}

@@ -195,7 +195,10 @@ export const CONCEPT_DETAILS: Record<string, ConceptDetail> = {
         a: "Our planning estimate is 6 to 10 weeks for one location, longer for multi-location with custom integrations. We firm that up once we see your booking system.",
       },
     ],
-    related: ["crm-grounded-sales-inquiry-agent", "concierge-medicine-scheduling-assistant"],
+    related: [
+      "crm-grounded-sales-inquiry-agent",
+      "enterprise-multi-agent-assistant-microsoft-365",
+    ],
   },
 
   "crm-grounded-sales-inquiry-agent": {
@@ -372,7 +375,10 @@ export const CONCEPT_DETAILS: Record<string, ConceptDetail> = {
         a: "Our planning estimate is 8 to 12 weeks for a working draft-and-approve flow inside one CRM. We firm that up after seeing your documents and CRM setup.",
       },
     ],
-    related: ["ai-voice-receptionist-for-clinics", "enterprise-multi-agent-assistant-microsoft-365"],
+    related: [
+      "ai-voice-receptionist-for-clinics",
+      "enterprise-multi-agent-assistant-microsoft-365",
+    ],
   },
 
   "enterprise-multi-agent-assistant-microsoft-365": {
@@ -544,6 +550,9 @@ export const CONCEPT_DETAILS: Record<string, ConceptDetail> = {
         a: "Our planning estimate is 12 to 16 weeks for a first production agent, with the architecture ready for more. The security review runs alongside, and its timing depends on your organization.",
       },
     ],
-    related: ["crm-grounded-sales-inquiry-agent", "hipaa-ready-ai-intake-billing"],
+    related: [
+      "crm-grounded-sales-inquiry-agent",
+      "ai-voice-receptionist-for-clinics",
+    ],
   },
 };
