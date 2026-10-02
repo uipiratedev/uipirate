@@ -96,7 +96,7 @@ export default function DashboardAnalyzerClient() {
             Paste a public dashboard or admin UI URL. We fetch the real page
             server-side and run deterministic checks for information density,
             KPI prominence, table usability, filters, and multi-role
-            navigation — every result is explainable, nothing is guessed.
+            navigation, every result is explainable, nothing is guessed.
           </p>
 
           <div className="mt-8 max-w-2xl mx-auto">
@@ -129,7 +129,7 @@ export default function DashboardAnalyzerClient() {
               </button>
             </form>
             <p className="text-[11px] text-gray-400 mt-3">
-              Works best on publicly accessible pages — a marketing site, a
+              Works best on publicly accessible pages, a marketing site, a
               public demo, or a server-rendered preview route.
             </p>
           </div>
@@ -150,7 +150,7 @@ export default function DashboardAnalyzerClient() {
                 <span className="font-bold">Low-confidence result:</span> this
                 page returned very little content in its initial HTML
                 response. It may be a client-rendered single-page app or
-                require authentication — this analyzer only sees the raw
+                require authentication, this analyzer only sees the raw
                 server response, not what renders after JavaScript runs. For
                 best results, test a publicly accessible page or a
                 server-rendered demo route.
@@ -234,8 +234,8 @@ export default function DashboardAnalyzerClient() {
               How This Analyzer Works
             </h2>
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
-              This tool fetches the exact HTML your server sends for a URL —
-              the same thing a search engine crawler would see — and runs
+              This tool fetches the exact HTML your server sends for a URL,
+              the same thing a search engine crawler would see, and runs
               deterministic, rule-based checks against it. There's no AI
               guessing and no fake scoring: every check below is visible in
               the results, with the specific DOM evidence that produced it.
@@ -250,7 +250,7 @@ export default function DashboardAnalyzerClient() {
               },
               {
                 title: "KPI Prominence",
-                desc: "Looks for short, number-led elements near the top of the page — text like \"$12.4K\" or \"84%\" sitting alone in a heading or a stat-card-like container — as a proxy for whether key metrics are immediately visible.",
+                desc: "Looks for short, number-led elements near the top of the page, text like \"$12.4K\" or \"84%\" sitting alone in a heading or a stat-card-like container, as a proxy for whether key metrics are immediately visible.",
               },
               {
                 title: "Table & Grid Usability",
@@ -291,26 +291,26 @@ export default function DashboardAnalyzerClient() {
               Known Limitations
             </h3>
             <p className="text-xs text-gray-500 leading-relaxed mb-4">
-              This is a static-HTML analyzer, not a browser — it never
+              This is a static-HTML analyzer, not a browser, it never
               executes JavaScript or logs into anything. That's an honest
               boundary, not a hidden one:
             </p>
             <ul className="space-y-2 text-xs text-gray-500 leading-relaxed list-disc pl-4">
               <li>
                 Client-rendered dashboards (most React/Vue/Angular SPAs) often
-                return an almost-empty HTML shell before JavaScript runs — the
+                return an almost-empty HTML shell before JavaScript runs, the
                 analyzer will flag this as a "low-confidence" result rather
                 than fabricate a score.
               </li>
               <li>
-                Pages behind a login wall can't be analyzed directly — test a
+                Pages behind a login wall can't be analyzed directly, test a
                 public marketing page, a public demo route, or a
                 server-rendered preview instead.
               </li>
               <li>
                 Only <code className="font-mono text-gray-700">http://</code> and{" "}
                 <code className="font-mono text-gray-700">https://</code> URLs
-                that resolve to a public IP address are accepted — internal
+                that resolve to a public IP address are accepted, internal
                 and private network addresses are blocked for security.
               </li>
             </ul>
@@ -325,15 +325,15 @@ export default function DashboardAnalyzerClient() {
               {[
                 {
                   q: "Can this analyze a dashboard that requires login?",
-                  a: "Not directly — the analyzer makes a single unauthenticated server-side request. If your product has a public demo or preview route, point the tool at that instead.",
+                  a: "Not directly, the analyzer makes a single unauthenticated server-side request. If your product has a public demo or preview route, point the tool at that instead.",
                 },
                 {
                   q: "Why did my score come back low with a 'low-confidence' warning?",
-                  a: "Your page's initial HTML response was very small — almost certainly because it's a client-rendered single-page app that fetches data and renders the real UI after JavaScript loads, which this tool doesn't execute.",
+                  a: "Your page's initial HTML response was very small, almost certainly because it's a client-rendered single-page app that fetches data and renders the real UI after JavaScript loads, which this tool doesn't execute.",
                 },
                 {
                   q: "Is my URL stored anywhere?",
-                  a: "No. The URL is fetched, analyzed in memory, and the result is returned to your browser — nothing is written to a database.",
+                  a: "No. The URL is fetched, analyzed in memory, and the result is returned to your browser, nothing is written to a database.",
                 },
                 {
                   q: "Why can't I analyze a localhost or internal URL?",

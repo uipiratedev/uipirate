@@ -284,7 +284,7 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     badge: "Backlit 3D Key",
     badgeVariant: "gradient",
     description:
-      "Lightweight rebuild of the footer's LETS VENTURE key — grey frame, recessed silver-bezel socket, and a black cap on a visible base with a backlit magma glow behind the label. Container-query fluid, no SVG filters.",
+      "Lightweight rebuild of the footer's LETS VENTURE key, grey frame, recessed silver-bezel socket, and a black cap on a visible base with a backlit magma glow behind the label. Container-query fluid, no SVG filters.",
     detailUrl: "/componentlab/join-tactile-button",
     features: [
       "Recessed silver-bezel socket",

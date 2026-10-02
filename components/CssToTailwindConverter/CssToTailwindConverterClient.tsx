@@ -130,8 +130,8 @@ export default function CssToTailwindConverterClient() {
             Converter
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Paste raw CSS — including shorthand, pseudo-classes, and media
-            queries — and get idiomatic Tailwind utility classes back,
+            Paste raw CSS, including shorthand, pseudo-classes, and media
+            queries, and get idiomatic Tailwind utility classes back,
             instantly and entirely in your browser.
           </p>
 
@@ -412,7 +412,7 @@ export default function CssToTailwindConverterClient() {
             </h2>
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               Every CSS declaration you paste is resolved through three
-              tiers, tried in order, so nothing is ever silently dropped —
+              tiers, tried in order, so nothing is ever silently dropped,
               only shortened when a clean match exists.
             </p>
           </div>
@@ -426,11 +426,11 @@ export default function CssToTailwindConverterClient() {
                 Named Utility Classes
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                If a value lines up with Tailwind's default design scale —{" "}
+                If a value lines up with Tailwind's default design scale,{" "}
                 <code className="font-mono text-gray-800">16px</code> padding,{" "}
                 <code className="font-mono text-gray-800">8px</code> radius,{" "}
                 <code className="font-mono text-gray-800">700</code> font
-                weight — it becomes a short, semantic class like{" "}
+                weight, it becomes a short, semantic class like{" "}
                 <code className="font-mono text-gray-800">p-4</code>,{" "}
                 <code className="font-mono text-gray-800">rounded-lg</code>,{" "}
                 <code className="font-mono text-gray-800">font-bold</code>.
@@ -449,7 +449,7 @@ export default function CssToTailwindConverterClient() {
                 </code>{" "}
                 padding doesn't exist on Tailwind's scale, but{" "}
                 <code className="font-mono text-gray-800">padding</code>{" "}
-                itself is a known utility — so it converts to{" "}
+                itself is a known utility, so it converts to{" "}
                 <code className="font-mono text-gray-800">p-[13px]</code>{" "}
                 using Tailwind's official bracket syntax instead of rounding
                 to the nearest step and silently changing your design.
@@ -463,14 +463,14 @@ export default function CssToTailwindConverterClient() {
                 Anything Tailwind Doesn't Name
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Properties with no Tailwind utility at all —{" "}
+                Properties with no Tailwind utility at all,{" "}
                 <code className="font-mono text-gray-800">mask-type</code>,
-                vendor prefixes, exotic CSS — fall back to Tailwind's
+                vendor prefixes, exotic CSS, fall back to Tailwind's
                 arbitrary <em>property</em> syntax:{" "}
                 <code className="font-mono text-gray-800">
                   [mask-type:luminance]
                 </code>
-                . It's valid, real Tailwind — just less common knowledge.
+                . It's valid, real Tailwind, just less common knowledge.
               </p>
             </div>
           </div>
@@ -484,7 +484,7 @@ export default function CssToTailwindConverterClient() {
               {[
                 {
                   title: "Shorthand expansion",
-                  desc: "padding, margin, border-radius, and border shorthand are decomposed into their per-side/per-corner Tailwind classes — or collapsed to px-/py- when both axes match.",
+                  desc: "padding, margin, border-radius, and border shorthand are decomposed into their per-side/per-corner Tailwind classes, or collapsed to px-/py- when both axes match.",
                 },
                 {
                   title: "Border-radius corner order",
@@ -500,7 +500,7 @@ export default function CssToTailwindConverterClient() {
                 },
                 {
                   title: "Percentages as fractions",
-                  desc: "width: 50% becomes w-1/2, width: 33.333% becomes w-1/3 — matching Tailwind's built-in fraction scale instead of falling back to arbitrary values.",
+                  desc: "width: 50% becomes w-1/2, width: 33.333% becomes w-1/3, matching Tailwind's built-in fraction scale instead of falling back to arbitrary values.",
                 },
                 {
                   title: "!important and negative values",
@@ -529,14 +529,14 @@ export default function CssToTailwindConverterClient() {
             </h3>
             <p className="text-xs text-gray-500 leading-relaxed mb-4">
               This runs entirely in your browser with a lightweight parser,
-              not a full CSS AST — it's built for component-level CSS
+              not a full CSS AST, it's built for component-level CSS
               (buttons, cards, nav bars), not entire stylesheets. A few
               things it intentionally doesn't attempt:
             </p>
             <ul className="space-y-2 text-xs text-gray-500 leading-relaxed list-disc pl-4">
               <li>
                 Native CSS nesting (<code className="font-mono text-gray-700">&amp;</code>{" "}
-                selectors) — flatten your rules first.
+                selectors), flatten your rules first.
               </li>
               <li>
                 Gradients, background images, and multi-function{" "}
@@ -549,7 +549,7 @@ export default function CssToTailwindConverterClient() {
                 <code className="font-mono text-gray-700">
                   bg-[#ff5b04]
                 </code>
-                ) rather than guessing the nearest built-in Tailwind shade —
+                ) rather than guessing the nearest built-in Tailwind shade,
                 guessing can silently shift your brand color.
               </li>
               <li>
@@ -572,7 +572,7 @@ export default function CssToTailwindConverterClient() {
               {[
                 {
                   title: "Paste your CSS",
-                  desc: "Paste one or more rules, including pseudo-classes and @media blocks — or just a bare declaration list with no selector at all.",
+                  desc: "Paste one or more rules, including pseudo-classes and @media blocks, or just a bare declaration list with no selector at all.",
                 },
                 {
                   title: "Choose your scale preference",
@@ -617,19 +617,19 @@ export default function CssToTailwindConverterClient() {
                 },
                 {
                   q: "What's the difference between arbitrary values and arbitrary properties?",
-                  a: "Arbitrary values (p-[13px]) customize the value for a utility Tailwind already knows about. Arbitrary properties ([mask-type:luminance]) let you use a raw CSS property Tailwind has no utility for at all — both compile to real, valid CSS.",
+                  a: "Arbitrary values (p-[13px]) customize the value for a utility Tailwind already knows about. Arbitrary properties ([mask-type:luminance]) let you use a raw CSS property Tailwind has no utility for at all, both compile to real, valid CSS.",
                 },
                 {
                   q: "Why do colors always come out as bg-[#hex] instead of bg-orange-500?",
-                  a: "Matching a hex value to the 'nearest' built-in Tailwind color is a guess, and a wrong guess silently changes your brand color. Arbitrary values preserve your exact color every time — swap in a design token yourself if you have one.",
+                  a: "Matching a hex value to the 'nearest' built-in Tailwind color is a guess, and a wrong guess silently changes your brand color. Arbitrary values preserve your exact color every time, swap in a design token yourself if you have one.",
                 },
                 {
                   q: "Can I paste an entire stylesheet?",
-                  a: "You can, but this tool is tuned for component-level CSS — a button, a card, a nav bar. Very large stylesheets with deep nesting or hundreds of rules will still parse, but the output is easier to review in smaller chunks.",
+                  a: "You can, but this tool is tuned for component-level CSS, a button, a card, a nav bar. Very large stylesheets with deep nesting or hundreds of rules will still parse, but the output is easier to review in smaller chunks.",
                 },
                 {
                   q: "Does this handle Sass or LESS syntax?",
-                  a: "No — paste compiled, plain CSS. Nesting (&), variables ($var), and mixins aren't understood by the parser.",
+                  a: "No, paste compiled, plain CSS. Nesting (&), variables ($var), and mixins aren't understood by the parser.",
                 },
               ].map((faq, idx) => (
                 <div

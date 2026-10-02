@@ -91,7 +91,7 @@ export default function SeoCheckerClient() {
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Paste any public page. We fetch the real server-rendered HTML
             and run deterministic checks on the exact tags search engines
-            and social platforms actually read — title, meta description,
+            and social platforms actually read, title, meta description,
             canonical, heading hierarchy, Open Graph, and structured data.
           </p>
 
@@ -139,7 +139,7 @@ export default function SeoCheckerClient() {
               <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-800 leading-relaxed">
                 <span className="font-bold">Low-confidence result:</span> this
                 page returned very little content in its initial HTML
-                response. It may be a client-rendered single-page app — the
+                response. It may be a client-rendered single-page app, the
                 same limitation applies to search crawlers reading the raw
                 response, so this is itself worth fixing.
               </div>

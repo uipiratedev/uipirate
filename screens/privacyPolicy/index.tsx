@@ -62,7 +62,7 @@ const sections = [
       {
         title: "First-Party Analytics (self-hosted)",
         description:
-          "With your analytics consent, we record page views, clicks, scroll depth, time on page, referrer and coarse location (country/city, derived from your IP without ever storing the IP itself — only a one-way hash). Two first-party cookies (up_vid, up_sid) distinguish visits and sessions. If you submit the contact or estimate form, that visit history is linked to your enquiry so we can follow up in context. Raw events are deleted after 90 days; sessions after 180 days. Withdraw consent any time via the cookie banner to stop collection.",
+          "With your analytics consent, we record page views, clicks, scroll depth, time on page, referrer and coarse location (country/city, derived from your IP without ever storing the IP itself, only a one-way hash). Two first-party cookies (up_vid, up_sid) distinguish visits and sessions. If you submit the contact or estimate form, that visit history is linked to your enquiry so we can follow up in context. Raw events are deleted after 90 days; sessions after 180 days. Withdraw consent any time via the cookie banner to stop collection.",
         icon: "🧭",
       },
     ],
@@ -87,13 +87,13 @@ const sections = [
     content:
       "If you are a resident of the European Economic Area (EEA), United Kingdom, or other jurisdictions with applicable privacy laws, you have certain data protection rights:",
     bullets: [
-      "Right to Access — Request copies of your personal data",
-      "Right to Rectification — Request correction of inaccurate data",
-      "Right to Erasure — Request deletion of your personal data",
-      "Right to Restrict Processing — Request limitation of processing",
-      "Right to Data Portability — Request transfer of your data",
-      "Right to Object — Object to processing of your data",
-      "Right to Withdraw Consent — Withdraw consent at any time",
+      "Right to Access: Request copies of your personal data",
+      "Right to Rectification: Request correction of inaccurate data",
+      "Right to Erasure: Request deletion of your personal data",
+      "Right to Restrict Processing: Request limitation of processing",
+      "Right to Data Portability: Request transfer of your data",
+      "Right to Object: Object to processing of your data",
+      "Right to Withdraw Consent: Withdraw consent at any time",
     ],
   },
   {
@@ -108,11 +108,11 @@ const sections = [
     content:
       "Our website uses third-party services that may collect information:",
     bullets: [
-      "Google Analytics — Analytics & behavior tracking",
-      "Microsoft Clarity — Analytics & session recording",
-      "First-party analytics — Self-hosted on our own infrastructure; data is not shared with third parties",
-      "Vercel Speed Insights — Performance monitoring",
-      "Cloudinary — Image hosting and delivery",
+      "Google Analytics: Analytics & behavior tracking",
+      "Microsoft Clarity: Analytics & session recording",
+      "First-party analytics: Self-hosted on our own infrastructure; data is not shared with third parties",
+      "Vercel Speed Insights: Performance monitoring",
+      "Cloudinary: Image hosting and delivery",
     ],
   },
   {
@@ -372,7 +372,7 @@ const PrivacyPolicyScreen = () => {
                   <div className="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 blur-[60px] rounded-full" />
                   <p className="text-white font-bold text-lg mb-1">UI Pirate</p>
                   <p className="text-white/50 text-sm mb-4">
-                    by Vishal Anand — Design & Development Agency
+                    by Vishal Anand | Design & Development Agency
                   </p>
 
                   <div className="text-white/70 text-sm mb-6 space-y-4">

@@ -19,7 +19,7 @@ const PRICING_FAQS = [
   {
     question: "What if I'm not satisfied with the work?",
     answer:
-      "We offer a 100% satisfaction guarantee. If you're not happy with the first milestone, we'll refund your deposit — no questions asked. We've done this many times and stand behind our quality.",
+      "We offer a 100% satisfaction guarantee. If you're not happy with the first milestone, we'll refund your deposit, no questions asked. We've done this many times and stand behind our quality.",
   },
   {
     question: "How fast is the turnaround?",
@@ -34,7 +34,7 @@ const PRICING_FAQS = [
   {
     question: "How does the 5-day pilot work?",
     answer:
-      "Pay a small fee ($150-350) to test our work for 5 days. You'll get real deliverables — not just concepts. If you move forward with a full project, the pilot fee is deducted from your invoice. Zero risk.",
+      "Pay a small fee ($150-350) to test our work for 5 days. You'll get real deliverables, not just concepts. If you move forward with a full project, the pilot fee is deducted from your invoice. Zero risk.",
   },
   {
     question: "Can I switch between retainer and project-based?",

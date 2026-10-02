@@ -310,7 +310,7 @@ const TermsAndConditionsScreen = () => {
                   <div className="absolute top-0 right-0 w-48 h-48 bg-orange-500/10 blur-[60px] rounded-full" />
                   <p className="text-white font-bold text-lg mb-1">UI Pirate</p>
                   <p className="text-white/50 text-sm mb-4">
-                    by Vishal Anand — Design & Development Agency
+                    by Vishal Anand | Design & Development Agency
                   </p>
 
                   <div className="text-white/70 text-sm mb-6 space-y-4">

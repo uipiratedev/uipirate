@@ -468,7 +468,7 @@ export default function BreakpointLayoutCalculatorClient() {
                 Why Combine Media Queries with Container Queries?
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                A media query only knows about the browser's viewport — a
+                A media query only knows about the browser's viewport, a
                 card inside a narrow sidebar still gets the "desktop" styles
                 if the window is wide. A container query responds to the
                 width of its own parent instead, so the same card component
@@ -488,7 +488,7 @@ export default function BreakpointLayoutCalculatorClient() {
                 before an image finished loading. Setting an explicit{" "}
                 <code className="font-mono text-gray-800">aspect-ratio</code>{" "}
                 (or width/height attributes) lets the browser calculate and
-                reserve the exact box up front — the layout never moves once
+                reserve the exact box up front, the layout never moves once
                 the image bytes arrive.
               </p>
             </div>
@@ -507,7 +507,7 @@ export default function BreakpointLayoutCalculatorClient() {
                 },
                 {
                   title: "Simulate a viewport to sanity-check the scale",
-                  desc: "Drag the Simulate Viewport slider and watch which named breakpoint lights up — a fast way to confirm your thresholds land where you expect before you ship them.",
+                  desc: "Drag the Simulate Viewport slider and watch which named breakpoint lights up, a fast way to confirm your thresholds land where you expect before you ship them.",
                 },
                 {
                   title: "Export both media and container query CSS",

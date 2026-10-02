@@ -77,7 +77,7 @@ const PricingHero = () => {
         {/* Subheading */}
         <p className="reveal-text-anim-1 max-w-[720px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 my-4 px-4 leading-relaxed text-gray-600">
           No hidden fees. No surprise invoices. Choose the plan that fits your
-          scope — from monthly retainers to one-time projects. We work the way
+          scope, from monthly retainers to one-time projects. We work the way
           you need.
         </p>
 

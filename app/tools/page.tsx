@@ -126,7 +126,7 @@ export default function ToolsHubPage() {
 
           <p className="sub-header text-gray-500 max-w-3xl">
             Audit, score, and optimize your product UX, conversion architecture,
-            and AI bot visibility — 100% free and built by senior design
+            and AI bot visibility, 100% free and built by senior design
             engineers.
           </p>
         </div>

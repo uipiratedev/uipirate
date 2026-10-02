@@ -25,7 +25,7 @@ function gradeTarget(grade: number) {
   if (grade <= 8.5) return { label: "On target for a broad SaaS audience", tone: "text-emerald-600" };
   if (grade <= 12) return { label: "Above the recommended range for a general audience", tone: "text-amber-600" };
 
-  return { label: "Well above the recommended range — likely to feel dense", tone: "text-red-600" };
+  return { label: "Well above the recommended range, likely to feel dense", tone: "text-red-600" };
 }
 
 const SCORE_ROWS: { key: keyof ReadabilityReport["scores"]; label: string; suffix: string }[] = [
@@ -100,8 +100,8 @@ export default function ReadabilityCheckerClient() {
             <span className="text-[#FF5B04]">Clarity</span> Checker
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Paste a URL and get six real readability formulas — Flesch,
-            Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, and ARI —
+            Paste a URL and get six real readability formulas, Flesch,
+            Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, and ARI,
             computed from the page's actual text, plus the exact sentences
             dragging your score down.
           </p>
@@ -136,7 +136,7 @@ export default function ReadabilityCheckerClient() {
               </button>
             </form>
             <p className="text-[11px] text-gray-400 mt-3">
-              Works best on content-heavy pages — a blog post, docs page, or
+              Works best on content-heavy pages, a blog post, docs page, or
               marketing page with real paragraphs.
             </p>
           </div>
@@ -157,7 +157,7 @@ export default function ReadabilityCheckerClient() {
                 <span className="font-bold">Low-confidence result:</span> only{" "}
                 {result.report.stats.wordCount} words of readable text were
                 found after stripping navigation, scripts, and boilerplate.
-                Readability formulas are unreliable on very short text —
+                Readability formulas are unreliable on very short text,
                 try a page with a full article or paragraph-length content.
               </div>
             )}
@@ -208,7 +208,7 @@ export default function ReadabilityCheckerClient() {
               </div>
               <p className="text-[11px] text-gray-400">
                 High-converting B2B SaaS copy typically targets a 6th-8.5th
-                grade reading level — plain language that reads fast, even
+                grade reading level, plain language that reads fast, even
                 for expert audiences.
               </p>
             </div>
@@ -271,7 +271,7 @@ export default function ReadabilityCheckerClient() {
             </h2>
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               Every score below comes from real, published readability
-              research — not a proprietary black box. Each formula weighs
+              research, not a proprietary black box. Each formula weighs
               sentence length and word complexity slightly differently, which
               is why we show all six instead of picking a favorite.
             </p>
@@ -301,7 +301,7 @@ export default function ReadabilityCheckerClient() {
               },
               {
                 title: "Automated Readability Index (ARI)",
-                desc: "Similar to Coleman-Liau — character-based rather than syllable-based — originally designed for real-time readability scoring on typewriters and early computers.",
+                desc: "Similar to Coleman-Liau, character-based rather than syllable-based, originally designed for real-time readability scoring on typewriters and early computers.",
               },
             ].map((item, idx) => (
               <div key={idx} className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
@@ -346,7 +346,7 @@ export default function ReadabilityCheckerClient() {
             <ul className="space-y-2 text-xs text-gray-500 leading-relaxed list-disc pl-4">
               <li>
                 Syllable counting uses a vowel-group heuristic, not a
-                dictionary — it's accurate for the vast majority of English
+                dictionary, it's accurate for the vast majority of English
                 words but can be off by one syllable on unusual spellings.
                 This averages out over a full page of text.
               </li>
@@ -358,7 +358,7 @@ export default function ReadabilityCheckerClient() {
               </li>
               <li>
                 Like the Dashboard UX Analyzer, this tool only sees the raw
-                server-rendered HTML — client-rendered pages that inject
+                server-rendered HTML, client-rendered pages that inject
                 their text via JavaScript will show as low word count.
               </li>
             </ul>
@@ -373,19 +373,19 @@ export default function ReadabilityCheckerClient() {
               {[
                 {
                   q: "What reading level should my SaaS website target?",
-                  a: "Most high-converting B2B SaaS marketing copy targets a 6th-8.5th grade level — plain, direct language. This holds even for technical, expert audiences: simpler writing reads faster and converts better, it doesn't signal a lack of sophistication.",
+                  a: "Most high-converting B2B SaaS marketing copy targets a 6th-8.5th grade level, plain, direct language. This holds even for technical, expert audiences: simpler writing reads faster and converts better, it doesn't signal a lack of sophistication.",
                 },
                 {
                   q: "Why do the six scores disagree with each other?",
                   a: "Each formula was developed independently, for different purposes (Flesch for general text, SMOG for health literacy, ARI for real-time computation) and weighs sentence length vs. word complexity differently. Use the average, and treat any single score as one data point.",
                 },
                 {
-                  q: "My score seems low but my writing feels simple — why?",
+                  q: "My score seems low but my writing feels simple, why?",
                   a: "Check the 'Sentences Dragging Your Score Down' list. A handful of very long sentences (25+ words) can pull down an otherwise simple page's score more than you'd expect, since all six formulas weight sentence length heavily.",
                 },
                 {
                   q: "Does this analyze the whole site or just one page?",
-                  a: "One URL at a time. Run it against your highest-traffic pages individually — homepage, top blog posts, pricing page — since readability can vary a lot page to page.",
+                  a: "One URL at a time. Run it against your highest-traffic pages individually, homepage, top blog posts, pricing page, since readability can vary a lot page to page.",
                 },
               ].map((faq, idx) => (
                 <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-gray-100">

@@ -88,7 +88,7 @@ export default function LlmsTxtGeneratorClient() {
   // Generate llms-full.txt (Comprehensive Knowledge Base File)
   const generatedLlmsFullTxt = useMemo(() => {
     const lines: string[] = [
-      `# ${companyName || "Your Company"} — Comprehensive AI Knowledge Context`,
+      `# ${companyName || "Your Company"}, Comprehensive AI Knowledge Context`,
       `# Generated for AI Crawlers (GPTBot, ClaudeBot, Gemini, Perplexity)`,
       `# Last updated: ${new Date().toISOString().split("T")[0]}`,
       "",

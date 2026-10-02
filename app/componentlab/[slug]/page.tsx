@@ -28,7 +28,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${component.name} — Component Lab | UI Pirate`;
+  const title = `${component.name} - Component Lab | UI Pirate`;
   const description = component.description;
 
   return {

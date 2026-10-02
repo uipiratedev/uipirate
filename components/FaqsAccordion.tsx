@@ -24,7 +24,7 @@ export const LANDING_FAQS: FaqItem[] = [
   },
   {
     heading:
-      "You're based in India — how does communication and time zone work for US/UK clients?",
+      "You're based in India, how does communication and time zone work for US/UK clients?",
     title1:
       "Most of our active clients are in the USA, UK, and Singapore. We work on a structured async model with a 2–4 hour daily overlap window for calls and reviews. Projects are managed in Figma and Notion with clear weekly check-ins so nothing falls into a time-zone gap. Book a free 15-minute call to see how it works in practice: cal.com/ui-pirate/15min",
     list: [],
@@ -33,7 +33,7 @@ export const LANDING_FAQS: FaqItem[] = [
     heading:
       "What makes UI Pirate different from hiring from Toptal, Clutch, or a local agency?",
     title1:
-      "Toptal and Clutch give you individual contractors or an agency directory — not a team that thinks through your product from scratch. Local agencies often charge 3–5× more for the same output. We give you a design-and-development team with 9+ years of SaaS product experience, a fixed process, and the ability to go from idea to shipped — not just from brief to Figma file.",
+      "Toptal and Clutch give you individual contractors or an agency directory, not a team that thinks through your product from scratch. Local agencies often charge 3–5× more for the same output. We give you a design-and-development team with 9+ years of SaaS product experience, a fixed process, and the ability to go from idea to shipped, not just from brief to Figma file.",
     list: [],
   },
   {

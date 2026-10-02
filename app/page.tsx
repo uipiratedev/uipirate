@@ -12,7 +12,7 @@ const Landing = dynamic(() => import("@/screens/landing"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title: "UI Pirate — SaaS Product Design & Development Agency | Ship Faster",
+  title: "UI Pirate - SaaS Product Design & Development Agency | Ship Faster",
   description:
     "We design and build SaaS products from first wireframe to working software. 50+ products shipped across 6 countries. Book a free 15-minute consultation.",
   keywords:
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     canonical: "https://uipirate.com",
   },
   openGraph: {
-    title: "UI Pirate — SaaS Product Design & Development Agency",
+    title: "UI Pirate - SaaS Product Design & Development Agency",
     description:
       "We help SaaS founders and enterprise teams design, build, and ship products. 50+ shipped. Free 15-min call. uipirate.com",
     url: "https://uipirate.com",

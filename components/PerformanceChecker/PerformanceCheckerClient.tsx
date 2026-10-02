@@ -92,7 +92,7 @@ export default function PerformanceCheckerClient() {
             Paste any public page. We measure the real time-to-first-byte
             and payload size for that exact request, then run deterministic
             checks for render-blocking resources, layout-shift risk, and
-            third-party weight — not a simulated Lighthouse score.
+            third-party weight, not a simulated Lighthouse score.
           </p>
 
           <div className="mt-8 max-w-2xl mx-auto">
@@ -139,7 +139,7 @@ export default function PerformanceCheckerClient() {
               <span className="font-bold">Not a Lighthouse score:</span> this
               measures real network timing/headers from a single server-side
               fetch plus static-HTML proxies for render-blocking and
-              layout-shift risk — see &ldquo;Known Limitations&rdquo; below
+              layout-shift risk, see &ldquo;Known Limitations&rdquo; below
               for exactly what that does and doesn&apos;t cover.
             </div>
 

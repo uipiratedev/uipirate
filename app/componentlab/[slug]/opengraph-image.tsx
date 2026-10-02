@@ -19,7 +19,7 @@ export function generateImageMetadata({
     {
       id: params.slug,
       alt: component
-        ? `${component.name} — Component Lab | UI Pirate`
+        ? `${component.name} - Component Lab | UI Pirate`
         : "Component Lab | UI Pirate",
     },
   ];

@@ -3060,7 +3060,7 @@ export default function Example() {
     badge: "Hover Lighting",
     badgeColor: "#E6E8F0",
     description:
-      "Dark product card with an under-shelf light that strikes on hover — a volumetric cone washes up the wall, the shelf edge becomes a hot filament, and the feather pin is lit from below while casting a soft shadow upward.",
+      "Dark product card with an under-shelf light that strikes on hover, a volumetric cone washes up the wall, the shelf edge becomes a hot filament, and the feather pin is lit from below while casting a soft shadow upward.",
     detailUrl: "/componentlab/luminous-shelf-card",
     defaultLabel: "Light Work",
     hasLabelControl: true,
@@ -3272,7 +3272,7 @@ export default function Example() {
         themeValue: "white",
         themeProp: 'theme="white"',
         badgeColor: "#E6E8F5",
-        description: "Neutral broadcast key-light — the reference look.",
+        description: "Neutral broadcast key-light, the reference look.",
         renderPreview: (sz = "sm") => (
           <LuminousShelfCard
             size={sz}
@@ -3382,7 +3382,7 @@ export default function Example() {
       "Recessed silver-bezel socket",
       "Cap sits on a visible 3D base",
       "Backlit magma glow behind the label",
-      "Container-query fluid — no SVG filters",
+      "Container-query fluid, no SVG filters",
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
@@ -3453,7 +3453,7 @@ export default function Example() {
         themeProp: 'variant="orange"',
         badgeColor: "#FF5B04",
         description:
-          "The original footer look — molten orange glow bleeding through the dark face.",
+          "The original footer look, molten orange glow bleeding through the dark face.",
         renderPreview: (sz = "sm") => (
           <JoinTactileButton label="LETS VENTURE" size={sz} variant="orange" />
         ),

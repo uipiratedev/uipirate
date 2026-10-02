@@ -87,7 +87,7 @@ export default function ContrastCheckerClient() {
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Check any text/background color pair against both WCAG 2.1
-            (AA/AAA) and the newer, perceptually-calibrated APCA algorithm —
+            (AA/AAA) and the newer, perceptually-calibrated APCA algorithm,
             computed live, in your browser, from the exact published formulas.
           </p>
         </motion.div>

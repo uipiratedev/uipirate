@@ -5,7 +5,7 @@ import ReadabilityCheckerClient from "@/components/ReadabilityChecker/Readabilit
 export const metadata: Metadata = {
   title: "Website Readability & Clarity Checker | UI Pirate",
   description:
-    "Free tool to check a page's Flesch, Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, and ARI readability scores from its real text — plus the exact sentences hurting your score.",
+    "Free tool to check a page's Flesch, Flesch-Kincaid, Gunning Fog, SMOG, Coleman-Liau, and ARI readability scores from its real text, plus the exact sentences hurting your score.",
   alternates: {
     canonical: "https://uipirate.com/tools/website/website-readability-checker",
   },

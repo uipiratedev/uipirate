@@ -82,7 +82,7 @@ export default function ContactPageClient() {
           initial="hidden"
           variants={fadeUp}
         >
-          Tell us what you're building — we'll take it from there. Book a
+          Tell us what you're building, we'll take it from there. Book a
           15-minute call, or use the estimator to get a quick ballpark first. No
           pressure, no commitment.
         </motion.p>

@@ -5,16 +5,16 @@ import Sitemap from "@/screens/sitemap";
 export const metadata: Metadata = {
   title: "Site Map | All Pages & Services",
   description:
-    "Complete sitemap of UI Pirate — product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, Design Systems, UX Audits, Pricing, Portfolio & more.",
+    "Complete sitemap of UI Pirate, product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, Design Systems, UX Audits, Pricing, Portfolio & more.",
   keywords:
     "uipirate sitemap, UI Pirate pages, product design agency services, UX UI design services list, SaaS design agency pages, site navigation, all services UI Pirate",
   alternates: {
     canonical: "https://uipirate.com/sitemap",
   },
   openGraph: {
-    title: "Site Map | UI Pirate — All Pages & Services",
+    title: "Site Map | UI Pirate - All Pages & Services",
     description:
-      "Browse all pages of UI Pirate — product design & development agency. Services, portfolio, pricing, resources & more.",
+      "Browse all pages of UI Pirate, product design & development agency. Services, portfolio, pricing, resources & more.",
     url: "https://uipirate.com/sitemap",
     siteName: "UI Pirate",
     images: [
@@ -52,7 +52,7 @@ const jsonLd = {
     },
     {
       "@type": "ItemList",
-      name: "UI Pirate — All Pages",
+      name: "UI Pirate - All Pages",
       description:
         "Complete sitemap of UI Pirate product design & development agency",
       itemListElement: [
@@ -91,7 +91,7 @@ const jsonLd = {
           "@type": "ListItem",
           position: 6,
           url: "https://uipirate.com/services/UX-UI-Design",
-          name: "UX/UI Design — SaaS, AI & Mobile Apps",
+          name: "UX/UI Design - SaaS, AI & Mobile Apps",
         },
         {
           "@type": "ListItem",

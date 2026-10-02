@@ -139,7 +139,7 @@ export default function MarketingSiteAuditClient() {
               <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-800 leading-relaxed">
                 <span className="font-bold">Low-confidence result:</span> this
                 page returned very little content in its initial HTML
-                response. It may be a client-rendered single-page app —
+                response. It may be a client-rendered single-page app,
                 test a public, server-rendered marketing page for best results.
               </div>
             )}

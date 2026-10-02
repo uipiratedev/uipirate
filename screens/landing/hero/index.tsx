@@ -354,7 +354,7 @@ const LandingHero = () => {
                 </div>
                 <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
-                  Tell Us Your Idea — Free Consultation
+                  Tell Us Your Idea: Free Consultation
                 </p>
               </div>
              </Link>

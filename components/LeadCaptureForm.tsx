@@ -138,7 +138,7 @@ export default function LeadCaptureForm({
           Message Received!
         </h3>
         <p className="text-gray-500 text-sm max-w-xs">
-          We typically respond within 2 hours. Check your inbox — we'll reach
+          We typically respond within 2 hours. Check your inbox, we'll reach
           out to schedule a call.
         </p>
       </div>

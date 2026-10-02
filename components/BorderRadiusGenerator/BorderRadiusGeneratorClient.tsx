@@ -118,7 +118,7 @@ export default function BorderRadiusGeneratorClient() {
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Two related corner problems, solved with real math: nested radii
             that don't pinch at the edges, and iOS-style continuous-curvature
-            squircle corners — both exported as ready-to-use CSS.
+            squircle corners, both exported as ready-to-use CSS.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
@@ -238,7 +238,7 @@ export default function BorderRadiusGeneratorClient() {
                     />
                   </div>
                   <p className="text-[11px] text-center text-red-500 font-semibold mt-2">
-                    ✕ Same radius ({baseOuter}px) — pinches at the corners
+                    ✕ Same radius ({baseOuter}px), pinches at the corners
                   </p>
                 </div>
                 <div>
@@ -252,7 +252,7 @@ export default function BorderRadiusGeneratorClient() {
                     />
                   </div>
                   <p className="text-[11px] text-center text-emerald-600 font-semibold mt-2">
-                    ✓ Concentric radius ({innerRadius}px) — curves run parallel
+                    ✓ Concentric radius ({innerRadius}px), curves run parallel
                   </p>
                 </div>
               </div>
@@ -482,7 +482,7 @@ export default function BorderRadiusGeneratorClient() {
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               Both tools on this page fix the same underlying problem: eyeballing
               a border-radius value looks fine in isolation but falls apart the
-              moment it interacts with something else — a parent's padding, or
+              moment it interacts with something else, a parent's padding, or
               the sharp geometry of a rectangle's actual corner.
             </p>
           </div>
@@ -495,7 +495,7 @@ export default function BorderRadiusGeneratorClient() {
               <p className="text-xs text-gray-500 leading-relaxed">
                 A rounded corner is an arc drawn from a center point. If an
                 outer box and its padded inner child use the same radius, the
-                inner arc's center sits in a completely different place — the
+                inner arc's center sits in a completely different place, the
                 two curves aren't concentric, so the gap between them visibly
                 narrows right at the corner instead of staying constant.
                 Subtracting the padding from the radius moves both centers to
@@ -512,7 +512,7 @@ export default function BorderRadiusGeneratorClient() {
                 |y/R|ⁿ = 1. At n=2 it's identical to a normal rounded corner;
                 as n grows the curve hugs the straight edges longer before
                 turning, producing the flatter, more "continuous curvature"
-                look of an iOS app icon. There's no CSS property for this —
+                look of an iOS app icon. There's no CSS property for this,
                 it has to be built as a path and applied with clip-path.
               </p>
             </div>
@@ -527,15 +527,15 @@ export default function BorderRadiusGeneratorClient() {
               {[
                 {
                   title: "Nested radius: match your real padding",
-                  desc: "Set Outer Radius and Padding to your actual card/container values — the computed inner radius is only correct for that exact padding.",
+                  desc: "Set Outer Radius and Padding to your actual card/container values, the computed inner radius is only correct for that exact padding.",
                 },
                 {
                   title: "Nested radius: export the whole scale",
-                  desc: "Copy the CSS variables or Tailwind config — six synchronized outer/inner pairs, all derived from one base radius and padding.",
+                  desc: "Copy the CSS variables or Tailwind config, six synchronized outer/inner pairs, all derived from one base radius and padding.",
                 },
                 {
                   title: "Squircle: pick a size that matches your element",
-                  desc: "Use the Icon preset for app icons and avatars, Button or Card for UI elements — corner radius is automatically clamped so it never exceeds half the shorter side.",
+                  desc: "Use the Icon preset for app icons and avatars, Button or Card for UI elements, corner radius is automatically clamped so it never exceeds half the shorter side.",
                 },
                 {
                   title: "Squircle: dial in smoothing, then export",
@@ -568,11 +568,11 @@ export default function BorderRadiusGeneratorClient() {
                 },
                 {
                   q: "What exactly is a 'squircle'?",
-                  a: "A squircle is a shape between a square and a circle, mathematically a superellipse: |x/R|ⁿ + |y/R|ⁿ = 1. Apple popularized it for iOS app icons because it has continuous curvature — no abrupt change in how sharply the edge bends — which a normal rounded rectangle corner doesn't have.",
+                  a: "A squircle is a shape between a square and a circle, mathematically a superellipse: |x/R|ⁿ + |y/R|ⁿ = 1. Apple popularized it for iOS app icons because it has continuous curvature, no abrupt change in how sharply the edge bends, which a normal rounded rectangle corner doesn't have.",
                 },
                 {
                   q: "Is this the exact same curve Apple uses for iOS icons?",
-                  a: "No — Apple's exact icon curve is proprietary. n≈5 is a widely used approximation that looks very close. This tool exposes the exponent as a 0–100% smoothing slider so you can match it to your eye rather than a single fixed value.",
+                  a: "No, Apple's exact icon curve is proprietary. n≈5 is a widely used approximation that looks very close. This tool exposes the exponent as a 0–100% smoothing slider so you can match it to your eye rather than a single fixed value.",
                 },
                 {
                   q: "Why clip-path instead of border-radius for the squircle?",
@@ -580,7 +580,7 @@ export default function BorderRadiusGeneratorClient() {
                 },
                 {
                   q: "Does the squircle work on non-square elements like buttons?",
-                  a: "Yes — width and height are independent, and the corner radius is automatically clamped to half the shorter side so it never overlaps itself, even on wide, short elements like buttons.",
+                  a: "Yes, width and height are independent, and the corner radius is automatically clamped to half the shorter side so it never overlaps itself, even on wide, short elements like buttons.",
                 },
               ].map((faq, idx) => (
                 <div key={idx} className="p-4 rounded-2xl bg-gray-50 border border-gray-100">

@@ -365,7 +365,7 @@ export default function PricingPageAnalyzerClient() {
                 Anchor to Value Metric
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Base your plan tiers on what customers naturally expand with —
+                Base your plan tiers on what customers naturally expand with,
                 such as active seats, tracked events, or monthly compute.
               </p>
             </div>

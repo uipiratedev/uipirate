@@ -29,7 +29,7 @@ export default function DesignToolsHubPage() {
         },
       ]}
       introParagraphs={[
-        'Every product team eventually hits the same wall: spacing, type sizes, and colors get chosen ad hoc across screens, Figma and the codebase drift apart, and "just eyeball it" stops scaling once more than one person touches the UI. Fixing that after the fact means auditing hundreds of components — fixing it up front means starting from a token scale that\'s mathematically consistent and shared between design and engineering from day one.',
+        'Every product team eventually hits the same wall: spacing, type sizes, and colors get chosen ad hoc across screens, Figma and the codebase drift apart, and "just eyeball it" stops scaling once more than one person touches the UI. Fixing that after the fact means auditing hundreds of components, fixing it up front means starting from a token scale that\'s mathematically consistent and shared between design and engineering from day one.',
         "These generators produce the same foundational tokens we hand off on real design-system engagements: 8pt-grid spacing, modular typography ramps, WCAG-compliant contrast pairs, and ready-to-use Tailwind config output. Run them once at the start of a project, or use them to audit an existing UI for accessibility and consistency gaps.",
       ]}
       methodology={[

@@ -40,7 +40,7 @@ export async function generateImageMetadata({
 export default async function Image({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug);
 
-  const badge = post?.client ? `Case Study — ${post.client}` : "Case Study";
+  const badge = post?.client ? `Case Study: ${post.client}` : "Case Study";
   const title = truncate(post?.title ?? "Case Study", 46);
   const description = truncate(
     post?.seo?.ogDescription || post?.excerpt || "A product & UX case study by UI Pirate.",

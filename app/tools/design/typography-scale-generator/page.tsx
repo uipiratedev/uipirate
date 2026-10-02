@@ -68,7 +68,7 @@ const faqSchema = {
       name: "Do I need JavaScript to use clamp() typography in production?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. clamp() is native CSS, supported in every modern browser. Paste the generated CSS variables or Tailwind config straight into your stylesheet — no runtime cost or JavaScript required.",
+        text: "No. clamp() is native CSS, supported in every modern browser. Paste the generated CSS variables or Tailwind config straight into your stylesheet, no runtime cost or JavaScript required.",
       },
     },
   ],

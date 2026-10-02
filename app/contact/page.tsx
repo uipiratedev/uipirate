@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
-        alt: "Contact UI Pirate — Book a Free Design Consultation",
+        alt: "Contact UI Pirate - Book a Free Design Consultation",
       },
     ],
     locale: "en_US",
