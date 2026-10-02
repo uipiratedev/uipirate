@@ -2,14 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Card, CardBody } from "@heroui/react";
 
 import FaqsAccordion from "@/components/FaqsAccordion";
 
 import GlassSurface from "@/components/GlassSurface";
 import SectionHeader from "@/components/SectionHeader";
 import { Reveal } from "@/components/motion";
-import { CheckIcon } from "@/components/icons";
 import { ClientLogosGrid } from "@/components/ClientLogos";
 import LandingWhoWeAre from "@/screens/landing/whoWeAre";
 import PricingPerfectFor from "@/screens/pricing/perfectFor";

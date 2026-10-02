@@ -18,22 +18,28 @@ export function getParsedServiceAccount(): ServiceAccountKey | null {
     process.env.GOOGLE_INDEXING_SA_JSON ||
     process.env.GOOGLE_SERVICE_ACCOUNT_JSON ||
     process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+
   if (!raw) return null;
 
   try {
     let jsonStr = raw.trim();
+
     // Handle base64 encoded JSON
     if (!jsonStr.startsWith("{")) {
       jsonStr = Buffer.from(jsonStr, "base64").toString("utf-8");
     }
     const parsed = JSON.parse(jsonStr);
+
     if (!parsed.client_email || !parsed.private_key) {
       console.warn("GOOGLE_INDEXING_SA_JSON is missing client_email or private_key");
+
       return null;
     }
+
     return parsed;
   } catch (err) {
     console.error("Failed to parse GOOGLE_INDEXING_SA_JSON:", err);
+
     return null;
   }
 }
@@ -50,6 +56,7 @@ export async function getGoogleAccessToken(
   ],
 ): Promise<string | null> {
   const sa = getParsedServiceAccount();
+
   if (!sa) {
     return null;
   }
@@ -86,7 +93,9 @@ export async function getGoogleAccessToken(
 
     if (!tokenRes.ok) {
       const errBody = await tokenRes.text();
+
       console.error(`Google token exchange failed (${tokenRes.status}):`, errBody);
+
       return null;
     }
 
@@ -102,6 +111,7 @@ export async function getGoogleAccessToken(
     return accessToken;
   } catch (err) {
     console.error("Error generating Google access token:", err);
+
     return null;
   }
 }

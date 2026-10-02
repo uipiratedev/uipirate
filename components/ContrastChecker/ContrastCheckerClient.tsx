@@ -99,8 +99,8 @@ export default function ContrastCheckerClient() {
               <h3 className="text-sm font-bold text-gray-900 font-jakarta">Colors</h3>
               <button
                 className="text-[11px] font-bold text-gray-500 hover:text-[#FF5B04] transition-colors flex items-center gap-1"
-                onClick={swap}
                 type="button"
+                onClick={swap}
               >
                 ⇅ Swap
               </button>
@@ -171,8 +171,8 @@ export default function ContrastCheckerClient() {
                       ? "bg-gray-900 text-white"
                       : "bg-gray-100 text-gray-500 hover:bg-gray-200"
                   }`}
-                  onClick={() => setPreviewSize(size)}
                   type="button"
+                  onClick={() => setPreviewSize(size)}
                 >
                   {size === "normal" ? "16px preview" : "24px preview"}
                 </button>

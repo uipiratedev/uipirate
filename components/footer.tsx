@@ -65,6 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
 
   const cta = useMemo(() => {
     const base = getCtaConfig(pathname);
+
     return ctaOverride ? { ...base, ...ctaOverride } : base;
   }, [pathname, ctaOverride]);
 
@@ -180,12 +181,12 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
               <div className="relative z-30 mt-5">
                 {cta.secondaryButton.action === "modal" ? (
                   <button
+                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"
                     type="button"
                     onClick={() => {
                       playClickSound();
                       setIsModalOpen(true);
                     }}
-                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer"
                   >
                     <span className="underline-offset-4 group-hover:underline">
                       {cta.secondaryButton.label}
@@ -193,24 +194,24 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
                     <svg
                       className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth={2}
+                      viewBox="0 0 24 24"
                     >
                       <path
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                       />
                     </svg>
                   </button>
                 ) : cta.secondaryButton.isExternal ? (
                   <a
-                    href={cta.secondaryButton.href || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => playClickSound()}
                     className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200"
+                    href={cta.secondaryButton.href || "#"}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    onClick={() => playClickSound()}
                   >
                     <span className="underline-offset-4 group-hover:underline">
                       {cta.secondaryButton.label}
@@ -218,22 +219,22 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
                     <svg
                       className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth={2}
+                      viewBox="0 0 24 24"
                     >
                       <path
+                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
                       />
                     </svg>
                   </a>
                 ) : (
                   <NextLink
+                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200"
                     href={cta.secondaryButton.href || "#"}
                     onClick={() => playClickSound()}
-                    className="group inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-400 hover:text-white transition-colors duration-200"
                   >
                     <span className="underline-offset-4 group-hover:underline">
                       {cta.secondaryButton.label}
@@ -241,14 +242,14 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
                     <svg
                       className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth={2}
+                      viewBox="0 0 24 24"
                     >
                       <path
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
                       />
                     </svg>
                   </NextLink>

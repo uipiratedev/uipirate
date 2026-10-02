@@ -35,6 +35,7 @@ export function IndexingDrawer({
 
   useEffect(() => {
     let alive = true;
+
     setLoading(true);
     setError(null);
     setFeedback(null);
@@ -42,7 +43,9 @@ export function IndexingDrawer({
     fetch(`/api/admin/indexing/${itemId}`)
       .then(async (r) => {
         const j = await r.json();
+
         if (!r.ok) throw new Error(j.error || "Failed to load details");
+
         return j;
       })
       .then((j) => {
@@ -68,11 +71,14 @@ export function IndexingDrawer({
         body: JSON.stringify({ urls: [item.url] }),
       });
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.error || "Google submit failed");
       const msg = data.results?.[0]?.message || "Google submission dispatched";
+
       setFeedback(msg);
       // Reload item
       const fresh = await fetch(`/api/admin/indexing/${itemId}`).then((r) => r.json());
+
       if (fresh.item) {
         setItem(fresh.item);
         onChanged(fresh.item);
@@ -95,10 +101,13 @@ export function IndexingDrawer({
         body: JSON.stringify({ urls: [item.url] }),
       });
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.error || "Bing submit failed");
       const msg = data.results?.[0]?.message || "Bing & IndexNow submitted";
+
       setFeedback(msg);
       const fresh = await fetch(`/api/admin/indexing/${itemId}`).then((r) => r.json());
+
       if (fresh.item) {
         setItem(fresh.item);
         onChanged(fresh.item);
@@ -121,9 +130,11 @@ export function IndexingDrawer({
         body: JSON.stringify({ urls: [item.url] }),
       });
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.error || "Inspection failed");
       setFeedback("Inspection completed.");
       const fresh = await fetch(`/api/admin/indexing/${itemId}`).then((r) => r.json());
+
       if (fresh.item) {
         setItem(fresh.item);
         onChanged(fresh.item);
@@ -146,6 +157,7 @@ export function IndexingDrawer({
         body: JSON.stringify({ noindexIntentional: nextVal }),
       });
       const data = await res.json();
+
       if (res.ok && data.item) {
         setItem(data.item);
         onChanged(data.item);

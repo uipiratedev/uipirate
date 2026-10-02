@@ -70,6 +70,7 @@ export default function SitemapDiffClient({
     try {
       const res = await fetch("/api/admin/indexing/sync", { method: "POST" });
       const json = await res.json();
+
       if (!res.ok) throw new Error(json.error || "Sync failed");
       setMessage(json.message || "Sitemap synchronized successfully.");
       refetch();
@@ -86,6 +87,7 @@ export default function SitemapDiffClient({
     try {
       const res = await fetch("/api/admin/indexing/ping-sitemap", { method: "POST" });
       const json = await res.json();
+
       if (!res.ok) throw new Error(json.error || "Resubmit failed");
       setMessage(json.message || "Sitemap successfully resubmitted to Google & Bing.");
       refetch();

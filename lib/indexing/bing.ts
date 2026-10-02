@@ -32,6 +32,7 @@ export interface BingInspectionResult {
 function bingDate(v: unknown): Date | null {
   if (typeof v !== "string" || !v) return null;
   const d = new Date(v);
+
   return isNaN(d.getTime()) ? null : d;
 }
 
@@ -187,6 +188,7 @@ export async function submitBingUrls(
 
     if (!res.ok) {
       const txt = await res.text();
+
       return {
         ok: false,
         status: res.status,
@@ -227,6 +229,7 @@ const BING_CRAWL_ISSUE_FLAGS: Array<[number, string]> = [
 
 function decodeBingIssues(mask: number | null | undefined): string[] {
   if (!mask || mask <= 1) return [];
+
   return BING_CRAWL_ISSUE_FLAGS.filter(([bit]) => (mask & bit) === bit).map(
     ([, label]) => label,
   );
@@ -260,6 +263,7 @@ export async function getBingCrawlIssues(): Promise<{
 
     if (!res.ok) {
       const txt = await res.text();
+
       return {
         ok: false,
         byUrl,
@@ -273,6 +277,7 @@ export async function getBingCrawlIssues(): Promise<{
 
     for (const row of rows) {
       const url: string = row?.Url;
+
       if (!url) continue;
       byUrl.set(url, {
         url,
@@ -300,8 +305,10 @@ function parseBingDate(v: unknown): Date | null {
   if (typeof v !== "string") return null;
   // Bing returns "/Date(1699999999999)/" style timestamps.
   const m = v.match(/\/Date\((\d+)\)\//);
+
   if (m) return new Date(Number(m[1]));
   const d = new Date(v);
+
   return isNaN(d.getTime()) ? null : d;
 }
 
@@ -353,6 +360,7 @@ export async function getBingUrlInfo(
 
     if (!infoRes.ok) {
       const txt = await infoRes.text();
+
       return {
         ok: false,
         indexed: null,

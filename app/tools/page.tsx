@@ -2,15 +2,9 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
 import GlassSurface from "@/components/GlassSurface";
-import {
-  HERO_BADGE_PRESET,
-  HERO_BADGE_CLASSNAME,
-  HERO_BADGE_ANIMATION_STYLE,
-} from "@/config/glassSurfacePresets";
 
 export default function ToolsHubPage() {
   const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">(

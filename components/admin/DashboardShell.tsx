@@ -162,6 +162,7 @@ const LogOutIcon = Icon["log-out"];
 export function DashboardShell({ user, capabilities, children }: Props) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+
   useDrawerScrollLock({
     enabled: mobileOpen,
     onClose: () => setMobileOpen(false),

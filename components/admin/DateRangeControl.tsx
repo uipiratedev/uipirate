@@ -44,6 +44,7 @@ export function DateRangeControl() {
     } catch {
       // ignore parse error
     }
+
     return undefined;
   })();
 

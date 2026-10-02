@@ -1,6 +1,5 @@
 "use client";
 
-import { Tooltip } from "@heroui/react";
 import { Icon } from "./icons";
 import { fmtPct } from "./format";
 

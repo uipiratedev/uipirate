@@ -13,7 +13,7 @@
 export default function Loading() {
   return (
     <div className="flex min-h-[60vh] w-full items-center justify-center">
-      <div className="spinner" role="status" aria-label="Loading">
+      <div aria-label="Loading" className="spinner" role="status">
         <span />
         <span />
         <span />

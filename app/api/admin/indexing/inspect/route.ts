@@ -9,6 +9,7 @@ import dbConnect from "@/lib/mongodb";
 
 export async function POST(req: NextRequest) {
   const guard = await requireApi("manage:indexing");
+
   if (!guard.ok) return guard.response;
 
   const body = await req.json().catch(() => ({}));

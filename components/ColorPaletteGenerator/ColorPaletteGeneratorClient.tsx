@@ -134,8 +134,8 @@ export default function ColorPaletteGeneratorClient() {
                       className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
                         exportFormat === f ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"
                       }`}
-                      onClick={() => setExportFormat(f)}
                       type="button"
+                      onClick={() => setExportFormat(f)}
                     >
                       {f === "css" ? "CSS Variables" : "Tailwind Config"}
                     </button>
@@ -143,8 +143,8 @@ export default function ColorPaletteGeneratorClient() {
                 </div>
                 <button
                   className="px-4 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all"
-                  onClick={copy}
                   type="button"
+                  onClick={copy}
                 >
                   {copied ? "Copied!" : "Copy Code"}
                 </button>

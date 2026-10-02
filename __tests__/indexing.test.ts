@@ -14,6 +14,7 @@ describe("Draft Guard & Publishable Validation", () => {
   it("blocks held draft case studies from being submitted", async () => {
     for (const slug of HELD_DRAFT_SLUGS) {
       const result = await isPublishable(`https://uipirate.dev/case-studies/${slug}`);
+
       expect(result.publishable).toBe(false);
       expect(result.isDraft).toBe(true);
     }
@@ -21,19 +22,23 @@ describe("Draft Guard & Publishable Validation", () => {
 
   it("blocks system and admin routes", async () => {
     const adminCheck = await isPublishable("/admin/indexing");
+
     expect(adminCheck.publishable).toBe(false);
     expect(adminCheck.isDraft).toBe(false);
 
     const apiCheck = await isPublishable("/api/admin/indexing");
+
     expect(apiCheck.publishable).toBe(false);
   });
 
   it("allows standard static live pages", async () => {
     const aboutCheck = await isPublishable("/about");
+
     expect(aboutCheck.publishable).toBe(true);
     expect(aboutCheck.isDraft).toBe(false);
 
     const toolsCheck = await isPublishable("/tools/saas/pricing-page-analyzer");
+
     expect(toolsCheck.publishable).toBe(true);
   });
 });
@@ -41,17 +46,20 @@ describe("Draft Guard & Publishable Validation", () => {
 describe("Coverage State Presentation Mapping", () => {
   it("maps indexed states to success tone", () => {
     const s1 = mapCoverageState("Submitted and indexed");
+
     expect(s1.chipLabel).toBe("Indexed");
     expect(s1.tone).toBe("success");
     expect(s1.actionable).toBe(false);
 
     const s2 = mapCoverageState(null, "PASS");
+
     expect(s2.chipLabel).toBe("Indexed");
     expect(s2.tone).toBe("success");
   });
 
   it("maps crawled not indexed to warning and actionable", () => {
     const s = mapCoverageState("Crawled - currently not indexed");
+
     expect(s.chipLabel).toBe("Crawled, not indexed");
     expect(s.tone).toBe("warning");
     expect(s.actionable).toBe(true);
@@ -59,6 +67,7 @@ describe("Coverage State Presentation Mapping", () => {
 
   it("maps canonical mismatch", () => {
     const s = mapCoverageState("Duplicate, Google chose different canonical");
+
     expect(s.chipLabel).toBe("Canonical mismatch");
     expect(s.tone).toBe("warning");
     expect(s.actionable).toBe(true);
@@ -66,6 +75,7 @@ describe("Coverage State Presentation Mapping", () => {
 
   it("maps robots blocked to danger", () => {
     const s = mapCoverageState("Blocked by robots.txt");
+
     expect(s.chipLabel).toBe("Robots-blocked");
     expect(s.tone).toBe("danger");
     expect(s.actionable).toBe(true);
@@ -89,6 +99,7 @@ describe("Quota Configuration", () => {
 
   it("formats quota keys correctly", () => {
     const today = getTodayDateString();
+
     expect(getQuotaId("google-indexing")).toBe(`google-indexing:${today}`);
   });
 });

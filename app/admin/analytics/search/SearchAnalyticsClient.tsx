@@ -6,7 +6,7 @@ import { parseDate } from "@internationalized/date";
 
 import { useApi } from "@/lib/admin/useApi";
 import { useDashboard } from "@/lib/admin/DashboardContext";
-import { PRESET_LABELS, type RangePreset } from "@/lib/admin/dateRange";
+import { type RangePreset } from "@/lib/admin/dateRange";
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
 import { KpiRow, type Kpi } from "@/components/admin/KpiRow";
 import { DataTable, type Column } from "@/components/admin/DataTable";
@@ -46,6 +46,7 @@ export default function SearchAnalyticsClient() {
     } catch {
       // ignore parse error
     }
+
     return undefined;
   }, [range.from, range.to]);
 
@@ -56,6 +57,7 @@ export default function SearchAnalyticsClient() {
 
   const kpis: Kpi[] = useMemo(() => {
     const k = data?.kpis;
+
     return [
       {
         label: "Search Impressions",
@@ -83,6 +85,7 @@ export default function SearchAnalyticsClient() {
   // Unique country list for dropdown filter
   const countryOptions = useMemo(() => {
     const set = new Map<string, string>();
+
     for (const c of data?.countries || []) {
       if (c.country && c.country !== "Unknown") {
         set.set(c.country, c.countryCode);
@@ -93,12 +96,14 @@ export default function SearchAnalyticsClient() {
         set.set(q.country, q.countryCode || q.country);
       }
     }
+
     return Array.from(set.entries()).map(([country, code]) => ({ country, code }));
   }, [data]);
 
   // Filtered queries by search text AND selected country
   const filteredQueries = useMemo(() => {
     let list = data?.queries || [];
+
     if (selectedCountry !== "all") {
       list = list.filter(
         (item) =>
@@ -108,6 +113,7 @@ export default function SearchAnalyticsClient() {
     }
     if (!q.trim()) return list;
     const queryLower = q.toLowerCase();
+
     return list.filter(
       (item) =>
         item.query.toLowerCase().includes(queryLower) ||
@@ -518,6 +524,7 @@ export default function SearchAnalyticsClient() {
             ] as const
           ).map((tab) => {
             const active = activeTab === tab.key;
+
             return (
               <button
                 key={tab.key}

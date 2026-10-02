@@ -320,6 +320,7 @@ export default function UIComponentDashboard({
   const [activeCodeTab, setActiveCodeTab] = useState<CodeTab>("component");
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   useDrawerScrollLock({
     enabled: mobileSidebarOpen,
     onClose: () => setMobileSidebarOpen(false),

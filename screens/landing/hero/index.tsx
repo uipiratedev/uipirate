@@ -245,7 +245,7 @@ const LandingHero = () => {
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
-            <Magnetic className="relative z-10" strength={16} radius={140}>
+            <Magnetic className="relative z-10" radius={140} strength={16}>
              <Link href="/contact">
               <div
                 className="bg-black text-white h-auto group transition-[background-color,box-shadow] duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"

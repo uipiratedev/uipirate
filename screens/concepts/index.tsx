@@ -7,7 +7,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 import PageWrapper from "@/components/PageWrapper";
-import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
 
 const DEFAULT_CONCEPT_IMAGE = "/assets/blog-banner-default.svg";

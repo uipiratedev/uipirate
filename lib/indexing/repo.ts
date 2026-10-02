@@ -1,9 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import IndexedUrl, {
-  type IIndexedUrl,
   type IndexEvent,
-  type GoogleIndexData,
-  type BingIndexData,
 } from "@/models/IndexedUrl";
 import { type IndexedUrlItem } from "./types";
 
@@ -115,6 +112,7 @@ export async function listIndexedUrls(params: ListIndexedUrlsParams) {
 
   if (params.q?.trim()) {
     const regex = new RegExp(params.q.trim(), "i");
+
     filter.$or = [{ url: regex }, { path: regex }];
   }
 
@@ -196,6 +194,7 @@ export async function getIndexedUrlById(
 ): Promise<IndexedUrlItem | null> {
   await dbConnect();
   const doc = await IndexedUrl.findById(id).lean<any>();
+
   return doc ? formatIndexedUrlDoc(doc) : null;
 }
 
@@ -217,6 +216,7 @@ export async function getIndexingKpis() {
   await dbConnect();
 
   const total = await IndexedUrl.countDocuments();
+
   if (total === 0) {
     return {
       total: 0,

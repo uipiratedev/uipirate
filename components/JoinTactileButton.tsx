@@ -192,259 +192,259 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
         xmlnsXlink="http://www.w3.org/1999/xlink"
       >
 <defs>
-<filter id={`filter0_i_${id}`} x="0" y="0" width="392" height="132" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="132" id={`filter0_i_${id}`} width="392" x="0" y="0">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dy="2"/>
 <feGaussianBlur stdDeviation="2"/>
-<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feComposite in2="hardAlpha" k2="-1" k3="1" operator="arithmetic"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0"/>
-<feBlend mode="normal" in2="shape" result={`effect1_innerShadow_${id}`}/>
+<feBlend in2="shape" mode="normal" result={`effect1_innerShadow_${id}`}/>
 </filter>
-<pattern id={`pattern0_${id}`} patternContentUnits="objectBoundingBox" width="2.35102" height="7.08923">
-<use xlinkHref={`#image0_${id}`} transform="scale(0.00229592 0.00692308)"/>
+<pattern height="7.08923" id={`pattern0_${id}`} patternContentUnits="objectBoundingBox" width="2.35102">
+<use transform="scale(0.00229592 0.00692308)" xlinkHref={`#image0_${id}`}/>
 </pattern>
-<filter id={`filter1_i_${id}`} x="0" y="0" width="392" height="102" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="102" id={`filter1_i_${id}`} width="392" x="0" y="0">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dx="1"/>
-<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feComposite in2="hardAlpha" k2="-1" k3="1" operator="arithmetic"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0"/>
-<feBlend mode="normal" in2="shape" result={`effect1_innerShadow_${id}`}/>
+<feBlend in2="shape" mode="normal" result={`effect1_innerShadow_${id}`}/>
 </filter>
-<filter id={`filter2_dd_${id}`} x="0" y="-2" width="388" height="97" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="97" id={`filter2_dd_${id}`} width="388" x="0" y="-2">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dx="-2" dy="2"/>
 <feGaussianBlur stdDeviation="1"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 0.713726 0 0 0 0 0.721569 0 0 0 0 0.717647 0 0 0 0.35 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feMorphology radius="7" operator="erode" in="SourceAlpha" result={`effect2_dropShadow_${id}`}/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+<feMorphology in="SourceAlpha" operator="erode" radius="7" result={`effect2_dropShadow_${id}`}/>
 <feOffset dx="-9" dy="-8"/>
 <feGaussianBlur stdDeviation="2"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 0.713726 0 0 0 0 0.721569 0 0 0 0 0.717647 0 0 0 0.6 0"/>
-<feBlend mode="normal" in2={`effect1_dropShadow_${id}`} result={`effect2_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect2_dropShadow_${id}`} result="shape"/>
+<feBlend in2={`effect1_dropShadow_${id}`} mode="normal" result={`effect2_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect2_dropShadow_${id}`} mode="normal" result="shape"/>
 </filter>
-<filter id={`filter3_d_${id}`} x="10" y="7" width="374.5" height="121" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="121" id={`filter3_d_${id}`} width="374.5" x="10" y="7">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dy="1"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.15 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect1_dropShadow_${id}`} result="shape"/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect1_dropShadow_${id}`} mode="normal" result="shape"/>
 </filter>
-<filter id={`filter4_f_${id}`} x="42" y="26" width="313" height="101" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="101" id={`filter4_f_${id}`} width="313" x="42" y="26">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="1.5" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="1.5"/>
 </filter>
-<filter id={`filter5_f_${id}`} x="-6" y="-5.02051" width="434" height="194" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="194" id={`filter5_f_${id}`} width="434" x="-6" y="-5.02051">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="17" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="17"/>
 </filter>
-<filter id={`filter6_df_${id}`} x="167.924" y="7.73242" width="339.37" height="123.774" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="123.774" id={`filter6_df_${id}`} width="339.37" x="167.924" y="7.73242">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset/>
 <feGaussianBlur stdDeviation="12"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values={v.filterShadowMatrix}/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect1_dropShadow_${id}`} result="shape"/>
-<feGaussianBlur stdDeviation="15" result={`effect2_foregroundBlur_${id}`}/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect1_dropShadow_${id}`} mode="normal" result="shape"/>
+<feGaussianBlur result={`effect2_foregroundBlur_${id}`} stdDeviation="15"/>
 </filter>
-<filter id={`filter7_df_${id}`} x="261.886" y="71.374" width="259.792" height="109.01" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="109.01" id={`filter7_df_${id}`} width="259.792" x="261.886" y="71.374">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset/>
 <feGaussianBlur stdDeviation="12"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values={v.filterShadowMatrix}/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect1_dropShadow_${id}`} result="shape"/>
-<feGaussianBlur stdDeviation="5" result={`effect2_foregroundBlur_${id}`}/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect1_dropShadow_${id}`} mode="normal" result="shape"/>
+<feGaussianBlur result={`effect2_foregroundBlur_${id}`} stdDeviation="5"/>
 </filter>
-<filter id={`filter10_f_${id}`} x="15" y="11" width="365" height="71" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="71" id={`filter10_f_${id}`} width="365" x="15" y="11">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="0.5" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="0.5"/>
 </filter>
-<filter id={`filter11_f_${id}`} x="149.046" y="-19.0576" width="254.168" height="155.506" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="155.506" id={`filter11_f_${id}`} width="254.168" x="149.046" y="-19.0576">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="20" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="20"/>
 </filter>
-<filter id={`filter12_f_${id}`} x="231.641" y="55.7139" width="171.478" height="150.788" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="150.788" id={`filter12_f_${id}`} width="171.478" x="231.641" y="55.7139">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="20" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="20"/>
 </filter>
-<filter id={`filter13_df_${id}`} x="159.396" y="-11.0332" width="232.404" height="152.936" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="152.936" id={`filter13_df_${id}`} width="232.404" x="159.396" y="-11.0332">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset/>
 <feGaussianBlur stdDeviation="12"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values={v.filterShadowMatrix}/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect1_dropShadow_${id}`} result="shape"/>
-<feGaussianBlur stdDeviation="25" result={`effect2_foregroundBlur_${id}`}/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect1_dropShadow_${id}`} mode="normal" result="shape"/>
+<feGaussianBlur result={`effect2_foregroundBlur_${id}`} stdDeviation="25"/>
 </filter>
-<filter id={`filter14_f_${id}`} x="38.27" y="55.7139" width="303.042" height="150.788" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="150.788" id={`filter14_f_${id}`} width="303.042" x="38.27" y="55.7139">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="20" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="20"/>
 </filter>
-<filter id={`filter15_f_${id}`} x="62.2634" y="17.7148" width="199.787" height="115.318" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="115.318" id={`filter15_f_${id}`} width="199.787" x="62.2634" y="17.7148">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feGaussianBlur stdDeviation="10" result={`effect1_foregroundBlur_${id}`}/>
+<feBlend in="SourceGraphic" in2="BackgroundImageFix" mode="normal" result="shape"/>
+<feGaussianBlur result={`effect1_foregroundBlur_${id}`} stdDeviation="10"/>
 </filter>
-<filter id={`filter16_df_${id}`} x="24.5" y="96.5" width="345" height="6" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="6" id={`filter16_df_${id}`} width="345" x="24.5" y="96.5">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dy="0.5"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect1_dropShadow_${id}`} result="shape"/>
-<feGaussianBlur stdDeviation="0.75" result={`effect2_foregroundBlur_${id}`}/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect1_dropShadow_${id}`} mode="normal" result="shape"/>
+<feGaussianBlur result={`effect2_foregroundBlur_${id}`} stdDeviation="0.75"/>
 </filter>
-<filter id={`filter17_df_${id}`} x="24.5" y="85.5" width="345" height="10" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+<filter colorInterpolationFilters="sRGB" filterUnits="userSpaceOnUse" height="10" id={`filter17_df_${id}`} width="345" x="24.5" y="85.5">
 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
 <feOffset dy="0.5"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result={`effect1_dropShadow_${id}`}/>
-<feBlend mode="normal" in="SourceGraphic" in2={`effect1_dropShadow_${id}`} result="shape"/>
-<feGaussianBlur stdDeviation="0.75" result={`effect2_foregroundBlur_${id}`}/>
+<feBlend in2="BackgroundImageFix" mode="normal" result={`effect1_dropShadow_${id}`}/>
+<feBlend in="SourceGraphic" in2={`effect1_dropShadow_${id}`} mode="normal" result="shape"/>
+<feGaussianBlur result={`effect2_foregroundBlur_${id}`} stdDeviation="0.75"/>
 </filter>
-<linearGradient id={`paint0_linear_${id}`} x1="375.298" y1="65" x2="392" y2="65" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint0_linear_${id}`} x1="375.298" x2="392" y1="65" y2="65">
 <stop stopOpacity="0"/>
 <stop offset="0.5" stopOpacity="0.6"/>
 <stop offset="1"/>
 </linearGradient>
-<linearGradient id={`paint1_linear_${id}`} x1="17.6842" y1="65" x2="3.4386" y2="65" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint1_linear_${id}`} x1="17.6842" x2="3.4386" y1="65" y2="65">
 <stop stopOpacity="0"/>
 <stop offset="0.5" stopColor="white" stopOpacity="0.2"/>
 <stop offset="1" stopColor="white" stopOpacity="0.6"/>
 </linearGradient>
-<linearGradient id={`paint2_linear_${id}`} x1="196.491" y1="1.74999e-08" x2="195.982" y2="102" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint2_linear_${id}`} x1="196.491" x2="195.982" y1="1.74999e-08" y2="102">
 <stop stopColor="#4F4F4F"/>
 <stop offset="0.52583" stopColor="#646464"/>
 <stop offset="0.892106" stopColor="white" stopOpacity="0.5"/>
 <stop offset="0.95013" stopColor="#222224"/>
 <stop offset="1" stopColor="#353130"/>
 </linearGradient>
-<linearGradient id={`paint3_linear_${id}`} x1="29.4737" y1="51" x2="147.368" y2="51" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint3_linear_${id}`} x1="29.4737" x2="147.368" y1="51" y2="51">
 <stop stopColor="#141414"/>
 <stop offset="1" stopOpacity="0"/>
 </linearGradient>
-<linearGradient id={`paint4_linear_${id}`} x1="394" y1="53.5" x2="356.5" y2="40.5" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint4_linear_${id}`} x1="394" x2="356.5" y1="53.5" y2="40.5">
 <stop stopColor="#141414"/>
 <stop offset="1" stopOpacity="0"/>
 </linearGradient>
-<linearGradient id={`paint5_linear_${id}`} x1="6" y1="47" x2="388" y2="47" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint5_linear_${id}`} x1="6" x2="388" y1="47" y2="47">
 <stop offset="0.748942" stopColor="#666867"/>
 <stop offset="1" stopColor="#87888A"/>
 </linearGradient>
-<radialGradient id={`paint6_radial_${id}`} cx="0" cy="0" r="1" gradientTransform="matrix(17.259 -2.5 10.8523 14.1477 20.9578 81.5)" gradientUnits="userSpaceOnUse">
+<radialGradient cx="0" cy="0" gradientTransform="matrix(17.259 -2.5 10.8523 14.1477 20.9578 81.5)" gradientUnits="userSpaceOnUse" id={`paint6_radial_${id}`} r="1">
 <stop offset="0.437392" stopColor="white"/>
 <stop offset="1" stopColor="white" stopOpacity="0"/>
 </radialGradient>
-<radialGradient id={`paint7_radial_${id}`} cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(383 61.5) rotate(-171.703) scale(24.2538 96.1791)">
+<radialGradient cx="0" cy="0" gradientTransform="translate(383 61.5) rotate(-171.703) scale(24.2538 96.1791)" gradientUnits="userSpaceOnUse" id={`paint7_radial_${id}`} r="1">
 <stop stopColor="white"/>
 <stop offset="0.481395" stopColor="white" stopOpacity="0"/>
 </radialGradient>
-<linearGradient id={`paint8_linear_${id}`} x1="54.5" y1="127" x2="144.5" y2="40.4999" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint8_linear_${id}`} x1="54.5" x2="144.5" y1="127" y2="40.4999">
 <stop offset="0.82681" stopColor="#282828"/>
 <stop offset="1" stopColor="#525252"/>
 </linearGradient>
-<linearGradient id={`paint9_linear_${id}`} x1="312.558" y1="20.6" x2="312.316" y2="29.0184" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint9_linear_${id}`} x1="312.558" x2="312.316" y1="20.6" y2="29.0184">
 <stop stopColor={v.glowEdgeA}/>
 <stop offset="1" stopOpacity="0"/>
 </linearGradient>
-<radialGradient id={`paint10_radial_${id}`} cx="0" cy="0" r="1" gradientTransform="matrix(31.8316 3.4 -131.713 3.9431 236.516 20)" gradientUnits="userSpaceOnUse">
+<radialGradient cx="0" cy="0" gradientTransform="matrix(31.8316 3.4 -131.713 3.9431 236.516 20)" gradientUnits="userSpaceOnUse" id={`paint10_radial_${id}`} r="1">
 <stop stopColor={v.glowEdgeB}/>
 <stop offset="1" stopColor={v.glowEdgeB} stopOpacity="0"/>
 </radialGradient>
-<linearGradient id={`paint11_linear_${id}`} x1="313.221" y1="21" x2="306.765" y2="62.113" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint11_linear_${id}`} x1="313.221" x2="306.765" y1="21" y2="62.113">
 <stop stopColor={v.glowEdgeA}/>
 <stop offset="1" stopOpacity="0"/>
 </linearGradient>
-<radialGradient id={`paint12_radial_${id}`} cx="0" cy="0" r="1" gradientTransform="matrix(29.0842 17 -120.345 19.7155 243.742 18)" gradientUnits="userSpaceOnUse">
+<radialGradient cx="0" cy="0" gradientTransform="matrix(29.0842 17 -120.345 19.7155 243.742 18)" gradientUnits="userSpaceOnUse" id={`paint12_radial_${id}`} r="1">
 <stop stopColor={v.glowEdgeB}/>
 <stop offset="1" stopColor={v.glowEdgeB} stopOpacity="0"/>
 </radialGradient>
-<radialGradient id={`paint13_radial_${id}`} cx="0" cy="0" r="1" gradientTransform="matrix(34.8576 64 -336.696 31.7319 70.0894 12)" gradientUnits="userSpaceOnUse">
+<radialGradient cx="0" cy="0" gradientTransform="matrix(34.8576 64 -336.696 31.7319 70.0894 12)" gradientUnits="userSpaceOnUse" id={`paint13_radial_${id}`} r="1">
 <stop stopColor="white"/>
 <stop offset="1" stopColor="white" stopOpacity="0"/>
 </radialGradient>
-<linearGradient id={`paint14_linear_${id}`} x1="54.5" y1="127" x2="144.5" y2="40.4999" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint14_linear_${id}`} x1="54.5" x2="144.5" y1="127" y2="40.4999">
 <stop offset="0.82681" stopColor="#282828"/>
 <stop offset="1" stopColor="#525252"/>
 </linearGradient>
-<linearGradient id={`paint15_linear_${id}`} x1="26" y1="99.5" x2="368" y2="99.5" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint15_linear_${id}`} x1="26" x2="368" y1="99.5" y2="99.5">
 <stop/>
 <stop offset="0.5" stopOpacity="0.2"/>
 <stop offset="0.75" stopOpacity="0.2"/>
 <stop offset="1"/>
 </linearGradient>
-<linearGradient id={`paint16_linear_${id}`} x1="26" y1="90.5" x2="368" y2="90.5" gradientUnits="userSpaceOnUse">
+<linearGradient gradientUnits="userSpaceOnUse" id={`paint16_linear_${id}`} x1="26" x2="368" y1="90.5" y2="90.5">
 <stop stopColor="white" stopOpacity="0.3"/>
 <stop offset="0.5" stopColor="white" stopOpacity="0.2"/>
 <stop offset="0.75" stopColor="white" stopOpacity="0"/>
 <stop offset="1" stopColor="white" stopOpacity="0.1"/>
 </linearGradient>
 <clipPath id={`clip0_${id}`}>
-<rect width="392" height="130" rx="20" fill="white"/>
+<rect fill="white" height="130" rx="20" width="392"/>
 </clipPath>
 <clipPath id={`clip1_${id}`}>
-<rect width="392" height="102" rx="20" fill="white"/>
+<rect fill="white" height="102" rx="20" width="392"/>
 </clipPath>
 <clipPath id={`clip2_${id}`}>
-<rect x="45" y="18" width="307" height="105" fill="white"/>
+<rect fill="white" height="105" width="307" x="45" y="18"/>
 </clipPath>
 <clipPath id={`clip3_${id}`}>
-<rect width="307" height="95" fill="white" transform="translate(45 29)"/>
+<rect fill="white" height="95" transform="translate(45 29)" width="307"/>
 </clipPath>
 <clipPath id={`clip4_${id}`}>
-<rect width="307" height="67" fill="white" transform="translate(45 30)"/>
+<rect fill="white" height="67" transform="translate(45 30)" width="307"/>
 </clipPath>
 <clipPath id={`clip5_${id}`}>
-<rect width="307" height="26" fill="white" transform="translate(45 97)"/>
+<rect fill="white" height="26" transform="translate(45 97)" width="307"/>
 </clipPath>
-<image id={`image0_${id}`} width="1024" height="1024" preserveAspectRatio="none" xlinkHref="[BASE64_OMITTED]"/>
+<image height="1024" id={`image0_${id}`} preserveAspectRatio="none" width="1024" xlinkHref="[BASE64_OMITTED]"/>
 </defs>
 
 <g filter={`url(#filter0_i_${id})`}>
 <g clipPath={`url(#clip0_${id})`}>
-<rect width="392" height="130" rx="20" fill="#4F4E4C"/>
-<rect width="392" height="130" rx="20" fill={`url(#paint0_linear_${id})`}/>
-<rect width="392" height="130" rx="20" fill={`url(#paint1_linear_${id})`}/>
-<rect width="392" height="130" rx="20" fill={`url(#pattern0_${id})`} fillOpacity="0.05"/>
+<rect fill="#4F4E4C" height="130" rx="20" width="392"/>
+<rect fill={`url(#paint0_linear_${id})`} height="130" rx="20" width="392"/>
+<rect fill={`url(#paint1_linear_${id})`} height="130" rx="20" width="392"/>
+<rect fill={`url(#pattern0_${id})`} fillOpacity="0.05" height="130" rx="20" width="392"/>
 <g filter={`url(#filter1_i_${id})`}>
 <g clipPath={`url(#clip1_${id})`}>
-<rect width="392" height="102" rx="20" fill="black" fillOpacity="0.7"/>
-<rect width="392" height="102" rx="20" fill={`url(#paint2_linear_${id})`}/>
-<rect width="392" height="102" rx="20" fill={`url(#paint3_linear_${id})`}/>
-<rect width="392" height="102" rx="20" fill={`url(#paint4_linear_${id})`}/>
+<rect fill="black" fillOpacity="0.7" height="102" rx="20" width="392"/>
+<rect fill={`url(#paint2_linear_${id})`} height="102" rx="20" width="392"/>
+<rect fill={`url(#paint3_linear_${id})`} height="102" rx="20" width="392"/>
+<rect fill={`url(#paint4_linear_${id})`} height="102" rx="20" width="392"/>
 <g filter={`url(#filter2_dd_${id})`}>
 <path d="M6 18C6 9.71573 12.7157 3 21 3H373C381.284 3 388 9.71573 388 18V76C388 84.2843 381.284 91 373 91H21C12.7157 91 6 84.2843 6 76V18Z" fill={`url(#paint5_linear_${id})`}/>
 <path d="M6 18C6 9.71573 12.7157 3 21 3H373C381.284 3 388 9.71573 388 18V76C388 84.2843 381.284 91 373 91H21C12.7157 91 6 84.2843 6 76V18Z" fill={`url(#paint6_radial_${id})`}/>
 <path d="M6 18C6 9.71573 12.7157 3 21 3H373C381.284 3 388 9.71573 388 18V76C388 84.2843 381.284 91 373 91H21C12.7157 91 6 84.2843 6 76V18Z" fill={`url(#paint7_radial_${id})`} fillOpacity="0.2"/>
 </g>
 </g>
-<rect x="0.25" y="0.25" width="391.5" height="101.5" rx="19.75" stroke="black" strokeOpacity="0.3" strokeWidth="0.5"/>
+<rect height="101.5" rx="19.75" stroke="black" strokeOpacity="0.3" strokeWidth="0.5" width="391.5" x="0.25" y="0.25"/>
 </g>
 
 
@@ -461,7 +461,7 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
 <path d="M21 7.5H373.5C379.299 7.5 384 12.201 384 18V76C384 81.799 379.299 86.5 373.5 86.5H373C372.172 86.5 371.5 87.1716 371.5 88V126.5H23.5C23.2239 126.5 23 126.276 23 126V88C23 87.1716 22.3284 86.5 21.5 86.5H21C15.201 86.5 10.5 81.799 10.5 76V18L10.5137 17.46C10.7947 11.9119 15.3821 7.5 21 7.5Z" stroke={`url(#paint8_linear_${id})`}/>
 </g>
 <g clipPath={`url(#clip2_${id})`}>
-<rect x="45" y="18" width="307" height="105" fill={v.faceBg}/>
+<rect fill={v.faceBg} height="105" width="307" x="45" y="18"/>
 <path d="M19 20H355V41H19V20Z" fill={v.faceBg}/>
 <path d="M354.5 20.5V40.5H19.5V20.5H354.5Z" stroke={`url(#paint9_linear_${id})`} strokeOpacity="0.1"/>
 <path d="M354.5 20.5V40.5H19.5V20.5H354.5Z" stroke={`url(#paint10_radial_${id})`} strokeOpacity="0.2"/>
@@ -539,15 +539,15 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
             )}
           </g>
 
-<rect width="329" height="67" transform="translate(23 30)" fill="white" fillOpacity="0.01"/>
-<rect width="329" height="26" transform="matrix(1 0 0 -1 23 123)" fill="white" fillOpacity="0.01"/>
+<rect fill="white" fillOpacity="0.01" height="67" transform="translate(23 30)" width="329"/>
+<rect fill="white" fillOpacity="0.01" height="26" transform="matrix(1 0 0 -1 23 123)" width="329"/>
 </g>
-<rect x="45.5" y="18.5" width="306" height="104" stroke={`url(#paint11_linear_${id})`} strokeOpacity="0.1"/>
-<rect x="45.5" y="18.5" width="306" height="104" stroke={`url(#paint12_radial_${id})`} strokeOpacity="0.2"/>
+<rect height="104" stroke={`url(#paint11_linear_${id})`} strokeOpacity="0.1" width="306" x="45.5" y="18.5"/>
+<rect height="104" stroke={`url(#paint12_radial_${id})`} strokeOpacity="0.2" width="306" x="45.5" y="18.5"/>
 <g filter={`url(#filter10_f_${id})`}>
 <path d="M16 19V74C16 77.866 19.134 81 23 81H379V12H23C19.134 12 16 15.134 16 19Z" fill={`url(#paint13_radial_${id})`} fillOpacity="0.12"/>
 </g>
-<mask id={`mask0_${id}`} style={{ maskType: "alpha" as any }} maskUnits="userSpaceOnUse" x="10" y="7" width="375" height="120">
+<mask height="120" id={`mask0_${id}`} maskUnits="userSpaceOnUse" style={{ maskType: "alpha" as any }} width="375" x="10" y="7">
 <path d="M21 7.5H373.5C379.299 7.5 384 12.201 384 18V76C384 81.799 379.299 86.5 373.5 86.5H373C372.172 86.5 371.5 87.1716 371.5 88V126.5H23.5C23.2239 126.5 23 126.276 23 126V88C23 87.1716 22.3284 86.5 21.5 86.5H21C15.201 86.5 10.5 81.799 10.5 76V18L10.5137 17.46C10.7947 11.9119 15.3821 7.5 21 7.5Z" fill="#0B0B09" stroke={`url(#paint14_linear_${id})`}/>
 </mask>
 <g mask={`url(#mask0_${id})`}>
@@ -570,10 +570,10 @@ export const JoinTactileButton: React.FC<JoinTactileButtonProps> = ({
 </g>
 </g>
 <g filter={`url(#filter16_df_${id})`}>
-<rect x="26" y="98" width="342" height="3" fill={`url(#paint15_linear_${id})`} fillOpacity="0.5" shapeRendering="crispEdges"/>
+<rect fill={`url(#paint15_linear_${id})`} fillOpacity="0.5" height="3" shapeRendering="crispEdges" width="342" x="26" y="98"/>
 </g>
 <g filter={`url(#filter17_df_${id})`}>
-<rect x="26" y="87" width="342" height="7" rx="1" fill={`url(#paint16_linear_${id})`} fillOpacity="0.4" shapeRendering="crispEdges"/>
+<rect fill={`url(#paint16_linear_${id})`} fillOpacity="0.4" height="7" rx="1" shapeRendering="crispEdges" width="342" x="26" y="87"/>
 </g>
 
         </g>

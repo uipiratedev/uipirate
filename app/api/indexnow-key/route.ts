@@ -3,6 +3,7 @@ import { getIndexNowKey } from "@/lib/indexing/indexnow";
 
 export async function GET() {
   const key = getIndexNowKey();
+
   return new NextResponse(key, {
     status: 200,
     headers: {

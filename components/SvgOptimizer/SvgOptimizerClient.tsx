@@ -153,8 +153,8 @@ export default function SvgOptimizerClient() {
               <div className="flex items-center gap-2">
                 <button
                   className="text-[11px] font-bold text-gray-500 hover:text-[#FF5B04] transition-colors"
-                  onClick={() => fileInputRef.current?.click()}
                   type="button"
+                  onClick={() => fileInputRef.current?.click()}
                 >
                   Upload .svg
                 </button>
@@ -248,8 +248,8 @@ export default function SvgOptimizerClient() {
                       className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
                         activeTab === t ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"
                       }`}
-                      onClick={() => setActiveTab(t)}
                       type="button"
+                      onClick={() => setActiveTab(t)}
                     >
                       {t === "svg" ? "Optimized SVG" : "React / JSX"}
                     </button>
@@ -257,8 +257,8 @@ export default function SvgOptimizerClient() {
                 </div>
                 <button
                   className="px-4 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all"
-                  onClick={copy}
                   type="button"
+                  onClick={copy}
                 >
                   {copied ? "Copied!" : "Copy Code"}
                 </button>

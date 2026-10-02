@@ -259,8 +259,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const c of candidates) {
       if (!c) continue;
       const d = new Date(c);
+
       if (!isNaN(d.getTime()) && d.getTime() > 0) return d.toISOString();
     }
+
     return STATIC_LASTMOD;
   };
 

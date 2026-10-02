@@ -48,8 +48,10 @@ export async function reserveQuota(
 
     // Enqueue remaining URLs if provided
     let queuedCount = 0;
+
     if (urlsToQueueIfFull.length > available) {
       const overflowUrls = urlsToQueueIfFull.slice(available);
+
       for (const url of overflowUrls) {
         await IndexQueue.updateOne(
           { url, provider, status: "pending" },
@@ -154,6 +156,7 @@ export async function getQuotaSummary(): Promise<QuotaSummary[]> {
     const doc = docMap.get(provider);
     const limit = QUOTA_LIMITS[provider];
     const used = doc?.used || 0;
+
     return {
       provider,
       date,

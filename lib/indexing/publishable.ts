@@ -23,12 +23,14 @@ export function extractPath(urlOrPath: string): string {
   try {
     if (urlOrPath.startsWith("http://") || urlOrPath.startsWith("https://")) {
       const u = new URL(urlOrPath);
+
       return u.pathname || "/";
     }
   } catch {
     // fallback to string manipulation
   }
   const [clean] = urlOrPath.split("?");
+
   return clean.startsWith("/") ? clean : `/${clean}`;
 }
 
@@ -61,6 +63,7 @@ export async function isPublishable(
   // 2. Check held draft case studies
   if (path.startsWith("/case-studies/")) {
     const slug = path.replace(/^\/case-studies\//, "").replace(/\/$/, "");
+
     if (HELD_DRAFT_SLUGS.has(slug)) {
       return {
         publishable: false,
@@ -72,6 +75,7 @@ export async function isPublishable(
     // Check CMS post status if possible
     try {
       const post = await getPostBySlug(slug);
+
       if (!post) {
         // Not published in CMS
         return {
@@ -94,10 +98,13 @@ export async function isPublishable(
 
   // 3. Check standalone blog posts (e.g. /[slug])
   const segments = path.split("/").filter(Boolean);
+
   if (segments.length === 1 && !["about", "pricing", "process", "contact", "faqs", "blogs", "case-studies", "tools", "componentlab", "privacy", "terms", "sitemap"].includes(segments[0])) {
     const slug = segments[0];
+
     try {
       const post = await getPostBySlug(slug);
+
       if (post) {
         if (post.seo?.noIndex) {
           return {

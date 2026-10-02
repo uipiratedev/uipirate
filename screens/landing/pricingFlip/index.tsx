@@ -164,7 +164,7 @@ const TopLeftCornerSlot = ({ isDark }: { isDark?: boolean }) => {
     <div aria-hidden="true" className="pointer-events-none absolute left-0 top-0  overflow-visible">
       <svg className="overflow-visible" height={FOLD} style={{ overflow: "visible" }} width={FOLD}>
         <defs>
-          <filter id={shadowFilterId} height="200%" width="200%" x="-50%" y="-50%">
+          <filter height="200%" id={shadowFilterId} width="200%" x="-50%" y="-50%">
             <feDropShadow dx="1" dy="1.5" floodColor={shadowColor} floodOpacity="1" stdDeviation="1.2" />
           </filter>
         </defs>
@@ -225,7 +225,7 @@ const BottomRightCornerSlot = ({ isDark }: { isDark?: boolean }) => {
     <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0  overflow-visible">
       <svg className="overflow-visible" height={FOLD} style={{ overflow: "visible" }} width={FOLD}>
         <defs>
-          <filter id={shadowFilterId} height="200%" width="200%" x="-50%" y="-50%">
+          <filter height="200%" id={shadowFilterId} width="200%" x="-50%" y="-50%">
             <feDropShadow dx="1" dy="1.5" floodColor={shadowColor} floodOpacity="1" stdDeviation="1.2" />
           </filter>
         </defs>

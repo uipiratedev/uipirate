@@ -126,8 +126,8 @@ export default function GeoCompetitorBenchmarkClient() {
             <button
               className="w-full px-6 py-3 rounded-full bg-gray-900 hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-bold transition-all flex items-center justify-center gap-2"
               disabled={loading || !primaryUrl.trim() || !competitorUrl.trim()}
-              onClick={runBenchmark}
               type="button"
+              onClick={runBenchmark}
             >
               {loading && (
                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

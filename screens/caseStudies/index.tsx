@@ -89,11 +89,13 @@ const CaseStudiesNextCTA = ({ isInline = false }: CaseStudiesNextCTAProps) => {
 
   useEffect(() => {
     const el = cardRef.current;
+
     if (!el) return;
 
     const computeGrid = () => {
       const w = el.clientWidth;
       const h = el.clientHeight;
+
       if (!w || !h) return;
 
       // Target square size ~56.5px (matching 113px tile)
@@ -117,6 +119,7 @@ const CaseStudiesNextCTA = ({ isInline = false }: CaseStudiesNextCTAProps) => {
 
     computeGrid();
     const ro = new ResizeObserver(computeGrid);
+
     ro.observe(el);
 
     return () => ro.disconnect();
@@ -177,8 +180,8 @@ const CaseStudiesNextCTA = ({ isInline = false }: CaseStudiesNextCTAProps) => {
         <LetsTalkButton
           href="https://cal.com/ui-pirate/15min"
           showArrow={true}
-          variant="color"
           target="_blank"
+          variant="color"
         >
           Book a 15-Min Call
         </LetsTalkButton>
@@ -205,9 +208,11 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
   const categories = useMemo(() => {
     const cats = new Set<string>();
+
     caseStudies.forEach(s => {
       if (s.industry) cats.add(s.industry);
     });
+
     return Array.from(cats).sort();
   }, [caseStudies]);
 
@@ -277,11 +282,11 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
       <div>
         {/* Hero — portfolio + case studies positioning */}
         <CaseStudiesHero
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          category={category}
-          setCategory={setCategory}
           categories={categories}
+          category={category}
+          searchQuery={searchQuery}
+          setCategory={setCategory}
+          setSearchQuery={setSearchQuery}
         />
 
 
@@ -365,8 +370,8 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   return (
                     <motion.div
                       key={study.slug}
-                      className="flex h-full"
                       animate={{ opacity: 1, y: 0 }}
+                      className="flex h-full"
                       initial={{ opacity: 0, y: 20 }}
                       transition={{
                         duration: 0.4,
@@ -460,8 +465,8 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                 {/* CTA card: shown inline in grid when odd count, hidden when even (rendered below instead) */}
                 {filteredStudies.length % 2 !== 0 && (
                   <motion.div
-                    className="flex h-full"
                     animate={{ opacity: 1, y: 0 }}
+                    className="flex h-full"
                     initial={{ opacity: 0, y: 20 }}
                     transition={{
                       duration: 0.4,

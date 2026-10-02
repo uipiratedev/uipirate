@@ -6,6 +6,7 @@ import sitemap from "@/app/sitemap";
 
 export async function POST() {
   const guard = await requireApi("manage:indexing");
+
   if (!guard.ok) return guard.response;
 
   try {

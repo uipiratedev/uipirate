@@ -165,6 +165,7 @@ export async function queryGoogleSearchAnalytics(params: {
 
     if (!res.ok) return [];
     const json = await res.json();
+
     return json?.rows || [];
   } catch {
     return [];
@@ -177,9 +178,12 @@ export async function queryGoogleSearchAnalytics(params: {
 export function parseBingDate(dateStr?: string): string {
   if (!dateStr) return "";
   const match = dateStr.match(/\d+/);
+
   if (!match) return "";
   const ms = parseInt(match[0], 10);
+
   if (isNaN(ms)) return "";
+
   return new Date(ms).toISOString().slice(0, 10);
 }
 
@@ -188,6 +192,7 @@ export function parseBingDate(dateStr?: string): string {
  */
 export async function queryBingSearchAnalytics(): Promise<any[]> {
   const apiKey = getBingApiKey();
+
   if (!apiKey) return [];
 
   const defaultUrl = getSiteOrigin();
@@ -208,6 +213,7 @@ export async function queryBingSearchAnalytics(): Promise<any[]> {
 
       if (res.ok) {
         const json = await res.json();
+
         if (Array.isArray(json?.d) && json.d.length > 0) {
           return json.d;
         }
@@ -222,17 +228,22 @@ export async function queryBingSearchAnalytics(): Promise<any[]> {
     const sitesRes = await fetch(
       `https://ssl.bing.com/webmaster/api.svc/json/GetUserSites?apikey=${encodeURIComponent(apiKey)}`,
     );
+
     if (sitesRes.ok) {
       const sitesJson = await sitesRes.json();
       const siteList = sitesJson?.d || [];
+
       for (const s of siteList) {
         const discoveredUrl = s.Url || s.url;
+
         if (!discoveredUrl) continue;
         const res = await fetch(
           `https://ssl.bing.com/webmaster/api.svc/json/GetQueryStats?apikey=${encodeURIComponent(apiKey)}&siteUrl=${encodeURIComponent(discoveredUrl)}`,
         );
+
         if (res.ok) {
           const json = await res.json();
+
           if (Array.isArray(json?.d)) {
             return json.d;
           }
@@ -254,6 +265,7 @@ export async function queryBingRankAndTrafficStats(params?: {
   endDate?: string;
 }): Promise<Array<{ date: string; clicks: number; impressions: number }>> {
   const apiKey = getBingApiKey();
+
   if (!apiKey) return [];
 
   const defaultUrl = getSiteOrigin();
@@ -268,9 +280,11 @@ export async function queryBingRankAndTrafficStats(params?: {
       const res = await fetch(
         `https://ssl.bing.com/webmaster/api.svc/json/GetRankAndTrafficStats?apikey=${encodeURIComponent(apiKey)}&siteUrl=${encodeURIComponent(siteUrl)}`,
       );
+
       if (res.ok) {
         const json = await res.json();
         const allStats = json?.d || [];
+
         if (Array.isArray(allStats) && allStats.length > 0) {
           return allStats
             .map((s: any) => ({
@@ -282,6 +296,7 @@ export async function queryBingRankAndTrafficStats(params?: {
               if (!s.date) return false;
               if (params?.startDate && s.date < params.startDate) return false;
               if (params?.endDate && s.date > params.endDate) return false;
+
               return true;
             })
             .sort((a, b) => a.date.localeCompare(b.date));
@@ -300,6 +315,7 @@ export async function queryBingRankAndTrafficStats(params?: {
  */
 export async function queryBingPageStats(): Promise<any[]> {
   const apiKey = getBingApiKey();
+
   if (!apiKey) return [];
 
   const defaultUrl = getSiteOrigin();
@@ -314,8 +330,10 @@ export async function queryBingPageStats(): Promise<any[]> {
       const res = await fetch(
         `https://ssl.bing.com/webmaster/api.svc/json/GetPageStats?apikey=${encodeURIComponent(apiKey)}&siteUrl=${encodeURIComponent(siteUrl)}`,
       );
+
       if (res.ok) {
         const json = await res.json();
+
         if (Array.isArray(json?.d) && json.d.length > 0) {
           return json.d;
         }
@@ -602,6 +620,7 @@ export async function getSearchIntelligence(params: {
   for (const r of gscQueries) {
     const rawCountry = r.keys?.[1];
     const norm = normalizeGscCountry(rawCountry);
+
     queries.push({
       query: r.keys?.[0] || "(unknown)",
       engine: "google",
@@ -617,14 +636,17 @@ export async function getSearchIntelligence(params: {
 
   // Filter & aggregate Bing keywords — strictly respect the selected date range.
   const bingQueryMap = new Map<string, SearchQueryItem>();
+
   for (const r of bingQueries) {
     const itemDate = parseBingDate(r.Date);
+
     // Skip entries that fall outside the selected range. Bing GetQueryStats
     // rows always carry a Date, so an out-of-range window (e.g. last 24h with
     // no Bing activity) correctly yields zero.
     if (!itemDate || itemDate < startDate || itemDate > endDate) continue;
 
     const rawQuery = (r.Query || r.query || "").trim();
+
     if (!rawQuery) continue;
 
     const existing = bingQueryMap.get(rawQuery.toLowerCase());
@@ -662,6 +684,7 @@ export async function getSearchIntelligence(params: {
     .map((r) => {
       const raw = r.keys?.[0] || "";
       const norm = normalizeGscCountry(raw);
+
       return {
         countryCode: norm.code,
         country: norm.name,
@@ -675,8 +698,10 @@ export async function getSearchIntelligence(params: {
 
   // Pages from GSC and Bing
   const pageMap = new Map<string, SearchPageItem>();
+
   for (const r of gscPages) {
     let p = r.keys?.[0] || "/";
+
     try {
       if (p.startsWith("http://") || p.startsWith("https://")) {
         p = new URL(p).pathname;
@@ -688,11 +713,13 @@ export async function getSearchIntelligence(params: {
     const impressions = r.impressions || 0;
     const ctr = r.ctr || 0;
     const position = Math.round((r.position || 0) * 10) / 10;
+
     pageMap.set(p, { page: p, clicks, impressions, ctr, position });
   }
 
   for (const bp of bingPages) {
     let rawUrl = bp.Query || bp.query || "/";
+
     try {
       if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://")) {
         rawUrl = new URL(rawUrl).pathname;
@@ -706,6 +733,7 @@ export async function getSearchIntelligence(params: {
     const position = Math.round((rawPos > 0 ? rawPos : 1) * 10) / 10;
 
     const existing = pageMap.get(rawUrl);
+
     if (existing) {
       existing.clicks += clicks;
       existing.impressions += impressions;
@@ -732,8 +760,10 @@ export async function getSearchIntelligence(params: {
   if (engine === "all" || engine === "google") {
     for (const r of gscDates) {
       const date = r.keys?.[0];
+
       if (!date) continue;
       const existing = dateMap.get(date) || { date, clicks: 0, impressions: 0 };
+
       existing.clicks += r.clicks || 0;
       existing.impressions += r.impressions || 0;
       dateMap.set(date, existing);
@@ -744,6 +774,7 @@ export async function getSearchIntelligence(params: {
     for (const r of bingDailyStats) {
       if (!r.date) continue;
       const existing = dateMap.get(r.date) || { date: r.date, clicks: 0, impressions: 0 };
+
       existing.clicks += r.clicks || 0;
       existing.impressions += r.impressions || 0;
       dateMap.set(r.date, existing);
@@ -774,6 +805,7 @@ export async function getSearchIntelligence(params: {
 
   if (queries.length === 0 && countries.length === 0 && pages.length === 0 && series.length === 0) {
     const mock = getMockSearchAnalytics(params.from, params.to, engine);
+
     return {
       ...mock,
       mocked: true,

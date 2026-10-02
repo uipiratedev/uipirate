@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from "react";
 import {
-  Button,
-  Chip,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerHeader,
-  Input,
   Pagination,
 } from "@heroui/react";
 
@@ -176,6 +173,7 @@ export default function VisitorsClient() {
       render: (r) => {
         const parts = [r.city, r.region, r.country].filter(Boolean);
         const text = parts.join(", ");
+
         return (
           <div className="min-w-0">
             <span className="block font-medium text-xs text-gray-800 truncate" title={text}>
@@ -197,6 +195,7 @@ export default function VisitorsClient() {
       width: "16%",
       render: (r) => {
         const sw = [r.browser, r.os].filter(Boolean).join(" · ");
+
         return (
           <div className="min-w-0">
             <span className="block font-medium text-xs capitalize text-gray-800 truncate">

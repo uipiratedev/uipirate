@@ -68,11 +68,11 @@ const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
         {/* Service preview image */}
         {serviceImage && (
           <section className="section-container">
-            <Reveal variant="fade" scrub={false}>
+            <Reveal scrub={false} variant="fade">
               {caseStudyLink ? (
                 <Link
-                  href={caseStudyLink}
                   className="block group overflow-hidden rounded-[36px] transition-all duration-300"
+                  href={caseStudyLink}
                 >
                   <img
                     alt="Service preview"

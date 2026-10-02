@@ -116,6 +116,7 @@ export default function ClicksClient() {
 
     for (const r of rawRows) {
       const { category } = categorizePath(r.path);
+
       counts[category] = (counts[category] || 0) + 1;
       grouped[category].add(r.path);
 
@@ -171,6 +172,7 @@ export default function ClicksClient() {
 
     if (searchTerm.trim()) {
       const q = searchTerm.toLowerCase();
+
       rows = rows.filter(
         (r) =>
           (r.label && r.label.toLowerCase().includes(q)) ||
@@ -209,6 +211,7 @@ export default function ClicksClient() {
         });
       }
       const group = map.get(r.path)!;
+
       group.totalClicks += r.clicks;
       group.uniqueVisitors = Math.max(group.uniqueVisitors, r.uniqueVisitors);
       group.elements.push(r);
@@ -221,6 +224,7 @@ export default function ClicksClient() {
 
   const toggleExpand = (path: string) => {
     const next = new Set(expandedPages);
+
     if (next.has(path)) next.delete(path);
     else next.add(path);
     setExpandedPages(next);
@@ -287,6 +291,7 @@ export default function ClicksClient() {
       width: "28%",
       render: (r) => {
         const cat = categorizePath(r.path);
+
         return (
           <div className="min-w-0 flex items-center gap-1.5">
             <Chip
@@ -416,6 +421,7 @@ export default function ClicksClient() {
           ] as const
         ).map((tab) => {
           const active = selectedCategory === tab.key;
+
           return (
             <button
               key={tab.key}
@@ -593,6 +599,7 @@ export default function ClicksClient() {
             ) : (
               pageGroups.map((group) => {
                 const isExpanded = expandedPages.has(group.path);
+
                 return (
                   <div
                     key={group.path}
