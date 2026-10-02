@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 
-import apps4saleProducts from "@/data/apps4sale.json";
 import { DETAILED_BOTS } from "@/data/bots";
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import { ALL_DASHBOARD_COMPONENTS } from "@/screens/uiComponents/dashboardComponents";
@@ -24,7 +23,7 @@ export const revalidate = 600;
 const BASE_URL = "https://uipirate.com";
 
 // `lastmod` for pages that aren't backed by a CMS `updatedAt` (static pages,
-// service/componentlab/bot/apps4sale entries).
+// service/componentlab/bot entries).
 //
 // NEVER use `new Date()` here. A per-request timestamp makes every URL look
 // freshly modified on every crawl, which destroys the sitemap's freshness
@@ -51,7 +50,6 @@ const STATIC_PAGES: {
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
   { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
   { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
-  { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
   { path: "/products", priority: 0.9, changeFrequency: "weekly" },
   { path: "/componentlab", priority: 0.9, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
@@ -302,16 +300,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  // 5. Apps4sale products
-  const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
-    (product) => ({
-      url: `${BASE_URL}/apps4sale/${product.slug}`,
-      lastModified: STATIC_LASTMOD,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }),
-  );
-
   // 6. Blog posts and CMS case studies from API
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
@@ -363,7 +351,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...componentLabEntries,
     ...cmsCaseStudyEntries,
     ...blogEntries,
-    ...apps4saleEntries,
   ];
 
   const seenUrls = new Set<string>();
