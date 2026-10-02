@@ -3,6 +3,7 @@ import { MetadataRoute } from "next";
 import { DETAILED_BOTS } from "@/data/bots";
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import { ALL_DASHBOARD_COMPONENTS } from "@/screens/uiComponents/dashboardComponents";
+import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 
 /**
  * Dynamic sitemap generation for Next.js App Router.
@@ -51,6 +52,7 @@ const STATIC_PAGES: {
   { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
   { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
   { path: "/products", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/concepts", priority: 0.85, changeFrequency: "weekly" },
   { path: "/componentlab", priority: 0.9, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
@@ -310,13 +312,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // now always runs.)
   let blogEntries: MetadataRoute.Sitemap = [];
   let cmsCaseStudyEntries: MetadataRoute.Sitemap = [];
+  let cmsConceptEntries: MetadataRoute.Sitemap = [];
+
+  // Concept pages with built-in content (screens/concepts/details.ts).
+  const staticConceptEntries: MetadataRoute.Sitemap = Object.keys(
+    CONCEPT_DETAILS,
+  ).map((slug) => ({
+    url: `${BASE_URL}/concepts/${slug}`,
+    lastModified: STATIC_LASTMOD,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
 
   try {
     const { listPosts } = await import("@/lib/pirateCOS/public-client");
     const posts = await fetchAllPosts(listPosts);
 
     blogEntries = posts
-      .filter((post: any) => post.postType !== "case-study")
+      .filter(
+        (post: any) =>
+          post.postType !== "case-study" && post.postType !== "concept",
+      )
       .map((blog: any) => ({
         url: `${BASE_URL}/${blog.slug}`,
         lastModified: toLastMod(blog.updatedAt, blog.publishedAt, blog.createdAt),
@@ -338,6 +354,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly" as const,
         priority: 0.8,
       }));
+
+    // Concepts live under /concepts, not /[slug]. Skip noindex posts.
+    cmsConceptEntries = posts
+      .filter((post: any) => post.postType === "concept" && !post.seo?.noIndex)
+      .map((concept: any) => ({
+        url: `${BASE_URL}/concepts/${concept.slug}`,
+        lastModified: toLastMod(
+          concept.updatedAt,
+          concept.publishedAt,
+          concept.createdAt,
+        ),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      }));
   } catch (error) {
     // Silently handle API errors — sitemap still works with static entries
     console.warn("Sitemap: Could not fetch blog posts from API:", error);
@@ -350,6 +380,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...serviceEntries,
     ...componentLabEntries,
     ...cmsCaseStudyEntries,
+    ...staticConceptEntries,
+    ...cmsConceptEntries,
     ...blogEntries,
   ];
 
