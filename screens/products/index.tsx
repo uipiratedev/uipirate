@@ -75,9 +75,9 @@ const PRODUCTS: ProductItem[] = [
     secondaryLinkText: "Book Live Demo",
   },
   {
-    id: "piratecos",
-    title: "PirateCOS",
-    badge: "Proprietary Platform",
+    id: "cometCOS",
+    title: "cometCOS",
+    badge: "Enterprise AI Publishing Platform",
     badgeColor: "orange",
     subtitle: "Multi-Tenant Content Operating System & AI Publishing Engine",
     description:
@@ -92,107 +92,19 @@ const PRODUCTS: ProductItem[] = [
       "Automated JSON-LD, OpenGraph & meta schema generation",
     ],
     techStack: ["Next.js 15", "PostgreSQL", "Tailwind CSS", "Edge API"],
-    primaryLink: "/apps4sale/piratecos",
-    primaryLinkText: "Explore System Details",
-    secondaryLink: "/blogs",
+    primaryLink: "https://cos.uipirate.com/",
+    primaryLinkText: "Launch PirateCOS",
+    secondaryLink: "https://cos.uipirate.com/register",
     secondaryLinkText: "See Live in Production",
   },
-  {
-    id: "smart-onboarding-engine",
-    title: "Smart Onboarding Engine",
-    badge: "SaaS Activation",
-    badgeColor: "emerald",
-    subtitle: "Dynamic, Personalized Product Tours & Behavioral Activation",
-    description:
-      "Replaces rigid, ignored product tours with dynamic onboarding flows that branch according to user roles, intent, and live behaviors — turning first-time signups into activated customers.",
-    category: "AI & Automation",
-    metric: { label: "Avg. Activation Lift", value: "+38%" },
-    features: [
-      "Role-based flow branching and personalized customer paths",
-      "Resumption tracking across desktop and mobile sessions",
-      "Real-time drop-off analytics and friction spot heatmaps",
-      "Lightweight embed script with zero external dependencies",
-      "Visual rule builder with custom trigger conditions",
-    ],
-    techStack: ["React", "TypeScript", "Framer Motion", "REST API"],
-    primaryLink: "/apps4sale/smart-onboarding-engine",
-    primaryLinkText: "Explore Architecture",
-    secondaryLink: "https://cal.com/ui-pirate/15min",
-    secondaryLinkText: "Book Integration Demo",
-  },
-  {
-    id: "component-lab",
-    title: "Component Lab",
-    badge: "Design System",
-    badgeColor: "blue",
-    subtitle: "Tactile React & Tailwind UI Components with Real Physics",
-    description:
-      "Our public library of production-grade tactile UI components, physics-modeled buttons, fluid glass surfaces, and responsive micro-interactions. Built and battle-tested for enterprise SaaS products.",
-    category: "Developer Tools",
-    metric: { label: "Components", value: "20+ Ready" },
-    features: [
-      "3D tactile elevation and physics spring interactions",
-      "Liquid glassmorphic materials and frosted light-bending",
-      "Tested for strict WCAG APCA color contrast and accessibility",
-      "Copy-paste ready TypeScript and Tailwind markup",
-      "Zero heavyweight third-party runtime dependencies",
-    ],
-    techStack: ["React 19", "Tailwind CSS", "Framer Motion", "Radix"],
-    primaryLink: "/componentlab",
-    primaryLinkText: "Open Component Lab",
-    secondaryLink: "/case-studies",
-    secondaryLinkText: "View in Client Work",
-  },
-  {
-    id: "engineering-tools",
-    title: "GEO & Frontend Engineering Suite",
-    badge: "Free Developer Tools",
-    badgeColor: "orange",
-    subtitle: "7+ In-House Diagnostic Tools, Optimizers & Calculators",
-    description:
-      "A complete suite of client-side engineering tools built by UI Pirate engineers to optimize production workflows: SVG coordinate precision optimizer, APCA contrast analyzer, fluid typography scales, and AI search crawler simulation.",
-    category: "Developer Tools",
-    metric: { label: "Free Tools", value: "7+ Available" },
-    features: [
-      "SVG precision optimizer with visual before/after diff",
-      "APCA & WCAG 2.2 color contrast validator with auto-fix",
-      "Responsive breakpoint & viewport layout calculator",
-      "AI Bot & Search Crawler verification and sitemap simulator",
-      "100% client-side execution — your source files never leave browser",
-    ],
-    techStack: ["Web Workers", "Canvas", "Next.js", "WASM"],
-    primaryLink: "/tools",
-    primaryLinkText: "Launch Tools Suite",
-  },
-  {
-    id: "apps4sale-hub",
-    title: "Apps 4 Sale Hub",
-    badge: "Micro-SaaS & Modules",
-    badgeColor: "purple",
-    subtitle: "Ready-to-Deploy Full Stack Platforms & Micro-Systems",
-    description:
-      "Complete, production-tested software platforms with full source code, Figma design files, and deployment playbooks. Buy once, deploy immediately, and avoid months of ground-up engineering.",
-    category: "Micro-SaaS",
-    metric: { label: "Time to Launch", value: "< 48 Hours" },
-    features: [
-      "100% full source code ownership with no recurring royalty",
-      "High-fidelity Figma design systems included with every app",
-      "Pre-wired authentication, billing, database and API layers",
-      "Comprehensive deployment documentation and architecture guides",
-      "Lifetime updates and architectural support from UI Pirate",
-    ],
-    techStack: ["Next.js", "Tailwind CSS", "Postgres", "Docker"],
-    primaryLink: "/apps4sale",
-    primaryLinkText: "Browse Full Catalog",
-  },
 ];
+
 
 const CATEGORIES = [
   "All",
   "AI & Automation",
   "Content & Publishing",
   "Developer Tools",
-  "Micro-SaaS",
 ];
 
 const badgeColors = {
@@ -340,11 +252,10 @@ export default function OurProductsScreen() {
                 return (
                   <button
                     key={cat}
-                    className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                      isActive
-                        ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/25"
-                        : "bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-zinc-800 hover:border-[#FF5B04]/40"
-                    }`}
+                    className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${isActive
+                      ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/25"
+                      : "bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-zinc-800 hover:border-[#FF5B04]/40"
+                      }`}
                     onClick={() => setActiveCategory(cat)}
                   >
                     {cat}

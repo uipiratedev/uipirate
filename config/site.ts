@@ -106,14 +106,14 @@ export const siteConfig = {
             "Practical SaaS UX articles written by the team that ships the work.",
         },
         {
-          category: "Case Studies",
+          category: "Concepts",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/casestudyflip_p3vfp3.svg",
-          href: "/case-studies",
+          href: "/concepts",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
           description:
-            "Real briefs, constraints, and shipped products with before & afters.",
+            "Real concepts, ideas, and thoughts ",
         },
         // {
         //   category: "FAQs",

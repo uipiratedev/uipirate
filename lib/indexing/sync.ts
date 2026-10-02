@@ -20,7 +20,6 @@ function classifyPathType(
   if (path.startsWith("/tools/")) return "tool";
   if (
     path.startsWith("/services/") ||
-    path.startsWith("/apps4sale/") ||
     [
       "/",
       "/about",
@@ -35,7 +34,6 @@ function classifyPathType(
       "/tools",
       "/case-studies",
       "/blogs",
-      "/apps4sale",
     ].includes(path)
   ) {
     return "page";
