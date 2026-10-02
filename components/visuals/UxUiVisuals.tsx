@@ -207,6 +207,7 @@ export const VisualRedesignNew = () => {
       ease: "easeInOut",
       repeat: Infinity,
     });
+
     return () => controls.stop();
   }, [percent]);
 

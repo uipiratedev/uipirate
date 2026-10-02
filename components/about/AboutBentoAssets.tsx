@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { CLIENT_LOGOS } from "@/data/clientLogos";
 import { WORLD_LAND_COORDS } from "@/data/worldLandPoints";
@@ -19,29 +19,29 @@ export const StrategyBeforePixelsAsset = () => {
       {/* Animated Path / Road */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox="0 0 100 100"
         preserveAspectRatio="none"
+        viewBox="0 0 100 100"
       >
         <path
           d="M 22,16 C 22,27.5 78,27.5 78,39 C 78,50.5 22,50.5 22,62 C 22,73.5 78,73.5 78,85"
           fill="none"
           stroke="#f3f4f6"
-          strokeWidth="3"
           strokeLinecap="round"
+          strokeWidth="3"
         />
         <motion.path
           d="M 22,16 C 22,27.5 78,27.5 78,39 C 78,50.5 22,50.5 22,62 C 22,73.5 78,73.5 78,85"
           fill="none"
-          stroke="url(#strategy-road-gradient)"
-          strokeWidth="3"
-          strokeLinecap="round"
           initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
+          stroke="url(#strategy-road-gradient)"
+          strokeLinecap="round"
+          strokeWidth="3"
           transition={{ duration: 2, ease: "easeInOut" }}
           viewport={{ once: true }}
+          whileInView={{ pathLength: 1 }}
         />
         <defs>
-          <linearGradient id="strategy-road-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id="strategy-road-gradient" x1="0%" x2="0%" y1="0%" y2="100%">
             <stop offset="0%" stopColor="#ff5e00" stopOpacity="0.5" />
             <stop offset="50%" stopColor="#ff5e00" stopOpacity="1" />
             <stop offset="100%" stopColor="#ff5e00" stopOpacity="0.9" />
@@ -60,9 +60,9 @@ export const StrategyBeforePixelsAsset = () => {
           <motion.div
             className="w-3 h-3 rounded-full bg-brand-orange border-2 border-white shadow-[0_0_8px_rgba(255,94,0,0.8)] z-10"
             initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
             transition={{ duration: 0.3, delay: item.delay }}
             viewport={{ once: true }}
+            whileInView={{ scale: 1 }}
           />
 
           {/* Label Pill: Positioned beside the dot */}
@@ -70,9 +70,9 @@ export const StrategyBeforePixelsAsset = () => {
             className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap bg-white/95 backdrop-blur-md px-3 py-1 rounded-full border border-gray-200 shadow-sm text-xs font-semibold text-gray-700 pointer-events-none ${item.side === "left" ? "right-full mr-2.5" : "left-full ml-2.5"
               }`}
             initial={{ opacity: 0, x: item.side === "left" ? -8 : 8 }}
-            whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: item.delay + 0.1 }}
             viewport={{ once: true }}
+            whileInView={{ opacity: 1, x: 0 }}
           >
             {item.text}
           </motion.div>
@@ -92,6 +92,7 @@ export const ComplexMadeSimpleAsset = () => {
       ease: "easeInOut",
       repeat: Infinity,
     });
+
     return () => controls.stop();
   }, [percent]);
 
@@ -161,9 +162,9 @@ export const ComplexMadeSimpleAsset = () => {
         style={{ left }}
       >
         <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white border-2 border-brand-orange rounded-full shadow-lg flex items-center justify-center">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff5e00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <svg fill="none" height="12" stroke="#ff5e00" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="12">
             <path d="M15 18l-6-6 6-6" />
-            <path d="M9 18l6-6-6-6" className="opacity-0" />
+            <path className="opacity-0" d="M9 18l6-6-6-6" />
           </svg>
         </div>
       </motion.div>
@@ -184,9 +185,9 @@ export const BuiltToConvertAsset = () => {
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={`t1-${i}`}
+              animate={{ y: 40 }}
               className="absolute w-1.5 h-1.5 bg-gray-300 rounded-full"
               initial={{ y: -20, x: (Math.random() - 0.5) * 140 }}
-              animate={{ y: 40 }}
               transition={{ duration: 1.5, repeat: Infinity, delay: Math.random() * 2, ease: "linear" }}
             />
           ))}
@@ -198,9 +199,9 @@ export const BuiltToConvertAsset = () => {
           {[...Array(7)].map((_, i) => (
             <motion.div
               key={`t2-${i}`}
+              animate={{ y: 40 }}
               className="absolute w-1.5 h-1.5 bg-brand-orange/40 rounded-full"
               initial={{ y: -20, x: (Math.random() - 0.5) * 100 }}
-              animate={{ y: 40 }}
               transition={{ duration: 1.5, repeat: Infinity, delay: Math.random() * 2, ease: "linear" }}
             />
           ))}
@@ -211,9 +212,9 @@ export const BuiltToConvertAsset = () => {
           {[...Array(3)].map((_, i) => (
             <motion.div
               key={`t3-${i}`}
+              animate={{ y: 40 }}
               className="absolute w-2 h-2 bg-brand-orange rounded-full shadow-[0_0_4px_#ff5e00]"
               initial={{ y: -20, x: (Math.random() - 0.5) * 40 }}
-              animate={{ y: 40 }}
               transition={{ duration: 1.5, repeat: Infinity, delay: Math.random() * 2, ease: "linear" }}
             />
           ))}
@@ -223,9 +224,9 @@ export const BuiltToConvertAsset = () => {
         <motion.div
           className="absolute -bottom-2 bg-white px-3 py-1.5 rounded-lg shadow-md border border-brand-orange/20 flex items-center gap-1.5 z-20"
           initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           <span className="text-sm font-black text-gray-900 font-jetbrains-mono">12.4%</span>
@@ -245,25 +246,25 @@ export const DesignToCodeAsset = () => {
         <div className="absolute left-0 top-0 bottom-0 w-7 bg-[#2c2c2c] flex flex-col items-center py-2 gap-1.5 z-10">
           {/* Move tool */}
           <div className="w-4 h-4 flex items-center justify-center rounded hover:bg-white/10 cursor-default">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg fill="none" height="10" stroke="#999" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="10">
               <path d="M4 2L20 12L12 14L15 22L12 23L9 15L4 18V2Z" fill="#999" stroke="#999" />
             </svg>
           </div>
           {/* Frame tool - highlighted */}
           <div className="w-4 h-4 flex items-center justify-center rounded bg-[#0d99ff]/20">
-            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0d99ff" strokeWidth="2.5">
+            <svg fill="none" height="9" stroke="#0d99ff" strokeWidth="2.5" viewBox="0 0 24 24" width="9">
               <path d="M6 3v18M18 3v18M3 6h18M3 18h18" />
             </svg>
           </div>
           {/* Rectangle tool */}
           <div className="w-4 h-4 flex items-center justify-center rounded hover:bg-white/10 cursor-default">
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.5">
-              <rect x="3" y="3" width="18" height="18" rx="2" />
+            <svg fill="none" height="8" stroke="#999" strokeWidth="2.5" viewBox="0 0 24 24" width="8">
+              <rect height="18" rx="2" width="18" x="3" y="3" />
             </svg>
           </div>
           {/* Pen tool */}
           <div className="w-4 h-4 flex items-center justify-center rounded hover:bg-white/10 cursor-default">
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg fill="none" height="8" stroke="#999" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="8">
               <path d="M12 19l7-7 3 3-7 7-3-3z" />
               <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
             </svg>
@@ -274,7 +275,7 @@ export const DesignToCodeAsset = () => {
           </div>
           {/* Hand tool */}
           <div className="w-4 h-4 flex items-center justify-center rounded hover:bg-white/10 cursor-default">
-            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg fill="none" height="8" stroke="#999" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="8">
               <path d="M18 11V6a2 2 0 00-4 0v1M14 10V4a2 2 0 00-4 0v6M10 10.5V5a2 2 0 00-4 0v9" />
               <path d="M18 11a2 2 0 014 0v3a8 8 0 01-8 8h-2c-2.8 0-4.5-.9-5.7-2.4L3.3 15a2 2 0 013-2.5l.7.8" />
             </svg>
@@ -295,11 +296,11 @@ export const DesignToCodeAsset = () => {
           </div>
 
           <motion.div
-            className="absolute top-1/2 left-1/2 z-20 pointer-events-none drop-shadow-md"
             animate={{ x: [-20, 10, -20], y: [-10, 15, -10] }}
+            className="absolute top-1/2 left-1/2 z-20 pointer-events-none drop-shadow-md"
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="black">
+            <svg fill="black" height="16" viewBox="0 0 24 24" width="16">
               <path d="M4 2L20 12L12 14L15 22L12 23L9 15L4 18V2Z" fill="black" stroke="white" strokeWidth="2" />
             </svg>
           </motion.div>
@@ -311,9 +312,9 @@ export const DesignToCodeAsset = () => {
         <motion.div
           className="font-mono text-[8px] leading-[1.4] text-gray-400 whitespace-pre"
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
           viewport={{ once: true }}
+          whileInView={{ opacity: 1 }}
         >
           <span className="text-[#ff7b72]">export const</span> <span className="text-[#d2a8ff]">UI</span> = () =&gt; {"{\n"}
           {"  "}<span className="text-[#ff7b72]">return</span> {"(\n"}
@@ -327,7 +328,7 @@ export const DesignToCodeAsset = () => {
 
       {/* Connection badge */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-1.5 shadow-lg border border-gray-100 z-10 flex items-center justify-center text-brand-orange">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="12">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
       </div>
@@ -401,14 +402,17 @@ export const TimezoneAsset = () => {
   useEffect(() => {
     // Target rotation to bring the location to front (center)
     const targetRad = (-selectedLoc.lon * Math.PI) / 180;
+
     rotationRef.current.targetLon = targetRad;
   }, [selectedLoc]);
 
   // Main animation render loop
   useEffect(() => {
     const canvas = canvasRef.current;
+
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
+
     if (!ctx) return;
 
     let animId: number;
@@ -419,6 +423,7 @@ export const TimezoneAsset = () => {
       // Smooth lerp to target longitude if not dragging
       if (!rot.isDragging) {
         let diff = rot.targetLon - rot.currentLon;
+
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
         rot.currentLon += diff * 0.08;
@@ -434,6 +439,7 @@ export const TimezoneAsset = () => {
 
       // Draw authentic world map land dots
       const totalPoints = WORLD_LAND_COORDS.length / 2;
+
       for (let i = 0; i < totalPoints; i++) {
         const lat = WORLD_LAND_COORDS[i * 2];
         const lon = WORLD_LAND_COORDS[i * 2 + 1];
@@ -468,6 +474,7 @@ export const TimezoneAsset = () => {
       // Update positions of HTML location pins directly on the DOM
       for (const loc of GLOBE_LOCATIONS) {
         const pinEl = pinRefs.current[loc.id];
+
         if (!pinEl) continue;
 
         const radLat = (loc.lat * Math.PI) / 180;
@@ -509,9 +516,11 @@ export const TimezoneAsset = () => {
   // Resize canvas for retina displays
   useEffect(() => {
     const canvas = canvasRef.current;
+
     if (!canvas) return;
     const size = canvas.clientWidth || 240;
     const dpr = window.devicePixelRatio || 1;
+
     canvas.width = size * dpr;
     canvas.height = size * dpr;
   }, []);
@@ -525,6 +534,7 @@ export const TimezoneAsset = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!rotationRef.current.isDragging) return;
     const delta = e.clientX - rotationRef.current.lastMouseX;
+
     rotationRef.current.lastMouseX = e.clientX;
     rotationRef.current.currentLon += delta * 0.008;
     rotationRef.current.targetLon = rotationRef.current.currentLon;
@@ -540,9 +550,9 @@ export const TimezoneAsset = () => {
       <div
         className="relative w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] -ml-6 sm:-ml-8 -mb-6 sm:-mb-8 flex-shrink-0 flex items-center justify-center self-end"
         onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseUp}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
       >
         {/* Globe 3D Sphere with Dark Atmosphere & Vignette */}
         <div className="w-full h-full rounded-full overflow-hidden relative shadow-[0_16px_45px_rgba(0,0,0,0.4),_0_0_60px_rgba(0,0,0,0.25)] border border-white/10 bg-[radial-gradient(circle_at_35%_28%,#222733_0%,#0d1016_60%,#030406_100%)]">
@@ -559,21 +569,22 @@ export const TimezoneAsset = () => {
         {/* Floating Location Markers on Globe */}
         {GLOBE_LOCATIONS.map((loc) => {
           const isActive = selected === loc.id;
+
           return (
             <div
               key={loc.id}
               ref={(el) => {
                 pinRefs.current[loc.id] = el;
               }}
-              onClick={(e) => {
-                e.preventDefault();
-                setSelected(loc.id as "usa" | "uk" | "india");
-              }}
               className="absolute left-0 top-0 z-30 cursor-pointer"
               style={{
                 opacity: 0,
                 pointerEvents: "none",
                 willChange: "transform, opacity",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                setSelected(loc.id as "usa" | "uk" | "india");
               }}
             >
               {/* Pinpoint Dot Centered on Exact Coordinate */}
@@ -609,18 +620,19 @@ export const TimezoneAsset = () => {
         <div className="flex flex-col gap-2 my-auto">
           {GLOBE_LOCATIONS.map((loc) => {
             const isActive = selected === loc.id;
+
             return (
               <button
                 key={loc.id}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between gap-3 transition-colors duration-150 shadow-sm w-[114px] h-[34px] border-2 cursor-pointer ${isActive
+                    ? "bg-white text-gray-900 border-brand-orange shadow-md"
+                    : "bg-[#14161C] text-gray-200 border-transparent hover:bg-[#20242E] hover:text-white"
+                  }`}
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelected(loc.id as "usa" | "uk" | "india");
                 }}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center justify-between gap-3 transition-colors duration-150 shadow-sm w-[114px] h-[34px] border-2 cursor-pointer ${isActive
-                    ? "bg-white text-gray-900 border-brand-orange shadow-md"
-                    : "bg-[#14161C] text-gray-200 border-transparent hover:bg-[#20242E] hover:text-white"
-                  }`}
               >
                 <span className="font-semibold">{loc.name}</span>
                 <span className="text-sm leading-none">{loc.flag}</span>
@@ -631,7 +643,7 @@ export const TimezoneAsset = () => {
 
         {/* Remote Info Tag (Bottom-Right, Fixed Size) */}
         <div className="flex items-center gap-1.5 text-right mt-3 h-[32px] pr-0.5">
-          <svg className="w-3.5 h-3.5 text-gray-600 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <svg className="w-3.5 h-3.5 text-gray-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z" />
           </svg>
           <div className="flex flex-col">
@@ -697,8 +709,8 @@ export const ProductsGridAsset = () => {
           {/* 1: 0° (Top) */}
           <div className="absolute top-[0%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[0].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[0].name}
             >
               <img
                 alt={outerLogos[0].name}
@@ -711,8 +723,8 @@ export const ProductsGridAsset = () => {
           {/* 2: 45° */}
           <div className="absolute top-[15%] right-[15%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[1].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[1].name}
             >
               <img
                 alt={outerLogos[1].name}
@@ -725,8 +737,8 @@ export const ProductsGridAsset = () => {
           {/* 3: 90° */}
           <div className="absolute top-[50%] right-[0%] -translate-y-1/2 animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[2].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[2].name}
             >
               <img
                 alt={outerLogos[2].name}
@@ -739,8 +751,8 @@ export const ProductsGridAsset = () => {
           {/* 4: 135° */}
           <div className="absolute bottom-[15%] right-[15%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[3].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[3].name}
             >
               <img
                 alt={outerLogos[3].name}
@@ -753,8 +765,8 @@ export const ProductsGridAsset = () => {
           {/* 5: 180° */}
           <div className="absolute bottom-[0%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[4].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[4].name}
             >
               <img
                 alt={outerLogos[4].name}
@@ -767,8 +779,8 @@ export const ProductsGridAsset = () => {
           {/* 6: 225° */}
           <div className="absolute bottom-[15%] left-[15%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[5].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[5].name}
             >
               <img
                 alt={outerLogos[5].name}
@@ -781,8 +793,8 @@ export const ProductsGridAsset = () => {
           {/* 7: 270° */}
           <div className="absolute top-[50%] left-[0%] -translate-y-1/2 animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[6].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[6].name}
             >
               <img
                 alt={outerLogos[6].name}
@@ -795,8 +807,8 @@ export const ProductsGridAsset = () => {
           {/* 8: 315° */}
           <div className="absolute top-[15%] left-[15%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={outerLogos[7].name}
               className="w-12 h-12 rounded-full bg-white/85 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={outerLogos[7].name}
             >
               <img
                 alt={outerLogos[7].name}
@@ -810,8 +822,8 @@ export const ProductsGridAsset = () => {
           {/* 1: 0° */}
           <div className="absolute top-[18%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={middleLogos[0].name}
               className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={middleLogos[0].name}
             >
               <img
                 alt={middleLogos[0].name}
@@ -824,8 +836,8 @@ export const ProductsGridAsset = () => {
           {/* 2: 60° */}
           <div className="absolute top-[32%] right-[18%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={middleLogos[1].name}
               className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={middleLogos[1].name}
             >
               <img
                 alt={middleLogos[1].name}
@@ -838,8 +850,8 @@ export const ProductsGridAsset = () => {
           {/* 3: 120° */}
           <div className="absolute bottom-[32%] right-[18%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={middleLogos[2].name}
               className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={middleLogos[2].name}
             >
               <img
                 alt={middleLogos[2].name}
@@ -852,8 +864,8 @@ export const ProductsGridAsset = () => {
           {/* 4: 180° */}
           <div className="absolute bottom-[18%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={middleLogos[3].name}
               className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={middleLogos[3].name}
             >
               <img
                 alt={middleLogos[3].name}
@@ -866,8 +878,8 @@ export const ProductsGridAsset = () => {
           {/* 5: 240° */}
           <div className="absolute bottom-[32%] left-[18%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={middleLogos[4].name}
               className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={middleLogos[4].name}
             >
               <img
                 alt={middleLogos[4].name}
@@ -880,8 +892,8 @@ export const ProductsGridAsset = () => {
           {/* 6: 300° */}
           <div className="absolute top-[32%] left-[18%] animate-[spin_25s_linear_infinite_reverse]">
             <div
-              title={middleLogos[5].name}
               className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl p-2.5"
+              title={middleLogos[5].name}
             >
               <img
                 alt={middleLogos[5].name}

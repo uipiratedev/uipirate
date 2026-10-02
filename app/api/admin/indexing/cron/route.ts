@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { reconcileSitemap } from "@/lib/indexing/sync";
-import { inspectGoogleUrl } from "@/lib/indexing/google";
-import { getBingUrlInfo } from "@/lib/indexing/bing";
-import { publishGoogleUrl } from "@/lib/indexing/google";
-import { submitBingUrls } from "@/lib/indexing/bing";
+import { inspectGoogleUrl, publishGoogleUrl } from "@/lib/indexing/google";
+import { getBingUrlInfo, submitBingUrls } from "@/lib/indexing/bing";
 import { submitIndexNow } from "@/lib/indexing/indexnow";
 import { reserveQuota } from "@/lib/indexing/quota";
 import { pushHistory } from "@/lib/indexing/repo";
@@ -13,12 +11,15 @@ import dbConnect from "@/lib/mongodb";
 
 function isAuthorizedCron(req: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
+
   if (!cronSecret) return true; // dev mode allow
 
   const authHeader = req.headers.get("authorization");
+
   if (authHeader === `Bearer ${cronSecret}`) return true;
 
   const headerSecret = req.headers.get("x-cron-secret");
+
   if (headerSecret === cronSecret) return true;
 
   return false;
@@ -122,6 +123,7 @@ async function handleCron(req: NextRequest) {
       for (const item of queueItems) {
         if (item.provider === "google-indexing") {
           const res = await publishGoogleUrl(item.url);
+
           if (res.ok) {
             item.status = "done";
             await item.save();
@@ -129,6 +131,7 @@ async function handleCron(req: NextRequest) {
           }
         } else if (item.provider === "bing-submit") {
           const res = await submitBingUrls([item.url]);
+
           await submitIndexNow([item.url]);
           if (res.ok) {
             item.status = "done";

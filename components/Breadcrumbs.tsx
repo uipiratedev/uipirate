@@ -15,9 +15,9 @@ const SEGMENT_LABELS: Record<string, string> = {
   privacy: "Privacy Policy",
   terms: "Terms & Conditions",
   resources: "Resources",
-  apps4sale: "Apps for Sale",
   componentlab: "Component Lab",
   buttons: "Buttons",
+  products: "Our Products",
 };
 
 // Service detail page slug labels

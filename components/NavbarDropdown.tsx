@@ -71,15 +71,16 @@ export const NavbarDropdown = ({
   // If more than 4, show 3 and push rest to right.
   // If less than 4, standard behavior.
   const showFourRow = allLargeCards.length === 4;
+  const isTwoRow = allLargeCards.length === 2 && regularListItems.length === 0;
 
-  const displayLargeCards = showFourRow
+  const displayLargeCards = showFourRow || isTwoRow
     ? allLargeCards
     : allLargeCards.length > 4
       ? allLargeCards.slice(0, 3)
       : allLargeCards;
 
   const displayRightItems = [
-    ...(showFourRow ? [] : allLargeCards.slice(3)), // If >4, surplus goes here. If 4, none go here.
+    ...(showFourRow || isTwoRow ? [] : allLargeCards.slice(3)), // If >4, surplus goes here. If 4 or 2, none go here.
     ...regularListItems,
   ];
 
@@ -129,7 +130,7 @@ export const NavbarDropdown = ({
           <AnimatePresence mode="wait">
             {isOpen ? (
               <div className="fixed left-0 right-0 top-[68px] z-[99999]">
-                <div className="container mx-auto">
+                <div className={clsx("container mx-auto", isTwoRow && "max-w-4xl")}>
                   <motion.div
                     key="dropdown-menu"
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -166,7 +167,7 @@ export const NavbarDropdown = ({
                       <div
                         className={clsx(
                           "flex flex-col gap-4", // Always flex-col on mobile
-                          showFourRow ? "md:flex-col" : "md:flex-row", // If 4-row, stack vertically (cards full width, list items below). Else side-by-side.
+                          showFourRow || isTwoRow ? "md:flex-col" : "md:flex-row", // If 4-row or 2-row, stack vertically. Else side-by-side.
                         )}
                       >
                         {/* Left Side - Main Feature Cards with 3D Flip */}
@@ -176,9 +177,11 @@ export const NavbarDropdown = ({
                               "grid gap-3 self-stretch min-w-0",
                               showFourRow
                                 ? "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
-                                : displayRightItems.length > 0
-                                  ? "md:w-3/4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                                  : "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
+                                : isTwoRow
+                                  ? "w-full grid-cols-1 sm:grid-cols-2"
+                                  : displayRightItems.length > 0
+                                    ? "md:w-3/4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                                    : "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
                             )}
                           >
                             {displayLargeCards.map((item, index) => (
@@ -186,9 +189,11 @@ export const NavbarDropdown = ({
                                 key={index}
                                 className={clsx(
                                   "group relative [perspective:1000px] h-full",
-                                  showFourRow
+                                  isTwoRow
                                     ? "aspect-[16/10]"
-                                    : "aspect-[4/3]",
+                                    : showFourRow
+                                      ? "aspect-[16/10]"
+                                      : "aspect-[4/3]",
                                 )}
                               >
                                 <NextLink

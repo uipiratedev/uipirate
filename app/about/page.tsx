@@ -2,14 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Card, CardBody } from "@heroui/react";
 
 import FaqsAccordion from "@/components/FaqsAccordion";
 
 import GlassSurface from "@/components/GlassSurface";
 import SectionHeader from "@/components/SectionHeader";
 import { Reveal } from "@/components/motion";
-import { CheckIcon } from "@/components/icons";
 import { ClientLogosGrid } from "@/components/ClientLogos";
 import LandingWhoWeAre from "@/screens/landing/whoWeAre";
 import PricingPerfectFor from "@/screens/pricing/perfectFor";
@@ -562,7 +560,7 @@ export default function AboutPage() {
                 {/* Icon Container - Exact Reference Match (Outer gray pill, inner white pill) */}
                 <div className="w-[74px] h-[50px] bg-[#F3F4F6] rounded-[12px] p-[5px] mb-6 flex-shrink-0">
                   <div
-                    className="w-full h-full bg-white rounded-[8px] flex items-center justify-center shadow-[ 0 1px 0 0 rgba(255, 255, 255, 0.10) inset, 0 3px 4px 0 rgba(0, 0, 0, 0.03), 0 1px 0 0 #FFF inset]"
+                    className="w-full h-full bg-white rounded-[8px] flex items-center justify-center"
                     style={{
                       boxShadow: " 0 1px 0 0 rgba(255, 255, 255, 0.10) inset, 0 3px 4px 0 rgba(0, 0, 0, 0.03), 0 1px 0 0 #FFF inset",
                     }}

@@ -52,6 +52,7 @@ const STATIC_PAGES: {
   { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
   { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
   { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/products", priority: 0.9, changeFrequency: "weekly" },
   { path: "/componentlab", priority: 0.9, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
@@ -258,8 +259,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const c of candidates) {
       if (!c) continue;
       const d = new Date(c);
+
       if (!isNaN(d.getTime()) && d.getTime() > 0) return d.toISOString();
     }
+
     return STATIC_LASTMOD;
   };
 

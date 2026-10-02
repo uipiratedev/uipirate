@@ -751,7 +751,6 @@ body {
   opacity: 0.1;
   filter: blur(3px);
   transform: scale(0.8);
-  transform: scale3d(-1);
 }
 
 .slick-center .card-item {
@@ -1900,7 +1899,6 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   opacity: 0.05;
   pointer-events: none;
   z-index: 1;
-  pointer-events: none;
 }
 
 .footer-heading {

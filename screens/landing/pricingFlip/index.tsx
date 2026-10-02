@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 import LetsTalkButton from "@/components/LetsTalkButton";
+import { Logo } from "@/components/icons";
 
 type PlanId = "monthly" | "custom";
 
@@ -11,7 +12,8 @@ interface Plan {
   id: PlanId;
   head: string;
   accent: string;
-  logo: string;
+  logoHex: string;
+
   /** Illustration shown in the left panel. Swap for a real asset per plan. */
   image: string;
   imageAlt: string;
@@ -29,7 +31,8 @@ const PLANS: Record<PlanId, Plan> = {
     id: "monthly",
     head: "Monthly",
     accent: "Retainer",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1790158834/t-2_nyguuz.svg",
+    logoHex: "#E0E0E0",
+
     image: "/assets/gif/kite.gif",
     imageAlt: "Monthly retainer plan",
     priceLabel: "Starting from",
@@ -51,7 +54,8 @@ const PLANS: Record<PlanId, Plan> = {
     id: "custom",
     head: "Custom",
     accent: "Quote",
-    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1790158834/t_fnmgru.svg",
+    logoHex: "#666666",
+
     image: "/assets/gif/headquater.gif",
     imageAlt: "Custom project quote plan",
     priceLabel: "Starting from",
@@ -78,10 +82,12 @@ const TABS: { id: PlanId; label: string; hint: string }[] = [
 ];
 
 // Rosette "seal" tick — matches the reference art.
-const CheckBadge = () => (
+const CheckBadge = ({ isDark, className }: { isDark?: boolean; className?: string }) => (
   <svg
     aria-hidden
-    className="mt-px h-[19px] w-[19px] shrink-0 text-brand-orange"
+    className={`mt-px h-[19px] w-[19px] shrink-0 ${
+      isDark ? "text-brand-orange-light" : "text-brand-orange-dark"
+    } ${className ?? ""}`}
     fill="currentColor"
     viewBox="0 0 24 24"
   >
@@ -158,7 +164,7 @@ const TopLeftCornerSlot = ({ isDark }: { isDark?: boolean }) => {
     <div aria-hidden="true" className="pointer-events-none absolute left-0 top-0  overflow-visible">
       <svg className="overflow-visible" height={FOLD} style={{ overflow: "visible" }} width={FOLD}>
         <defs>
-          <filter id={shadowFilterId} height="200%" width="200%" x="-50%" y="-50%">
+          <filter height="200%" id={shadowFilterId} width="200%" x="-50%" y="-50%">
             <feDropShadow dx="1" dy="1.5" floodColor={shadowColor} floodOpacity="1" stdDeviation="1.2" />
           </filter>
         </defs>
@@ -219,7 +225,7 @@ const BottomRightCornerSlot = ({ isDark }: { isDark?: boolean }) => {
     <div aria-hidden="true" className="pointer-events-none absolute bottom-0 right-0  overflow-visible">
       <svg className="overflow-visible" height={FOLD} style={{ overflow: "visible" }} width={FOLD}>
         <defs>
-          <filter id={shadowFilterId} height="200%" width="200%" x="-50%" y="-50%">
+          <filter height="200%" id={shadowFilterId} width="200%" x="-50%" y="-50%">
             <feDropShadow dx="1" dy="1.5" floodColor={shadowColor} floodOpacity="1" stdDeviation="1.2" />
           </filter>
         </defs>
@@ -300,12 +306,12 @@ const LeftSection = ({ plan }: { plan: Plan }) => {
           {/* Content */}
           <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
             {/* Logo */}
-            <img
-              alt=""
-              aria-hidden="true"
-              className="pointer-events-none absolute right-0 top-0 aspect-[156/210] w-[55%] max-w-[200px] min-w-[120px] select-none object-contain object-top"
-              src={plan.logo}
-            />
+            <div className="pointer-events-none absolute right-0 top-0 aspect-[156/210] w-[55%] max-w-[200px] min-w-[120px] select-none object-contain object-top">
+              <Logo
+                color={plan.logoHex}
+              />
+
+            </div>
 
             {/* Plan name */}
             <h3
@@ -326,7 +332,9 @@ const LeftSection = ({ plan }: { plan: Plan }) => {
                 className={`font-jetbrains text-[44px] font-black leading-none tracking-tight sm:text-[52px] ${isDark ? "text-white" : "text-gray-900 dark:text-white"
                   }`}
               >
-                <span className="text-brand-orange">{plan.price.charAt(0)}</span>
+                <span className={isDark ? "text-brand-orange-light" : "text-brand-orange-dark"}>
+                  {plan.price.charAt(0)}
+                </span>
                 {plan.price.slice(1)}
               </p>
               <p
@@ -366,7 +374,13 @@ const RightSection = ({ plan }: { plan: Plan }) => {
       className={`flex h-full flex-col overflow-hidden md:rounded-r-[16px] p-6 sm:p-8 md:rounded-l-none ${isDark ? "bg-[#282828]" : "bg-white dark:bg-[#141414]"
         }`}
     >
-      <span className="mb-4 inline-flex w-fit items-center rounded-full border border-brand-orange/40 px-3 py-1 font-jetbrains text-[11px] font-semibold uppercase tracking-wider text-brand-orange">
+      <span
+        className={`mb-4 inline-flex w-fit items-center rounded-full border px-3 py-1 font-jetbrains text-[11px] font-semibold uppercase tracking-wider ${
+          isDark
+            ? "border-brand-orange-light/40 text-brand-orange-light"
+            : "border-brand-orange-dark/40 text-brand-orange-dark"
+        }`}
+      >
         What&apos;s included
       </span>
 
@@ -378,7 +392,7 @@ const RightSection = ({ plan }: { plan: Plan }) => {
             className={`flex items-center gap-3 py-[11px] font-jakarta text-[14px] leading-tight sm:text-[15px] ${isDark ? "text-gray-200" : "text-gray-800 dark:text-gray-200"
               }`}
           >
-            <CheckBadge />
+            <CheckBadge isDark={isDark} />
             <span>{f}</span>
           </li>
         ))}

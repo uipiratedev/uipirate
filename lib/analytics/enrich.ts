@@ -2,11 +2,13 @@
  * Pure server-side enrichment helpers — no DB, no I/O. Unit-tested in
  * __tests__/lib/analytics/enrich.test.ts.
  */
-import type { ReferrerType, Utm } from "./types";
-
 import { UAParser } from "ua-parser-js";
-
-import { MAX_PATH_LEN, MAX_TEXT_LEN } from "./types";
+import {
+  MAX_PATH_LEN,
+  MAX_TEXT_LEN,
+  type ReferrerType,
+  type Utm,
+} from "./types";
 
 export interface DeviceInfo {
   type: "desktop" | "mobile" | "tablet" | "bot" | "unknown";

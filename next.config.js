@@ -75,6 +75,13 @@ const nextConfig = {
         destination: "/tools/design/typography-scale-generator",
         permanent: true,
       },
+      // /8pt-grid-calculator was an orphaned duplicate of the live tool at
+      // /figma-spacing-calculator (same registry entry, never linked directly).
+      {
+        source: "/tools/design/8pt-grid-calculator",
+        destination: "/tools/design/figma-spacing-calculator",
+        permanent: true,
+      },
     ];
   },
 

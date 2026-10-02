@@ -475,17 +475,16 @@ export const VisualFlowNew = () => {
 
             {/* Checkmark: Draws in on forward, draws out on reverse */}
             <motion.svg
+              animate={{
+                opacity: [0, 0, 1, 1, 0, 0],
+                scale: [0, 0, 1.25, 1, 1, 0, 0],
+              }}
               className="w-5 h-5 text-white relative z-10"
               fill="none"
               stroke="currentColor"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="3.5"
-              viewBox="0 0 24 24"
-              animate={{
-                opacity: [0, 0, 1, 1, 0, 0],
-                scale: [0, 0, 1.25, 1, 1, 0, 0],
-              }}
               transition={{
                 duration: 6,
                 times: [0, 0.39, 0.43, 0.55, 0.58, 1],
@@ -498,12 +497,13 @@ export const VisualFlowNew = () => {
                 repeat: Infinity,
                 ease: "easeOut",
               }}
+              viewBox="0 0 24 24"
             >
               <motion.path
-                d="M5 13l4 4L19 7"
                 animate={{
                   pathLength: [0, 0, 1, 1, 0, 0],
                 }}
+                d="M5 13l4 4L19 7"
                 transition={{
                   duration: 6,
                   times: [0, 0.39, 0.44, 0.55, 0.58, 1],

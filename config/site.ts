@@ -56,6 +56,31 @@ export const siteConfig = {
     {
       label: "Works",
       href: "/case-studies",
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          category: "Case Studies",
+          shortCategory: "Case Studies",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/casestudyflip_p3vfp3.svg",
+          href: "/case-studies",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
+          description:
+            "50+ shipped client products, enterprise platforms, and deep-dive design stories.",
+        },
+        {
+          category: "Our Products",
+          shortCategory: "Our Products",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/toolsflip_n5bwmt.svg",
+          href: "/products",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181141/tools_q1fxyd.svg",
+          description:
+            "Proprietary platforms, AI systems, and production engines built and operated by UI Pirate.",
+        },
+      ],
     },
     {
       label: "Pricing",
@@ -81,14 +106,14 @@ export const siteConfig = {
             "Practical SaaS UX articles written by the team that ships the work.",
         },
         {
-          category: "Case Studies",
+          category: "Concepts",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/casestudyflip_p3vfp3.svg",
-          href: "/case-studies",
+          href: "/concepts",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
           description:
-            "Real briefs, constraints, and shipped products with before & afters.",
+            "Real concepts, ideas, and thoughts ",
         },
         // {
         //   category: "FAQs",
@@ -134,6 +159,10 @@ export const siteConfig = {
     {
       label: "Works",
       href: "/case-studies",
+      subItems: [
+        { label: "Case Studies", href: "/case-studies" },
+        { label: "Our Products", href: "/products" },
+      ],
     },
     {
       label: "Pricing",

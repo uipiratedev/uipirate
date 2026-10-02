@@ -149,24 +149,6 @@ function UIPirateMark({ size }: { size: number }) {
   );
 }
 
-/** Alternative pin glyph — a clean filled feather, if you don't want the mark. */
-export function FeatherGlyph({ size }: { size: number }) {
-  return (
-    <svg aria-hidden fill="none" height={size} viewBox="0 0 24 24" width={size}>
-      <path
-        d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"
-        fill="currentColor"
-      />
-      <path
-        d="M16 8 2.6 21.4M17.2 15H9.4"
-        stroke="rgba(255,255,255,0.32)"
-        strokeLinecap="round"
-        strokeWidth="1.4"
-      />
-    </svg>
-  );
-}
-
 export function LuminousShelfCard({
   title = "Light Work",
   subtitle = "Life life on easy mode by UI Pirate",

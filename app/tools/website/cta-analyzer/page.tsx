@@ -1,75 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import CtaAnalyzerClient from "@/components/CtaAnalyzer/CtaAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "Call-to-Action (CTA) & Button Analyzer | UI Pirate",
+  title: "CTA & Conversion Button Analyzer | UI Pirate",
   description:
-    "Audit your website and SaaS conversion buttons for color contrast, action verb strength, visual weight, and viewport placement.",
+    "Free tool to audit a page's call-to-action placement, action-verb copy, and real WCAG contrast (wherever colors are resolvable) from its real server-rendered HTML.",
   alternates: {
     canonical: "https://uipirate.com/tools/website/cta-analyzer",
   },
+  openGraph: {
+    title: "CTA & Conversion Button Analyzer | UI Pirate",
+    description:
+      "Audit button placement, action verb psychology, and above-the-fold placement from a real page fetch - no mock data.",
+    url: "https://uipirate.com/tools/website/cta-analyzer",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "cta-analyzer",
-  category: "website-conversion",
-  categoryLabel: "Website & Conversion",
-  badgeText: "Upcoming Tool · In Development",
-  title: "CTA & Conversion Button Analyzer",
-  subtitle:
-    "Analyze call-to-action buttons across your landing page. Audit color contrast, action verb strength, visual weight, and above-the-fold discoverability.",
-  agencyService: "Conversion Rate Optimization (CRO)",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "CTA & Conversion Button Analyzer",
+  url: "https://uipirate.com/tools/website/cta-analyzer",
+  description:
+    "Audit a page's call-to-action placement, action-verb copy, and real WCAG contrast wherever colors are resolvable, from its real server-rendered HTML.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Visual Saliency & Contrast",
-      desc: "Calculates luminance differential between your primary CTA and the surrounding background.",
+      "@type": "Question",
+      name: "Why didn't my button's contrast get scored?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Its color and background aren't literally present in the page's HTML - they're almost certainly defined in an external CSS file, which this tool doesn't fetch.",
+      },
     },
     {
-      name: "Action Verb Specificity",
-      desc: "Scores button copy ('Start 14-Day Free Trial' vs generic 'Submit' or 'Click Here').",
+      "@type": "Question",
+      name: "Is first-person CTA phrasing always better?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Not universally - it's a documented lever with real published test results, not a guaranteed win for every audience.",
+      },
     },
     {
-      name: "Microcopy & Risk Reducers",
-      desc: "Checks for supporting trust cues near buttons (e.g. 'No credit card required', 'Cancel anytime').",
-    },
-    {
-      name: "Viewport Sticky Presence",
-      desc: "Assesses whether mobile visitors maintain access to a persistent conversion trigger while scrolling.",
-    },
-    {
-      name: "Primary vs Secondary Hierarchy",
-      desc: "Ensures secondary actions (e.g. 'Watch Demo') don't siphon clicks away from your primary conversion goal.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Visual Extraction",
-      title: "Interactive Element Scan",
-      desc: "Detects all <button> and <a> elements styled as interactive click targets across breakpoints.",
-    },
-    {
-      step: "02. Attention Heatmap Simulation",
-      title: "Eye-Tracking Model",
-      desc: "Simulates visual fixation patterns to determine if your CTA is the first focal point on screen.",
-    },
-    {
-      step: "03. Optimization Scorecard",
-      title: "High-Impact Fixes",
-      desc: "Provides recommended CSS tweaks, size adjustments, and high-converting copy variants.",
-    },
-  ],
-  faqs: [
-    {
-      q: "What makes a high-converting CTA button?",
-      a: "A high-converting CTA has high visual contrast against the background, uses a specific benefit-driven verb, includes a microcopy risk reducer, and is sized at least 48px in height for effortless tapping.",
+      "@type": "Question",
+      name: "Why can't I check a localhost or internal URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Allowing arbitrary internal addresses would let anyone use this tool to probe private networks from the server, a class of vulnerability called SSRF. Only URLs that resolve to public IP addresses are accepted.",
+      },
     },
   ],
 };
 
-export default function CtaAnalyzerNestedPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+export default function CtaAnalyzerPage() {
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <CtaAnalyzerClient />
+    </>
+  );
 }

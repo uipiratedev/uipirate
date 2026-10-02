@@ -12,7 +12,6 @@ import {
 } from "@heroui/react";
 
 import { LEAD_STATUSES } from "@/lib/leads/constants";
-import { Icon } from "@/components/admin/icons";
 import { StatusChip, StatePanel } from "@/components/admin/ui";
 import {
   JourneyTimeline,

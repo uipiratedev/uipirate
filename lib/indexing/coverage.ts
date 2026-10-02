@@ -20,6 +20,7 @@ export function mapCoverageState(
         hint: "URL is indexed and eligible for search results.",
       };
     }
+
     return {
       chipLabel: "Unknown",
       tone: "default",
@@ -143,6 +144,7 @@ export function mapBingState(
       hint: lastError || "URL is not indexed in Bing.",
     };
   }
+
   return {
     chipLabel: "Unchecked",
     tone: "default",

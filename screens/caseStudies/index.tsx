@@ -77,7 +77,11 @@ interface CaseStudiesProps {
   cmsCaseStudies?: ReaderPost[];
 }
 
-const CaseStudiesNextCTA = () => {
+interface CaseStudiesNextCTAProps {
+  isInline?: boolean;
+}
+
+const CaseStudiesNextCTA = ({ isInline = false }: CaseStudiesNextCTAProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tileStyle, setTileStyle] = useState<{ backgroundSize?: string }>({
     backgroundSize: "113px 113px",
@@ -85,11 +89,13 @@ const CaseStudiesNextCTA = () => {
 
   useEffect(() => {
     const el = cardRef.current;
+
     if (!el) return;
 
     const computeGrid = () => {
       const w = el.clientWidth;
       const h = el.clientHeight;
+
       if (!w || !h) return;
 
       // Target square size ~56.5px (matching 113px tile)
@@ -113,6 +119,7 @@ const CaseStudiesNextCTA = () => {
 
     computeGrid();
     const ro = new ResizeObserver(computeGrid);
+
     ro.observe(el);
 
     return () => ro.disconnect();
@@ -121,29 +128,62 @@ const CaseStudiesNextCTA = () => {
   return (
     <div
       ref={cardRef}
-      className="relative rounded-3xl border border-gray-200 overflow-hidden p-16 max-md:p-8 flex flex-col items-center text-center mx-auto hover:border-gray-300 transition-all duration-500 shadow-sm"
+      className={`group relative w-full h-full rounded-3xl border border-gray-200/60 overflow-hidden shadow-lg hover:shadow-2xl hover:border-gray-300 transition-all duration-500 flex flex-col ${isInline ? "p-8 max-md:p-6 text-left items-start" : "p-16 max-md:p-8 text-center items-center"
+        } mx-auto`}
       style={{
         backgroundImage: `conic-gradient(#f5f5f5 90deg, #ffffff 90deg 180deg, #f5f5f5 180deg 270deg, #ffffff 270deg)`,
         backgroundPosition: "0 0",
         ...tileStyle,
       }}
     >
-      <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 mb-4">
-        Your product could be featured here next.
-      </h2>
+      {/* Top content area with flex-grow to push CTA to bottom */}
+      <div
+        className={`flex flex-col flex-grow ${isInline ? "items-start text-left" : "items-center text-center"
+          } justify-start w-full`}
+      >
+        {isInline && (
+          <div className="flex items-start justify-start gap-4 mb-6 max-md:mb-4 w-full">
+            <div className="px-3 py-1.5 bg-gray-50 border border-gray-200/70 rounded-full shadow-sm shrink-0">
+              <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
+                YOUR PROJECT NEXT
+              </p>
+            </div>
+          </div>
+        )}
 
-      <p className="text-gray-600 text-base max-md:text-sm max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-        Every case study here started as a simple conversation. Tell us about the product you are building, and we will walk through how we approach it from idea to ship. Whether you need deep product thinking, UI/UX design, or a full Angular and React frontend carried out, we are here to help. Our typical response time is under 2 hours.
-      </p>
+        <h2
+          className={`${isInline
+            ? "text-2xl max-md:text-xl mb-1.5 text-left"
+            : "text-3xl max-md:text-2xl mb-4 text-center"
+            } font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors`}
+        >
+          Your product could be featured here next.
+        </h2>
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <p
+          className={`${isInline
+            ? "text-sm max-md:text-xs text-left"
+            : "text-base max-md:text-sm max-w-2xl mb-10 text-center mx-auto"
+            } text-gray-700 leading-relaxed font-medium mb-2`}
+        >
+          Every case study here started as a simple conversation. Tell us about the product you are building, and we will walk through how we approach it from idea to ship. Whether you need deep product thinking, UI/UX design, or a full Angular and React frontend carried out, we are here to help. Our typical response time is under 2 hours.
+        </p>
+      </div>
+
+      {/* Bottom-aligned CTA buttons */}
+      <div
+        className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isInline
+          ? "justify-start items-stretch sm:items-center mt-auto pt-4 border-t border-gray-200/60"
+          : "justify-center items-center mt-8"
+          } w-full`}
+      >
         <LetsTalkButton
           href="https://cal.com/ui-pirate/15min"
           showArrow={true}
-          variant="color"
           target="_blank"
+          variant="color"
         >
-          Book a Free 15-Min Call
+          Book a 15-Min Call
         </LetsTalkButton>
         <LetsTalkButton
           href="/pricing"
@@ -168,9 +208,11 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
   const categories = useMemo(() => {
     const cats = new Set<string>();
+
     caseStudies.forEach(s => {
       if (s.industry) cats.add(s.industry);
     });
+
     return Array.from(cats).sort();
   }, [caseStudies]);
 
@@ -240,11 +282,11 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
       <div>
         {/* Hero — portfolio + case studies positioning */}
         <CaseStudiesHero
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          category={category}
-          setCategory={setCategory}
           categories={categories}
+          category={category}
+          searchQuery={searchQuery}
+          setCategory={setCategory}
+          setSearchQuery={setSearchQuery}
         />
 
 
@@ -320,112 +362,132 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                 </div>
               </div>
             ) : (
-              filteredStudies.map((study, index) => {
-                const primaryMetric = study.metrics?.[0]?.value;
-                const isNew = isNewCaseStudy(study.publishedAt);
+              <>
+                {filteredStudies.map((study, index) => {
+                  const primaryMetric = study.metrics?.[0]?.value;
+                  const isNew = isNewCaseStudy(study.publishedAt);
 
-                return (
+                  return (
+                    <motion.div
+                      key={study.slug}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex h-full"
+                      initial={{ opacity: 0, y: 20 }}
+                      transition={{
+                        duration: 0.4,
+                        delay: index * 0.1,
+                        ease: [0.25, 0.1, 0.25, 1],
+                      }}
+                    >
+                      <Link
+                        className="group flex flex-col w-full relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
+                        href={`/case-studies/${study.slug}`}
+                      >
+                        {isNew && (
+                          <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
+                            <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
+                              New
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Card content with pure white background */}
+                        <div className="relative z-10 p-8 max-md:p-6 flex flex-col flex-grow bg-white">
+                          {/* Top row: Industry chip + Metric chip */}
+                          <div className="flex items-start justify-between gap-4 mb-6 max-md:mb-4">
+                            <div className="px-3 py-1.5 bg-gray-50 border border-gray-200/70 rounded-full shadow-sm shrink-0">
+                              <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
+                                {study.industry}
+                                {study.region ? ` · ${study.region}` : ""}
+                              </p>
+                            </div>
+                            {primaryMetric && (
+                              <div className="px-3 py-1.5 bg-[#FF5B04] rounded-full shadow-md text-right">
+                                <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
+                                  {primaryMetric}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Company name + Project title + Excerpt */}
+                          <div className="mb-6 max-md:mb-4 flex-grow">
+                            <h3 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-1.5 group-hover:text-[#FF5B04] transition-colors">
+                              {study.client}
+                            </h3>
+                            <p className="text-sm max-md:text-xs text-gray-600 font-semibold mb-3">
+                              {study.title.split(" — ")[1] || study.title}
+                            </p>
+                            <p className="text-sm max-md:text-xs text-gray-700 leading-relaxed line-clamp-2">
+                              {study.excerpt}
+                            </p>
+                          </div>
+
+                          {/* Tech stack pills + CTA */}
+                          <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200/60 mt-auto">
+                            <div className="flex gap-1.5 flex-wrap">
+                              {study.technologies
+                                ?.slice(0, 3)
+                                .map((tech: string) => (
+                                  <span
+                                    key={tech}
+                                    className="px-2.5 py-1 bg-white/95 backdrop-blur-sm border border-gray-300/60 rounded-full text-[10px] font-jetbrains-mono text-gray-800 shadow-sm font-medium"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                            </div>
+
+                            <div className="flex flex-col items-end gap-2.5 shrink-0">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                alt={`${study.client} logo`}
+                                className="w-10 h-10 max-md:w-8 max-md:h-8 object-contain drop-shadow-sm"
+                                src={study.clientLogo || study.heroImage}
+                              />
+                              <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-bold text-[#FF5B04]">
+                                <span className="hidden md:inline">
+                                  Read case study
+                                </span>
+                                <span className="md:hidden">Read</span>
+                                <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
+                                  →
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+
+                {/* CTA card: shown inline in grid when odd count, hidden when even (rendered below instead) */}
+                {filteredStudies.length % 2 !== 0 && (
                   <motion.div
-                    key={study.slug}
-                    className="flex h-full"
                     animate={{ opacity: 1, y: 0 }}
+                    className="flex h-full"
                     initial={{ opacity: 0, y: 20 }}
                     transition={{
                       duration: 0.4,
-                      delay: index * 0.1,
+                      delay: filteredStudies.length * 0.1,
                       ease: [0.25, 0.1, 0.25, 1],
                     }}
                   >
-                    <Link
-                      className="group flex flex-col w-full relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
-                      href={`/case-studies/${study.slug}`}
-                    >
-                      {isNew && (
-                        <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
-                          <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
-                            New
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Card content with pure white background */}
-                      <div className="relative z-10 p-8 max-md:p-6 flex flex-col flex-grow bg-white">
-                        {/* Top row: Industry chip + Metric chip */}
-                        <div className="flex items-start justify-between gap-4 mb-6 max-md:mb-4">
-                          <div className="px-3 py-1.5 bg-gray-50 border border-gray-200/70 rounded-full shadow-sm shrink-0">
-                            <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
-                              {study.industry}
-                              {study.region ? ` · ${study.region}` : ""}
-                            </p>
-                          </div>
-                          {primaryMetric && (
-                            <div className="px-3 py-1.5 bg-[#FF5B04] rounded-full shadow-md text-right">
-                              <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
-                                {primaryMetric}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Company name + Project title + Excerpt */}
-                        <div className="mb-6 max-md:mb-4 flex-grow">
-                          <h3 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-1.5 group-hover:text-[#FF5B04] transition-colors">
-                            {study.client}
-                          </h3>
-                          <p className="text-sm max-md:text-xs text-gray-600 font-semibold mb-3">
-                            {study.title.split(" — ")[1] || study.title}
-                          </p>
-                          <p className="text-sm max-md:text-xs text-gray-700 leading-relaxed line-clamp-2">
-                            {study.excerpt}
-                          </p>
-                        </div>
-
-                        {/* Tech stack pills + CTA */}
-                        <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200/60 mt-auto">
-                          <div className="flex gap-1.5 flex-wrap">
-                            {study.technologies
-                              ?.slice(0, 3)
-                              .map((tech: string) => (
-                                <span
-                                  key={tech}
-                                  className="px-2.5 py-1 bg-white/95 backdrop-blur-sm border border-gray-300/60 rounded-full text-[10px] font-jetbrains-mono text-gray-800 shadow-sm font-medium"
-                                >
-                                  {tech}
-                                </span>
-                              ))}
-                          </div>
-
-                          <div className="flex flex-col items-end gap-2.5 shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              alt={`${study.client} logo`}
-                              className="w-10 h-10 max-md:w-8 max-md:h-8 object-contain drop-shadow-sm"
-                              src={study.clientLogo || study.heroImage}
-                            />
-                            <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-bold text-[#FF5B04]">
-                              <span className="hidden md:inline">
-                                Read case study
-                              </span>
-                              <span className="md:hidden">Read</span>
-                              <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
-                                →
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
+                    <CaseStudiesNextCTA isInline />
                   </motion.div>
-                );
-              })
+                )}
+              </>
             )}
           </div>
         </section>
 
-        {/* What's Next CTA (Placeholder Style) */}
-        <section className="section-container pt-12 max-md:pt-6 pb-24">
-          <CaseStudiesNextCTA />
-        </section>
+        {/* What's Next CTA — only shown below when study count is even */}
+        {filteredStudies.length % 2 === 0 && (
+          <section className="section-container pt-12 max-md:pt-6 pb-24">
+            <CaseStudiesNextCTA />
+          </section>
+        )}
 
         {/* Why Choose Us */}
         <WhyChooseUs />

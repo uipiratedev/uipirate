@@ -136,11 +136,6 @@ const TheTeam = () => {
                 delay={200}
                 disableAnimation={false}
                 isOpen={hoveredIndex === index}
-                onOpenChange={(open) => {
-                  if (!open && hoveredIndex === index) {
-                    setHoveredIndex(null);
-                  }
-                }}
                 motionProps={{
                   variants: {
                     exit: {
@@ -167,6 +162,11 @@ const TheTeam = () => {
                 }}
                 offset={12}
                 placement="top"
+                onOpenChange={(open) => {
+                  if (!open && hoveredIndex === index) {
+                    setHoveredIndex(null);
+                  }
+                }}
               >
                 <div
                   className="w-full h-full"

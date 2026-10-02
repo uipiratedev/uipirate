@@ -4,6 +4,7 @@ export function getIndexNowKey(): string {
 
 export function getHost(): string {
   const origin = process.env.SITE_ORIGIN || "https://uipirate.dev";
+
   try {
     return new URL(origin).host;
   } catch {
@@ -46,6 +47,7 @@ export async function submitIndexNow(urls: string[]): Promise<IndexNowResult> {
     }
 
     const txt = await res.text().catch(() => "");
+
     return {
       ok: false,
       status: res.status,

@@ -2,10 +2,9 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 
 import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
-import GlassBadge from "@/components/GlassBadge";
+import GlassSurface from "@/components/GlassSurface";
 
 export default function ToolsHubPage() {
   const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">(
@@ -46,45 +45,94 @@ export default function ToolsHubPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
-      {/* Background Grid & Ambient Glow */}
-      <div
-        className="absolute inset-0 pointer-events-none -top-10"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-          maskImage:
-            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-        }}
-      />
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+      {/* Hero Section */}
+      <div className="hero-wrapper">
+        {/* Subtle Grid Background Pattern */}
+        <div
+          className="absolute pointer-events-none -mt-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
+          }}
+        />
+        {/* Layered gradient with gentle mist animation */}
+        <div
+          className="absolute pointer-events-none -mt-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
+            `,
+            animation: "gentle-mist 8s ease-in-out infinite",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
+          }}
+        />
 
-      {/* Hero */}
-      <div className="section-container pt-32 pb-20 relative z-10">
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-14"
-          initial={{ opacity: 0, y: -12 }}
+        <div
+          className="flex flex-col items-center justify-center w-full relative z-10 section-container pb-8"
+          style={{ overflow: "visible" }}
         >
           {/* Badge */}
-          <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">TOOLS & DIAGNOSTICS</GlassBadge>
+
+
+          <GlassSurface
+            backgroundOpacity={0.1}
+            blueOffset={20}
+            blur={11}
+            borderRadius={12}
+            borderWidth={0.01}
+            brightness={50}
+            className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+            displace={0.5}
+            distortionScale={-180}
+            forceLightMode={true}
+            greenOffset={10}
+            height="auto"
+            opacity={0.93}
+            redOffset={0}
+            saturation={1}
+            style={{
+              animation: "trustBadgeUp 0.5s ease-out forwards",
+              animationDelay: "0.1s",
+              opacity: 0,
+              transform: "translateY(20px) scale(0.95)",
+            }}
+            width="auto"
+          >
+            <div className="badge-text relative z-10 text-xs uppercase font-semibold tracking-wider font-jetbrains">
+              TOOLS &amp; DIAGNOSTICS
+            </div>
+          </GlassSurface>
+
+          {/* Headline */}
+          <div className="relative z-10 w-full">
+            <h1 className="hero-header text-center">
+              Free tools for{" "}
+              <span className="text-[#FF5B04]">SaaS, AI &amp; Product Teams</span>
+            </h1>
           </div>
 
-          <h1 className="hero-header">
-            Free tools for{" "}
-            <span className="text-[#FF5B04]">SaaS, AI &amp; Product Teams</span>
-          </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
+          <p className="sub-header text-gray-500 max-w-3xl">
             Audit, score, and optimize your product UX, conversion architecture,
             and AI bot visibility — 100% free and built by senior design
             engineers.
           </p>
-        </motion.div>
+        </div>
+      </div>
+
+      <div className="section-container pb-20 relative z-10">
 
         {/* Filter Controls & Search */}
         <div className="w-full mb-12 space-y-4">
@@ -165,8 +213,8 @@ export default function ToolsHubPage() {
                 <button
                   key={tab.id}
                   className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${active
-                      ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/20"
-                      : "bg-white border border-gray-200 text-gray-700 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
+                    ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/20"
+                    : "bg-white border border-gray-200 text-gray-700 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
                     }`}
                   onClick={() => setActiveCategory(tab.id as ToolCategory)}
                 >
@@ -174,8 +222,8 @@ export default function ToolsHubPage() {
                   {tab.badge && (
                     <span
                       className={`text-[9px] px-1.5 py-0.5 rounded-full font-mono ${active
-                          ? "bg-white/20 text-white"
-                          : "bg-gray-100 text-gray-600"
+                        ? "bg-white/20 text-white"
+                        : "bg-gray-100 text-gray-600"
                         }`}
                     >
                       {tab.badge}
@@ -288,8 +336,8 @@ export default function ToolsHubPage() {
                         </div>
                         <span
                           className={`text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${tool.badge === "Popular"
-                              ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
-                              : "text-emerald-700 bg-emerald-50 border-emerald-200"
+                            ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
+                            : "text-emerald-700 bg-emerald-50 border-emerald-200"
                             }`}
                         >
                           {tool.badge}

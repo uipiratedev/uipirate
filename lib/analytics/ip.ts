@@ -401,6 +401,7 @@ export function extractGeo(
   // 2. Timezone fallback if edge geo is unavailable (e.g. local dev, custom VPS)
   if (!rawCountry && hint?.tz && TZ_TO_GEO[hint.tz]) {
     const tzGeo = TZ_TO_GEO[hint.tz];
+
     rawCountry = tzGeo.country;
     if (!region) region = tzGeo.region;
     if (!city) city = tzGeo.city;
@@ -409,10 +410,13 @@ export function extractGeo(
   // 3. Accept-Language / locale fallback
   if (!rawCountry) {
     const lang = hint?.lang || getHeader(headers, "accept-language");
+
     if (lang) {
       const match = lang.match(/\b[a-z]{2,3}[-_]([A-Za-z]{2})\b/);
+
       if (match?.[1]) {
         const code = match[1].toUpperCase();
+
         if (code !== "XX") {
           rawCountry = COUNTRY_CODE_TO_NAME[code] || code;
         }
@@ -422,6 +426,7 @@ export function extractGeo(
 
   // 4. Normalize 2-letter country codes to friendly names
   let country = rawCountry;
+
   if (country && country.length === 2) {
     country =
       COUNTRY_CODE_TO_NAME[country.toUpperCase()] || country.toUpperCase();

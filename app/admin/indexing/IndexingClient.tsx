@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Button, Chip, Pagination } from "@heroui/react";
+import { Button, Pagination } from "@heroui/react";
 import { useApi } from "@/lib/admin/useApi";
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
 import { KpiRow, type Kpi } from "@/components/admin/KpiRow";
@@ -73,6 +73,7 @@ export default function IndexingClient({
   // KPI items for top metric strip
   const kpis: Kpi[] = useMemo(() => {
     const k = data?.kpis;
+
     return [
       {
         label: "Google Indexed",
@@ -110,6 +111,7 @@ export default function IndexingClient({
   // Bulk Actions
   const selectedUrls = useMemo(() => {
     if (!data?.rows) return [];
+
     return data.rows.filter((r) => selectedIds.has(r.id)).map((r) => r.url);
   }, [data, selectedIds]);
 
@@ -124,6 +126,7 @@ export default function IndexingClient({
         body: JSON.stringify({ urls: selectedUrls }),
       });
       const json = await res.json();
+
       if (!res.ok) throw new Error(json.error || "Submission failed");
       setActionFeedback(
         `Dispatched: ${json.summary?.submitted ?? 0} submitted, ${json.summary?.skippedDrafts ?? 0} drafts held, ${json.summary?.queued ?? 0} queued.`,
@@ -149,6 +152,7 @@ export default function IndexingClient({
         body: JSON.stringify({ urls: selectedUrls }),
       });
       const json = await res.json();
+
       if (!res.ok) throw new Error(json.error || "Bing submission failed");
       setActionFeedback(
         `Dispatched: ${json.summary?.submitted ?? 0} submitted to Bing & IndexNow.`,
@@ -174,6 +178,7 @@ export default function IndexingClient({
         body: JSON.stringify({ urls: selectedUrls }),
       });
       const json = await res.json();
+
       if (!res.ok) throw new Error(json.error || "Inspection failed");
       setActionFeedback(
         `Inspection finished: ${json.summary?.inspected ?? 0} inspected, ${json.summary?.queued ?? 0} queued.`,
@@ -194,6 +199,7 @@ export default function IndexingClient({
     try {
       const res = await fetch("/api/admin/indexing/sync", { method: "POST" });
       const json = await res.json();
+
       if (!res.ok) throw new Error(json.error || "Sync failed");
       setActionFeedback(json.message || "Sitemap synchronized successfully.");
       refetch();
@@ -215,6 +221,7 @@ export default function IndexingClient({
 
   const toggleSelectRow = (id: string) => {
     const next = new Set(selectedIds);
+
     if (next.has(id)) next.delete(id);
     else next.add(id);
     setSelectedIds(next);

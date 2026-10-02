@@ -38,7 +38,7 @@ const Pricing = () => {
         </SectionHeader>
       </Reveal>
 
-      <Reveal variant="up" distance="lg">
+      <Reveal distance="lg" variant="up">
         <PricingFlip />
       </Reveal>
 

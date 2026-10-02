@@ -1,79 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import OnboardingAnalyzerClient from "@/components/OnboardingAnalyzer/OnboardingAnalyzerClient";
 
 export const metadata: Metadata = {
   title: "SaaS Onboarding & Activation Analyzer | UI Pirate",
   description:
-    "Analyze your SaaS product onboarding flow for signup friction, step counts, time-to-first-value, and activation barriers.",
+    "Free tool to audit a signup or onboarding page's form friction, progressive disclosure, empty-state guidance, and time-to-first-value from its real server-rendered HTML.",
   alternates: {
     canonical: "https://uipirate.com/tools/saas/saas-onboarding-analyzer",
   },
+  openGraph: {
+    title: "SaaS Onboarding & Activation Analyzer | UI Pirate",
+    description:
+      "Measure signup friction, progressive disclosure, empty states, and time-to-first-value from a real page fetch — no mock data.",
+    url: "https://uipirate.com/tools/saas/saas-onboarding-analyzer",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "saas-onboarding-analyzer",
-  category: "saas-product",
-  categoryLabel: "SaaS & Product Design",
-  badgeText: "Upcoming Tool · In Development",
-  title: "SaaS Onboarding & User Activation Analyzer",
-  subtitle:
-    "Audit your SaaS signup and first-run experience. Measure time-to-value (TTV), friction step counts, progressive disclosure, and user activation rates.",
-  agencyService: "SaaS Product Design & User Onboarding",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "SaaS Onboarding & Activation Analyzer",
+  url: "https://uipirate.com/tools/saas/saas-onboarding-analyzer",
+  description:
+    "Audit a signup or onboarding page's form friction, progressive disclosure, empty-state guidance, and time-to-first-value from its real server-rendered HTML.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "Time-to-First-Value (TTV)",
-      desc: "Calculates the total screens and minutes between account creation and the user experiencing your core product payoff.",
+      "@type": "Question",
+      name: "What URL should I paste in?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Your actual signup or account-creation page for the best results. You can also test a welcome/onboarding page or a public demo route to check the empty-state and time-to-first-value signals independently.",
+      },
     },
     {
-      name: "Signup Form Field Friction",
-      desc: "Scores input count and flags unnecessary upfront requests (e.g. phone number, company size) before value delivery.",
+      "@type": "Question",
+      name: "Why did the Signup Friction score come back capped with a 'no form detected' message?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The page you tested doesn't contain a form element in its server-rendered HTML - either it's not the right URL, or the form is injected by client-side JavaScript this tool doesn't execute.",
+      },
     },
     {
-      name: "Progressive Disclosure Rhythm",
-      desc: "Evaluates whether complex feature configuration is deferred until after initial user aha-moment.",
-    },
-    {
-      name: "Interactive Checklists & Progress Cues",
-      desc: "Checks for gamified milestones, percentage complete bars, and next-step prompt clarity.",
-    },
-    {
-      name: "Zero-State Sample Data",
-      desc: "Assesses whether new workspaces pre-populate realistic demo data to prevent blank screen intimidation.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Flow Step Mapping",
-      title: "Step-by-Step Recording",
-      desc: "Enter your signup URL to document every transition screen from landing page to product dashboard.",
-    },
-    {
-      step: "02. Cognitive Load Scoring",
-      title: "Activation Drop-Off Audit",
-      desc: "Identifies points where prospective users are most likely to abandon their trial or signup session.",
-    },
-    {
-      step: "03. Activation Redesign Roadmap",
-      title: "Streamlined Flow Blueprint",
-      desc: "Get an actionable redesign spec reducing form friction and accelerating time-to-value.",
-    },
-  ],
-  faqs: [
-    {
-      q: "What is the biggest mistake in SaaS onboarding flows?",
-      a: "Requiring users to configure everything (invite team, set up webhooks, verify billing) before letting them see or try the actual product value.",
-    },
-    {
-      q: "How does onboarding UX affect free trial conversion?",
-      a: "Companies that cut onboarding friction in half routinely see a 20% to 40% jump in trial-to-paid conversions.",
+      "@type": "Question",
+      name: "Why can't I analyze a localhost or internal URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Allowing arbitrary internal addresses would let anyone use this tool to probe private networks from the server, a class of vulnerability called SSRF. Only URLs that resolve to public IP addresses are accepted.",
+      },
     },
   ],
 };
 
-export default function SaasOnboardingAnalyzerNestedPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+export default function SaasOnboardingAnalyzerPage() {
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <OnboardingAnalyzerClient />
+    </>
+  );
 }

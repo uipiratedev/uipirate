@@ -1,75 +1,83 @@
 import type { Metadata } from "next";
 
-import UpcomingToolLandingPage, {
-  UpcomingToolSpec,
-} from "@/components/UpcomingToolLandingPage";
+import SeoCheckerClient from "@/components/SeoChecker/SeoCheckerClient";
 
 export const metadata: Metadata = {
-  title: "Homepage SEO & Conversion Checker | UI Pirate",
+  title: "Homepage SEO & Metadata Checker | UI Pirate",
   description:
-    "Audit your SaaS homepage for technical SEO, heading hierarchy, meta descriptions, Open Graph cards, and conversion architecture.",
+    "Free tool to audit a page's title, meta description, canonical URL, heading hierarchy, Open Graph tags, and structured data from its real server-rendered HTML.",
   alternates: {
     canonical: "https://uipirate.com/tools/website/homepage-seo-checker",
   },
+  openGraph: {
+    title: "Homepage SEO & Metadata Checker | UI Pirate",
+    description:
+      "Audit heading hierarchy (H1-H3), OpenGraph cards, meta descriptions, and search snippets from a real page fetch - no mock data.",
+    url: "https://uipirate.com/tools/website/homepage-seo-checker",
+    siteName: "UI Pirate",
+    type: "website",
+  },
 };
 
-const spec: UpcomingToolSpec = {
-  id: "homepage-seo-checker",
-  category: "website-conversion",
-  categoryLabel: "Website & Conversion",
-  badgeText: "Upcoming Tool · In Development",
-  title: "Homepage SEO & Conversion Architecture Checker",
-  subtitle:
-    "Audit your homepage's technical SEO tags, heading hierarchy, OpenGraph social cards, speed signals, and top-of-funnel conversion flow.",
-  agencyService: "Technical SEO & Web Architecture",
-  agencyLink: "/contact",
-  keyMetrics: [
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Homepage SEO & Metadata Checker",
+  url: "https://uipirate.com/tools/website/homepage-seo-checker",
+  description:
+    "Audit a page's title, meta description, canonical URL, heading hierarchy, Open Graph tags, and structured data from its real server-rendered HTML.",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "All",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
     {
-      name: "H1 / H2 Semantic Structure",
-      desc: "Checks for single H1 presence, logical outline hierarchy, and keyword integration.",
+      "@type": "Question",
+      name: "Why does title/description length matter?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Google truncates search result titles and descriptions at roughly pixel widths that correspond to about 60 and 160 characters respectively - going over means the copy gets cut off with an ellipsis.",
+      },
     },
     {
-      name: "Meta Title & Description Impact",
-      desc: "Evaluates snippet length, click-through appeal, and brand keyword positioning for SERP listings.",
+      "@type": "Question",
+      name: "What's the difference between a missing canonical and a canonical pointing elsewhere?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A missing canonical means search engines have to guess which URL variant is the real one. A canonical pointing to a different page actively tells search engines to index that other page instead.",
+      },
     },
     {
-      name: "Open Graph & Social Share Preview",
-      desc: "Simulates Twitter/X, LinkedIn, and Slack link previews to ensure high-engagement visual cards.",
-    },
-    {
-      name: "Core Web Vitals & Image Optimization",
-      desc: "Flags unoptimized hero images, layout shifts (CLS), and render-blocking scripts.",
-    },
-    {
-      name: "Internal Funnel Architecture",
-      desc: "Audits footer navigation, pricing links, and secondary page crawl accessibility.",
-    },
-  ],
-  howItWorks: [
-    {
-      step: "01. Tag & Header Inspection",
-      title: "Metadata Scraping",
-      desc: "Parses <head> elements, canonical links, robots meta directives, and structured schemas.",
-    },
-    {
-      step: "02. Social Card Generator",
-      title: "Live Preview Rendering",
-      desc: "Renders exactly how your homepage displays when shared across LinkedIn, Twitter, and iMessage.",
-    },
-    {
-      step: "03. SEO Action Plan",
-      title: "Comprehensive Audit",
-      desc: "Delivers step-by-step code snippets to fix title truncation, missing tags, and crawl bottlenecks.",
-    },
-  ],
-  faqs: [
-    {
-      q: "Does homepage SEO directly impact conversion rate?",
-      a: "Yes. Compelling meta descriptions and social cards attract higher-intent visitors who convert 3x faster than general unfocused traffic.",
+      "@type": "Question",
+      name: "Why can't I check a localhost or internal URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Allowing arbitrary internal addresses would let anyone use this tool to probe private networks from the server, a class of vulnerability called SSRF. Only URLs that resolve to public IP addresses are accepted.",
+      },
     },
   ],
 };
 
-export default function HomepageSeoCheckerNestedPage() {
-  return <UpcomingToolLandingPage spec={spec} />;
+export default function HomepageSeoCheckerPage() {
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
+      />
+      <script
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        type="application/ld+json"
+      />
+      <SeoCheckerClient />
+    </>
+  );
 }

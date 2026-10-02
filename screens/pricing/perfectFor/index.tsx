@@ -94,8 +94,8 @@ const PricingPerfectFor = () => {
       {/* Not The Right Fit Section */}
       <Reveal
         className="relative w-full overflow-hidden rounded-[20px] border border-slate-200/70 dark:border-white/[0.05]"
-        variant="up"
         distance="lg"
+        variant="up"
       >
         <div className="relative z-10 flex flex-col items-start gap-10 p-8 md:p-10 lg:flex-row lg:items-center lg:gap-16">
           {/* Left Side: Title */}

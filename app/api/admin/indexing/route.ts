@@ -7,12 +7,14 @@ import dbConnect from "@/lib/mongodb";
 
 export async function GET(req: NextRequest) {
   const guard = await requireApi("manage:indexing");
+
   if (!guard.ok) return guard.response;
 
   await dbConnect();
 
   // If database has 0 indexed URLs, run an initial sync automatically
   const count = await IndexedUrl.countDocuments();
+
   if (count === 0) {
     try {
       await reconcileSitemap(guard.user.id);

@@ -112,8 +112,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "SaaS Onboarding & Activation Analyzer",
     category: "saas-product",
     categoryLabel: "SaaS & Product UX",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Analyze Onboarding",
     description:
       "Measure signup friction, progressive disclosure, empty states, and time-to-first-value.",
     icon: (
@@ -170,8 +170,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "SaaS Marketing Website UX Audit",
     category: "website-conversion",
     categoryLabel: "Website & Conversion",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Audit Marketing Site",
     description:
       "Audit B2B feature grids, self-serve vs demo funnels, and enterprise compliance badges.",
     icon: (
@@ -197,8 +197,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "CTA & Conversion Button Analyzer",
     category: "website-conversion",
     categoryLabel: "Website & Conversion",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Analyze CTAs",
     description:
       "Audit button visual contrast, action verb psychology, and above-the-fold placement.",
     icon: (
@@ -250,8 +250,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Homepage SEO & Metadata Checker",
     category: "website-conversion",
     categoryLabel: "Website & Conversion",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Check SEO",
     description:
       "Audit heading hierarchy (H1-H3), OpenGraph cards, meta descriptions, and search snippets.",
     icon: (
@@ -279,8 +279,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Website Performance & UX Experience Score",
     category: "website-conversion",
     categoryLabel: "Website & Conversion",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Check Performance",
     description:
       "Combine Core Web Vitals (LCP, INP, CLS) with perceived human UX speed benchmarks.",
     icon: (
@@ -334,8 +334,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Accessible SaaS Color Palette Generator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Generate Palette",
     description:
       "Generate harmonious 10-shade UI color ramps (50–950) with automated WCAG contrast validation.",
     icon: (
@@ -359,8 +359,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "WCAG & APCA Color Contrast Checker",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Check Contrast",
     description:
       "Check text & surface color combinations against WCAG 2.1 AA/AAA and APCA perceptual contrast.",
     icon: (
@@ -384,8 +384,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "8pt Grid & Figma Spacing Calculator",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Calculate Spacing",
     description:
       "Calculate 8pt/4pt layout scales, auto-layout container padding, and Figma spacing variables.",
     icon: (
@@ -519,8 +519,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "Fast SVG Optimizer & React Exporter",
     category: "design-system",
     categoryLabel: "Design Systems & Code",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Optimize SVG",
     description:
       "Compress SVG vector files, strip Figma/Illustrator bloat, and export clean JSX React components.",
     icon: (
@@ -740,8 +740,8 @@ export const ALL_TOOLS_REGISTRY: SuggestedToolItem[] = [
     title: "GEO Competitor & AI Search Benchmark",
     category: "ai-geo",
     categoryLabel: "AI & GEO Visibility",
-    badge: "Coming Soon",
-    ctaLabel: "View Roadmap & Specs",
+    badge: "Live",
+    ctaLabel: "Benchmark Competitor",
     description:
       "Benchmark your domain's AI readiness, schema graph depth, and llms.txt adoption against top competitors.",
     icon: (

@@ -20,7 +20,6 @@ function classifyPathType(
   if (path.startsWith("/tools/")) return "tool";
   if (
     path.startsWith("/services/") ||
-    path.startsWith("/apps4sale/") ||
     [
       "/",
       "/about",
@@ -35,11 +34,11 @@ function classifyPathType(
       "/tools",
       "/case-studies",
       "/blogs",
-      "/apps4sale",
     ].includes(path)
   ) {
     return "page";
   }
+
   return "blog";
 }
 
@@ -61,6 +60,7 @@ export async function reconcileSitemap(
   for (const entry of entries) {
     const url = entry.url;
     const path = extractPath(url);
+
     sitemapUrlMap.set(url, path);
   }
 
@@ -122,6 +122,7 @@ export async function reconcileSitemap(
       newlyAdded++;
     } else {
       let needsSave = false;
+
       if (!existing.inSitemap) {
         existing.inSitemap = true;
         needsSave = true;
@@ -144,9 +145,11 @@ export async function reconcileSitemap(
 
   // 3. Ensure held draft case studies are tracked as drafts
   const baseUrl = process.env.SITE_ORIGIN || "https://uipirate.dev";
+
   for (const draftSlug of HELD_DRAFT_SLUGS) {
     const draftPath = `/case-studies/${draftSlug}`;
     const draftUrl = `${baseUrl}${draftPath}`;
+
     draftsHeld++;
 
     const existingDraft = await IndexedUrl.findOne({
@@ -214,6 +217,7 @@ export async function reconcileSitemap(
   });
 
   let removedFromSitemap = 0;
+
   for (const doc of removedDocs) {
     doc.inSitemap = false;
     await doc.save();

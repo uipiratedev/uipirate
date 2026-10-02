@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 /**
  * 1. Simplifying SaaS Complexity
@@ -30,12 +30,12 @@ export const VisualSaaSComplexity = () => {
           {(["admin", "member", "api"] as const).map((role) => (
             <button
               key={role}
-              onClick={() => setActiveRole(role)}
               className={`px-2 py-0.5 rounded-md text-[9px] font-semibold uppercase tracking-wider transition-all ${
                 activeRole === role
                   ? "bg-indigo-500 text-white shadow-sm"
                   : "text-white/60 hover:text-white"
               }`}
+              onClick={() => setActiveRole(role)}
             >
               {role}
             </button>
@@ -54,7 +54,7 @@ export const VisualSaaSComplexity = () => {
         {/* SVG Bezier Wire Connections */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 300 120">
           <defs>
-            <linearGradient id="activeBeamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id="activeBeamGrad" x1="0%" x2="100%" y1="0%" y2="0%">
               <stop offset="0%" stopColor="#818cf8" />
               <stop offset="100%" stopColor="#38bdf8" />
             </linearGradient>
@@ -65,8 +65,8 @@ export const VisualSaaSComplexity = () => {
             d="M 50 60 C 100 60, 140 25, 230 25"
             fill="none"
             stroke={activeRole === "admin" ? "#818cf8" : "rgba(255,255,255,0.12)"}
-            strokeWidth={activeRole === "admin" ? "2.5" : "1.5"}
             strokeDasharray={activeRole === "admin" ? "none" : "3 3"}
+            strokeWidth={activeRole === "admin" ? "2.5" : "1.5"}
           />
 
           {/* Path 2: Middle Branch */}
@@ -74,8 +74,8 @@ export const VisualSaaSComplexity = () => {
             d="M 50 60 C 120 60, 150 60, 230 60"
             fill="none"
             stroke={activeRole === "member" ? "#38bdf8" : "rgba(255,255,255,0.12)"}
-            strokeWidth={activeRole === "member" ? "2.5" : "1.5"}
             strokeDasharray={activeRole === "member" ? "none" : "3 3"}
+            strokeWidth={activeRole === "member" ? "2.5" : "1.5"}
           />
 
           {/* Path 3: Bottom Branch */}
@@ -83,44 +83,44 @@ export const VisualSaaSComplexity = () => {
             d="M 50 60 C 100 60, 140 95, 230 95"
             fill="none"
             stroke={activeRole === "api" ? "#34d399" : "rgba(255,255,255,0.12)"}
-            strokeWidth={activeRole === "api" ? "2.5" : "1.5"}
             strokeDasharray={activeRole === "api" ? "none" : "3 3"}
+            strokeWidth={activeRole === "api" ? "2.5" : "1.5"}
           />
 
           {/* Flowing Particle on Active Branch */}
           {activeRole === "admin" && (
             <motion.circle
-              r="4"
-              fill="#c7d2fe"
               animate={{
                 cx: [50, 100, 160, 230],
                 cy: [60, 48, 28, 25],
                 opacity: [0, 1, 1, 0],
               }}
+              fill="#c7d2fe"
+              r="4"
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             />
           )}
           {activeRole === "member" && (
             <motion.circle
-              r="4"
-              fill="#bae6fd"
               animate={{
                 cx: [50, 110, 170, 230],
                 cy: [60, 60, 60, 60],
                 opacity: [0, 1, 1, 0],
               }}
+              fill="#bae6fd"
+              r="4"
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             />
           )}
           {activeRole === "api" && (
             <motion.circle
-              r="4"
-              fill="#a7f3d0"
               animate={{
                 cx: [50, 100, 160, 230],
                 cy: [60, 72, 92, 95],
                 opacity: [0, 1, 1, 0],
               }}
+              fill="#a7f3d0"
+              r="4"
               transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             />
           )}
@@ -128,17 +128,17 @@ export const VisualSaaSComplexity = () => {
 
         {/* Source Master Node */}
         <motion.div
-          whileHover={{ scale: 1.08 }}
           className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/30 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.4)] cursor-pointer"
+          whileHover={{ scale: 1.08 }}
         >
-          <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect width="18" height="18" x="3" y="3" rx="2" />
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <rect height="18" rx="2" width="18" x="3" y="3" />
             <path d="M7 7h10v10H7z" />
           </svg>
           <motion.div
             animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
-            transition={{ duration: 2, repeat: Infinity }}
             className="absolute -inset-1 rounded-xl border border-indigo-400"
+            transition={{ duration: 2, repeat: Infinity }}
           />
         </motion.div>
 
@@ -154,7 +154,7 @@ export const VisualSaaSComplexity = () => {
               activeRole === "admin" ? "bg-indigo-500/30 text-indigo-200 shadow-sm shadow-indigo-500/50" : "bg-white/5 text-white/40"
             }`}
           >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
           </motion.div>
@@ -169,7 +169,7 @@ export const VisualSaaSComplexity = () => {
               activeRole === "member" ? "bg-sky-500/30 text-sky-200 shadow-sm shadow-sky-500/50" : "bg-white/5 text-white/40"
             }`}
           >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
               <circle cx="9" cy="7" r="4" />
             </svg>
@@ -185,7 +185,7 @@ export const VisualSaaSComplexity = () => {
               activeRole === "api" ? "bg-emerald-500/30 text-emerald-200 shadow-sm shadow-emerald-500/50" : "bg-white/5 text-white/40"
             }`}
           >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <polyline points="16 18 22 12 16 6" />
               <polyline points="8 6 2 12 8 18" />
             </svg>
@@ -245,14 +245,14 @@ export const VisualDesignHandoff = () => {
         {/* View Toggle */}
         <div className="flex bg-white/10 rounded-md p-0.5 border border-white/10 text-[8px] font-mono">
           <button
-            onClick={() => setInspectMode("specs")}
             className={`px-1.5 py-0.5 rounded ${inspectMode === "specs" ? "bg-[#FF5B04] text-white" : "text-white/50"}`}
+            onClick={() => setInspectMode("specs")}
           >
             px
           </button>
           <button
-            onClick={() => setInspectMode("tokens")}
             className={`px-1.5 py-0.5 rounded ${inspectMode === "tokens" ? "bg-[#FF5B04] text-white" : "text-white/50"}`}
+            onClick={() => setInspectMode("tokens")}
           >
             var
           </button>
@@ -283,11 +283,6 @@ export const VisualDesignHandoff = () => {
 
         {/* The Inspected Interactive Component */}
         <motion.button
-          onClick={() => {
-            setBtnState((prev) => (prev === "default" ? "hover" : prev === "hover" ? "active" : "default"));
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
           className={`relative px-6 py-2 rounded-xl font-bold text-[11px] transition-all flex items-center gap-1.5 shadow-lg ${
             btnState === "default"
               ? "bg-[#FF5B04] text-white shadow-[#FF5B04]/30"
@@ -295,9 +290,14 @@ export const VisualDesignHandoff = () => {
               ? "bg-[#ff6f24] text-white shadow-[#FF5B04]/50 ring-2 ring-white/30"
               : "bg-[#e04f00] text-white shadow-inner scale-95"
           }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            setBtnState((prev) => (prev === "default" ? "hover" : prev === "hover" ? "active" : "default"));
+          }}
         >
           <span>Action</span>
-          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <polyline points="9 18 15 12 9 6" />
           </svg>
         </motion.button>
@@ -309,8 +309,8 @@ export const VisualDesignHandoff = () => {
             y: [30, 0, 0, 30],
             scale: [1, 0.85, 1, 1],
           }}
-          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
           className="absolute pointer-events-none text-white drop-shadow-md z-20"
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
         >
           <svg className="w-4 h-4 fill-white stroke-black stroke-1" viewBox="0 0 24 24">
             <path d="M3 3l7 18 3-7 7-3L3 3z" />
@@ -370,8 +370,8 @@ export const VisualAIFirstUX = () => {
         {/* Live Spark Indicator */}
         <motion.div
           animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
           className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-[8.5px] font-mono text-blue-300"
+          transition={{ duration: 1.5, repeat: Infinity }}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
           {confidence}%
@@ -388,26 +388,26 @@ export const VisualAIFirstUX = () => {
               animate={{
                 scaleY: isPrompting ? [1, scale * 2.2, 0.4, 1] : [0.5, scale, 0.3, 0.5],
               }}
+              className="w-1.5 h-8 bg-gradient-to-t from-blue-600 via-sky-400 to-indigo-300 rounded-full"
               transition={{
                 duration: 1.2,
                 repeat: Infinity,
                 delay: i * 0.08,
                 ease: "easeInOut",
               }}
-              className="w-1.5 h-8 bg-gradient-to-t from-blue-600 via-sky-400 to-indigo-300 rounded-full"
             />
           ))}
         </div>
 
         {/* Interactive Generate Button */}
         <motion.button
-          onClick={triggerAI}
+          className="px-3.5 py-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-[9.5px] shadow-[0_0_15px_rgba(59,130,246,0.5)] border border-blue-400/30 flex items-center gap-1.5 cursor-pointer"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="px-3.5 py-1 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-[9.5px] shadow-[0_0_15px_rgba(59,130,246,0.5)] border border-blue-400/30 flex items-center gap-1.5 cursor-pointer"
+          onClick={triggerAI}
         >
           <span>Run Prompt</span>
-          <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
         </motion.button>
@@ -421,8 +421,8 @@ export const VisualAIFirstUX = () => {
         <div className="flex-1 flex flex-col gap-1">
           <motion.div
             animate={{ opacity: [0.4, 0.9, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity }}
             className="w-3/4 h-1.5 bg-blue-300/40 rounded-full"
+            transition={{ duration: 2, repeat: Infinity }}
           />
           <div className="w-1/2 h-1 bg-white/20 rounded-full" />
         </div>
@@ -458,18 +458,18 @@ export const VisualScaleConvert = () => {
         {/* Interactive A/B Toggle */}
         <div className="flex bg-white/10 rounded-lg p-0.5 border border-white/10 text-[8px] font-mono">
           <button
-            onClick={() => setIsOptimized(false)}
             className={`px-2 py-0.5 rounded-md transition-all ${
               !isOptimized ? "bg-white/20 text-white font-bold" : "text-white/40"
             }`}
+            onClick={() => setIsOptimized(false)}
           >
             Baseline
           </button>
           <button
-            onClick={() => setIsOptimized(true)}
             className={`px-2 py-0.5 rounded-md transition-all ${
               isOptimized ? "bg-[#E40063] text-white font-bold shadow-xs" : "text-white/40"
             }`}
+            onClick={() => setIsOptimized(true)}
           >
             +42% Lift
           </button>
@@ -478,9 +478,9 @@ export const VisualScaleConvert = () => {
 
       {/* Center: Dynamic Rising Conversion Chart */}
       <div className="relative flex-1 w-full flex items-end px-1 my-1 z-10">
-        <svg className="w-full h-[75px]" viewBox="0 0 240 75" preserveAspectRatio="none">
+        <svg className="w-full h-[75px]" preserveAspectRatio="none" viewBox="0 0 240 75">
           <defs>
-            <linearGradient id="scaleAreaGrad" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="scaleAreaGrad" x1="0" x2="0" y1="0" y2="1">
               <stop offset="0%" stopColor="#E40063" stopOpacity={isOptimized ? "0.45" : "0.1"} />
               <stop offset="100%" stopColor="#E40063" stopOpacity="0.0" />
             </linearGradient>
@@ -493,8 +493,8 @@ export const VisualScaleConvert = () => {
                 ? "M 0 65 Q 60 55 120 35 T 240 10 L 240 75 L 0 75 Z"
                 : "M 0 65 Q 60 62 120 58 T 240 50 L 240 75 L 0 75 Z",
             }}
-            transition={{ type: "spring", stiffness: 100, damping: 15 }}
             fill="url(#scaleAreaGrad)"
+            transition={{ type: "spring", stiffness: 100, damping: 15 }}
           />
 
           {/* Curve Stroke */}
@@ -505,10 +505,10 @@ export const VisualScaleConvert = () => {
                 : "M 0 65 Q 60 62 120 58 T 240 50",
               stroke: isOptimized ? "#E40063" : "rgba(255,255,255,0.3)",
             }}
-            transition={{ type: "spring", stiffness: 100, damping: 15 }}
             fill="none"
-            strokeWidth="3"
             strokeLinecap="round"
+            strokeWidth="3"
+            transition={{ type: "spring", stiffness: 100, damping: 15 }}
           />
 
           {/* Glowing Apex Dot */}
@@ -518,8 +518,8 @@ export const VisualScaleConvert = () => {
               cy: isOptimized ? 10 : 50,
               r: isOptimized ? [4, 6, 4] : [3, 3, 3],
             }}
-            transition={{ duration: 2, repeat: Infinity }}
             fill="#E40063"
+            transition={{ duration: 2, repeat: Infinity }}
           />
         </svg>
 
@@ -530,8 +530,8 @@ export const VisualScaleConvert = () => {
             right: 12,
             scale: isOptimized ? 1 : 0.9,
           }}
-          transition={{ type: "spring", stiffness: 120 }}
           className="absolute bg-gradient-to-r from-[#E40063] to-pink-500 text-white font-bold text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white/20"
+          transition={{ type: "spring", stiffness: 120 }}
         >
           <span>↗</span>
           <span>{isOptimized ? "+42.8%" : "+0.0%"}</span>
@@ -598,12 +598,12 @@ export const VisualFastDelivery = () => {
           {([1, 2, 3] as const).map((s) => (
             <button
               key={s}
-              onClick={() => setSpeed(s)}
               className={`px-2 py-0.5 rounded-md transition-all ${
                 speed === s
                   ? "bg-[#FF5B04] text-white font-bold shadow-sm shadow-[#FF5B04]/50"
                   : "text-white/40 hover:text-white/80"
               }`}
+              onClick={() => setSpeed(s)}
             >
               {s}×
             </button>
@@ -616,8 +616,8 @@ export const VisualFastDelivery = () => {
         <div className="flex items-center gap-2">
           <motion.div
             animate={{ rotate: [0, 10 * speed, 0] }}
-            transition={{ duration: 1.5 / speed, repeat: Infinity, ease: "easeInOut" }}
             className="w-2.5 h-2.5 rounded-full border-2 border-[#FF5B04] border-t-transparent animate-spin"
+            transition={{ duration: 1.5 / speed, repeat: Infinity, ease: "easeInOut" }}
           />
           <div className="flex items-baseline gap-1">
             <span className="text-sm font-bold font-mono text-[#FF5B04]">{paceLabel}</span>
@@ -632,93 +632,93 @@ export const VisualFastDelivery = () => {
 
       {/* Center: Pixel-Perfect SVG Milestone Pipeline */}
       <div className="relative w-full h-[72px] flex items-center justify-center z-10">
-        <svg className="w-full h-full" viewBox="0 0 300 72" preserveAspectRatio="xMidYMid meet">
+        <svg className="w-full h-full" preserveAspectRatio="xMidYMid meet" viewBox="0 0 300 72">
           <defs>
-            <linearGradient id="activeSprintBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id="activeSprintBeam" x1="0%" x2="100%" y1="0%" y2="0%">
               <stop offset="0%" stopColor="#10B981" />
               <stop offset="50%" stopColor="#F59E0B" />
               <stop offset="100%" stopColor="#FF5B04" />
             </linearGradient>
-            <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#FF5B04" floodOpacity="0.8" />
+            <filter height="140%" id="glowFilter" width="140%" x="-20%" y="-20%">
+              <feDropShadow dx="0" dy="0" floodColor="#FF5B04" floodOpacity="0.8" stdDeviation="3" />
             </filter>
           </defs>
 
           {/* Base Background Track (Passes exactly through center y=26) */}
           <line
-            x1="24"
-            y1="26"
-            x2="276"
-            y2="26"
             stroke="rgba(255,255,255,0.12)"
-            strokeWidth="4"
             strokeLinecap="round"
+            strokeWidth="4"
+            x1="24"
+            x2="276"
+            y1="26"
+            y2="26"
           />
 
           {/* Active Glowing Progress Track (Animates to current milestone) */}
           <motion.line
+            animate={{ x2: progressLength }}
+            filter="url(#glowFilter)"
+            stroke="url(#activeSprintBeam)"
+            strokeLinecap="round"
+            strokeWidth="4"
+            transition={{ type: "spring", stiffness: 120, damping: 18 }}
             x1="24"
             y1="26"
-            animate={{ x2: progressLength }}
-            transition={{ type: "spring", stiffness: 120, damping: 18 }}
             y2="26"
-            stroke="url(#activeSprintBeam)"
-            strokeWidth="4"
-            strokeLinecap="round"
-            filter="url(#glowFilter)"
           />
 
           {/* Racing Comet Light Pulse */}
           <motion.circle
-            r="4.5"
-            fill="#FFFFFF"
-            filter="url(#glowFilter)"
             animate={{
               cx: [24, progressLength],
               opacity: [0, 1, 1, 0],
             }}
+            cy="26"
+            fill="#FFFFFF"
+            filter="url(#glowFilter)"
+            r="4.5"
             transition={{
               duration: duration,
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            cy="26"
           />
 
           {/* Node 1: W1 - Architecture (Completed) */}
           <g>
-            <circle cx="24" cy="26" r="11" fill="#10B981" />
+            <circle cx="24" cy="26" fill="#10B981" r="11" />
             <path
               d="M 20 26 L 23 29 L 28 23"
               fill="none"
               stroke="#FFFFFF"
-              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              strokeWidth="2"
             />
-            <text x="24" y="50" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="8.5" fontFamily="monospace" fontWeight="bold">
+            <text fill="rgba(255,255,255,0.7)" fontFamily="monospace" fontSize="8.5" fontWeight="bold" textAnchor="middle" x="24" y="50">
               W1
             </text>
-            <text x="24" y="61" textAnchor="middle" fill="#10B981" fontSize="7" fontFamily="monospace">
+            <text fill="#10B981" fontFamily="monospace" fontSize="7" textAnchor="middle" x="24" y="61">
               SHIPPED
             </text>
           </g>
 
           {/* Node 2: W2 - Design System (Completed) */}
           <g>
-            <circle cx="108" cy="26" r="11" fill="#10B981" />
+            <circle cx="108" cy="26" fill="#10B981" r="11" />
             <path
               d="M 104 26 L 107 29 L 112 23"
               fill="none"
               stroke="#FFFFFF"
-              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              strokeWidth="2"
             />
-            <text x="108" y="50" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="8.5" fontFamily="monospace" fontWeight="bold">
+            <text fill="rgba(255,255,255,0.7)" fontFamily="monospace" fontSize="8.5" fontWeight="bold" textAnchor="middle" x="108" y="50">
               W2
             </text>
-            <text x="108" y="61" textAnchor="middle" fill="#10B981" fontSize="7" fontFamily="monospace">
+            <text fill="#10B981" fontFamily="monospace" fontSize="7" textAnchor="middle" x="108" y="61">
               SHIPPED
             </text>
           </g>
@@ -727,21 +727,21 @@ export const VisualFastDelivery = () => {
           <g>
             {/* Animated Radar Wave Ring */}
             <motion.circle
+              animate={{ r: [12, 19, 12], opacity: [0.9, 0, 0.9] }}
               cx="192"
               cy="26"
-              r="14"
               fill="none"
+              r="14"
               stroke="#FF5B04"
               strokeWidth="1.5"
-              animate={{ r: [12, 19, 12], opacity: [0.9, 0, 0.9] }}
               transition={{ duration: 1.8 / speed, repeat: Infinity, ease: "easeOut" }}
             />
-            <circle cx="192" cy="26" r="11" fill="#FF5B04" filter="url(#glowFilter)" />
-            <circle cx="192" cy="26" r="4" fill="#FFFFFF" />
-            <text x="192" y="50" textAnchor="middle" fill="#FF5B04" fontSize="8.5" fontFamily="monospace" fontWeight="bold">
+            <circle cx="192" cy="26" fill="#FF5B04" filter="url(#glowFilter)" r="11" />
+            <circle cx="192" cy="26" fill="#FFFFFF" r="4" />
+            <text fill="#FF5B04" fontFamily="monospace" fontSize="8.5" fontWeight="bold" textAnchor="middle" x="192" y="50">
               W3
             </text>
-            <text x="192" y="61" textAnchor="middle" fill="#FF5B04" fontSize="7" fontFamily="monospace" fontWeight="bold">
+            <text fill="#FF5B04" fontFamily="monospace" fontSize="7" fontWeight="bold" textAnchor="middle" x="192" y="61">
               ACTIVE
             </text>
           </g>
@@ -751,25 +751,25 @@ export const VisualFastDelivery = () => {
             <circle
               cx="276"
               cy="26"
-              r="11"
               fill={speed === 3 ? "#10B981" : "rgba(255,255,255,0.08)"}
+              r="11"
               stroke={speed === 3 ? "#10B981" : "rgba(255,255,255,0.2)"}
               strokeWidth="1.5"
             />
             <text
+              fill={speed === 3 ? "#FFFFFF" : "rgba(255,255,255,0.4)"}
+              fontFamily="sans-serif"
+              fontSize="9"
+              textAnchor="middle"
               x="276"
               y="29.5"
-              textAnchor="middle"
-              fill={speed === 3 ? "#FFFFFF" : "rgba(255,255,255,0.4)"}
-              fontSize="9"
-              fontFamily="sans-serif"
             >
               {speed === 3 ? "✓" : "🚀"}
             </text>
-            <text x="276" y="50" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="8.5" fontFamily="monospace" fontWeight="bold">
+            <text fill="rgba(255,255,255,0.5)" fontFamily="monospace" fontSize="8.5" fontWeight="bold" textAnchor="middle" x="276" y="50">
               W4
             </text>
-            <text x="276" y="61" textAnchor="middle" fill={speed === 3 ? "#10B981" : "rgba(255,255,255,0.3)"} fontSize="7" fontFamily="monospace">
+            <text fill={speed === 3 ? "#10B981" : "rgba(255,255,255,0.3)"} fontFamily="monospace" fontSize="7" textAnchor="middle" x="276" y="61">
               LAUNCH
             </text>
           </g>

@@ -10,9 +10,15 @@ import {
   VisualFastDelivery,
 } from "./WhyChooseUsVisuals";
 
-const WhyChooseUs = () => {
+interface WhyChooseUsProps {
+  className?: string;
+}
+
+const WhyChooseUs = ({ className = "" }: WhyChooseUsProps) => {
   return (
-    <section className="w-full py-8 pb-0 min-h-screen section-container">
+    <section
+      className={`w-full pt-20 max-md:pt-12 pb-0 min-h-screen section-container ${className}`}
+    >
       <div className="mb-0">
         <div className="mb-6 flex flex-row items-center justify-center">
           <GlassBadge variant="gradient">WHY CHOOSE US</GlassBadge>

@@ -218,6 +218,7 @@ export async function submitSitemapToGSC(
 
     if (!res.ok) {
       const txt = await res.text();
+
       return { ok: false, status: res.status, error: txt };
     }
 

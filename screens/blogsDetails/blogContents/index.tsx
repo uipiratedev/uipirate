@@ -21,8 +21,6 @@ import { useMemo, useState, useEffect, useRef } from "react";
 
 import HeaderInfo from "./headeInfo";
 
-import GlobalCTA from "@/components/GlobalCTA";
-
 // ── TOC helpers ───────────────────────────────────────────────────────────────
 function slugifyHeading(text: string): string {
   return text
@@ -89,6 +87,7 @@ function injectHexColorDots(html: string): string {
   // 1. Protect <pre> blocks so multiline code snippets are untouched
   let out = html.replace(/<pre[\s\S]*?<\/pre>/gi, (match) => {
     protectedBlocks.push(match);
+
     return `___BLOCK_${protectedBlocks.length - 1}___`;
   });
 
@@ -98,6 +97,7 @@ function injectHexColorDots(html: string): string {
     (match, openTag, inner, closeTag) => {
       if (inner.includes("hex-color-dot")) {
         protectedBlocks.push(match);
+
         return `___BLOCK_${protectedBlocks.length - 1}___`;
       }
       const replaced = inner.replace(
@@ -105,7 +105,9 @@ function injectHexColorDots(html: string): string {
         (hex: string) =>
           `<span class="hex-color-dot" style="background-color: ${hex};"></span>${hex}`,
       );
+
       protectedBlocks.push(`${openTag}${replaced}${closeTag}`);
+
       return `___BLOCK_${protectedBlocks.length - 1}___`;
     },
   );
@@ -118,6 +120,7 @@ function injectHexColorDots(html: string): string {
       if (hexMatch) {
         return `<code class="inline-hex-code"><span class="hex-color-dot" style="background-color: ${hexMatch};"></span>${hexMatch}</code>`;
       }
+
       return fullMatch;
     },
   );
@@ -157,17 +160,20 @@ function highlightCode(rawCode: string, _language = "CSS"): string {
 
     // CSS property: value;
     const propMatch = line.match(/^(\s*)([a-zA-Z0-9_-]+)(\s*:\s*)(.*)$/);
+
     if (propMatch) {
       const [, indent, prop, colon, rest] = propMatch;
 
       let val = rest;
       let semi = "";
+
       if (val.endsWith(";")) {
         semi = ";";
         val = val.slice(0, -1);
       }
 
       let formattedVal = val;
+
       if (/var\s*\(/i.test(formattedVal)) {
         formattedVal = formattedVal.replace(
           /var\((--[a-zA-Z0-9_-]+)\)/g,
@@ -210,12 +216,14 @@ function formatCodeBlocks(html: string): string {
       let lang = "CSS";
 
       const codeMatch = inner.match(/<code([^>]*)>([\s\S]*?)<\/code>/i);
+
       if (codeMatch) {
         cleanCode = codeMatch[2];
         const codeAttrs = codeMatch[1];
         const langMatch = `${codeAttrs} ${preAttrs}`.match(
           /class="[^"]*(?:language-|lang-)([a-zA-Z0-9_-]+)/i,
         );
+
         if (langMatch) {
           lang = langMatch[1].toUpperCase();
         }
@@ -223,6 +231,7 @@ function formatCodeBlocks(html: string): string {
 
       if (lang === "CSS") {
         const textSample = cleanCode.replace(/<[^>]+>/g, "");
+
         if (/(import\s+.*from|const\s+\w+\s*=|export\s+default)/i.test(textSample)) {
           lang = "TypeScript";
         } else if (/^\s*[{[]/i.test(textSample.trim()) && /":\s*"/i.test(textSample)) {
@@ -807,10 +816,9 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
                 {headings.map((h) => (
                   <a
                     key={h.id}
-                    data-toc-id={h.id}
                     className="flex-shrink-0 block text-sm leading-normal transition-colors py-1.5 px-2 rounded-lg truncate hover:text-[#FF5B04]"
+                    data-toc-id={h.id}
                     href={`#${h.id}`}
-                    title={h.text}
                     style={{
                       flexShrink: 0,
                       minHeight: 28,
@@ -818,6 +826,7 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
                       color: activeId === h.id ? "#FF5B04" : "#4b5563",
                       fontWeight: activeId === h.id ? 600 : 400,
                     }}
+                    title={h.text}
                     onClick={(e) => {
                       e.preventDefault();
                       document.getElementById(h.id)?.scrollIntoView({
@@ -835,9 +844,6 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
           </aside>
         )}
       </div>
-
-      {/* CTA Banner — convert engaged readers into leads */}
-      {/* <GlobalCTA topic={blog.title} /> */}
     </article>
   );
 };
