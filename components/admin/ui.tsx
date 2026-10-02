@@ -1,7 +1,6 @@
 "use client";
 
 import { Icon } from "./icons";
-import { fmtPct } from "./format";
 
 export function PageHeader({
   title,
@@ -130,28 +129,6 @@ export function StatePanel({
   }
 
   return <>{children}</>;
-}
-
-export function DeltaBadge({ value }: { value: number }) {
-  if (!isFinite(value) || Math.abs(value) < 0.0005) {
-    return <span className="text-xs text-gray-400">—</span>;
-  }
-
-  const up = value > 0;
-  const Arrow = up ? Icon.arrowUp : Icon.arrowDown;
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
-        up
-          ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/20"
-          : "bg-red-50 text-red-700 ring-1 ring-red-600/20"
-      }`}
-    >
-      <Arrow className="h-3 w-3 shrink-0" />
-      {fmtPct(Math.abs(value), 0)}
-    </span>
-  );
 }
 
 const STATUS_CONFIG: Record<
