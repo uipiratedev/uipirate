@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
@@ -143,6 +144,21 @@ export default async function ConceptDetailPage({ params }: PageProps) {
         title={concept.title}
       />
       <BlogContents blog={concept} />
+      <section className="section-container pb-16 max-md:pb-12 text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Have something like this in mind?
+        </h2>
+        <p className="text-gray-600 mb-6">
+          Bring a half-formed idea or a working demo. Typical response under 2
+          hours.
+        </p>
+        <Link
+          className="inline-block px-8 py-4 bg-[#FF5B04] text-white font-bold rounded-full hover:bg-[#e04e00] transition-colors"
+          href="/contact"
+        >
+          Start a Conversation →
+        </Link>
+      </section>
     </div>
   );
 }

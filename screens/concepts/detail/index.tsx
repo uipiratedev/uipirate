@@ -221,6 +221,12 @@ const ConceptDetailScreen = ({ detail }: ConceptDetailScreenProps) => {
                 </li>
               ))}
             </ul>
+            <Link
+              className="mt-6 block px-4 py-3 bg-[#FF5B04] text-white text-sm font-bold rounded-full hover:bg-[#e04e00] transition-colors text-center"
+              href="/contact"
+            >
+              Start a Conversation →
+            </Link>
           </nav>
 
           <div className="min-w-0">
