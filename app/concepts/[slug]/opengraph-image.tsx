@@ -2,6 +2,8 @@ import { ImageResponse } from "next/og";
 
 import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
 
+import { CONCEPT_DETAILS } from "@/screens/concepts/details";
+
 import { OGTemplate } from "../../_og/template";
 
 export const runtime = "edge";
@@ -17,9 +19,10 @@ function truncate(str: string, max: number) {
 }
 
 export async function generateStaticParams() {
-  const slugs = await listPostSlugs({ postType: "concept" });
+  const cmsSlugs = await listPostSlugs({ postType: "concept" });
+  const slugs = new Set([...Object.keys(CONCEPT_DETAILS), ...cmsSlugs]);
 
-  return slugs.map((slug) => ({ slug }));
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 export async function generateImageMetadata({
@@ -27,6 +30,12 @@ export async function generateImageMetadata({
 }: {
   params: { slug: string };
 }) {
+  const detail = CONCEPT_DETAILS[params.slug];
+
+  if (detail) {
+    return [{ id: params.slug, alt: `${detail.headline} | Concept` }];
+  }
+
   const post = await getPostBySlug(params.slug);
 
   return [
@@ -38,11 +47,15 @@ export async function generateImageMetadata({
 }
 
 export default async function Image({ params }: { params: { slug: string } }) {
-  const post = await getPostBySlug(params.slug);
+  const detail = CONCEPT_DETAILS[params.slug];
+  const post = detail ? null : await getPostBySlug(params.slug);
 
-  const title = truncate(post?.title ?? "Concept", 46);
+  const title = truncate(detail?.headline ?? post?.title ?? "Concept", 46);
   const description = truncate(
-    post?.seo?.ogDescription || post?.excerpt || "A product concept by UI Pirate.",
+    detail?.metaDescription ||
+      post?.seo?.ogDescription ||
+      post?.excerpt ||
+      "A product concept by UI Pirate.",
     120,
   );
 

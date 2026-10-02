@@ -10,13 +10,16 @@
  * means the public site only ever shows the key's tenant's published posts —
  * fixing the cross-tenant leak the direct `Post.find({ published })` queries had.
  *
- * The API key is read from PIRATECOS_API_KEY and stays on the server — it is
- * never shipped to the browser. Pages fetch here and pass plain data as props.
+ * The API key is read from COMETCOS_API_KEY (legacy PIRATECOS_API_KEY still
+ * works) and stays on the server — it is never shipped to the browser. Pages
+ * fetch here and pass plain data as props.
  */
 
 const BASE_URL =
-  process.env.PIRATECOS_API_BASE_URL || "https://cos.uipirate.com";
-const API_KEY = process.env.PIRATECOS_API_KEY;
+  process.env.COMETCOS_API_BASE_URL ||
+  process.env.PIRATECOS_API_BASE_URL ||
+  "https://cos.uipirate.com";
+const API_KEY = process.env.COMETCOS_API_KEY || process.env.PIRATECOS_API_KEY;
 
 /** The shape the existing reader components expect (legacy `_id`, `createdAt`). */
 export interface ReaderPost {
@@ -100,7 +103,7 @@ async function apiGet(
 ): Promise<any | null> {
   if (!API_KEY) {
     console.error(
-      "PIRATECOS_API_KEY is not set — public reader cannot fetch content.",
+      "COMETCOS_API_KEY is not set — public reader cannot fetch content.",
     );
 
     return null;

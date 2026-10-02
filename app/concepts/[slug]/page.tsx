@@ -5,6 +5,8 @@ import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";
+import ConceptDetailScreen from "@/screens/concepts/detail";
+import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 
 interface PageProps {
   params: { slug: string };
@@ -23,9 +25,10 @@ async function getConcept(slug: string) {
 }
 
 export async function generateStaticParams() {
-  const slugs = await listPostSlugs({ postType: "concept" });
+  const cmsSlugs = await listPostSlugs({ postType: "concept" });
+  const slugs = new Set([...Object.keys(CONCEPT_DETAILS), ...cmsSlugs]);
 
-  return slugs.map((slug) => ({ slug }));
+  return Array.from(slugs).map((slug) => ({ slug }));
 }
 
 export const dynamicParams = true;
@@ -33,6 +36,32 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
+  const detail = CONCEPT_DETAILS[params.slug];
+
+  if (detail) {
+    const url = `https://uipirate.com/concepts/${detail.slug}`;
+    const ogImage = `${url}/opengraph-image/${detail.slug}`;
+
+    return {
+      title: detail.metaTitle,
+      description: detail.metaDescription,
+      alternates: { canonical: url },
+      openGraph: {
+        title: detail.metaTitle,
+        description: detail.metaDescription,
+        url,
+        type: "article",
+        images: [{ url: ogImage, alt: detail.headline }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: detail.metaTitle,
+        description: detail.metaDescription,
+        images: [ogImage],
+      },
+    };
+  }
+
   const concept = await getConcept(params.slug);
 
   if (!concept) {
@@ -75,6 +104,10 @@ export async function generateMetadata({
 }
 
 export default async function ConceptDetailPage({ params }: PageProps) {
+  const detail = CONCEPT_DETAILS[params.slug];
+
+  if (detail) return <ConceptDetailScreen detail={detail} />;
+
   const concept = await getConcept(params.slug);
 
   if (!concept) notFound();

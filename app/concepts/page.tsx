@@ -2,21 +2,22 @@ import { Metadata } from "next";
 
 import Concepts from "@/screens/concepts";
 import { listPosts } from "@/lib/pirateCOS/public-client";
+import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 
 // ISR: revalidate every 60s so newly published CMS concepts show up
 // without a full rebuild (matches /case-studies and /blogs).
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Concepts & Proposals | UI Pirate",
+  title: "Concepts: AI and API-Driven Product Ideas | UI Pirate",
   description:
-    "Product concepts, technical proposals, and solution write-ups we've built for prospective clients — the problem, the proposed solution, and the tech stack, even when the project itself didn't move forward.",
+    "Technical concept breakdowns for AI and API-driven products: the problem, the market, the phased solution, the tech stack, and what production actually needs beyond a prototype.",
   keywords:
-    "product proposals, technical proposals, IoT proposal, solution architecture, tech stack write-up, UI Pirate concepts",
+    "AI product concepts, AI voice agent, CRM AI agent, HIPAA AI, Microsoft 365 AI agents, usage-based billing, technical proposals, UI Pirate concepts",
   openGraph: {
-    title: "Concepts & Proposals | UI Pirate",
+    title: "Concepts: AI and API-Driven Product Ideas | UI Pirate",
     description:
-      "The problem, the proposed solution, and the tech stack behind proposals we've built — shared so the thinking isn't wasted, even on projects that didn't move forward.",
+      "How we think through a product idea: who has the problem, what to build in what order, and what separates a prototype from a production-ready application.",
     url: "https://uipirate.com/concepts",
     siteName: "UI Pirate by Vishal Anand",
     locale: "en_US",
@@ -33,7 +34,12 @@ const ConceptsPage = async () => {
     limit: 50,
   });
 
-  return <Concepts cmsConcepts={cmsConcepts} />;
+  return (
+    <Concepts
+      cmsConcepts={cmsConcepts}
+      detailSlugs={Object.keys(CONCEPT_DETAILS)}
+    />
+  );
 };
 
 export default ConceptsPage;
