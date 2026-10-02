@@ -1,0 +1,20 @@
+import { NextResponse } from "next/server";
+
+import { getSession } from "@/lib/auth/session";
+import { capabilitiesFor } from "@/lib/auth/roles";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const user = await getSession();
+
+  if (!user) {
+    return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+  }
+
+  return NextResponse.json({
+    user,
+    capabilities: capabilitiesFor(user.role),
+  });
+}
