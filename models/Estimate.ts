@@ -1,7 +1,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-import { LEAD_STATUSES, noteFieldDef, type LeadStatus } from "@/models/Lead";
-import type { ILeadNote } from "@/models/Lead";
+import {
+  LEAD_STATUSES,
+  noteFieldDef,
+  type LeadStatus,
+  type ILeadNote,
+} from "@/models/Lead";
 
 export interface IEstimate extends Document {
   name: string;

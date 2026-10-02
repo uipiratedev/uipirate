@@ -119,29 +119,6 @@ const PricingHero = () => {
           >
             Book a Call →
           </Link>
-          {/* <a
-            className="px-6 py-3 rounded-full bg-gray-900 text-white font-bold hover:bg-black transition-all duration-300 text-sm shadow-sm hover:shadow-md whitespace-nowrap flex items-center gap-2"
-            download="uipirate-pricing-2026.pdf"
-            href="/uipirate-pricing-2026.pdf"
-          >
-            <span>Download Pricing PDF</span>
-            <svg
-              fill="none"
-              height="16"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0 0h24v24H0z" fill="none" stroke="none" />
-              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-              <path d="M7 11l5 5l5 -5" />
-              <path d="M12 4l0 12" />
-            </svg>
-          </a> */}
         </div>
       </div>
     </div>

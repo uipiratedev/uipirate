@@ -87,7 +87,7 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
 
   return (
     <footer
-      className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture "
+      className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture"
       id="site-footer"
     >
       {/* Top Light Effect */}

@@ -14,8 +14,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { INK, SEQ_BLUE, SERIES } from "./format";
-import { fmtDate, fmtInt } from "./format";
+import { INK, SEQ_BLUE, SERIES, fmtDate, fmtInt } from "./format";
 
 export interface SeriesDef {
   key: string;

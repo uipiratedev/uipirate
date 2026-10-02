@@ -23,21 +23,3 @@ const Loader = ({ isAdmin = false }: { isAdmin?: boolean }) => {
 };
 
 export default Loader;
-
-// const Loader = () => {
-//   return (
-//     <div className="loader-wrapper">
-//       <div className="reveal-container">
-//         {Array.from({ length: 12 }).map((_, i) => (
-//           <div
-//             key={i}
-//             className="reveal-bar"
-//             style={{ animationDelay: `${i * 0.01}s` }}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Loader;

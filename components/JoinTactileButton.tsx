@@ -1,7 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { useState, useId } from "react";
+import React, { useState, useId } from "react";
 
 export type JoinTactileButtonVariant = "orange" | "dark";
 export type JoinTactileButtonState = "interactive" | "standerd" | "hover";

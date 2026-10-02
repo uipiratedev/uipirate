@@ -55,7 +55,7 @@ export const CheckIcon = ({
 
 export const SaaS = (props: IconSvgProps) => (
   <svg
-    className="width: 100%; height: 100%; transform: translate3d(0px, 0px, 0px); content-visibility: visible;"
+    className="w-full h-full block"
     height="48"
     preserveAspectRatio="xMidYMid meet"
     viewBox="0 0 48 48"
@@ -69,7 +69,7 @@ export const SaaS = (props: IconSvgProps) => (
     </defs>
     <g clipPath="url(#__lottie_element_4725)">
       <g
-        className="display: block;"
+        className="block"
         opacity="1"
         transform="matrix(1,0,0,1,0,0)"
       >
@@ -135,7 +135,7 @@ export const SaaS = (props: IconSvgProps) => (
         </g>
       </g>
       <g
-        className="display: block;"
+        className="block"
         opacity="1"
         transform="matrix(1,0,0,1,0,0)"
       >
@@ -160,7 +160,7 @@ export const SaaS = (props: IconSvgProps) => (
         </g>
       </g>
       <g
-        className="display: block;"
+        className="block"
         opacity="1"
         transform="matrix(1,0,0,1,0,0)"
       >

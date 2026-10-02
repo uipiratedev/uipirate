@@ -106,9 +106,6 @@ const ProPirateFooterSection = () => {
           }}
           transition={{ duration: 0.3, ease: "easeOut" }}
         >
-          {/* <h2 className="text-[60px] md:text-[140px] lg:text-[200px] xl:text-[280px] font-black tracking-tighter bg-gradient-to-b from-white via-amber-100/90 to-amber-200/60 bg-clip-text text-transparent select-none drop-shadow-[0_0_40px_rgba(255,200,100,0.4)]">
-            PROPIRATE
-          </h2> */}
           <img
             alt="ProPirates illuminated text logo"
             height="auto"

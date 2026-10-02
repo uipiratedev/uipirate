@@ -21,8 +21,6 @@ import { useMemo, useState, useEffect, useRef } from "react";
 
 import HeaderInfo from "./headeInfo";
 
-import GlobalCTA from "@/components/GlobalCTA";
-
 // ── TOC helpers ───────────────────────────────────────────────────────────────
 function slugifyHeading(text: string): string {
   return text
@@ -835,9 +833,6 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
           </aside>
         )}
       </div>
-
-      {/* CTA Banner — convert engaged readers into leads */}
-      {/* <GlobalCTA topic={blog.title} /> */}
     </article>
   );
 };

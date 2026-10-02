@@ -1,7 +1,5 @@
 "use client";
 
-import type { Capability, NavItem, Role } from "@/lib/auth/roles";
-
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,7 +18,13 @@ import {
 import { Icon, type IconKey } from "./icons";
 import { DateRangeControl } from "./DateRangeControl";
 
-import { navForRole, ROLE_LABELS } from "@/lib/auth/roles";
+import {
+  navForRole,
+  ROLE_LABELS,
+  type Capability,
+  type NavItem,
+  type Role,
+} from "@/lib/auth/roles";
 import { DashboardProvider } from "@/lib/admin/DashboardContext";
 import { useDrawerScrollLock } from "@/hooks/useDrawerScrollLock";
 

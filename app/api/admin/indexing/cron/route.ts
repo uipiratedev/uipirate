@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { reconcileSitemap } from "@/lib/indexing/sync";
-import { inspectGoogleUrl } from "@/lib/indexing/google";
-import { getBingUrlInfo } from "@/lib/indexing/bing";
-import { publishGoogleUrl } from "@/lib/indexing/google";
-import { submitBingUrls } from "@/lib/indexing/bing";
+import { inspectGoogleUrl, publishGoogleUrl } from "@/lib/indexing/google";
+import { getBingUrlInfo, submitBingUrls } from "@/lib/indexing/bing";
 import { submitIndexNow } from "@/lib/indexing/indexnow";
 import { reserveQuota } from "@/lib/indexing/quota";
 import { pushHistory } from "@/lib/indexing/repo";
