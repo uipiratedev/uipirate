@@ -8,11 +8,6 @@ import GlassSurface from "@/components/GlassSurface";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import PageWrapper from "@/components/PageWrapper";
-import {
-  HERO_BADGE_PRESET,
-  HERO_BADGE_CLASSNAME,
-  HERO_BADGE_ANIMATION_STYLE,
-} from "@/config/glassSurfacePresets";
 
 export type ComponentCategory =
   | "all"
@@ -531,46 +526,79 @@ export default function UIComponentLibrary() {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="relative min-h-screen bg-[#FAFAFA] text-gray-900 selection:bg-[#FF5B04] selection:text-white hero-page-container">
-        {/* Subtle Grid Background Pattern (matching Landing Page) */}
+      {/* Ambient Warm Flares */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#FF5B04]/6 rounded-full blur-[160px]" />
+        <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/6 rounded-full blur-[140px]" />
+        <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-500/5 rounded-full blur-[160px]" />
+      </div>
+
+      {/* Hero Section */}
+      <div className="hero-wrapper">
+        {/* Subtle Grid Background Pattern */}
         <div
-          className="absolute pointer-events-none inset-0"
+          className="absolute pointer-events-none -mt-20"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
             `,
             backgroundSize: "40px 40px",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
           }}
         />
-
-        {/* Layered gentle mist & ambient gradient lighting */}
+        {/* Layered gradient with gentle mist animation */}
         <div
-          className="absolute pointer-events-none inset-0"
+          className="absolute pointer-events-none -mt-20"
           style={{
             backgroundImage: `
-              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 15%),
-              linear-gradient(to bottom, rgba(250, 250, 250, 0.7) 0%, transparent 30%)
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
             `,
+            animation: "gentle-mist 8s ease-in-out infinite",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
           }}
         />
 
-        {/* Ambient Warm Flares */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#FF5B04]/6 rounded-full blur-[160px]" />
-          <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/6 rounded-full blur-[140px]" />
-          <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-500/5 rounded-full blur-[160px]" />
-        </div>
-
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10 space-y-16">
+        <div
+          className="flex flex-col items-center justify-center w-full relative z-10 section-container"
+          style={{ overflow: "visible" }}
+        >
           {/* Top Hero Section */}
-          <div className="flex flex-col items-center justify-center text-center space-y-3 max-w-4xl mx-auto pt-6">
+          <div className="flex flex-col items-center justify-center text-center space-y-3 max-w-4xl mx-auto">
             <GlassSurface
-              {...HERO_BADGE_PRESET}
-              className={HERO_BADGE_CLASSNAME}
-              style={HERO_BADGE_ANIMATION_STYLE}
+              backgroundOpacity={0.1}
+              blueOffset={20}
+              blur={11}
+              borderRadius={12}
+              borderWidth={0.01}
+              brightness={50}
+              className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+              displace={0.5}
+              distortionScale={-180}
+              forceLightMode={true}
+              greenOffset={10}
+              height="auto"
+              opacity={0.93}
+              redOffset={0}
+              saturation={1}
+              style={{
+                animation: "trustBadgeUp 0.5s ease-out forwards",
+                animationDelay: "0.1s",
+                opacity: 0,
+                transform: "translateY(20px) scale(0.95)",
+              }}
+              width="auto"
             >
-              <div className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
+              <div className="badge-text relative z-10 text-xs uppercase font-semibold tracking-wider font-jetbrains">
                 COMPONENT ECOSYSTEM
               </div>
             </GlassSurface>
@@ -616,7 +644,10 @@ export default function UIComponentLibrary() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 relative z-10 space-y-16">
           {/* ─────────────────────────────────────────────────────────────
               CATEGORY OVERVIEW GRID (Primary Hub Navigation)
              ───────────────────────────────────────────────────────────── */}
@@ -922,7 +953,6 @@ export default function UIComponentLibrary() {
             </div>
           </div>
         </div>
-      </div>
     </PageWrapper>
   );
 }

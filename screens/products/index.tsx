@@ -136,22 +136,47 @@ export default function OurProductsScreen() {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="min-h-screen hero-page-container px-4 md:px-8 pb-24">
-        {/* Subtle Background Grid Pattern */}
+      {/* Hero Section */}
+      <div className="hero-wrapper">
+        {/* Subtle Grid Background Pattern */}
         <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
+          className="absolute pointer-events-none -mt-20"
           style={{
             backgroundImage: `
-              linear-gradient(to right, #000 1px, transparent 1px),
-              linear-gradient(to bottom, #000 1px, transparent 1px)
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
             `,
-            backgroundSize: "48px 48px",
+            backgroundSize: "40px 40px",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
+          }}
+        />
+        {/* Layered gradient with gentle mist animation */}
+        <div
+          className="absolute pointer-events-none -mt-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
+            `,
+            animation: "gentle-mist 8s ease-in-out infinite",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
           }}
         />
 
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div
+          className="flex flex-col items-center justify-center w-full relative z-10 section-container"
+          style={{ overflow: "visible" }}
+        >
           {/* Header Section */}
-          <div className="text-center flex flex-col items-center pt-8 md:pt-14 mb-12 md:mb-16 px-4">
+          <div className="text-center flex flex-col items-center mb-12 md:mb-16 px-4">
             <GlassSurface
               backgroundOpacity={0.1}
               blueOffset={20}
@@ -159,7 +184,7 @@ export default function OurProductsScreen() {
               borderRadius={12}
               borderWidth={0.01}
               brightness={50}
-              className="my-4 md:my-6 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4"
+              className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
               displace={0.5}
               distortionScale={-180}
               forceLightMode={true}
@@ -168,9 +193,14 @@ export default function OurProductsScreen() {
               opacity={0.93}
               redOffset={0}
               saturation={1}
+              style={{
+                animation: "trustBadgeUp 0.5s ease-out forwards",
+                animationDelay: "0.1s",
+                opacity: 0,
+                transform: "translateY(20px) scale(0.95)",
+              }}
               width="auto"
             >
-              <span className="flex h-2 w-2 rounded-full bg-[#FF5B04] animate-pulse" />
               <div className="badge-text relative z-10 text-xs uppercase font-semibold tracking-wider font-jetbrains">
                 In-House Systems & Platforms
               </div>
@@ -222,6 +252,10 @@ export default function OurProductsScreen() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-8 pb-24 relative z-10">
 
           {/* Search & Category Filter Controls */}
           <div className="max-w-4xl mx-auto mb-12 px-4 space-y-6">
@@ -416,7 +450,6 @@ export default function OurProductsScreen() {
             <div className="absolute right-0 bottom-0 w-96 h-96 bg-[#FF5B04]/15 blur-3xl pointer-events-none rounded-full" />
           </div>
         </div>
-      </div>
     </PageWrapper>
   );
 }
