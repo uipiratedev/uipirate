@@ -16,6 +16,7 @@ import {
   clampText,
   parseDevice,
 } from "@/lib/analytics/enrich";
+import { isTestTraffic } from "@/lib/analytics/testTraffic";
 import { CONVERSION_LABELS } from "@/lib/analytics/conversions";
 import {
   MAX_EVENTS_PER_BATCH,
@@ -49,6 +50,9 @@ export async function POST(req: NextRequest) {
     const ipHash = ipHashFromHeaders(req.headers);
 
     if (!rateLimit(`collect:${ipHash}`, 240, 60_000).allowed) return ok();
+
+    // Developers on localhost write to the production database; never record.
+    if (isTestTraffic(req.headers)) return ok();
 
     const ua = req.headers.get("user-agent");
     const isBot = isBotUserAgent(ua);

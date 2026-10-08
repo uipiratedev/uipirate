@@ -17,7 +17,9 @@ function truncate(str: string, max: number) {
 }
 
 export async function generateStaticParams() {
-  const posts = await listPosts({ limit: 100 });
+  // Only slug + postType are read below; the default card fields would pull
+  // every post's hero image and push this request past Next's 2 MB cache cap.
+  const posts = await listPosts({ limit: 100, fields: "id,slug,postType" });
 
   return posts
     .filter((p) => p.postType !== "case-study" && p.postType !== "concept")

@@ -53,7 +53,9 @@ export interface IIndexedUrl extends Document {
   updatedAt: Date;
 }
 
-const IndexEventSchema = new Schema<IndexEvent>(
+// No `<IndexEvent>` type argument: with it, TypeScript expands the schema's
+// inferred type past its limit (TS2590) once `next build` type-checks the file.
+const IndexEventSchema = new Schema(
   {
     ts: { type: Date, default: Date.now },
     source: {
@@ -88,7 +90,9 @@ const IndexedUrlSchema = new Schema<IIndexedUrl>(
     google: {
       submittedAt: { type: Date, default: null },
       lastResponseCode: { type: Number, default: null },
-      coverageState: { type: String, default: null, index: true },
+      // Indexed via IndexedUrlSchema.index() below; a field-level `index: true`
+      // as well created a duplicate and made Mongoose warn on every start.
+      coverageState: { type: String, default: null },
       indexingState: { type: String, default: null },
       verdict: {
         type: String,

@@ -15,10 +15,20 @@
  * fetch here and pass plain data as props.
  */
 
+import {
+  proxyIfDataUri,
+  versionOf,
+  type ImageKind,
+} from "./images";
+import { pickSuggested } from "./suggested";
+
 const BASE_URL =
   process.env.COMETCOS_API_BASE_URL ||
   process.env.PIRATECOS_API_BASE_URL ||
   "https://cos.uipirate.com";
+// The CMS was renamed pirateCOS -> cometCOS and the old path now answers with a
+// 308 redirect, so every call paid an extra round trip. Call the real path.
+const API_PREFIX = "/api/cometCOS/v1";
 const API_KEY = process.env.COMETCOS_API_KEY || process.env.PIRATECOS_API_KEY;
 
 /** The shape the existing reader components expect (legacy `_id`, `createdAt`). */
@@ -66,14 +76,20 @@ export interface ReaderPost {
  * which API version is deployed at the time.
  */
 function toReaderPost(p: any): ReaderPost {
+  // A few posts store hero images as base64 data URIs (up to ~400 KB, twice).
+  // Swap them for short proxy URLs so they stay out of page HTML.
+  const v = versionOf(p.updatedAt ?? p.createdAt);
+  const img = (value: string | undefined, kind: ImageKind) =>
+    proxyIfDataUri(value, p.slug, kind, v);
+
   return {
     _id: String(p.id ?? p._id ?? ""),
     slug: p.slug,
     title: p.title,
     content: p.content ?? "",
     excerpt: p.excerpt,
-    featuredImage: p.featuredImage,
-    bannerImage: p.bannerImage,
+    featuredImage: img(p.featuredImage, "featured"),
+    bannerImage: img(p.bannerImage, "banner"),
     tags: Array.isArray(p.tags) ? p.tags : [],
     postType: p.postType,
     author: {
@@ -84,7 +100,7 @@ function toReaderPost(p: any): ReaderPost {
     views: p.views,
     totalViews: p.totalViews,
     client: p.client,
-    clientLogo: p.clientLogo,
+    clientLogo: img(p.clientLogo, "logo"),
     region: p.region,
     technologies: Array.isArray(p.technologies) ? p.technologies : undefined,
     metrics: Array.isArray(p.metrics) ? p.metrics : undefined,
@@ -109,7 +125,7 @@ async function apiGet(
     return null;
   }
 
-  const url = new URL(`${BASE_URL}/api/pirateCOS/v1${path}`);
+  const url = new URL(`${BASE_URL}${API_PREFIX}${path}`);
 
   if (params) {
     for (const [k, v] of Object.entries(params)) {
@@ -153,17 +169,27 @@ async function apiGet(
 const LIST_FIELDS =
   "id,slug,title,excerpt,featuredImage,bannerImage,tags,postType,author,readTime,views,publishedAt,updatedAt,client,clientLogo,region,technologies,metrics,externalUrl";
 
+/**
+ * What the sitemap needs from a post, and nothing else. Fetching a hundred
+ * posts with LIST_FIELDS drags every hero image along — a few posts store them
+ * as base64, which pushed this one request to ~2.2 MB, over Next's 2 MB
+ * data-cache limit, so it was refetched on every build and revalidation.
+ */
+export const SITEMAP_FIELDS = "id,slug,postType,publishedAt,updatedAt,seo";
+
 /** List published posts for the reader. Returns [] on any failure. */
 export async function listPosts(opts?: {
   limit?: number;
   page?: number;
   postType?: string;
+  /** Comma-separated field list; defaults to the card fields. */
+  fields?: string;
 }): Promise<ReaderPost[]> {
   const json = await apiGet("/content", {
     limit: opts?.limit ?? 50,
     page: opts?.page ?? 1,
     postType: opts?.postType,
-    fields: LIST_FIELDS,
+    fields: opts?.fields ?? LIST_FIELDS,
   });
 
   if (!json?.success || !Array.isArray(json.data)) return [];
@@ -193,4 +219,62 @@ export async function listPostSlugs(opts?: {
   if (!json?.success || !Array.isArray(json.data)) return [];
 
   return json.data.map((p: any) => p.slug).filter(Boolean);
+}
+
+/**
+ * The untouched image value for one post — used only by the image proxy route,
+ * which needs the original `data:` URI that `toReaderPost` deliberately hides.
+ * `null` when the post or the field does not exist.
+ */
+export async function getRawPostImage(
+  slug: string,
+  kind: ImageKind,
+): Promise<string | null> {
+  const json = await apiGet(`/content/${encodeURIComponent(slug)}`);
+
+  if (!json?.success || !json.data) return null;
+
+  const field =
+    kind === "featured"
+      ? json.data.featuredImage
+      : kind === "banner"
+        ? json.data.bannerImage
+        : json.data.clientLogo;
+
+  return typeof field === "string" && field ? field : null;
+}
+
+/**
+ * The posts an article links to at the bottom.
+ *
+ * Picks the slugs from a tiny field-limited list (~17 KB for the whole
+ * catalogue), then fetches only the chosen few as full cards — so the heavy
+ * image fields of every other post are never downloaded. `content` is blanked:
+ * the cards never use it, and left in it would be serialised into the page.
+ * Returns [] on any failure, so a CMS hiccup cannot take the article down.
+ */
+export async function getSuggestedPosts(
+  currentSlug: string,
+  count = 3,
+): Promise<ReaderPost[]> {
+  try {
+    const pool = await listPosts({
+      limit: 100,
+      fields: "id,slug,postType,publishedAt,updatedAt",
+    });
+
+    // Case studies and concepts have their own sections; suggest articles.
+    const articles = pool.filter(
+      (p) => p.postType !== "case-study" && p.postType !== "concept",
+    );
+
+    const picks = pickSuggested(articles, currentSlug, count);
+    const full = await Promise.all(picks.map((p) => getPostBySlug(p.slug)));
+
+    return full
+      .filter((p): p is ReaderPost => p !== null)
+      .map((p) => ({ ...p, content: "" }));
+  } catch {
+    return [];
+  }
 }

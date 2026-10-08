@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { channelConversion, landingConversion } from "@/lib/analytics/funnel";
+import {
+  USAGE_TAGS,
+  channelConversion,
+  landingConversion,
+  isTestSession,
+  sectionOf,
+} from "@/lib/analytics/funnel";
 
 const s = (id: string, entryPath: string, referrerType = "direct") => ({
   sessionId: id,
@@ -97,5 +103,48 @@ describe("channelConversion", () => {
     );
 
     expect(rows[0].channel).toBe("direct");
+  });
+});
+
+describe("sectionOf", () => {
+  it("separates the component lab from tools", () => {
+    expect(sectionOf("/componentlab/tactile-pill-button")).toBe("componentlab");
+    expect(sectionOf("/tools/design/css-shadow-generator")).toBe("tools");
+  });
+});
+
+describe("USAGE_TAGS", () => {
+  // Tool pages are operated through fields as much as buttons; counting only
+  // buttons made real tools look unused.
+  it("counts form fields as using a page", () => {
+    for (const t of ["button", "input", "select", "textarea"])
+      expect(USAGE_TAGS).toContain(t);
+  });
+
+  it("does not count links, which are navigation", () => {
+    expect(USAGE_TAGS).not.toContain("a");
+  });
+});
+
+describe("isTestSession", () => {
+  it("flags a session that arrived from localhost", () => {
+    expect(isTestSession({ sessionId: "a", referrer: "http://localhost:3000/" })).toBe(true);
+    expect(isTestSession({ sessionId: "a", referrer: "http://127.0.0.1:3000" })).toBe(true);
+  });
+
+  it("flags a session whose entry path was stored as a localhost url", () => {
+    expect(
+      isTestSession({ sessionId: "a", entryPath: "http://localhost:3000/contact" }),
+    ).toBe(true);
+  });
+
+  it("keeps real visitors", () => {
+    expect(isTestSession({ sessionId: "a", referrer: "https://www.reddit.com/" })).toBe(false);
+    expect(isTestSession({ sessionId: "a", entryPath: "/contact" })).toBe(false);
+    expect(isTestSession({ sessionId: "a" })).toBe(false);
+  });
+
+  it("does not match a look-alike host", () => {
+    expect(isTestSession({ sessionId: "a", referrer: "https://localhost.evil.com/" })).toBe(false);
   });
 });

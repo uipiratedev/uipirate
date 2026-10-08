@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
+
 import { useApi } from "@/lib/admin/useApi";
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
 import { KpiRow } from "@/components/admin/KpiRow";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { fmtInt, fmtPct } from "@/components/admin/format";
+
 import { channelLabel } from "@/lib/analytics/brands";
 
 interface FunnelData {
@@ -13,7 +16,14 @@ interface FunnelData {
   byKind: Array<{ kind: string; label: string; count: number; sessions: number }>;
   landing: Array<{ path: string; sessions: number; converted: number; rate: number }>;
   channels: Array<{ channel: string; sessions: number; converted: number; rate: number }>;
-  tools: Array<{ path: string; views: number; sessions: number; engaged: number; rate: number }>;
+  tools: Array<{
+    section: "tools" | "componentlab";
+    path: string;
+    views: number;
+    sessions: number;
+    engaged: number;
+    rate: number;
+  }>;
 }
 
 /** One funnel step as a labelled bar, sized against the first step. */
@@ -86,6 +96,11 @@ const rateCols = <T extends { rate: number }>(
 export default function FunnelClient() {
   const { data, loading, error, refetch } = useApi<FunnelData>(
     "/api/admin/analytics/funnel",
+  );
+
+  const [section, setSection] = useState<"all" | "tools" | "componentlab">("all");
+  const toolRows = (data?.tools || []).filter(
+    (t) => section === "all" || t.section === section,
   );
 
   const s = data?.steps;
@@ -193,7 +208,31 @@ export default function FunnelClient() {
 
         <div className="mt-5">
           <Card
-            subtitle="Sessions that pressed a button vs. just opened the page"
+            actions={
+              <div className="flex gap-1 rounded-lg bg-gray-100 p-0.5 text-xs font-semibold">
+                {(
+                  [
+                    ["all", "All"],
+                    ["tools", "Tools"],
+                    ["componentlab", "Component Lab"],
+                  ] as const
+                ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    className={`rounded-md px-2.5 py-1 transition ${
+                      section === key
+                        ? "bg-white text-gray-900 shadow-sm"
+                        : "text-gray-500 hover:text-gray-800"
+                    }`}
+                    type="button"
+                    onClick={() => setSection(key)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            }
+            subtitle="Sessions that operated the page (button, field or dropdown) vs. just opened it"
             title="Tool & component usage"
           >
             <DataTable
@@ -206,7 +245,7 @@ export default function FunnelClient() {
               ]}
               initialSort={{ key: "sessions", dir: "desc" }}
               rowKey={(r) => r.path}
-              rows={data?.tools || []}
+              rows={toolRows}
             />
           </Card>
         </div>

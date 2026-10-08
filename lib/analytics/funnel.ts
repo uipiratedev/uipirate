@@ -9,6 +9,7 @@ import dbConnect from "@/lib/mongodb";
 import AnalyticsEvent from "@/models/analytics/AnalyticsEvent";
 import AnalyticsSession from "@/models/analytics/AnalyticsSession";
 import { CONVERSION_LABELS } from "@/lib/analytics/conversions";
+import { isLocalHost } from "@/lib/analytics/testTraffic";
 
 export interface Range {
   from: Date;
@@ -24,6 +25,19 @@ export interface SessionLite {
   sessionId: string;
   entryPath?: string | null;
   referrerType?: string | null;
+  referrer?: string | null;
+}
+
+/**
+ * A session recorded from a developer's machine, before ingest started
+ * refusing that traffic. Left in the database (it is production data we have
+ * not been asked to delete) but kept out of every funnel number.
+ */
+export function isTestSession(s: SessionLite): boolean {
+  return (
+    isLocalHost(s.referrer) ||
+    /^https?:\/\/(localhost|127\.)/i.test(s.entryPath ?? "")
+  );
 }
 
 export interface LandingRow {
@@ -117,10 +131,13 @@ export async function getFunnel(range: Range): Promise<FunnelResult> {
 
   const eventMatch = { occurredAt: { $gte: range.from, $lte: range.to } };
 
-  const sessionDocs = (await AnalyticsSession.find(
+  const allSessions = (await AnalyticsSession.find(
     { startedAt: { $gte: range.from, $lte: range.to }, isBot: { $ne: true } },
-    { sessionId: 1, entryPath: 1, referrerType: 1 },
+    { sessionId: 1, entryPath: 1, referrerType: 1, referrer: 1 },
   ).lean()) as unknown as SessionLite[];
+
+  const sessionDocs = allSessions.filter((s) => !isTestSession(s));
+  const realIds = new Set(sessionDocs.map((s) => s.sessionId));
 
   // One row per session that did something interesting.
   const flagged = (await AnalyticsEvent.aggregate([
@@ -167,6 +184,8 @@ export async function getFunnel(range: Range): Promise<FunnelResult> {
   let forms = 0;
 
   for (const f of flagged) {
+    // Events carry no host, so test sessions are removed by session id.
+    if (!realIds.has(f._id)) continue;
     if (f.intent) intent += 1;
     if (f.converted) convertedIds.add(f._id);
     if (f.form) forms += 1;
@@ -201,7 +220,23 @@ export async function getFunnel(range: Range): Promise<FunnelResult> {
   };
 }
 
+export type UsageSection = "tools" | "componentlab";
+
+/** Which part of the site a usage path belongs to. */
+export function sectionOf(path: string): UsageSection {
+  return path.startsWith("/componentlab") ? "componentlab" : "tools";
+}
+
+/**
+ * Elements that mean "the visitor operated the page". Tools are driven by form
+ * fields as much as buttons — on /tools pages inputs/selects/textareas account
+ * for ~140 clicks against ~50 on buttons — so counting buttons alone made real
+ * tools look unused. Links are deliberately excluded: they are navigation.
+ */
+export const USAGE_TAGS = ["button", "input", "select", "textarea"] as const;
+
 export interface ToolRow {
+  section: UsageSection;
   path: string;
   views: number;
   sessions: number;
@@ -230,13 +265,16 @@ export async function getToolUsage(range: Range): Promise<ToolRow[]> {
     },
   ])) as unknown as Array<{ _id: string; views: number; sessions: string[] }>;
 
-  // Only buttons count as "used it": links on a tool page are navigation.
+  // Operating the page counts as "used it"; links are navigation (see USAGE_TAGS).
   const used = (await AnalyticsEvent.aggregate([
     {
       $match: {
         ...base,
         type: "click",
-        $or: [{ "element.tag": "button" }, { "element.role": "button" }],
+        $or: [
+          { "element.tag": { $in: [...USAGE_TAGS] } },
+          { "element.role": "button" },
+        ],
       },
     },
     { $group: { _id: { path: "$path", s: "$sessionId" } } },
@@ -251,6 +289,7 @@ export async function getToolUsage(range: Range): Promise<ToolRow[]> {
       const engaged = Math.min(engagedBy.get(v._id) ?? 0, sessions);
 
       return {
+        section: sectionOf(v._id),
         path: v._id,
         views: v.views,
         sessions,
@@ -259,5 +298,32 @@ export async function getToolUsage(range: Range): Promise<ToolRow[]> {
       };
     })
     .sort((a, b) => b.sessions - a.sessions)
-    .slice(0, 30);
+    // Enough for every tool and component page (about 40 today) with headroom,
+    // so a busy section can no longer push the other one out of the table.
+    .slice(0, 100);
+}
+
+/**
+ * Contact actions (clicks on WhatsApp/email/phone/calendar/Upwork plus on-site
+ * form submits) in range, excluding sessions recorded from a developer's
+ * machine. One definition shared by the Overview and the weekly snapshot, so
+ * the two can never disagree about what a conversion is.
+ */
+export async function countContactActions(range: Range): Promise<number> {
+  await dbConnect();
+
+  const sessions = (await AnalyticsSession.find(
+    { startedAt: { $gte: range.from, $lte: range.to } },
+    { sessionId: 1, entryPath: 1, referrer: 1 },
+  ).lean()) as unknown as SessionLite[];
+
+  const testIds = sessions.filter(isTestSession).map((s) => s.sessionId);
+
+  return AnalyticsEvent.countDocuments({
+    occurredAt: { $gte: range.from, $lte: range.to },
+    type: { $in: ["conversion", "form_submit"] },
+    sessionId: { $nin: testIds },
+    // Rows stored before paths were normalised carry the full localhost URL.
+    path: { $not: /^https?:\/\/(localhost|127\.)/i },
+  }) as unknown as Promise<number>;
 }

@@ -11,7 +11,7 @@ import {
   getRecentLeads,
 } from "@/lib/analytics/queries";
 import { getAnonymousTotal, getBotTotal } from "@/lib/analytics/anonymous";
-import AnalyticsEvent from "@/models/analytics/AnalyticsEvent";
+import { countContactActions } from "@/lib/analytics/funnel";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,10 +46,7 @@ export async function GET(req: NextRequest) {
     getAnonymousTotal(range).catch(() => 0),
     getBotTotal(range).catch(() => 0),
     // WhatsApp / email / phone / calendar / Upwork clicks and form submits.
-    AnalyticsEvent.countDocuments({
-      occurredAt: { $gte: from, $lte: to },
-      type: { $in: ["conversion", "form_submit"] },
-    }).catch(() => 0),
+    countContactActions(range).catch(() => 0),
   ]);
 
   return NextResponse.json({

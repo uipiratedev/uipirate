@@ -8,7 +8,7 @@
 import dbConnect from "@/lib/mongodb";
 import AnalyticsSnapshot from "@/models/analytics/AnalyticsSnapshot";
 import AnalyticsSession from "@/models/analytics/AnalyticsSession";
-import AnalyticsEvent from "@/models/analytics/AnalyticsEvent";
+import { countContactActions } from "@/lib/analytics/funnel";
 import {
   getAnonymousTotal,
   getBotBreakdown,
@@ -65,10 +65,7 @@ export async function takeSnapshot(week = lastCompleteWeek(new Date())) {
     isBot: { $ne: true },
   });
 
-  const conversions = await AnalyticsEvent.countDocuments({
-    occurredAt: { $gte: week.from, $lte: week.to },
-    type: { $in: ["conversion", "form_submit"] },
-  });
+  const conversions = await countContactActions(range);
 
   const channels: Record<string, number> = {};
 

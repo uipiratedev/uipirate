@@ -6,6 +6,7 @@ import AnalyticsBotDaily from "@/models/analytics/AnalyticsBotDaily";
 import { classifyReferrer, cleanPath, parseDevice } from "@/lib/analytics/enrich";
 import { identifyBot } from "@/lib/analytics/botIdentity";
 import { normalizeHost } from "@/lib/analytics/brands";
+import { isTestTraffic } from "@/lib/analytics/testTraffic";
 import { internalAnalyticsSecret } from "@/lib/analytics/internalSecret";
 
 export const runtime = "nodejs";
@@ -39,6 +40,9 @@ export async function POST(req: NextRequest) {
   if (!secret || req.headers.get("x-internal-token") !== secret) {
     return new NextResponse(null, { status: 401 });
   }
+
+  // The middleware that calls this also runs on a developer's machine.
+  if (isTestTraffic(req.headers)) return ok();
 
   try {
     const body = (await req.json()) as {

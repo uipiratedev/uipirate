@@ -6,6 +6,7 @@ import { cleanPath } from "@/lib/analytics/enrich";
 import { normalizeHost } from "@/lib/analytics/brands";
 import { identifyBot } from "@/lib/analytics/botIdentity";
 import { ipHashFromHeaders } from "@/lib/analytics/ip";
+import { isTestTraffic } from "@/lib/analytics/testTraffic";
 import { rateLimit } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
@@ -22,6 +23,8 @@ const ok = () => new NextResponse(null, { status: 204 });
  */
 export async function POST(req: NextRequest) {
   try {
+    if (isTestTraffic(req.headers)) return ok();
+
     if (!rateLimit(`nf:${ipHashFromHeaders(req.headers)}`, 30, 60_000).allowed)
       return ok();
 

@@ -379,3 +379,42 @@ afterwards.
 - `/tools/*` pages produced no rows in the usage table; only Component Lab
   pages showed. Worth checking whether tool pages emit button clicks the same
   way.
+
+---
+
+## 10. Phase 5 — SEO and data-quality fixes
+
+Found by measuring production, not guessing. Numbers are before → after.
+
+| Problem | Evidence | Fix |
+| --- | --- | --- |
+| **Blog pages near Googlebot's 2 MB limit** | `design-tokens` page: 1,835,048 bytes, 4 embedded images | 279,873 bytes (−85%), 0 embedded |
+| **4 case studies store hero images as base64** | connectwise 409 KB, nxvoy 348 KB, sarge 25 KB, testdynamiz 13 KB — each stored twice (featured + banner) = 1.6 MB | Rewritten to `/api/post-image/{slug}/{kind}/{version}`: decoded and served as a real, immutable-cached PNG. Case-study cards show their real image again instead of the placeholder. |
+| **A 2.2 MB CMS request that could never be cached** | `Failed to set fetch cache … 2200015 bytes` on every build | Sitemap now asks for 6 fields: 1,650,000 → 17,100 bytes. `opengraph-image` `generateStaticParams` narrowed to `id,slug,postType`. Warning gone. Sitemap output verified identical (114 = 114 URLs, empty diff). |
+| **Every CMS call paid a redirect** | `/api/pirateCOS/v1` answers `308 → /api/cometCOS/v1` | Client calls `cometCOS` directly. |
+| **Internal links concentrated on 3 posts** | "More to Read" always showed the 3 newest posts — currently case studies — so every article carried identical links and most posts had 1 inbound link; 36 URLs at "Discovered – currently not indexed" | Rotating picks: each post links to the next 3, wrapping around, so **every post receives exactly 3 inbound links** (unit-tested). Links go to the canonical route, not through `/[slug]`'s redirect. |
+| **Dev traffic written to the production database** | `.env.local` points at prod; 71 events had a localhost referrer; the only "conversions" were owner test submits | Ingest refuses non-production and localhost requests at all four entry points. `ANALYTICS_ALLOW_DEV=1` re-enables it deliberately. Old test sessions are excluded from funnel / overview / snapshot counts (raw 3 → clean 1) without deleting any production rows. |
+| **Tool usage table hid tools and undercounted them** | 37 pages competed for 30 rows; only buttons counted, but tools are operated through inputs (105), selects (14), textareas (19) vs buttons (51) | All 37 shown, split Tools / Component Lab; fields count as use. |
+| **Mongoose duplicate-index warning** | `google.coverageState` indexed twice | Removed the field-level duplicate. |
+
+### What the unindexed-page analysis showed
+
+56 of 114 sitemap URLs are not indexed: 36 *Discovered – not indexed*, 13
+*unknown to Google*, 4 *crawled – not indexed*, 3 *duplicate*. Only **7 of the
+56 have ever been crawled**, and **none were ever submitted to a Google API**.
+Raw HTML for every checked page carries 400–5,000 words of real content, so
+this is a discovery problem, not a rendering one — hence the internal-linking
+fix above. The three "duplicate" pages chose unrelated third-party canonicals
+(`747live.bet`, `marcustheatres.com`), which Google does when it has fetched a
+near-empty page; they were crawled before the caching / API-failure fixes.
+
+### Still open (outside the codebase)
+
+- **Upload the 4 base64 images to Cloudinary** and put the URLs in the CMS. The
+  proxy makes this safe to defer, but the CMS API still sends ~1.6 MB on any
+  full list request (`/blogs` fetches all posts, then filters).
+- **One residual test conversion** (Sep 8, path `/contact`) cannot be told
+  apart from a real one; it leaves the 90-day window on 7 Dec. The two test
+  estimates (`UI Pirate`, `xyz`) are still in the estimates collection.
+- **Request indexing** for the 3 duplicate pages and the weakest unindexed URLs
+  (`/services/*`, the older blog posts) in Search Console.

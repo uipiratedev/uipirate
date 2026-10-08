@@ -7,8 +7,8 @@ import BlogsDetails from "@/screens/blogsDetails";
 import ViewTracker from "@/components/ViewTracker";
 import {
   getPostBySlug,
+  getSuggestedPosts,
   listPostSlugs,
-  listPosts,
 } from "@/lib/pirateCOS/public-client";
 
 interface Props {
@@ -174,10 +174,9 @@ export default async function DynamicBlogPage({ params }: Props) {
     const blogData = blog;
 
     // Suggested reads via the tenant-scoped v1 API; exclude the current post.
-    // A failure here must not turn a good post into a 404/degraded page.
-    const suggested = (await listPosts({ limit: 4 }).catch(() => []))
-      .filter((p) => p._id !== blog._id)
-      .slice(0, 3);
+    // Rotating picks (not "the newest 3") so every article earns inbound links;
+    // already returns [] on failure, so a CMS hiccup cannot degrade this page.
+    const suggested = await getSuggestedPosts(slug);
 
     return (
       <div>
