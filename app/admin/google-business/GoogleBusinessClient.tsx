@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useApi } from "@/lib/admin/useApi";
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
@@ -26,6 +26,7 @@ interface Row {
 }
 
 interface Data {
+  oauth: { clientConfigured: boolean; connected: boolean; connectedAs: string | null };
   aiConfigured: boolean;
   configured: boolean;
   publishingEnabled: boolean;
@@ -66,6 +67,25 @@ export default function GoogleBusinessClient() {
   const [notice, setNotice] = useState<{ tone: "ok" | "err"; text: string; hint?: string } | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [found, setFound] = useState<Array<{ account: { id: string; name: string }; locations: Array<{ id: string; title: string }> }> | null>(null);
+
+  // The result of the Google sign-in arrives as ?oauth=… on the way back.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const r = q.get("oauth");
+
+    if (!r) return;
+
+    const text: Record<string, string> = {
+      connected: "Google account connected. Press Check connection to find your profile ids.",
+      denied: "Google sign-in was cancelled.",
+      invalid: "That sign-in link expired. Press Connect Google account again.",
+      "missing-client": "GBP_OAUTH_CLIENT_ID and GBP_OAUTH_CLIENT_SECRET are not set.",
+      failed: q.get("reason") || "Google sign-in failed.",
+    };
+
+    setNotice({ tone: r === "connected" ? "ok" : "err", text: text[r] ?? "Google sign-in finished." });
+    window.history.replaceState(null, "", window.location.pathname);
+  }, []);
 
   const [editor, setEditor] = useState<{ slug: string; title: string; text: string } | null>(null);
 
@@ -296,15 +316,27 @@ export default function GoogleBusinessClient() {
             >
               {busy === "check:" ? "Checking…" : "Check connection"}
             </button>
-            <button
-              className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
-              disabled={!!busy}
-              title="A service account cannot click the email link, so accept the invite here"
-              type="button"
-              onClick={() => act("accept")}
-            >
-              {busy === "accept:" ? "Accepting…" : "Accept invitations"}
-            </button>
+            {data?.oauth.connected ? (
+              <button
+                className={`${btn} bg-white text-gray-600 ring-gray-200 hover:bg-gray-50`}
+                disabled={!!busy}
+                title={data.oauth.connectedAs ? `Signed in as ${data.oauth.connectedAs}` : ""}
+                type="button"
+                onClick={() => {
+                  if (window.confirm("Disconnect Google? Publishing stops until you connect again."))
+                    act("disconnect");
+                }}
+              >
+                Disconnect
+              </button>
+            ) : (
+              <a
+                className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
+                href="/api/admin/gbp/oauth/start"
+              >
+                Connect Google account
+              </a>
+            )}
             <button
               className={`${btn} bg-gray-900 text-white ring-gray-900 hover:bg-gray-800`}
               disabled={!!busy}
@@ -336,7 +368,7 @@ export default function GoogleBusinessClient() {
             <p className="font-semibold">Not connected yet — nothing can be posted.</p>
             <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs leading-relaxed">
               <li>In Google Cloud, enable <strong>My Business Account Management API</strong>, <strong>My Business Business Information API</strong> and <strong>Google My Business API</strong>.</li>
-              <li>In Business Profile → <em>People and access</em>, add the service account's email as a <strong>Manager</strong>.</li>
+              <li>Press <strong>Connect Google account</strong> above and sign in as the profile owner.</li>
               <li>Press <strong>Check connection</strong> above — it lists your account and location ids.</li>
               <li>Set <code>GBP_ACCOUNT_ID</code> and <code>GBP_LOCATION_ID</code> in Vercel, then redeploy.</li>
             </ol>
