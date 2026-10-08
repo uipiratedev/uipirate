@@ -278,3 +278,29 @@ describe("nextBacklogAt", () => {
     expect(at.getTime()).toBe(last.getTime() + 84 * HOURS);
   });
 });
+
+describe("overview text", () => {
+  it("replaces the excerpt, keeping bullet line breaks", () => {
+    const s = buildSummary(post({ overview: "Intro line.\n- one\n- two" }));
+
+    expect(s).toBe("Design Tokens: How to Build a Token System\n\nIntro line.\n- one\n- two");
+  });
+
+  it("strips links from an overview and stays within Google's limit", () => {
+    const s = buildSummary(post({ overview: `See https://x.co/a ${"word ".repeat(600)}` }));
+
+    expect(s).not.toMatch(/https?:/);
+    expect(s.length).toBeLessThanOrEqual(1500);
+  });
+});
+
+describe("cleanOverview", () => {
+  it("removes markdown, links and caps length at a sentence", async () => {
+    const { cleanOverview, OVERVIEW_MAX } = await import("@/lib/gbp/overview");
+    const out = cleanOverview(`**Bold** text https://a.co ${"Sentence one here. ".repeat(100)}`);
+
+    expect(out).not.toMatch(/\*|https?:/);
+    expect(out.length).toBeLessThanOrEqual(OVERVIEW_MAX);
+    expect(out.endsWith(".")).toBe(true);
+  });
+});

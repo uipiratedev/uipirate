@@ -12,13 +12,13 @@ export const SITE_ORIGIN = "https://uipirate.com";
 
 /** Google rejects a summary over 1,500 characters. */
 export const MAX_SUMMARY = 1500;
-/** Leave headroom: the title and a line break are added around the excerpt. */
-const TARGET_SUMMARY = 1200;
 
 export interface GbpSourcePost {
   slug: string;
   title: string;
   excerpt?: string;
+  /** Replaces the excerpt when set (AI-written or hand-edited in the admin). */
+  overview?: string;
   postType?: string;
   featuredImage?: string;
   bannerImage?: string;
@@ -93,10 +93,16 @@ export function truncateWords(text: string, max: number): string {
 /** The post body: the title, a blank line, then the excerpt. */
 export function buildSummary(post: GbpSourcePost): string {
   const title = stripUrls(toPlainText(post.title));
-  const excerpt = stripUrls(toPlainText(post.excerpt));
+  // An overview keeps its line breaks (bullets); the excerpt is flattened.
+  const overview = post.overview
+    ?.replace(/https?:\/\/\S+/gi, "")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  const excerpt = overview || stripUrls(toPlainText(post.excerpt));
   const body = excerpt && excerpt !== title ? `${title}\n\n${excerpt}` : title;
 
-  return truncateWords(body, TARGET_SUMMARY);
+  return truncateWords(body, MAX_SUMMARY);
 }
 
 /** The "Learn more" destination: the canonical page, tagged so visits show up. */

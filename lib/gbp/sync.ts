@@ -21,6 +21,7 @@ import {
   type LocalPostPayload,
 } from "./payload";
 import { selectToPublish, type QueueItem } from "./schedule";
+import { generateOverview, isOverviewConfigured } from "./overview";
 import {
   GbpError,
   createLocalPost,
@@ -192,6 +193,25 @@ export async function publishOne(
 
   if (!elig.eligible) return { slug, ok: false, message: elig.reason ?? "Not eligible." };
 
+  source.overview = rec.overview || undefined;
+
+  // A real publish with no overview yet: write one from the full article. A
+  // preview never calls the model, and a Gemini failure falls back to the CMS
+  // excerpt rather than blocking the post.
+  if (!opts.dryRun && !source.overview && isOverviewConfigured()) {
+    try {
+      source.overview = await generateOverview({
+        title: source.title,
+        excerpt: source.excerpt,
+        content: cmsPost.content,
+        postType: source.postType,
+      });
+      await GbpPost.updateOne({ slug }, { $set: { overview: source.overview, overviewSource: "ai" } });
+    } catch {
+      // Excerpt fallback.
+    }
+  }
+
   const payload = buildLocalPost(source);
 
   if (opts.dryRun) return { slug, ok: true, dryRun: true, payload };
@@ -250,6 +270,45 @@ export async function publishOne(
 
     return { slug, ok: false, message: e.message, hint: e.hint, fatal };
   }
+}
+
+/** Writes (and stores) an AI overview for one post from its full article. */
+export async function generateOverviewFor(slug: string): Promise<string> {
+  await dbConnect();
+
+  const cmsPost = await getPostBySlug(slug);
+
+  if (!cmsPost) throw new Error("Could not load the post from the CMS. Try again.");
+
+  const overview = await generateOverview({
+    title: cmsPost.title,
+    excerpt: cmsPost.excerpt,
+    content: cmsPost.content,
+    postType: cmsPost.postType,
+  });
+
+  const r = await GbpPost.updateOne(
+    { slug, status: { $ne: "published" } },
+    { $set: { overview, overviewSource: "ai" } },
+  );
+
+  if (r.matchedCount !== 1) throw new Error("Post is not in the queue, or is already published.");
+
+  return overview;
+}
+
+export async function saveOverview(slug: string, overview: string): Promise<boolean> {
+  await dbConnect();
+
+  const text = overview.trim().slice(0, 1400);
+  const r = await GbpPost.updateOne(
+    { slug, status: { $ne: "published" } },
+    text
+      ? { $set: { overview: text, overviewSource: "manual" } }
+      : { $unset: { overview: "", overviewSource: "" } },
+  );
+
+  return r.matchedCount === 1;
 }
 
 export interface ScheduledResult {

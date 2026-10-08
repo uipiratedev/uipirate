@@ -21,9 +21,12 @@ interface Row {
   skipKind: "manual" | "ineligible" | null;
   publishedAt: string | null;
   postPublishedAt: string | null;
+  overview: string | null;
+  overviewSource: "ai" | "manual" | null;
 }
 
 interface Data {
+  aiConfigured: boolean;
   configured: boolean;
   publishingEnabled: boolean;
   nextBacklogAt: string | null;
@@ -63,6 +66,55 @@ export default function GoogleBusinessClient() {
   const [notice, setNotice] = useState<{ tone: "ok" | "err"; text: string; hint?: string } | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [found, setFound] = useState<Array<{ account: { id: string; name: string }; locations: Array<{ id: string; title: string }> }> | null>(null);
+
+  const [editor, setEditor] = useState<{ slug: string; title: string; text: string } | null>(null);
+
+  async function post(body: Record<string, unknown>) {
+    const res = await fetch("/api/admin/gbp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    return res.json();
+  }
+
+  async function generate() {
+    if (!editor) return;
+    setBusy("generate");
+    setNotice(null);
+
+    try {
+      const j = await post({ action: "generate", slug: editor.slug });
+
+      if (j.ok) setEditor({ ...editor, text: j.overview });
+      else setNotice({ tone: "err", text: j.error || "Could not write the overview.", hint: j.hint });
+    } catch {
+      setNotice({ tone: "err", text: "Network error — try again." });
+    } finally {
+      setBusy(null);
+      refetch();
+    }
+  }
+
+  async function saveText() {
+    if (!editor) return;
+    setBusy("save");
+
+    try {
+      const j = await post({ action: "save-overview", slug: editor.slug, overview: editor.text });
+
+      if (j.ok) {
+        setNotice({ tone: "ok", text: editor.text.trim() ? "Post text saved." : "Back to the CMS excerpt." });
+        setEditor(null);
+      } else setNotice({ tone: "err", text: j.error || "Could not save (already published?)." });
+    } catch {
+      setNotice({ tone: "err", text: "Network error — try again." });
+    } finally {
+      setBusy(null);
+      refetch();
+    }
+  }
 
   async function act(action: string, slug?: string, key = `${action}:${slug ?? ""}`) {
     setBusy(key);
@@ -166,6 +218,16 @@ export default function GoogleBusinessClient() {
                 onClick={() => act("preview", r.slug)}
               >
                 {b("preview") ? "…" : "Preview"}
+              </button>
+            )}
+            {r.status !== "published" && r.status !== "publishing" && (
+              <button
+                className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
+                disabled={!!busy}
+                type="button"
+                onClick={() => setEditor({ slug: r.slug, title: r.title || r.slug, text: r.overview ?? "" })}
+              >
+                {r.overview ? (r.overviewSource === "ai" ? "Edit text · AI" : "Edit text") : "Write text"}
               </button>
             )}
             {canSend && (
@@ -315,6 +377,67 @@ export default function GoogleBusinessClient() {
           </Card>
         </div>
       </StatePanel>
+
+      {editor && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          role="dialog"
+          onClick={() => !busy && setEditor(null)}
+        >
+          <div
+            className="max-h-[90vh] w-full max-w-xl overflow-auto rounded-2xl bg-white p-5 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+              Google post text
+            </p>
+            <p className="mt-1 text-sm font-semibold text-gray-900">{editor.title}</p>
+            <p className="mt-1 text-xs text-gray-500">
+              Posted under the title. Leave empty to use the CMS excerpt
+              {data?.aiConfigured ? "; posts with no text are written by AI automatically when they go out." : "."}
+            </p>
+            <textarea
+              className="mt-3 h-64 w-full rounded-lg border border-gray-200 p-3 text-sm text-gray-900 focus:border-gray-400 focus:outline-none"
+              disabled={busy === "generate"}
+              maxLength={1400}
+              placeholder="Write the post text, or press “Write with AI” to draft it from the full article."
+              value={editor.text}
+              onChange={(e) => setEditor({ ...editor, text: e.target.value })}
+            />
+            <p className="mt-1 text-right text-[11px] text-gray-400">{editor.text.length} / 1,400</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                className={`${btn} bg-gray-900 text-white ring-gray-900 hover:bg-gray-800`}
+                disabled={!!busy}
+                type="button"
+                onClick={saveText}
+              >
+                {busy === "save" ? "Saving…" : "Save"}
+              </button>
+              <button
+                className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
+                disabled={!!busy || !data?.aiConfigured}
+                title={data?.aiConfigured ? "" : "Set GEMINI_API_KEY"}
+                type="button"
+                onClick={generate}
+              >
+                {busy === "generate" ? "Writing…" : "Write with AI"}
+              </button>
+              <button
+                className={`${btn} bg-white text-gray-600 ring-gray-200 hover:bg-gray-50`}
+                disabled={!!busy}
+                type="button"
+                onClick={() => setEditor(null)}
+              >
+                Cancel
+              </button>
+            </div>
+            <p className="mt-2 text-[11px] text-gray-400">
+              “Write with AI” saves a draft straight away; edit it, then Save.
+            </p>
+          </div>
+        </div>
+      )}
 
       {preview && (
         <div

@@ -11,7 +11,13 @@ import {
   listAccounts,
   listLocations,
 } from "@/lib/gbp/client";
-import { publishOne, syncCatalogue } from "@/lib/gbp/sync";
+import { isOverviewConfigured } from "@/lib/gbp/overview";
+import {
+  generateOverviewFor,
+  publishOne,
+  saveOverview,
+  syncCatalogue,
+} from "@/lib/gbp/sync";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -43,6 +49,7 @@ export async function GET() {
   return NextResponse.json({
     configured: Boolean(cfg),
     publishingEnabled: isPublishingEnabled(),
+    aiConfigured: isOverviewConfigured(),
     nextBacklogAt: nextBacklogAt(queue, new Date()),
     counts: rows.reduce<Record<string, number>>((acc, r) => {
       acc[r.status] = (acc[r.status] ?? 0) + 1;
@@ -60,6 +67,8 @@ export async function GET() {
       skipKind: r.skipKind ?? null,
       publishedAt: r.publishedAt ?? null,
       postPublishedAt: r.postPublishedAt ?? null,
+      overview: r.overview ?? null,
+      overviewSource: r.overviewSource ?? null,
     })),
   });
 }
@@ -70,7 +79,9 @@ type Action =
   | "preview"
   | "publish"
   | "skip"
-  | "requeue";
+  | "requeue"
+  | "generate"
+  | "save-overview";
 
 /** Manual controls. Every action needs the `manage:indexing` capability. */
 export async function POST(req: NextRequest) {
@@ -81,6 +92,7 @@ export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as {
     action?: Action;
     slug?: string;
+    overview?: string;
   };
   const { action, slug } = body;
 
@@ -114,6 +126,12 @@ export async function POST(req: NextRequest) {
     // Publishing is explicit, so it works without GBP_PUBLISH_ENABLED — that
     // flag only governs the automatic cron.
     if (action === "publish") return NextResponse.json(await publishOne(slug));
+
+    if (action === "generate")
+      return NextResponse.json({ ok: true, overview: await generateOverviewFor(slug) });
+
+    if (action === "save-overview")
+      return NextResponse.json({ ok: await saveOverview(slug, String(body.overview ?? "")) });
 
     if (action === "skip") {
       const r = await GbpPost.updateOne(

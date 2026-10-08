@@ -29,6 +29,9 @@ export interface IGbpPost extends Document {
   message?: string;
   /** "manual" skips are permanent; others are re-evaluated on every sync. */
   skipKind?: "manual" | "ineligible";
+  /** Post text used instead of the CMS excerpt (AI-written or hand-edited). */
+  overview?: string;
+  overviewSource?: "ai" | "manual";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -50,6 +53,8 @@ const GbpPostSchema: Schema = new Schema(
     publishedAt: { type: Date, default: null },
     message: String,
     skipKind: { type: String, enum: ["manual", "ineligible"] },
+    overview: String,
+    overviewSource: { type: String, enum: ["ai", "manual"] },
   },
   { timestamps: true },
 );
