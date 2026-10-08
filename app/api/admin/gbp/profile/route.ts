@@ -4,6 +4,7 @@ import { requireApi } from "@/lib/auth/session";
 import dbConnect from "@/lib/mongodb";
 import GbpProfileChange from "@/models/GbpProfileChange";
 import { GbpError } from "@/lib/gbp/client";
+import { getAttributes, planLinks, writeAttributes } from "@/lib/gbp/attributes";
 import {
   SITE_SERVICES,
   getProfile,
@@ -23,12 +24,15 @@ export async function GET() {
 
   try {
     const profile = await getProfile();
+    const linkPlan = planLinks(await getAttributes());
 
     return NextResponse.json({
       ok: true,
       profile,
-      servicePlan: planServices(profile.services),
+      // `refresh` so the page offers the current wording, not just empty slots.
+      servicePlan: planServices(profile.services, SITE_SERVICES, { refresh: true }),
       siteServices: SITE_SERVICES,
+      linkPlan: { add: linkPlan.add, update: linkPlan.update, same: linkPlan.same },
     });
   } catch (err) {
     return fail(err);
@@ -52,7 +56,7 @@ export async function POST(req: NextRequest) {
     const live = await getProfile();
 
     if (body.action === "apply-services") {
-      const plan = planServices(live.services);
+      const plan = planServices(live.services, SITE_SERVICES, { refresh: true });
 
       await GbpProfileChange.create({
         field: "services",
@@ -61,6 +65,23 @@ export async function POST(req: NextRequest) {
         by: guard.user.email,
       });
       await writeServices(plan.next);
+
+      return NextResponse.json({ ok: true, profile: await getProfile() });
+    }
+
+    if (body.action === "apply-links") {
+      const before = await getAttributes();
+      const plan = planLinks(before);
+
+      if (!plan.attributes.length) return NextResponse.json({ ok: true, profile: live });
+
+      await GbpProfileChange.create({
+        field: "links",
+        before: before.filter((a) => plan.mask.includes(a.name)),
+        after: plan.attributes,
+        by: guard.user.email,
+      });
+      await writeAttributes(plan);
 
       return NextResponse.json({ ok: true, profile: await getProfile() });
     }

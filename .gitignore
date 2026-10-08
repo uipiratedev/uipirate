@@ -42,3 +42,4 @@ next-env.d.ts
 .claude/
 
 scripts/.gbp-services-backup-*.json
+scripts/.gbp-links-backup-*.json

@@ -28,6 +28,67 @@ interface Data {
     services: ServiceItem[];
   };
   servicePlan: Plan;
+  linkPlan: {
+    add: Array<{ attr: string; label: string; uri: string }>;
+    update: Array<{ attr: string; label: string; uri: string; was: string[] }>;
+    same: Array<{ attr: string; label: string; uri: string }>;
+  };
+}
+
+interface Perf {
+  ok: boolean;
+  error?: string;
+  hint?: string;
+  from?: string;
+  to?: string;
+  views?: number;
+  websiteClicks?: number;
+  calls?: number;
+  directions?: number;
+  bookings?: number;
+  messages?: number;
+}
+
+function PerformanceCard() {
+  const [p, setP] = useState<Perf | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/gbp/performance", { cache: "no-store" })
+      .then((r) => r.json())
+      .then(setP)
+      .catch(() => setP({ ok: false, error: "Network error." }));
+  }, []);
+
+  const stat = (label: string, v?: number) => (
+    <div key={label} className="rounded-lg bg-gray-50 p-3">
+      <p className="text-xl font-bold text-gray-900">{(v ?? 0).toLocaleString("en-US")}</p>
+      <p className="text-[11px] uppercase tracking-wide text-gray-500">{label}</p>
+    </div>
+  );
+
+  return (
+    <Card
+      subtitle={p?.from ? `${p.from} to ${p.to} — Google's data runs about two days behind` : "Last 28 days"}
+      title="How the listing performs"
+    >
+      {!p ? (
+        <p className="text-sm text-gray-500">Loading…</p>
+      ) : !p.ok ? (
+        <p className="text-sm text-amber-800">
+          {p.error} {p.hint}
+        </p>
+      ) : (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+          {stat("Views in Search & Maps", p.views)}
+          {stat("Website clicks", p.websiteClicks)}
+          {stat("Calls", p.calls)}
+          {stat("Directions", p.directions)}
+          {stat("Bookings", p.bookings)}
+          {stat("Messages", p.messages)}
+        </div>
+      )}
+    </Card>
+  );
 }
 
 const btn =
@@ -61,7 +122,7 @@ export default function ProfileClient() {
     load();
   }, [load]);
 
-  async function apply(action: "apply-services" | "apply-description") {
+  async function apply(action: "apply-services" | "apply-description" | "apply-links") {
     setBusy(true);
     setNotice(null);
 
@@ -198,6 +259,46 @@ export default function ProfileClient() {
                 </ul>
               </details>
             </Card>
+
+            <Card subtitle="The Book button and social profiles, taken from your website" title="Links">
+              <ul className="space-y-1.5 text-sm">
+                {data.linkPlan.add.map((l) => (
+                  <li key={l.attr}>
+                    <span className="font-semibold text-emerald-700">Add</span> {l.label}:{" "}
+                    <span className="break-all text-gray-600">{l.uri}</span>
+                  </li>
+                ))}
+                {data.linkPlan.update.map((l) => (
+                  <li key={l.attr}>
+                    <span className="font-semibold text-amber-700">
+                      {l.attr === "url_appointment" ? "Add alongside" : "Replace"}
+                    </span>{" "}
+                    {l.label}: <span className="break-all text-gray-600">{l.uri}</span>
+                    <span className="block text-xs text-gray-400">now: {l.was.join(", ")}</span>
+                  </li>
+                ))}
+                {data.linkPlan.same.map((l) => (
+                  <li key={l.attr} className="text-gray-500">
+                    ✓ {l.label} already set
+                  </li>
+                ))}
+              </ul>
+              {(data.linkPlan.add.length > 0 || data.linkPlan.update.length > 0) && (
+                <button
+                  className={`${btn} mt-3 bg-gray-900 text-white ring-gray-900 hover:bg-gray-800`}
+                  disabled={busy}
+                  type="button"
+                  onClick={() => apply("apply-links")}
+                >
+                  {busy ? "Applying…" : "Apply to Google"}
+                </button>
+              )}
+              <p className="mt-2 text-[11px] text-gray-400">
+                Other links on the listing, such as WhatsApp, are not touched.
+              </p>
+            </Card>
+
+            <PerformanceCard />
 
             <Card subtitle="750 characters at most. No links or phone numbers." title="Description">
               <textarea

@@ -488,3 +488,73 @@ describe("planServices", () => {
     }
   });
 });
+
+describe("planLinks", () => {
+  const attr = (n: string, ...uris: string[]) => ({ name: `attributes/${n}`, valueType: "URL", uriValues: uris.map((uri) => ({ uri })) });
+
+  it("adds the site's links and writes only those attributes", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_whatsapp", "https://wa.me/1")]);
+
+    expect(plan.add.map((l) => l.attr)).toEqual(["url_appointment", "url_linkedin", "url_twitter"]);
+    expect(plan.mask).toEqual(["attributes/url_appointment", "attributes/url_linkedin", "attributes/url_twitter"]);
+    // WhatsApp is never part of what is written.
+    expect(plan.attributes.some((a) => a.name.includes("whatsapp"))).toBe(false);
+  });
+
+  it("treats a trailing slash or letter case as the same link", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_twitter", "https://X.com/UI_Pirate/")]);
+
+    expect(plan.same.map((l) => l.attr)).toEqual(["url_twitter"]);
+    expect(plan.mask).not.toContain("attributes/url_twitter");
+  });
+
+  it("keeps other booking links and replaces a different social link", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([
+      attr("url_appointment", "https://other.example/book"),
+      attr("url_linkedin", "https://www.linkedin.com/in/someone-else"),
+    ]);
+    const book = plan.attributes.find((a) => a.name.endsWith("url_appointment"))!;
+    const li = plan.attributes.find((a) => a.name.endsWith("url_linkedin"))!;
+
+    expect(book.uriValues!.map((u) => u.uri)).toEqual([
+      "https://other.example/book",
+      "https://cal.com/ui-pirate/15min",
+    ]);
+    expect(li.uriValues).toHaveLength(1);
+    expect(li.uriValues![0].uri).toContain("company/ui-pirate");
+  });
+});
+
+describe("performance summary", () => {
+  it("adds up impressions across surfaces and reads the other metrics", async () => {
+    const { summarise } = await import("@/lib/gbp/performance");
+    const d = (day: number, value: string) => ({ date: { year: 2026, month: 9, day }, value });
+    const s = summarise(
+      {
+        multiDailyMetricTimeSeries: [
+          {
+            dailyMetricTimeSeries: [
+              { dailyMetric: "BUSINESS_IMPRESSIONS_DESKTOP_SEARCH", timeSeries: { datedValues: [d(1, "10"), d(2, "5")] } },
+              { dailyMetric: "BUSINESS_IMPRESSIONS_MOBILE_MAPS", timeSeries: { datedValues: [d(1, "7")] } },
+              { dailyMetric: "WEBSITE_CLICKS", timeSeries: { datedValues: [d(1, "3"), d(2, "1")] } },
+              { dailyMetric: "CALL_CLICKS", timeSeries: { datedValues: [d(2)] } },
+            ],
+          },
+        ],
+      } as never,
+      "2026-09-01",
+      "2026-09-02",
+    );
+
+    expect(s.views).toBe(22);
+    expect(s.websiteClicks).toBe(4);
+    expect(s.calls).toBe(0);
+    expect(s.daily).toEqual([
+      { date: "2026-09-01", views: 17, websiteClicks: 3 },
+      { date: "2026-09-02", views: 5, websiteClicks: 1 },
+    ]);
+  });
+});
