@@ -585,3 +585,40 @@ describe("performance summary", () => {
     ]);
   });
 });
+
+describe("performance date range", () => {
+  const now = new Date("2026-10-09T10:00:00Z");
+
+  it("keeps a range that is already inside Google's data window", async () => {
+    const { clampRange } = await import("@/lib/gbp/performance");
+    const r = clampRange(new Date("2026-09-01T00:00:00Z"), new Date("2026-09-20T23:59:59Z"), now);
+
+    expect(r.start.toISOString().slice(0, 10)).toBe("2026-09-01");
+    expect(r.end.toISOString().slice(0, 10)).toBe("2026-09-20");
+    expect(r.clamped).toBe(false);
+  });
+
+  it("ends two days ago when the range runs to today (the header's presets do)", async () => {
+    const { clampRange } = await import("@/lib/gbp/performance");
+    const r = clampRange(new Date("2026-09-11T10:00:00Z"), now, now);
+
+    expect(r.end.toISOString().slice(0, 10)).toBe("2026-10-07");
+    expect(r.clamped).toBe(true);
+  });
+
+  it("never returns a backwards range, even for the last-24-hours preset", async () => {
+    const { clampRange } = await import("@/lib/gbp/performance");
+    const r = clampRange(new Date("2026-10-08T10:00:00Z"), now, now);
+
+    expect(r.start.getTime()).toBeLessThanOrEqual(r.end.getTime());
+    expect(r.end.toISOString().slice(0, 10)).toBe("2026-10-07");
+  });
+
+  it("limits the range to about 18 months", async () => {
+    const { clampRange } = await import("@/lib/gbp/performance");
+    const r = clampRange(new Date("2020-01-01T00:00:00Z"), new Date("2026-09-01T00:00:00Z"), now);
+    const days = (r.end.getTime() - r.start.getTime()) / 86_400_000 + 1;
+
+    expect(days).toBe(540);
+  });
+});

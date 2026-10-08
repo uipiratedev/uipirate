@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
+import { useDashboard } from "@/lib/admin/DashboardContext";
 
 interface ServiceItem {
   structuredServiceItem?: { serviceTypeId: string };
@@ -41,6 +42,7 @@ interface Perf {
   hint?: string;
   from?: string;
   to?: string;
+  clamped?: boolean;
   views?: number;
   websiteClicks?: number;
   calls?: number;
@@ -51,13 +53,24 @@ interface Perf {
 
 function PerformanceCard() {
   const [p, setP] = useState<Perf | null>(null);
+  // Follows the date filter in the header, like every analytics page.
+  const { rangeQuery, rangeKey } = useDashboard();
 
   useEffect(() => {
-    fetch("/api/admin/gbp/performance", { cache: "no-store" })
+    const ac = new AbortController();
+
+    setP(null);
+    fetch(`/api/admin/gbp/performance?${rangeQuery}`, { cache: "no-store", signal: ac.signal })
       .then((r) => r.json())
       .then(setP)
-      .catch(() => setP({ ok: false, error: "Network error." }));
-  }, []);
+      .catch((e) => {
+        if (!(e instanceof DOMException && e.name === "AbortError")) setP({ ok: false, error: "Network error." });
+      });
+
+    return () => ac.abort();
+    // rangeKey changes whenever the header range does.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rangeKey]);
 
   const stat = (label: string, v?: number) => (
     <div key={label} className="rounded-lg bg-gray-50 p-3">
@@ -68,7 +81,11 @@ function PerformanceCard() {
 
   return (
     <Card
-      subtitle={p?.from ? `${p.from} to ${p.to} — Google's data runs about two days behind` : "Last 28 days"}
+      subtitle={
+        p?.from
+          ? `${p.from} to ${p.to}${p.clamped ? " — adjusted: Google's data ends two days ago" : ""}`
+          : "Follows the date filter above"
+      }
       title="How the listing performs"
     >
       {!p ? (
