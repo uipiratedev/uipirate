@@ -87,14 +87,47 @@ export function summarise(raw: Raw, from: string, to: string): PerformanceSummar
 
 const parts = (d: Date) => ({ year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() });
 
-/** The last `days` days, ending two days ago because Google's data lags. */
-export async function getPerformance(days = 28): Promise<PerformanceSummary> {
+const DAY = 86_400_000;
+/** Google keeps about 18 months of daily data. */
+const MAX_DAYS = 540;
+
+/**
+ * Fit a requested range to what Google can return: whole UTC days, ending no
+ * later than two days ago (its data lags), at least one day long, and at most
+ * 18 months. Pure so the edge cases are tested.
+ */
+export function clampRange(from: Date, to: Date, now = new Date()): { start: Date; end: Date; clamped: boolean } {
+  const day = (d: Date) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const latest = new Date(day(now).getTime() - 2 * DAY);
+
+  let end = day(to);
+  let start = day(from);
+
+  if (end > latest) end = latest;
+  if (start > end) start = end;
+  if (end.getTime() - start.getTime() > (MAX_DAYS - 1) * DAY) start = new Date(end.getTime() - (MAX_DAYS - 1) * DAY);
+
+  return {
+    start,
+    end,
+    clamped: end.getTime() !== day(to).getTime() || start.getTime() !== day(from).getTime(),
+  };
+}
+
+/** Performance for a date range (default: the last 28 days). */
+export async function getPerformance(
+  range?: { from: Date; to: Date },
+): Promise<PerformanceSummary & { clamped: boolean }> {
   const cfg = getGbpConfig();
 
   if (!cfg) throw new GbpError("Business Profile is not configured.", undefined, "Set GBP_ACCOUNT_ID and GBP_LOCATION_ID.");
 
-  const end = new Date(Date.now() - 2 * 86_400_000);
-  const start = new Date(end.getTime() - (days - 1) * 86_400_000);
+  const now = new Date();
+  const { start, end, clamped } = clampRange(
+    range?.from ?? new Date(now.getTime() - 28 * DAY),
+    range?.to ?? now,
+    now,
+  );
   const s = parts(start);
   const e = parts(end);
 
@@ -110,5 +143,5 @@ export async function getPerformance(days = 28): Promise<PerformanceSummary> {
 
   const raw = await call<Raw>(`${PERF_API}/locations/${cfg.locationId}:fetchMultiDailyMetricsTimeSeries?${q}`);
 
-  return summarise(raw, iso(s), iso(e));
+  return { ...summarise(raw, iso(s), iso(e)), clamped };
 }
