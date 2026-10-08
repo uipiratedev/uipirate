@@ -41,6 +41,18 @@ const PAGE_META: Array<{
       "Where traffic actually comes from — counted server-side, so it includes visitors who block scripts or decline cookies.",
   },
   {
+    prefix: "/admin/analytics/funnel",
+    title: "Funnel",
+    description:
+      "How many visitors reach pricing or contact and act — by landing page, channel and contact route.",
+  },
+  {
+    prefix: "/admin/utm-links",
+    title: "UTM Links",
+    description:
+      "Tag the links you share so traffic shows up under a named source instead of Direct.",
+  },
+  {
     prefix: "/admin/analytics/content",
     title: "Content Performance",
     description:

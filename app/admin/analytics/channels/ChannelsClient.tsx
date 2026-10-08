@@ -31,6 +31,15 @@ interface ChannelsData {
   countries: Array<{ key: string; hits: number }>;
   bots: BotRow[];
   botTotal: number;
+  snapshots: Array<{
+    weekStart: string;
+    weekEnd: string;
+    allVisits: number;
+    trackedSessions: number;
+    botHits: number;
+    aiCrawls: number;
+    conversions: number;
+  }>;
 }
 
 const BOT_KIND_LABEL: Record<string, string> = {
@@ -92,6 +101,43 @@ export default function ChannelsClient() {
       align: "right",
       render: (r) => fmtInt(r.hits),
       sortValue: (r) => r.hits,
+    },
+  ];
+
+  const weekCols: Column<ChannelsData["snapshots"][number]>[] = [
+    {
+      key: "weekStart",
+      header: "Week",
+      render: (r) => `${r.weekStart} → ${r.weekEnd.slice(5)}`,
+      sortValue: (r) => r.weekStart,
+    },
+    {
+      key: "allVisits",
+      header: "All visits",
+      align: "right",
+      render: (r) => fmtInt(r.allVisits),
+      sortValue: (r) => r.allVisits,
+    },
+    {
+      key: "trackedSessions",
+      header: "Tracked",
+      align: "right",
+      render: (r) => fmtInt(r.trackedSessions),
+      sortValue: (r) => r.trackedSessions,
+    },
+    {
+      key: "conversions",
+      header: "Contact actions",
+      align: "right",
+      render: (r) => fmtInt(r.conversions),
+      sortValue: (r) => r.conversions,
+    },
+    {
+      key: "aiCrawls",
+      header: "AI crawls",
+      align: "right",
+      render: (r) => fmtInt(r.aiCrawls),
+      sortValue: (r) => r.aiCrawls,
     },
   ];
 
@@ -201,6 +247,20 @@ export default function ChannelsClient() {
               initialSort={{ key: "hits", dir: "desc" }}
               rowKey={(r) => r.botName}
               rows={data?.bots || []}
+            />
+          </Card>
+        </div>
+
+        <div className="mt-5">
+          <Card
+            subtitle="Frozen every Monday, so history survives the 90-day event cleanup"
+            title="Week by week"
+          >
+            <DataTable
+              columns={weekCols}
+              initialSort={{ key: "weekStart", dir: "desc" }}
+              rowKey={(r) => r.weekStart}
+              rows={data?.snapshots || []}
             />
           </Card>
         </div>

@@ -12,6 +12,7 @@ import {
   getTopSources,
 } from "@/lib/analytics/anonymous";
 import { getSummary } from "@/lib/analytics/queries";
+import { getSnapshots } from "@/lib/analytics/snapshot";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,6 +43,7 @@ export async function GET(req: NextRequest) {
     ]);
 
   const consentedViews = consented?.pageviews ?? 0;
+  const snapshots = await getSnapshots(12).catch(() => []);
 
   return NextResponse.json({
     range: { from, to },
@@ -55,5 +57,6 @@ export async function GET(req: NextRequest) {
     countries,
     bots,
     botTotal,
+    snapshots,
   });
 }

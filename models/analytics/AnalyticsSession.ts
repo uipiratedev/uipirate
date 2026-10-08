@@ -17,7 +17,6 @@ export interface IAnalyticsSession extends Document {
   durationMs: number;
   pageViewCount: number;
   clickCount: number;
-  isBounce: boolean;
   entryPath: string;
   exitPath: string;
   /** Ordered path history, capped at 50. */
@@ -41,7 +40,9 @@ const AnalyticsSessionSchema: Schema = new Schema({
   durationMs: { type: Number, default: 0 },
   pageViewCount: { type: Number, default: 0 },
   clickCount: { type: Number, default: 0 },
-  isBounce: { type: Boolean, default: true },
+  // Bounce is derived at read time from pageViewCount + durationMs (see
+  // BOUNCE_EXPR in queries.ts). A stored flag was removed: nothing ever
+  // updated it, so every session read as a bounce.
   entryPath: { type: String, default: "/" },
   exitPath: { type: String, default: "/" },
   pagePath: { type: [String], default: [] },

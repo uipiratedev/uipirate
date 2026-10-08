@@ -70,6 +70,7 @@ export default function ContentClient() {
     rows: ContentRow[];
     searchMocked: boolean;
     hasTrafficData: boolean;
+    notFound: Array<{ path: string; hits: number; topReferrer: string }>;
   }>("/api/admin/analytics/content");
 
   const [onlyFlagged, setOnlyFlagged] = useState(false);
@@ -248,6 +249,44 @@ export default function ContentClient() {
               initialSort={{ key: "hits", dir: "desc" }}
               rowKey={(r) => r.path}
               rows={rows}
+            />
+          </Card>
+        </div>
+
+        <div className="mt-5">
+          <Card
+            subtitle="URLs that returned a 404 — fix the link, or redirect it"
+            title="Broken links"
+          >
+            <DataTable
+              columns={[
+                {
+                  key: "path",
+                  header: "Missing URL",
+                  render: (r) => (
+                    <span className="block max-w-[26rem] truncate" title={r.path}>
+                      {r.path}
+                    </span>
+                  ),
+                  sortValue: (r) => r.path,
+                },
+                {
+                  key: "hits",
+                  header: "Hits",
+                  align: "right",
+                  render: (r) => fmtInt(r.hits),
+                  sortValue: (r) => r.hits,
+                },
+                {
+                  key: "topReferrer",
+                  header: "Linked from",
+                  render: (r) => r.topReferrer || "(direct / unknown)",
+                  sortValue: (r) => r.topReferrer,
+                },
+              ]}
+              initialSort={{ key: "hits", dir: "desc" }}
+              rowKey={(r) => r.path}
+              rows={data?.notFound || []}
             />
           </Card>
         </div>

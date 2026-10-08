@@ -3,6 +3,8 @@ import type { ReaderPost } from "@/lib/pirateCOS/public-client";
 import Image from "next/image";
 import Link from "next/link";
 
+import { postHref } from "@/lib/pirateCOS/suggested";
+
 const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
 
 interface SuggestedReadsProps {
@@ -42,7 +44,7 @@ const SuggestedReads = ({ posts }: SuggestedReadsProps) => {
           });
 
           return (
-            <Link key={blog._id} className="group block" href={`/${blog.slug}`}>
+            <Link key={blog._id} className="group block" href={postHref(blog)}>
               <div className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]">
                 {/* Thumbnail */}
                 <div className="relative h-[180px] overflow-hidden bg-[#F8F9FB]">

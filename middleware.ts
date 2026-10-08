@@ -3,6 +3,7 @@ import type { NextRequest, NextFetchEvent } from "next/server";
 import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE, verifySessionEdge } from "@/lib/auth/edge";
+import { isTestTraffic } from "@/lib/analytics/testTraffic";
 import { internalAnalyticsSecret } from "@/lib/analytics/internalSecret";
 
 /** Never counted: internal surfaces, APIs, and anything non-navigational. */
@@ -23,6 +24,8 @@ function countHit(req: NextRequest, event: NextFetchEvent) {
   const { pathname } = req.nextUrl;
 
   if (UNCOUNTED.test(pathname)) return;
+  // Don't even make the call from a developer's machine.
+  if (isTestTraffic(req.headers)) return;
   // Only count real page navigations, not RSC prefetches or data fetches.
   if (req.method !== "GET") return;
   if (req.headers.get("rsc") || req.headers.get("next-router-prefetch")) return;

@@ -236,14 +236,16 @@ async function fetchAllPosts(
   listPosts: (opts: {
     page: number;
     limit: number;
+    fields?: string;
   }) => Promise<Array<{ [key: string]: any }>>,
+  fields?: string,
 ) {
   const pageSize = 100;
   const maxPages = 20;
   let all: Array<{ [key: string]: any }> = [];
 
   for (let page = 1; page <= maxPages; page++) {
-    const batch = await listPosts({ page, limit: pageSize });
+    const batch = await listPosts({ page, limit: pageSize, fields });
 
     all = all.concat(batch);
     if (batch.length < pageSize) break;
@@ -325,8 +327,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
-    const { listPosts } = await import("@/lib/pirateCOS/public-client");
-    const posts = await fetchAllPosts(listPosts);
+    const { listPosts, SITEMAP_FIELDS } = await import(
+      "@/lib/pirateCOS/public-client"
+    );
+    const posts = await fetchAllPosts(listPosts, SITEMAP_FIELDS);
 
     blogEntries = posts
       .filter(

@@ -8,6 +8,7 @@
  * navigator.sendBeacon on a timer / size threshold / pagehide.
  */
 import type { RawEvent, Utm } from "./types";
+import { classifyConversion, deriveClickId } from "./conversions";
 
 const ENDPOINT = "/api/analytics/collect";
 const VID_COOKIE = "up_vid";
@@ -407,6 +408,37 @@ class Tracker {
       el.closest("section")?.querySelector("h1,h2,h3")?.textContent ||
       undefined;
 
+    const href =
+      el instanceof HTMLAnchorElement
+        ? el.getAttribute("href") || undefined
+        : undefined;
+    // An explicit data-analytics-id wins; otherwise derive one from the link
+    // destination so it survives a copy change.
+    const analyticsId =
+      analyticsHost?.getAttribute("data-analytics-id") ||
+      deriveClickId(href);
+    const label = (el.innerText || el.getAttribute("aria-label") || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 120);
+
+    // A contact action also counts as a conversion, in addition to the click.
+    const conversionKind = classifyConversion(href);
+
+    if (conversionKind) {
+      this.enqueue({
+        ...this.baseFields(this.currentPath),
+        type: "conversion",
+        conversionKind,
+        element: {
+          text: label,
+          href,
+          analyticsId,
+          section: section?.replace(/\s+/g, " ").trim().slice(0, 120),
+        },
+      });
+    }
+
     this.enqueue({
       ...this.baseFields(this.currentPath),
       type: "click",
@@ -426,11 +458,14 @@ class Tracker {
           el instanceof HTMLAnchorElement
             ? el.getAttribute("href") || undefined
             : undefined,
-        analyticsId:
-          analyticsHost?.getAttribute("data-analytics-id") || undefined,
+        analyticsId,
         section: section?.replace(/\s+/g, " ").trim().slice(0, 120),
       },
     });
+
+    // The page is probably about to be left (mailto:, wa.link, new tab), so
+    // send the conversion now rather than waiting for the next batch tick.
+    if (conversionKind) this.flush(true);
   };
 }
 

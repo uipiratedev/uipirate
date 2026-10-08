@@ -16,6 +16,8 @@ import {
   clampText,
   parseDevice,
 } from "@/lib/analytics/enrich";
+import { isTestTraffic } from "@/lib/analytics/testTraffic";
+import { CONVERSION_LABELS } from "@/lib/analytics/conversions";
 import {
   MAX_EVENTS_PER_BATCH,
   type AnalyticsEventType,
@@ -37,6 +39,7 @@ const VALID_TYPES: AnalyticsEventType[] = [
   "page_close",
   "ping",
   "form_submit",
+  "conversion",
 ];
 
 /** Always 204 — analytics must never surface an error to the page. */
@@ -47,6 +50,9 @@ export async function POST(req: NextRequest) {
     const ipHash = ipHashFromHeaders(req.headers);
 
     if (!rateLimit(`collect:${ipHash}`, 240, 60_000).allowed) return ok();
+
+    // Developers on localhost write to the production database; never record.
+    if (isTestTraffic(req.headers)) return ok();
 
     const ua = req.headers.get("user-agent");
     const isBot = isBotUserAgent(ua);
@@ -192,6 +198,23 @@ function normalize(
   }
 
   if (e.type === "form_submit") doc.formName = clampText(e.formName, 80);
+
+  if (e.type === "conversion") {
+    // Whitelist: the kind drives dashboard grouping, so never store free text.
+    const kind = typeof e.conversionKind === "string" ? e.conversionKind : "";
+
+    if (!(kind in CONVERSION_LABELS)) return null;
+    doc.conversionKind = kind;
+
+    if (e.element && typeof e.element === "object") {
+      doc.element = {
+        text: clampText(e.element.text),
+        href: clampText(e.element.href, 300),
+        analyticsId: clampText(e.element.analyticsId, 80),
+        section: clampText(e.element.section, 120),
+      };
+    }
+  }
 
   return {
     type: e.type,

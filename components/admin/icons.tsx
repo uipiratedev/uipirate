@@ -133,6 +133,17 @@ export const Icon = {
       <line x1="21" x2="16.65" y1="21" y2="16.65" />
     </svg>
   ),
+  filter: (p: P) => (
+    <svg {...base} className={p.className}>
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+    </svg>
+  ),
+  link: (p: P) => (
+    <svg {...base} className={p.className}>
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  ),
   "share-2": (p: P) => (
     <svg {...base} className={p.className}>
       <circle cx="18" cy="5" r="3" />

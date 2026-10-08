@@ -161,6 +161,7 @@ export const Footer: React.FC<FooterProps> = ({ ctaOverride }) => {
 
               {/* Primary JoinTactileButton with responsive sizing */}
               <div
+                data-analytics-id="cta-footer-primary"
                 className={`relative z-20 flex justify-center w-full px-3 ${
                   cta.primaryButton.label.length > 15
                     ? "max-w-[660px] max-xl:max-w-[540px] max-lg:max-w-[460px] max-md:max-w-[340px] max-sm:max-w-[300px]"

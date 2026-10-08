@@ -300,3 +300,121 @@ before Phase 2 so the consent-rate gap can be measured rather than guessed.
 - [ ] AI assistant traffic is its own channel, not lumped into referral.
 - [ ] Any page with traffic but no index is flagged within 24h.
 - [ ] `mocked: true` can never render without a visible warning.
+
+---
+
+## 9. Phase 4 — Conversions, funnels and history
+
+Added after scanning the live portal (2026-10-08). Findings that drove it, from
+the production database:
+
+| Finding | Evidence |
+| --- | --- |
+| No real conversions recorded in 30 days | `leads`: 0 rows. The only 2 estimates are `localhost:3000` test submits from September. |
+| Most contact routes are invisible | 51 sessions reached `/contact` or `/pricing`; only 4 clicked WhatsApp / mail / tel / Cal.com — and none of those reach the leads count. |
+| Readers have nowhere to go | Design-tokens post: 142 sessions, ~4 min read, **0.94 pages/session**. |
+| "Direct" is 79% | Consistent with Vercel (~72% no referrer), but only 2 sessions carry a UTM, so it cannot be broken down. |
+| Click analytics are fragile | 3,372 of 3,374 clicks have no stable id; only one `data-analytics-id` exists in the codebase. |
+| Stored `isBounce` is dead | `true` on all 413 sessions, never updated. The dashboard computes bounce at read time, so the KPI is right, but the field is a trap. |
+| Half the site is not indexed | 59 of 123 URLs indexed; 40 "Discovered – not indexed". |
+
+### Scope
+
+| # | Item | Approach |
+| --- | --- | --- |
+| 4.1 | **Contact actions as conversions** | Tracker classifies WhatsApp / mailto / tel / Cal.com / Upwork clicks and emits a `conversion` event with a `conversionKind`. Counted alongside form submits. |
+| 4.2 | **Stable click ids** | Tracker derives an id from the link destination when no `data-analytics-id` is set (survives copy changes); key CTAs tagged by hand. |
+| 4.3 | **UTM link builder** | `/admin/utm-links` with presets for Reddit, LinkedIn, X, Upwork, newsletter. Pure client page. |
+| 4.4 | **Next-step CTA on articles** | End-of-article block on blog posts, tracked as its own id. |
+| 4.5 | **Funnel screen** | `/admin/analytics/funnel`: sessions → viewed pricing/contact → contact action → form submit, with per-landing-page conversion rate. |
+| 4.6 | **Tool usage** | Derived from existing click events on `/tools/*` — no new tracking. Leaderboard of views vs. sessions that took an action. |
+| 4.7 | **Broken-link log** | `not-found` page reports the missing path anonymously → `AnalyticsNotFoundDaily`; shown on Content. |
+| 4.8 | **Weekly snapshots** | Cron writes `AnalyticsSnapshot` weekly; Channels shows week-over-week history. |
+| 4.9 | **Remove dead `isBounce`** | Drop the stored field so nothing reads it by mistake. |
+
+### Deliberately not built
+
+- **Scroll milestones** — `page_close.scrollDepthMax` is already stored and the
+  Engagement screen already charts its distribution. A second event stream
+  would only add volume.
+- **A "path" normalisation fix** — `cleanPath` already strips full URLs
+  server-side; the `localhost:3000` paths are older rows.
+
+### Status — Phase 4 ✅ DONE
+
+| # | Item | Where |
+| --- | --- | --- |
+| 4.1 | ✅ Contact actions → `conversion` events | `lib/analytics/conversions.ts`, tracker in `lib/analytics/client.ts` |
+| 4.2 | ✅ Stable click ids derived from link destination; key CTAs tagged (`cta-nav-contact`, `cta-global-estimate`, `cta-global-work`, `cta-footer-primary`, `cta-article-contact`, `cta-article-book-call`) | same + `navbar.tsx`, `GlobalCTA.tsx`, `footer.tsx` |
+| 4.3 | ✅ UTM link builder | `/admin/utm-links` |
+| 4.4 | ✅ End-of-article CTA | `components/blog/ArticleCta.tsx` |
+| 4.5 | ✅ Funnel screen | `/admin/analytics/funnel` |
+| 4.6 | ✅ Tool & component usage | on the Funnel screen; derived from existing click events |
+| 4.7 | ✅ Broken-link log | `not-found` page → `AnalyticsNotFoundDaily`; card on Content |
+| 4.8 | ✅ Weekly snapshots | cron `0 4 * * 1` → `AnalyticsSnapshot`; "Week by week" on Channels |
+| 4.9 | ✅ Dead `isBounce` removed | `models/analytics/AnalyticsSession.ts` |
+
+**Verified against a running server and the live database:** a WhatsApp click
+stored as `conversion`/`whatsapp` with id `link:wa.link`; a forged
+`conversionKind` was rejected (whitelist); a human 404 logged with its referrer
+and query string stripped, while Googlebot and `/admin/*` were refused; the
+snapshot endpoint returns 401 without the secret and 200 with it; the funnel
+read 414 sessions → 52 intent → 4 converted on real data. Test rows were removed
+afterwards.
+
+**Two things the live data showed**
+
+- *Component Lab is the site's most-used feature.* Use rates (sessions that
+  pressed a button) are 60–100% on pages like `tactile-pill-button` — far above
+  anything else on the site.
+- *Historic form submits include test data.* 3 `form_submit` events from
+  September are `localhost:3000` test submissions and count toward "contact
+  actions" until they age out of the 90-day window.
+
+**Known follow-ups, not fixed here**
+
+- A CMS list request is ~2.2 MB, over Next's 2 MB data-cache limit
+  (`Failed to set fetch cache … 2200015 bytes` in the build log), so it is
+  refetched every time. Trim the `fields` requested or paginate.
+- `/tools/*` pages produced no rows in the usage table; only Component Lab
+  pages showed. Worth checking whether tool pages emit button clicks the same
+  way.
+
+---
+
+## 10. Phase 5 — SEO and data-quality fixes
+
+Found by measuring production, not guessing. Numbers are before → after.
+
+| Problem | Evidence | Fix |
+| --- | --- | --- |
+| **Blog pages near Googlebot's 2 MB limit** | `design-tokens` page: 1,835,048 bytes, 4 embedded images | 279,873 bytes (−85%), 0 embedded |
+| **4 case studies store hero images as base64** | connectwise 409 KB, nxvoy 348 KB, sarge 25 KB, testdynamiz 13 KB — each stored twice (featured + banner) = 1.6 MB | Rewritten to `/api/post-image/{slug}/{kind}/{version}`: decoded and served as a real, immutable-cached PNG. Case-study cards show their real image again instead of the placeholder. |
+| **A 2.2 MB CMS request that could never be cached** | `Failed to set fetch cache … 2200015 bytes` on every build | Sitemap now asks for 6 fields: 1,650,000 → 17,100 bytes. `opengraph-image` `generateStaticParams` narrowed to `id,slug,postType`. Warning gone. Sitemap output verified identical (114 = 114 URLs, empty diff). |
+| **Every CMS call paid a redirect** | `/api/pirateCOS/v1` answers `308 → /api/cometCOS/v1` | Client calls `cometCOS` directly. |
+| **Internal links concentrated on 3 posts** | "More to Read" always showed the 3 newest posts — currently case studies — so every article carried identical links and most posts had 1 inbound link; 36 URLs at "Discovered – currently not indexed" | Rotating picks: each post links to the next 3, wrapping around, so **every post receives exactly 3 inbound links** (unit-tested). Links go to the canonical route, not through `/[slug]`'s redirect. |
+| **Dev traffic written to the production database** | `.env.local` points at prod; 71 events had a localhost referrer; the only "conversions" were owner test submits | Ingest refuses non-production and localhost requests at all four entry points. `ANALYTICS_ALLOW_DEV=1` re-enables it deliberately. Old test sessions are excluded from funnel / overview / snapshot counts (raw 3 → clean 1) without deleting any production rows. |
+| **Tool usage table hid tools and undercounted them** | 37 pages competed for 30 rows; only buttons counted, but tools are operated through inputs (105), selects (14), textareas (19) vs buttons (51) | All 37 shown, split Tools / Component Lab; fields count as use. |
+| **Mongoose duplicate-index warning** | `google.coverageState` indexed twice | Removed the field-level duplicate. |
+
+### What the unindexed-page analysis showed
+
+56 of 114 sitemap URLs are not indexed: 36 *Discovered – not indexed*, 13
+*unknown to Google*, 4 *crawled – not indexed*, 3 *duplicate*. Only **7 of the
+56 have ever been crawled**, and **none were ever submitted to a Google API**.
+Raw HTML for every checked page carries 400–5,000 words of real content, so
+this is a discovery problem, not a rendering one — hence the internal-linking
+fix above. The three "duplicate" pages chose unrelated third-party canonicals
+(`747live.bet`, `marcustheatres.com`), which Google does when it has fetched a
+near-empty page; they were crawled before the caching / API-failure fixes.
+
+### Still open (outside the codebase)
+
+- **Upload the 4 base64 images to Cloudinary** and put the URLs in the CMS. The
+  proxy makes this safe to defer, but the CMS API still sends ~1.6 MB on any
+  full list request (`/blogs` fetches all posts, then filters).
+- **One residual test conversion** (Sep 8, path `/contact`) cannot be told
+  apart from a real one; it leaves the 90-day window on 7 Dec. The two test
+  estimates (`UI Pirate`, `xyz`) are still in the estimates collection.
+- **Request indexing** for the 3 duplicate pages and the weakest unindexed URLs
+  (`/services/*`, the older blog posts) in Search Console.

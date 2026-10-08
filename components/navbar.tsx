@@ -315,6 +315,7 @@ export const Navbar = () => {
                     <Button
                       as={NextLink}
                       className="group relative overflow-hidden text-sm font-[500] text-white bg-black border-[#FF5B04] border-2 pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem] px-5 min-w-[135px] hover:!opacity-100 data-[hover=true]:!opacity-100"
+                      data-analytics-id="cta-nav-contact"
                       href="/contact"
                       style={{ paddingTop: 0 }}
                       variant="solid"
