@@ -27,16 +27,19 @@ export const SITE_SERVICES: SiteService[] = [
     name: "UX & UI Design",
     description:
       "Product thinking, competitive analysis, information architecture and UX/UI design for SaaS and mobile apps, from vision to dev-ready screens in Angular, React and Next.js.",
+    price: { currencyCode: "USD", units: 499 },
   },
   {
     name: "Full Stack Development",
     description:
       "Backend architecture, database design, APIs and production deployment on Node.js, Python, AWS, GCP and Azure.",
+    price: { currencyCode: "USD", units: 499 },
   },
   {
     name: "SaaS Development",
     description:
       "Full-stack engineering for SaaS products, from architecture to production, including AI-generated code taken to production.",
+    price: { currencyCode: "USD", units: 499 },
   },
   {
     name: "AI Integrations",
@@ -47,11 +50,13 @@ export const SITE_SERVICES: SiteService[] = [
     name: "Landing Pages",
     description:
       "High-converting landing pages built around your positioning and user journey in React, Next.js, Framer or Webflow.",
+    price: { currencyCode: "USD", units: 2000 },
   },
   {
     name: "Business Websites",
     description:
       "Business websites that turn visitors into customers, built in React, Next.js, Framer or Webflow.",
+    price: { currencyCode: "USD", units: 2000 },
   },
   {
     name: "UX Audits",

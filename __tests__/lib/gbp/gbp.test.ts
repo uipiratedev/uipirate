@@ -393,6 +393,11 @@ describe("planServices", () => {
     );
 
     expect(priced).toEqual({
+      "UX & UI Design": { currencyCode: "USD", units: "499" },
+      "Full Stack Development": { currencyCode: "USD", units: "499" },
+      "SaaS Development": { currencyCode: "USD", units: "499" },
+      "Landing Pages": { currencyCode: "USD", units: "2000" },
+      "Business Websites": { currencyCode: "USD", units: "2000" },
       "Design Subscription": { currencyCode: "USD", units: "499" },
       "5-Day Design Pilot": { currencyCode: "USD", units: "150" },
       "5-Day Development Pilot": { currencyCode: "USD", units: "250" },
