@@ -15,13 +15,12 @@ export interface SiteLink {
 }
 
 /**
- * From the website: the 15-minute booking link used by every call-to-action
- * (cal.com/ui-pirate/15min) and the company LinkedIn and X profiles in the
- * footer. The site has no Instagram or YouTube, so none are set.
+ * The contact page as the booking link (the owner chose it over the cal.com
+ * link), and the company LinkedIn and X profiles from the footer. The site has
+ * no Instagram or YouTube, so none are set. The booking attribute can hold
+ * several links; add more entries with the same attr to use that.
  */
 export const SITE_LINKS: SiteLink[] = [
-  { attr: "url_appointment", label: "Booking link", uri: "https://cal.com/ui-pirate/15min" },
-  // The booking attribute holds several links; the contact page is a second way in.
   { attr: "url_appointment", label: "Booking link", uri: "https://uipirate.com/contact" },
   {
     attr: "url_linkedin",

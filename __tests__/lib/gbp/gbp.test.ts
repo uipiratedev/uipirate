@@ -502,27 +502,31 @@ describe("planLinks", () => {
     expect(plan.attributes.some((a) => a.name.includes("whatsapp"))).toBe(false);
   });
 
-  it("puts both booking links in one attribute, not two", async () => {
+  it("uses the contact page as the booking link", async () => {
     const { planLinks } = await import("@/lib/gbp/attributes");
-    const plan = planLinks([]);
-    const book = plan.attributes.filter((a) => a.name.endsWith("url_appointment"));
+    const book = planLinks([]).attributes.filter((a) => a.name.endsWith("url_appointment"));
 
     expect(book).toHaveLength(1);
-    expect(book[0].uriValues!.map((u) => u.uri)).toEqual([
-      "https://cal.com/ui-pirate/15min",
-      "https://uipirate.com/contact",
-    ]);
+    expect(book[0].uriValues!.map((u) => u.uri)).toEqual(["https://uipirate.com/contact"]);
   });
 
-  it("only adds the booking link that is missing", async () => {
+  it("groups several links for the same attribute into one value", async () => {
     const { planLinks } = await import("@/lib/gbp/attributes");
-    const plan = planLinks([attr("url_appointment", "https://cal.com/ui-pirate/15min/")]);
-    const book = plan.attributes.find((a) => a.name.endsWith("url_appointment"))!;
-
-    expect(book.uriValues!.map((u) => u.uri)).toEqual([
-      "https://cal.com/ui-pirate/15min/",
-      "https://uipirate.com/contact",
+    const plan = planLinks([], [
+      { attr: "url_appointment", label: "Booking link", uri: "https://a.example/1" },
+      { attr: "url_appointment", label: "Booking link", uri: "https://a.example/2" },
     ]);
+
+    expect(plan.attributes).toHaveLength(1);
+    expect(plan.attributes[0].uriValues!.map((u) => u.uri)).toEqual(["https://a.example/1", "https://a.example/2"]);
+  });
+
+  it("does not touch the booking link when it is already there", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_appointment", "https://uipirate.com/contact/")]);
+
+    expect(plan.same.map((l) => l.attr)).toContain("url_appointment");
+    expect(plan.mask).not.toContain("attributes/url_appointment");
   });
 
   it("treats a trailing slash or letter case as the same link", async () => {
@@ -544,7 +548,6 @@ describe("planLinks", () => {
 
     expect(book.uriValues!.map((u) => u.uri)).toEqual([
       "https://other.example/book",
-      "https://cal.com/ui-pirate/15min",
       "https://uipirate.com/contact",
     ]);
     expect(li.uriValues).toHaveLength(1);
