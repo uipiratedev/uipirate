@@ -12,7 +12,10 @@ import dbConnect from "@/lib/mongodb";
 function isAuthorizedCron(req: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
 
-  if (!cronSecret) return true; // dev mode allow
+  // Fail closed in production: with no secret configured this route used to
+  // be callable by anyone, and it submits URLs against the Google/Bing
+  // indexing quotas. Only local development may run without one.
+  if (!cronSecret) return process.env.NODE_ENV !== "production";
 
   const authHeader = req.headers.get("authorization");
 
