@@ -106,6 +106,9 @@ SaaS, fintech, HealthTech/MedTech, LegalTech, AI products and platforms, PropTec
 - Design: Color Palette, Contrast Checker, Typography Scale, CSS Shadow, Border Radius, Breakpoint, CSS-to-Tailwind, SVG Optimizer, Figma Spacing Calculator, Design Tokens
 - Component Lab (interactive React components): https://uipirate.com/componentlab
 - AI product concepts: https://uipirate.com/concepts
+  - AI Voice Receptionist and Booking Agent — how to build a voice agent that answers calls and books into real calendars (architecture, phased plan, stack, production needs): https://uipirate.com/concepts/ai-voice-receptionist-for-clinics
+  - CRM-Grounded Sales and Inquiry Agent — an AI agent that answers sales inquiries using your real pricing and availability, inside your CRM: https://uipirate.com/concepts/crm-grounded-sales-inquiry-agent
+  - Multi-Agent Enterprise Assistant on Microsoft 365 — permission-aware AI agents on Microsoft 365 and Azure OpenAI (architecture, security review, production needs): https://uipirate.com/concepts/enterprise-multi-agent-assistant-microsoft-365
 - Blog: https://uipirate.com/blogs
 
 ## Contact
