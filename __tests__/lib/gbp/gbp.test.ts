@@ -345,9 +345,31 @@ describe("planServices", () => {
   });
   const std = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design" } };
 
-  it("keeps Google's standard services and replaces free-form ones with the site's", async () => {
+  it("by default keeps everything already listed and only adds the site's services", async () => {
     const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
-    const plan = planServices([std, free("UI Developement"), free("UX Designer")]);
+    const mine = free("UI/UX", "per Hour");
+    const plan = planServices([std, mine, free("UX Designer")]);
+
+    expect(plan.remove).toEqual([]);
+    expect(plan.add).toHaveLength(SITE_SERVICES.length);
+    expect(plan.next).toContain(mine);
+    expect(plan.next).toHaveLength(1 + 2 + SITE_SERVICES.length);
+    expect(plan.add.map((s) => s.name)).toContain("Design Subscription");
+  });
+
+  it("does not add a service the listing already has", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const plan = planServices([free("Design Subscription", "My own wording")]);
+
+    expect(plan.add).toHaveLength(SITE_SERVICES.length - 1);
+    expect(plan.same).toEqual(["Design Subscription"]);
+  });
+
+  it("with prune, keeps standard services and replaces free-form ones with the site's", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const plan = planServices([std, free("UI Developement"), free("UX Designer")], SITE_SERVICES, {
+      prune: true,
+    });
 
     expect(plan.keep).toEqual(["web_design"]);
     expect(plan.remove).toEqual(["UI Developement", "UX Designer"]);

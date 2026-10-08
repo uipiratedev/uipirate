@@ -61,6 +61,13 @@ export const SITE_SERVICES: SiteService[] = [
     description:
       "Find the friction blocking growth before you build more, with guidance on UX decisions for your product.",
   },
+  {
+    // From the pricing page and its FAQ: a monthly retainer you can pause, with
+    // a paid pilot first. No price is quoted; the site shows more than one.
+    name: "Design Subscription",
+    description:
+      "A monthly design retainer for SaaS teams: a dedicated design team without full-time headcount. Pause anytime with no lock-ins, and start with a 5-day pilot to try us first.",
+  },
 ];
 
 /**
@@ -112,6 +119,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 export function planServices(
   current: ServiceItem[],
   site: SiteService[] = SITE_SERVICES,
+  opts: { prune?: boolean } = {},
 ): ServicePlan {
   const described: string[] = [];
   const structured = current
@@ -131,9 +139,16 @@ export function planServices(
   const wanted = new Map(site.map((s) => [norm(s.name), s]));
   const have = new Map(free.map((s) => [norm(s.freeFormServiceItem!.label.displayName), s]));
 
-  const remove = free
-    .filter((s) => !wanted.has(norm(s.freeFormServiceItem!.label.displayName)))
-    .map((s) => s.freeFormServiceItem!.label.displayName);
+  // By default nothing the owner has already listed is removed or reworded;
+  // `prune` also drops entries that are not on the website.
+  const remove = opts.prune
+    ? free
+        .filter((s) => !wanted.has(norm(s.freeFormServiceItem!.label.displayName)))
+        .map((s) => s.freeFormServiceItem!.label.displayName)
+    : [];
+  const kept = opts.prune
+    ? free.filter((s) => wanted.has(norm(s.freeFormServiceItem!.label.displayName)))
+    : free;
 
   const same: string[] = [];
   const add: SiteService[] = [];
@@ -141,9 +156,14 @@ export function planServices(
   for (const s of site) {
     const existing = have.get(norm(s.name));
 
-    if (existing?.freeFormServiceItem?.label.description === s.description) same.push(s.name);
-    else add.push(s);
+    if (!existing) add.push(s);
+    else if (opts.prune && existing.freeFormServiceItem?.label.description !== s.description)
+      add.push(s);
+    else same.push(s.name);
   }
+
+  // Under prune an entry being reworded is replaced, not duplicated.
+  const reworded = new Set(add.map((s) => norm(s.name)));
 
   return {
     described,
@@ -153,7 +173,8 @@ export function planServices(
     same,
     next: [
       ...structured,
-      ...site.map(
+      ...kept.filter((s) => !reworded.has(norm(s.freeFormServiceItem!.label.displayName))),
+      ...add.map(
         (s): ServiceItem => ({
           freeFormServiceItem: {
             category,
