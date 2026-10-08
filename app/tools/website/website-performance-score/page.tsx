@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PerformanceCheckerClient from "@/components/PerformanceChecker/PerformanceCheckerClient";
 
 export const metadata: Metadata = {
-  title: "Website Performance & UX Signals Score | UI Pirate",
+  title: "Website Performance & UX Signals Score",
   description:
     "Free tool that measures real time-to-first-byte and payload size for a live request, then checks render-blocking resources, layout-shift risk, and third-party weight from the page's real HTML.",
   alternates: {

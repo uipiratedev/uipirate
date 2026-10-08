@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import DashboardAnalyzerClient from "@/components/DashboardAnalyzer/DashboardAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "Enterprise Dashboard UX Analyzer | UI Pirate",
+  title: "Enterprise Dashboard UX Analyzer",
   description:
     "Free tool to audit a dashboard or admin UI's information density, KPI prominence, table usability, filter discoverability, and multi-role navigation from its real server-rendered HTML.",
   alternates: {

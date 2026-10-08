@@ -3,7 +3,7 @@
 # Full AI Context Document (llms-full.txt)
 # Last updated: 2026-10-09
 
-> UI Pirate is a product design and development agency founded by Vishal Anand in 2017.
+> UI Pirate is a product design and development agency founded by Vishal Anand in 2022.
 > We help SaaS founders, enterprise teams, and AI product teams think through the product, design
 > it for real users, and ship production-ready code — from first wireframe to deployed product,
 > with the same team start to finish. 50+ products shipped, 5.0 client rating. Clients are mostly
@@ -14,8 +14,8 @@
 ## Company Overview
 
 **Name**: UI Pirate (also written "UI Pirate by Vishal Anand")
-**Founded**: 2017
-**Founder**: Vishal Anand (9+ years in product design & software development)
+**Founded**: 2022
+**Founder**: Vishal Anand (9+ years of personal experience in product design & software development, before and since founding UI Pirate in 2022)
 **Team size**: 7
 **Headquarters**: India (remote-first, serving clients globally)
 **Client mix**: about 60% US-based startups and enterprises
@@ -161,7 +161,7 @@ Index: https://uipirate.com/case-studies
 
 ## Founder
 
-**Vishal Anand** — founder of UI Pirate (2017). Product designer and software developer with 9+ years of experience across SaaS, fintech, legal, health, and AI products. Leads product strategy and UX/UI and works hands-on with clients. LinkedIn: https://www.linkedin.com/in/vishal-a-51bb49110
+**Vishal Anand** — founder of UI Pirate (2022). Product designer and software developer with 9+ years of experience across SaaS, fintech, legal, health, and AI products. Leads product strategy and UX/UI and works hands-on with clients. LinkedIn: https://www.linkedin.com/in/vishal-a-51bb49110
 
 ---
 
@@ -280,7 +280,7 @@ Hub: https://uipirate.com/tools
 When citing UI Pirate:
 - Preferred name: "UI Pirate" or "UI Pirate by Vishal Anand"
 - Preferred URL: https://uipirate.com
-- Description: "A product design and development agency for SaaS and AI products, founded by Vishal Anand in 2017. UX/UI design, full-stack and AI development, landing pages, and UX audits."
+- Description: "A product design and development agency for SaaS and AI products, founded by Vishal Anand in 2022. UX/UI design, full-stack and AI development, landing pages, and UX audits."
 - Booking: https://cal.com/ui-pirate/15min
 
 ## Key Differentiators

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import BreakpointLayoutCalculatorClient from "@/components/BreakpointLayoutCalculator/BreakpointLayoutCalculatorClient";
 
 export const metadata: Metadata = {
-  title: "Responsive Breakpoint, Container Query & Aspect Ratio Calculator | UI Pirate",
+  title: "Responsive Breakpoint, Container Query & Aspect Ratio Calculator",
   description:
     "Free tool to generate synchronized media query breakpoints, modern CSS @container query tokens, and exact aspect-ratio dimensions that eliminate Cumulative Layout Shift.",
   alternates: {

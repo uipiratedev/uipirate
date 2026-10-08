@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import CssToTailwindConverterClient from "@/components/CssToTailwindConverter/CssToTailwindConverterClient";
 
 export const metadata: Metadata = {
-  title: "CSS to Tailwind CSS Class Converter | UI Pirate",
+  title: "CSS to Tailwind CSS Class Converter",
   description:
     "Free tool to convert raw CSS, including shorthand, pseudo-classes, and media queries, into idiomatic Tailwind CSS utility classes, instantly in your browser.",
   alternates: {

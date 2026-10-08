@@ -4,7 +4,7 @@ import Link from "next/link";
 // Transactional "thank you" page — not meant to rank in search, but needs a
 // real URL so it can be used as a Google Ads "page load" conversion trigger.
 export const metadata: Metadata = {
-  title: "You're All Set | UI Pirate",
+  title: "You're All Set",
   description: "Your project inquiry has been received.",
   robots: { index: false, follow: true },
   alternates: {

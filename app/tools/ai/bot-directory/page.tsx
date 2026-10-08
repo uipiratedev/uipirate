@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import BotDirectoryClient from "@/components/BotDirectory/BotDirectoryClient";
 
 export const metadata: Metadata = {
-  title: "AI Crawler & Bot Directory - 26+ AI Agents | UI Pirate",
+  title: "AI Crawler & Bot Directory - 26+ AI Agents",
   description:
     "Explore our complete directory of AI crawlers, training scrapers, search bots, and SEO crawlers. Find User-Agents, IP reverse DNS, and robots.txt directives.",
   alternates: {

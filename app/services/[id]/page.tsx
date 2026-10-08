@@ -77,7 +77,7 @@ export async function generateMetadata({
   };
 
   return {
-    title: meta.title,
+    title: meta.title.replace(/ \| UI Pirate$/, ""),
     description: meta.description,
     keywords: meta.keywords,
     openGraph: {

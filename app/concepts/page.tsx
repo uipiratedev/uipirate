@@ -9,7 +9,7 @@ import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Concepts: AI and API-Driven Product Ideas | UI Pirate",
+  title: "Concepts: AI and API-Driven Product Ideas",
   description:
     "Technical concept breakdowns for AI and API-driven products: the problem, the market, the phased solution, the tech stack, and what production actually needs beyond a prototype.",
   keywords:

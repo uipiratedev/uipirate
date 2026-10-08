@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import ToolCategoryHub from "@/components/ToolCategoryHub";
 
 export const metadata: Metadata = {
-  title: "AI & GEO Visibility Tools Suite | UI Pirate",
+  title: "AI & GEO Visibility Tools Suite",
   description:
     "Free Generative Engine Optimization (GEO) toolkit: AI bot checkers, robots.txt generators, llms.txt creators, batch crawler scanners, and schema markup builders.",
   alternates: {

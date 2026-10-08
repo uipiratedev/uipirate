@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import BorderRadiusGeneratorClient from "@/components/BorderRadiusGenerator/BorderRadiusGeneratorClient";
 
 export const metadata: Metadata = {
-  title: "Concentric Border-Radius & Squircle Generator | UI Pirate",
+  title: "Concentric Border-Radius & Squircle Generator",
   description:
     "Free tool to calculate nested (concentric) border-radius values that don't pinch at the corners, plus an iOS-style superellipse squircle generator with clip-path and SVG export.",
   alternates: {

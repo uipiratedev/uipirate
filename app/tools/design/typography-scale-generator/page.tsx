@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import TypographyScaleGeneratorClient from "@/components/TypographyScaleGenerator/TypographyScaleGeneratorClient";
 
 export const metadata: Metadata = {
-  title: "Modular Typography Scale & Fluid Font Generator | UI Pirate",
+  title: "Modular Typography Scale & Fluid Font Generator",
   description:
     "Free tool to generate modular typography scales, proportional line-height ramps, and CSS clamp() fluid font sizes. Export to CSS variables or a Tailwind config instantly.",
   alternates: {

@@ -1,7 +1,7 @@
 # UI Pirate — SaaS & AI Product Design & Development Agency
 <!-- Last updated: 2026-10-09 -->
 
-> UI Pirate is a product design and development agency founded by Vishal Anand in 2017. We help SaaS founders, enterprise teams, and AI product teams think through the product, design it for real users, and ship production-ready code — from first wireframe to deployed product, with the same team start to finish. Stack: Angular, React, Next.js, TypeScript, Node.js, Python, AWS/GCP/Azure, and AI agents / LLM APIs. Clients are mostly in the USA, UK, and Singapore.
+> UI Pirate is a product design and development agency founded by Vishal Anand in 2022. We help SaaS founders, enterprise teams, and AI product teams think through the product, design it for real users, and ship production-ready code — from first wireframe to deployed product, with the same team start to finish. Stack: Angular, React, Next.js, TypeScript, Node.js, Python, AWS/GCP/Azure, and AI agents / LLM APIs. Clients are mostly in the USA, UK, and Singapore.
 
 ## What Makes Us Different
 
@@ -17,8 +17,8 @@ We specialize in complex SaaS and AI products: multi-role dashboards, data-heavy
 
 ## About
 
-- **Founder**: Vishal Anand — 9+ years in product design & software development
-- **Founded**: 2017
+- **Founder**: Vishal Anand — 9+ years of personal experience in product design & software development (before and since founding UI Pirate in 2022)
+- **Founded**: 2022
 - **Team**: 7 people — Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend & AI Developer), Priyagni (Graphic Designer), Aman (Video Editing)
 - **Based in**: India, remote-first; about 60% of clients are US-based; overlap with US Eastern and Pacific hours
 - **Track record**: 50+ products shipped, 5.0 client rating
@@ -74,7 +74,7 @@ Index: https://uipirate.com/case-studies
 
 ## Founder
 
-**Vishal Anand** — founder of UI Pirate (2017). Product designer and software developer with 9+ years of experience in SaaS, fintech, legal, health, and AI products; leads product strategy and UX/UI. LinkedIn: https://www.linkedin.com/in/vishal-a-51bb49110
+**Vishal Anand** — founder of UI Pirate (2022). Product designer and software developer with 9+ years of experience in SaaS, fintech, legal, health, and AI products; leads product strategy and UX/UI. LinkedIn: https://www.linkedin.com/in/vishal-a-51bb49110
 
 ## How UI Pirate Compares
 

@@ -5,7 +5,7 @@ import UpcomingToolLandingPage, {
 } from "@/components/UpcomingToolLandingPage";
 
 export const metadata: Metadata = {
-  title: "Website UX & Friction Audit Tool | UI Pirate",
+  title: "Website UX & Friction Audit Tool",
   description:
     "Audit any website URL for visual hierarchy, CTA clarity, mobile UX, accessibility, and conversion friction. Free diagnostic engine by UI Pirate.",
   alternates: {

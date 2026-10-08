@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PricingPageAnalyzerClient from "@/components/PricingPageAnalyzer/PricingPageAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "Free SaaS Pricing Page & Conversion Analyzer | UI Pirate",
+  title: "Free SaaS Pricing Page & Conversion Analyzer",
   description:
     "Analyze your SaaS pricing page for plan differentiation, annual discount nudges, feature comparisons, and pricing psychology friction.",
   alternates: {

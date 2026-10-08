@@ -165,7 +165,7 @@ export default function RootLayout({
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
                 "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product, we carry the rest.",
-              foundingDate: "2017",
+              foundingDate: "2022",
               founder: {
                 "@type": "Person",
                 name: "Vishal Anand",

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import LandingPageAnalyzerClient from "@/components/LandingPageAnalyzer/LandingPageAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "Free Landing Page UX & Conversion Analyzer | UI Pirate",
+  title: "Free Landing Page UX & Conversion Analyzer",
   description:
     "Analyze your landing page for value proposition clarity, CTA prominence, social proof trust signals, and cognitive friction. Instant 0–100 score.",
   alternates: {

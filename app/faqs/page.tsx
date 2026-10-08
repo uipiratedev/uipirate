@@ -15,6 +15,14 @@ export const metadata: Metadata = {
       "Get answers about our product design & development services, pricing, process, and timelines.",
     url: "https://uipirate.com/faqs",
     siteName: "UI Pirate by Vishal Anand",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
+        width: 1200,
+        height: 630,
+        alt: "UI Pirate FAQs",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import ToolCategoryHub from "@/components/ToolCategoryHub";
 
 export const metadata: Metadata = {
-  title: "SaaS & Product Design Tools Suite | UI Pirate",
+  title: "SaaS & Product Design Tools Suite",
   description:
     "Free SaaS UX audits, onboarding friction diagnostics, pricing page conversion analyzers, and enterprise dashboard calculators by UI Pirate.",
   alternates: {

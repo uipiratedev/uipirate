@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import SvgOptimizerClient from "@/components/SvgOptimizer/SvgOptimizerClient";
 
 export const metadata: Metadata = {
-  title: "Fast SVG Optimizer & React Exporter | UI Pirate",
+  title: "Fast SVG Optimizer & React Exporter",
   description:
     "Free tool to strip editor bloat and comments from exported SVG markup, round coordinate precision, and export a clean React/JSX component - processed on the fly, never stored.",
   alternates: {
