@@ -13,6 +13,7 @@ import {
   listAccounts,
   listLocations,
 } from "@/lib/gbp/client";
+import { disconnect, getStoredAuth, oauthClient } from "@/lib/gbp/oauth";
 import { isOverviewConfigured } from "@/lib/gbp/overview";
 import {
   generateOverviewFor,
@@ -47,11 +48,17 @@ export async function GET() {
   }));
 
   const cfg = getGbpConfig();
+  const stored = await getStoredAuth();
 
   return NextResponse.json({
     configured: Boolean(cfg),
     publishingEnabled: isPublishingEnabled(),
     aiConfigured: isOverviewConfigured(),
+    oauth: {
+      clientConfigured: Boolean(oauthClient()),
+      connected: Boolean(stored),
+      connectedAs: stored?.email ?? null,
+    },
     nextBacklogAt: nextBacklogAt(queue, new Date()),
     counts: rows.reduce<Record<string, number>>((acc, r) => {
       acc[r.status] = (acc[r.status] ?? 0) + 1;
@@ -79,6 +86,7 @@ type Action =
   | "sync"
   | "check"
   | "accept"
+  | "disconnect"
   | "preview"
   | "publish"
   | "skip"
@@ -116,6 +124,12 @@ export async function POST(req: NextRequest) {
       ).flat();
 
       return NextResponse.json({ ok: true, accounts, locations });
+    }
+
+    if (action === "disconnect") {
+      await disconnect();
+
+      return NextResponse.json({ ok: true });
     }
 
     if (action === "accept") {

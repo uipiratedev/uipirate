@@ -12,6 +12,7 @@
  * Business Profile, or every call returns 403.
  */
 import { getGoogleAccessToken } from "@/lib/indexing/auth";
+import { getOAuthAccessToken } from "./oauth";
 import type { LocalPostPayload } from "./payload";
 
 const SCOPE = "https://www.googleapis.com/auth/business.manage";
@@ -107,13 +108,14 @@ export function explain(status: number, body: string): GbpError {
 }
 
 async function call<T>(url: string, init?: RequestInit): Promise<T> {
-  const token = await getGoogleAccessToken([SCOPE]);
+  // The owner's own sign-in first; the service account is the fallback.
+  const token = (await getOAuthAccessToken()) ?? (await getGoogleAccessToken([SCOPE]));
 
   if (!token)
     throw new GbpError(
-      "No Google service-account credentials are configured.",
+      "Google Business Profile is not connected.",
       undefined,
-      "Set GOOGLE_SERVICE_ACCOUNT_JSON.",
+      "Press “Connect Google account” on this page.",
     );
 
   const res = await fetch(url, {
