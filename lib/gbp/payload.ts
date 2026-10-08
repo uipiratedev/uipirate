@@ -6,7 +6,7 @@
  */
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import { buildUtmUrl } from "@/lib/analytics/utm";
-import { postHref } from "@/lib/pirateCOS/suggested";
+import { postHref } from "@/lib/cometCOS/suggested";
 
 export const SITE_ORIGIN = "https://uipirate.com";
 

@@ -5,9 +5,9 @@ import OurProductsScreen from "@/screens/products";
 export const metadata: Metadata = {
   title: "Our Products | In-House Platforms & Software Systems",
   description:
-    "Explore proprietary products and platforms built and operated by UI Pirate: Alfred OS, AI Voice Caller, PirateCOS, Smart Onboarding Engine, Component Lab, and developer engineering tools.",
+    "Explore proprietary products and platforms built and operated by UI Pirate: Alfred OS, AI Voice Caller, cometCOS, Smart Onboarding Engine, Component Lab, and developer engineering tools.",
   keywords:
-    "UI Pirate products, Alfred OS, AI Voice Caller, SaaS products, in-house platforms, PirateCOS, AI voice support, smart onboarding engine, component lab, developer tools, design systems, ready-to-deploy software",
+    "UI Pirate products, Alfred OS, AI Voice Caller, SaaS products, in-house platforms, cometCOS, content operating system, AI voice support, smart onboarding engine, component lab, developer tools, design systems, ready-to-deploy software",
   alternates: {
     canonical: "https://uipirate.com/products",
   },
@@ -65,11 +65,11 @@ export default function ProductsPage() {
       {
         "@type": "SoftwareApplication",
         position: 3,
-        name: "PirateCOS",
+        name: "cometCOS",
         applicationCategory: "BusinessApplication",
         description:
           "Multi-tenant Content Operating System and AI publishing engine with Edge read APIs.",
-        url: "https://uipirate.com/apps4sale/piratecos",
+        url: "https://cos.uipirate.com/",
       },
       {
         "@type": "SoftwareApplication",

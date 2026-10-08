@@ -11,7 +11,7 @@
 import { describe, it, expect } from "@jest/globals";
 
 // Import will fail until Phase 4F+ when we create the actual implementation
-// import { buildAIContext } from '@/lib/pirateCOS/ai-context-builder';
+// import { buildAIContext } from '@/lib/cometCOS/ai-context-builder';
 
 describe("AI Context Builder", () => {
   describe("Edit Intent Classification", () => {

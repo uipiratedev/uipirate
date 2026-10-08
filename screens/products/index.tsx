@@ -93,7 +93,7 @@ const PRODUCTS: ProductItem[] = [
     ],
     techStack: ["Next.js 15", "PostgreSQL", "Tailwind CSS", "Edge API"],
     primaryLink: "https://cos.uipirate.com/",
-    primaryLinkText: "Launch PirateCOS",
+    primaryLinkText: "Launch cometCOS",
     secondaryLink: "https://cos.uipirate.com/register",
     secondaryLinkText: "See Live in Production",
   },

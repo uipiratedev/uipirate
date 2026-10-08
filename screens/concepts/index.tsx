@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+import type { ReaderPost } from "@/lib/cometCOS/public-client";
 import type { ConceptEntry } from "./data";
 
 import { useMemo, useState } from "react";

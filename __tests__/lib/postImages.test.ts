@@ -7,7 +7,7 @@ import {
   postImageUrl,
   proxyIfDataUri,
   versionOf,
-} from "@/lib/pirateCOS/images";
+} from "@/lib/cometCOS/images";
 
 // 1x1 transparent PNG.
 const PNG_B64 =

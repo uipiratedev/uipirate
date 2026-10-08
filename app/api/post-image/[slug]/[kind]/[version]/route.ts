@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { getRawPostImage } from "@/lib/pirateCOS/public-client";
-import { isImageKind, parseImageDataUri } from "@/lib/pirateCOS/images";
+import { getRawPostImage } from "@/lib/cometCOS/public-client";
+import { isImageKind, parseImageDataUri } from "@/lib/cometCOS/images";
 
 export const runtime = "nodejs";
 

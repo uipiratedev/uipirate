@@ -2,22 +2,21 @@
   "general": [
     {
       "heading": "🚀 What kinds of services does UiPirate offer?",
-      "title1": "We specialize in product design and development for SaaS, AI, and tech companies. Our core services include:",
+      "title1": "We design and build SaaS and AI products. We offer four services:",
       "list": [
-        "✅ SaaS Web & Mobile App Design",
-        "✅ UI Development (React, Framer, Webflow)",
-        "✅ Landing Pages & E-commerce",
-        "✅ Design Systems & Component Libraries",
-        "✅ UX Audits & Product Consultation"
+        "🎨 UX/UI Design (SaaS, AI & mobile apps)",
+        "⚙️ SaaS & AI Development (full-stack, LLM integrations, cloud)",
+        "🌐 Landing Pages & Business Websites",
+        "🔍 UX Audits & Consultation"
       ],
-      "title2": "Whether you need design-only, dev-only, or full product delivery, we support end-to-end execution."
+      "title2": "Whether you need design-only, development-only, or full product delivery, we support end-to-end execution. Design systems and component libraries are delivered as part of UX/UI Design and SaaS builds."
     },
     {
       "heading": "🎯 Do you offer both design and development?",
       "title1": "Yes, we work in 3 flexible modes:",
       "list": [
         "🎨 Design Only: UX, UI, Figma assets, motion",
-        "💻 Development Only: React, HTML/CSS/JS, integrations",
+        "💻 Development Only: front end (React, Angular, Next.js) and back end (Node.js, Python), integrations, AI/LLM features",
         "⚡ Design + Dev, full product delivery"
       ],
       "title2": "Choose based on your team, timeline, and project phase."
@@ -26,23 +25,32 @@
       "heading": "⏱️ How long do projects usually take?",
       "title1": "Timelines vary by scope:",
       "list": [
-        "🖥️ Landing Pages → 2–4 weeks",
-        "📱 SaaS Apps → 1–2 months",
-        "📦 Design Systems → 2–3 months",
-        "🎮 Motion / 3D → 1–4 weeks"
+        "🖥️ Landing Pages & Business Websites → 2–4 weeks",
+        "📱 SaaS & AI Apps → 1–2 months",
+        "🔍 UX Audits → 1–2 weeks"
       ],
       "title2": "We work with milestone-based delivery and weekly updates."
     },
     {
-      "heading": "💻 Do you offer Webflow, Shopify, or React development?",
-      "title1": "Yes, we support modern stacks for fast performance:",
+      "heading": "💰 How much does it cost?",
+      "title1": "We offer three simple ways to work together:",
       "list": [
-        "⚡ No-code: Webflow, Framer",
-        "🛒 E-commerce: Shopify, WooCommerce",
-        "💻 Frontend: React, JavaScript, TypeScript",
-        "📡 Integrations: APIs, headless CMS, analytics"
+        "📅 Monthly retainer: from $499/month, one active request at a time, pause anytime",
+        "📦 Custom project quote: from $2,000, scoped to your project",
+        "🧪 5-Day Pilot: a small paid pilot ($150–$350) with real deliverables, deducted from your final invoice if you continue"
       ],
-      "title2": ""
+      "title2": "See full details on our pricing page."
+    },
+    {
+      "heading": "💻 What technologies do you work with?",
+      "title1": "We use modern stacks built for performance and scale:",
+      "list": [
+        "⚛️ Frontend: React, Next.js, Angular, TypeScript, Tailwind CSS",
+        "⚡ No-code & fast builds: Framer, Webflow",
+        "🧠 Backend & AI: Node.js, Python (FastAPI), PostgreSQL, MongoDB, LLM APIs, AI agents, RAG pipelines",
+        "☁️ Cloud: AWS, Google Cloud, Azure with CI/CD"
+      ],
+      "title2": "We tailor each build to your technical needs and scalability goals."
     },
     {
       "heading": "🖊️ Can I start with design and add development later?",
@@ -79,14 +87,13 @@
       "heading": "🌍 What industries do you typically work with?",
       "title1": "We collaborate across multiple product domains:",
       "list": [
-        "💰 SaaS",
-        "💳 Fintech",
-        "🎓 Edtech",
-        "🛒 E-commerce",
-        "🤖 AI tools",
-        "📻 OTT platforms",
-        "❤ Wellness",
-        "🌱 NGOs"
+        "💰 SaaS & enterprise software",
+        "💳 Fintech & quant trading",
+        "🏥 HealthTech & MedTech",
+        "⚖️ LegalTech",
+        "🤖 AI products & platforms",
+        "🏠 PropTech",
+        "🛒 E-commerce"
       ],
       "title2": "We adapt quickly to niche requirements."
     },
@@ -99,9 +106,28 @@
         "💬 Message us on WhatsApp or email"
       ],
       "title2": "We reply within a few hours with next steps."
+    },
+    {
+      "heading": "🤖 Can you rebuild a prototype made with an AI tool?",
+      "title1": "Yes. If you built a prototype with Lovable, Bolt, v0, Cursor, or Claude Code, we can turn it into a production-ready product:",
+      "list": [
+        "🔒 Secure, scalable architecture",
+        "🧱 Clean, maintainable code",
+        "🚀 Cloud deployment with CI/CD"
+      ],
+      "title2": "We start with a UX audit so you know what to keep and what to fix."
+    },
+    {
+      "heading": "🌐 How does the time zone work for US and UK clients?",
+      "title1": "Our core team is in India, and most clients are in the USA, UK, and Singapore.",
+      "list": [
+        "🕐 2–4 hour daily overlap with US Eastern and Pacific hours",
+        "💬 Structured async workflow in Figma and Notion",
+        "📋 Weekly check-ins so nothing falls into a time-zone gap"
+      ],
+      "title2": ""
     }
   ],
-
   "SaaS Web & Mobile Apps": [
     {
       "heading": "🛠️ Do you offer both design and development for SaaS apps?",
@@ -127,11 +153,11 @@
       "heading": "⚙️ What tech stacks do you work with?",
       "title1": "We use modern, scalable tools:",
       "list": [
-        "⚛️ React",
-        "🕠 Tailwind CSS",
-        "🎿 Framer",
-        "📱 PWA & Responsive Designs",
-        "📲 React Native UI"
+        "⚛️ React, Next.js, Angular",
+        "🧠 Node.js, Python, LLM APIs, AI agents",
+        "🕠 Tailwind CSS, TypeScript",
+        "📱 PWA & responsive designs, React Native UI",
+        "☁️ AWS, Google Cloud, Azure"
       ],
       "title2": ""
     },
@@ -284,23 +310,22 @@
   "Services": [
     {
       "heading": "🧭 What kinds of services does UiPirate offer?",
-      "title1": "We specialize in product design and development for SaaS, AI, and tech companies.",
+      "title1": "We design and build SaaS and AI products. We offer four services:",
       "list": [
-        "💻 SaaS Web & Mobile App Design",
-        "⚛️ UI Development (React, Framer, Webflow)",
-        "🌐 Landing Pages & E-commerce",
-        "🧩 Design Systems & Component Libraries",
-        "🔍 UX Audits & Product Consultation"
+        "🎨 UX/UI Design (SaaS, AI & mobile apps)",
+        "⚙️ SaaS & AI Development (full-stack, LLM integrations, cloud)",
+        "🌐 Landing Pages & Business Websites",
+        "🔍 UX Audits & Consultation"
       ],
-      "title2": "Whether you need design-only, dev-only, or both, we support end-to-end product execution."
+      "title2": "Whether you need design-only, development-only, or full product delivery, we support end-to-end execution. Design systems and component libraries are delivered as part of UX/UI Design and SaaS builds."
     },
     {
       "heading": "🧑‍💻 Do you offer both design and development?",
       "title1": "Yes! We work in 3 flexible modes depending on your needs:",
       "list": [
-        "🎨 Design Only – UI/UX design, wireframes, Figma assets, motion",
-        "💻 Development Only – Frontend (React, HTML/CSS/JS), integrations",
-        "🚀 Design + Dev – Full product delivery from idea to launch"
+        "🎨 Design Only – UX/UI design, wireframes, Figma assets, motion",
+        "💻 Development Only – front end (React, Angular, Next.js), back end (Node.js, Python), integrations, AI/LLM features",
+        "🚀 Design + Dev – full product delivery from idea to launch"
       ],
       "title2": "You can choose based on your internal team’s needs or project phase."
     },
@@ -308,20 +333,20 @@
       "heading": "⏱️ How long do projects usually take?",
       "title1": "Timelines vary depending on project type and scope:",
       "list": [
-        "🗓️ Landing Pages: 2–4 weeks",
-        "📱 SaaS Apps: 1–2 months",
-        "📘 Design Systems: 2–3 months"
+        "🖥️ Landing Pages & Business Websites → 2–4 weeks",
+        "📱 SaaS & AI Apps → 1–2 months",
+        "🔍 UX Audits → 1–2 weeks"
       ],
-      "title2": "We provide clear schedules and milestone-based delivery for each service."
+      "title2": "We work with milestone-based delivery and weekly updates."
     },
     {
-      "heading": "🧩 Do you offer Webflow, Shopify, or React development?",
-      "title1": "Absolutely! We support a wide range of tech stacks depending on your goals:",
+      "heading": "🧩 What technologies do you work with?",
+      "title1": "We use modern stacks built for performance and scale:",
       "list": [
-        "⚙️ No-code: Webflow, Framer",
-        "🛒 E-commerce: Shopify, WooCommerce",
-        "💻 Frontend: React, JavaScript, TypeScript",
-        "🔗 CMS & Integrations: Headless CMS, APIs, analytics tracking"
+        "⚛️ Frontend: React, Next.js, Angular, TypeScript, Tailwind CSS",
+        "⚡ No-code & fast builds: Framer, Webflow",
+        "🧠 Backend & AI: Node.js, Python (FastAPI), PostgreSQL, MongoDB, LLM APIs, AI agents, RAG pipelines",
+        "☁️ Cloud: AWS, Google Cloud, Azure with CI/CD"
       ],
       "title2": "We tailor each build to your technical needs and scalability goals."
     },
@@ -359,10 +384,11 @@
       "heading": "🌍 What industries do you typically work with?",
       "title1": "We’ve worked with a wide range of industries and product types.",
       "list": [
-        "💼 SaaS & Fintech",
-        "🎓 Edtech & Wellness",
-        "🛍️ Ecommerce & AI tools",
-        "🎬 OTT platforms & NGOs"
+        "💼 SaaS & enterprise software",
+        "💳 Fintech & quant trading",
+        "🏥 HealthTech & MedTech",
+        "⚖️ LegalTech & PropTech",
+        "🤖 AI products & platforms"
       ],
       "title2": "We adapt quickly and understand unique domain challenges."
     },

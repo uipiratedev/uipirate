@@ -1,102 +1,113 @@
 # UI Pirate — SaaS & AI Product Design & Development Agency
 
-> UI Pirate is a full-service product design and development agency founded by Vishal Anand. We turn product ideas into fully functional shipped products — handling everything from product thinking and competitive analysis to UX/UI design and end-to-end software development (Angular, React, Next.js, Node.js, Python, and Cloud Architecture). Serving Fortune 500 and enterprise clients across USA, UK, Singapore, India, and Australia.
+> UI Pirate is a product design and development agency founded by Vishal Anand in 2017. We help SaaS founders, enterprise teams, and AI product teams think through the product, design it for real users, and ship production-ready code — from first wireframe to deployed product, with the same team start to finish. Stack: Angular, React, Next.js, TypeScript, Node.js, Python, AWS/GCP/Azure, and AI agents / LLM APIs. Clients are mostly in the USA, UK, and Singapore.
 
 ## What Makes Us Different
 
-We are NOT just a design studio that creates static screens. Our approach is simple: **have a conversation about your product — we carry the rest.** From a few lines of your vision, we help you:
+We are NOT just a design studio that creates static screens. Our approach: **have a conversation about your product — we carry the rest.** From a few lines of your vision, we help you:
 
-- **Think through your product** — Product thinking, competitive analysis, market positioning
-- **Plan the architecture** — Information architecture, user flows, database & API design
+- **Think through your product** — product thinking, competitive analysis, market positioning
+- **Plan the architecture** — information architecture, user flows, database & API design
 - **Design the experience** — UX research, wireframes, high-fidelity UI, interactive prototypes
-- **Build the software** — Production-ready full-stack software development in Angular, React, Next.js, Node.js, and Python
-- **Ship and scale** — Cloud deployment, performance optimization, design systems, component libraries
+- **Build the software** — production-ready front end and full-stack development
+- **Ship and scale** — cloud deployment, performance, design-system handoff, ongoing support
 
-We specialize in **complex enterprise SaaS and AI applications** — the kind with multi-role dashboards, data-heavy interfaces, intricate backend workflows, API integrations, and real business logic. Not just marketing pages, but fully developed, production-grade applications.
+We specialize in complex SaaS and AI products: multi-role dashboards, data-heavy interfaces, backend workflows, API integrations, and real business logic. We also take AI-generated prototypes (Lovable, Bolt, v0, Cursor, Claude Code) and rebuild them into secure, scalable, production-grade products.
 
 ## About
 
-**Core Technologies**: Angular, React, Next.js, TypeScript, Tailwind CSS, Node.js, Python, PostgreSQL, MongoDB, AWS, Framer, Webflow
-**Founder**: Vishal Anand — 9+ years of experience in product design & full-stack software development
-**Team**: Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend Developer)
-**Headquarters**: India (serving clients globally)
-**Founded**: 2017
-**Projects Shipped**: 50+ products with 5.0 rating
+- **Founder**: Vishal Anand — 9+ years in product design & software development
+- **Founded**: 2017
+- **Team**: 7 people — Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend & AI Developer), Priyagni (Graphic Designer), Aman (Video Editing)
+- **Based in**: India, remote-first; about 60% of clients are US-based; overlap with US Eastern and Pacific hours
+- **Track record**: 50+ products shipped, 5.0 client rating
+- **Core technologies**: Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Figma, GSAP, Node.js, Python, AWS, Google Cloud, Azure, AI agents / LLM APIs
 
-## Services
+## Services (4)
 
-- **SaaS & AI Web/Mobile App Design & Full-Stack Development**: End-to-end product design and full-stack engineering (Angular, React, Next.js, Node.js, Python). From raw idea to shipped product — market analysis, information architecture, UX/UI design, database architecture, API engineering, and production deployment. Timeline: 1-2 months.
-- **Landing Pages & Business Websites**: High-converting marketing websites and corporate web platforms designed for maximum conversion and developed with modern Next.js/React engineering. Timeline: 2-4 weeks.
-- **Full-Stack Software Engineering & UI Development**: Production-ready software development in Angular (v14+), React, Next.js, and backend API services. Specializing in data-heavy enterprise platforms, real-time analytics dashboards, AI model integrations, and performance engineering.
-- **Design Systems & Component Libraries**: Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries for scalable product teams. Timeline: 1-4 weeks.
-- **UX Audits & Consultation**: Heuristic analysis, usability testing, friction point identification, and strategic UX recommendations for existing products.
+1. **UX/UI Design** — SaaS, AI & mobile app design: discovery and strategy, information architecture, wireframes, high-fidelity UI, interactive prototypes, and production-ready UI development in React, Next.js, or Angular. New build or redesign. Typical timeline: 1–2 months. https://uipirate.com/services/UX-UI-Design
+2. **SaaS & AI Development** — full-stack engineering: backend, database and APIs on Node.js or Python, LLM integrations, AI agents and RAG pipelines, payments/auth, cloud deployment (AWS, GCP, Azure) with CI/CD. Includes turning AI-generated prototypes into production code. https://uipirate.com/services/SaaS-&-AI-Development
+3. **Landing Pages & Business Websites** — conversion-focused marketing sites built in React, Next.js, Framer, or Webflow; SEO- and AI-search-readable; fully responsive. Typical timeline: 2–4 weeks. https://uipirate.com/services/Landing-Pages-&-Business-Websites
+4. **UX Audits & Consultation** — heuristic UX audit report, drop-off and friction insights, flow review, prioritised findings, optional walkthrough video, and an action roadmap. Most audits take 1–2 weeks. https://uipirate.com/services/UX-Audits-&-Consultation
+
+Design systems and component libraries are delivered as part of UX/UI Design and SaaS builds (there is no standalone service page).
+
+## Pricing
+
+- **Monthly retainer**: from $499/month — 1 active request at a time, weekly progress sync, fast turnaround, Mon–Fri with under 2-hour response. No long-term contract; can be paused.
+- **Custom project quote**: from $2,000 — scoped to the project.
+- **5-Day Pilot**: a small paid pilot ($150–$350) with real deliverables; the fee is deducted from the final invoice if you continue.
+- Details: https://uipirate.com/pricing
 
 ## Our Approach
 
-1. **Listen** — You share your vision, even if it's just a few lines of an idea
-2. **Think** — We do competitive analysis, market research, product thinking
-3. **Plan** — Information architecture, user flows, feature prioritization
-4. **Design** — Wireframes → High-fidelity UI → Interactive prototypes
-5. **Build** — Production-ready Angular/React code, API integration, testing
-6. **Ship** — Deployment, documentation, handoff, and ongoing support
+1. **Listen** — you share the vision, even if it's a few lines
+2. **Think** — competitive analysis and product research
+3. **Plan** — user flows, information architecture, feature prioritisation
+4. **Design** — wireframes → high-fidelity UI → interactive prototypes
+5. **Build** — production-ready React, Angular, or Next.js, plus backend and API integration
+6. **Ship & Scale** — deployment, design-system handoff, ongoing support
 
-## Notable Clients & Projects
+More: https://uipirate.com/process
 
-- **Ipsos** (Israel) — Enterprise research platform redesign for VP of R&D
-- **Khaitan & Co** (India) — India's leading corporate law firm
-- **Xperiti** (New York, USA) — SaaS research platform for CEO & Founder
-- **RevUp AI** (Dallas, Texas, USA) — AI SaaS platform for CEO
-- **Sarge** (USA) — Real-time legal and policy support platform for officers in the field
-- **Biotex Medical** (Texas, USA) — MedTech & medical device development
-- **Bird** (San Francisco, USA) — Brand & product design for CEO
-- **Awesome Health Club** (California, USA) — Platform design for Seed Investor
-- **ArthAlpha** (Bangalore, India) — Fintech trading platform for Co-Founder
-- **APAC Law Firm** (New Delhi, India) — AI-powered LegalTech platform
-- **Netzhill** (Ontario, Canada) — Product design for Founder
-- **Rings & I** (India) — E-commerce platform on Shopify
-- **ION** — Medical supply chain SaaS platform
-- **Brahmastra** — Fintech trading platform
-- **StayPe** — Rental property management platform
+## Our Own Products
+
+- **Alfred OS** — enterprise multi-agent AI platform (5 focused agents, deterministic safety policies): https://alfred.uipirate.com/
+- **AI Voice Caller** — conversational voice agents for scheduling, front desk, and triage: https://aicalling.uipirate.com/
+- **cometCOS** — multi-tenant content operating system with an AI publishing studio: https://cos.uipirate.com/
+- All products: https://uipirate.com/products
+
+## Case Studies
+
+Index: https://uipirate.com/case-studies
+
+- Xperiti — market research enterprise SaaS: https://uipirate.com/case-studies/xperiti-market-research-enterprise-saas
+- Generative legal AI knowledge management platform redesign (APAC law firm): https://uipirate.com/case-studies/ai-knowledge-management-platform-redesign
+- RevMigrate — AI-powered legacy migration platform: https://uipirate.com/case-studies/case-study-redesigning-revmigrates-ai-powered-legacy-migration-platform
+- SARGE — law enforcement software: https://uipirate.com/case-studies/designing-sarge-law-enforcement-software
+- MedJourney — patient support platform: https://uipirate.com/case-studies/designing-medjourney-patient-support-platform
+- NxVoy — AI flight booking UX: https://uipirate.com/case-studies/nxvoy-ai-flight-booking-ux-case-study
+- ConnectWise — unified product ecosystem for operations and event engagement: https://uipirate.com/case-studies/designing-connectwise-how-we-solved-complex-operations-and-event-engagement-in-one-ecosystem
+- PropTech — connected multi-product rental lifecycle ecosystem: https://uipirate.com/case-studies/fixing-a-broken-rental-lifecycle-a-multi-product-ux-case-study
+- Legacy enterprise software redesign: https://uipirate.com/case-studies/how-to-redesign-legacy-enterprise-software-without-breaking-what-works---a-case-study
+
+## Selected Clients
+
+Ipsos, Khaitan & Co, Xperiti, RevUp AI, Sarge, Biotex Medical, Awesome Health Club, ArthAlpha, Simpleo AI, Pivot Bits, Rings & I, and others.
 
 ## Industries Served
 
-SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applications, Enterprise Software
+SaaS, fintech, HealthTech/MedTech, LegalTech, AI products and platforms, PropTech, e-commerce, enterprise software.
+
+## Free Tools & Resources
+
+- All tools: https://uipirate.com/tools
+- AI visibility: AI Bot Checker (https://uipirate.com/tools/ai/ai-bot-checker), llms.txt Generator (https://uipirate.com/tools/ai/llms-txt-generator), Robots.txt Generator and Validator, Schema Generator, GEO Competitor Checker, Bot Directory
+- SaaS UX: SaaS UX Audit, Pricing Page Analyzer, Dashboard Analyzer, Onboarding Analyzer
+- Website: Landing Page Analyzer, CTA Analyzer, Homepage SEO Checker, Readability Checker, Performance Score, UX Audit
+- Design: Color Palette, Contrast Checker, Typography Scale, CSS Shadow, Border Radius, Breakpoint, CSS-to-Tailwind, SVG Optimizer, Figma Spacing Calculator, Design Tokens
+- Component Lab (interactive React components): https://uipirate.com/componentlab
+- AI product concepts: https://uipirate.com/concepts
+- Blog: https://uipirate.com/blogs
 
 ## Contact
 
-- **Website**: https://uipirate.com
-- **Book a Call**: https://cal.com/ui-pirate/15min
-- **Email**: vishal@uipirate.com
-- **Phone**: +91 9708636151
+- Website: https://uipirate.com
+- Book a free 15-minute call: https://cal.com/ui-pirate/15min
+- Contact page: https://uipirate.com/contact
+- Email: vishal@uipirate.com
+- Phone: +91 9708636151
 
 ## Links
 
-- Website: https://uipirate.com
-- Case Studies & Portfolio: https://uipirate.com/case-studies
-  - Xperiti — Enterprise Research Platform: https://uipirate.com/case-studies/xperiti
-  - Legaltech AI SaaS — APAC's Largest Law Firm: https://uipirate.com/case-studies/legaltech-ai-saas
-  - ION — Order Fulfilment SaaS Platform: https://uipirate.com/case-studies/ion
-  - ArthAlpha — AI Trading Platform: https://uipirate.com/case-studies/arthalpha
-  - Rings & I — Custom Ring Design Studio: https://uipirate.com/case-studies/rings-and-i
-  - FrytX — Business Operations Platform: https://uipirate.com/case-studies/frytx
-  - Test Dynamiz — Automated Testing SaaS: https://uipirate.com/case-studies/test-dynamiz
-  - SimpleO — AI Legal Management System: https://uipirate.com/case-studies/simpleo
-  - StayPe — Rental Property Management: https://uipirate.com/case-studies/staype
-  - Infinity AquaSol — Water Treatment Solutions: https://uipirate.com/case-studies/infinity-aquasol
-  - Cloud Shift — Cloud Migration Platform: https://uipirate.com/case-studies/cloud-shift
-  - StayRealtor — Property Management App: https://uipirate.com/case-studies/stayrealtor
-  - OLSO — Peer-to-Peer Sharing Platform: https://uipirate.com/case-studies/olso
-- UX/UI Design (SaaS, AI & Mobile Apps): https://uipirate.com/services/UX-UI-Design
-- Landing Pages & Business Websites: https://uipirate.com/services/Landing-Pages-&-Business-Websites
-- Design Systems & Component Libraries: https://uipirate.com/services/Design-System-&-Component-Library
-- UX Audits & Consultation: https://uipirate.com/services/UX-Audits-&-Consultation
+- About: https://uipirate.com/about
 - Pricing: https://uipirate.com/pricing
-- Blog: https://uipirate.com/blogs
 - FAQs: https://uipirate.com/faqs
+- Full AI context: https://uipirate.com/llms-full.txt
 - LinkedIn: https://www.linkedin.com/company/ui-pirate-by-vishal-anand/
 - Behance: https://www.behance.net/vishalanand-UI-UX
 - Dribbble: https://dribbble.com/vishalanandUIUX
-- Clutch: https://clutch.co/profile/ui-pirate-vishal-anand
+- Clutch: https://clutch.co/profile/ui-pirate
 - Upwork: https://www.upwork.com/agencies/1837026757439552424/
-- Twitter/X: https://x.com/UI_Pirate
+- X: https://x.com/UI_Pirate
 - Google Maps: https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8

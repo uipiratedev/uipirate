@@ -29,7 +29,18 @@ function buildFaqSchema() {
   const serviceFaqs = (FaqData as any).Services || [];
 
   // Combine general + services FAQs for the schema (most relevant)
-  const allFaqs = [...generalFaqs, ...serviceFaqs];
+  // "general" and "Services" repeat some questions; emit each question once.
+  const seen = new Set<string>();
+  const allFaqs = [...generalFaqs, ...serviceFaqs].filter(
+    (faq: { heading: string }) => {
+      const key = faq.heading.replace(/^[^\w]*/, "").trim().toLowerCase();
+
+      if (seen.has(key)) return false;
+      seen.add(key);
+
+      return true;
+    },
+  );
 
   return {
     "@context": "https://schema.org",

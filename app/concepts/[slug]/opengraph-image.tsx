@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPostSlugs } from "@/lib/cometCOS/public-client";
 
 import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 

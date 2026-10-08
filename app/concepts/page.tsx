@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import Concepts from "@/screens/concepts";
-import { listPosts } from "@/lib/pirateCOS/public-client";
+import { listPosts } from "@/lib/cometCOS/public-client";
 import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 
 // ISR: revalidate every 60s so newly published CMS concepts show up

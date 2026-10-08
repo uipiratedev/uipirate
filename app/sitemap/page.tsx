@@ -5,7 +5,7 @@ import Sitemap from "@/screens/sitemap";
 export const metadata: Metadata = {
   title: "Site Map | All Pages & Services",
   description:
-    "Complete sitemap of UI Pirate, product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, Design Systems, UX Audits, Pricing, Portfolio & more.",
+    "Complete sitemap of UI Pirate, product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, UX Audits, Pricing, Portfolio & more.",
   keywords:
     "uipirate sitemap, UI Pirate pages, product design agency services, UX UI design services list, SaaS design agency pages, site navigation, all services UI Pirate",
   alternates: {

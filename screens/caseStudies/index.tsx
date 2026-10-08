@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+import type { ReaderPost } from "@/lib/cometCOS/public-client";
 
 import { useMemo, useState, useRef, useEffect } from "react";
 import Link from "next/link";

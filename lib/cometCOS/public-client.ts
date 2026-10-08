@@ -1,5 +1,5 @@
 /**
- * Server-side client for the PirateCOS public v1 API.
+ * Server-side client for the cometCOS public v1 API.
  *
  * Server-only: import this only from server components / route handlers. The
  * API key has no NEXT_PUBLIC_ prefix, so Next never inlines it into the client
@@ -10,8 +10,7 @@
  * means the public site only ever shows the key's tenant's published posts —
  * fixing the cross-tenant leak the direct `Post.find({ published })` queries had.
  *
- * The API key is read from COMETCOS_API_KEY (legacy PIRATECOS_API_KEY still
- * works) and stays on the server — it is never shipped to the browser. Pages
+ * The API key is read from COMETCOS_API_KEY and stays on the server — it is never shipped to the browser. Pages
  * fetch here and pass plain data as props.
  */
 
@@ -24,12 +23,10 @@ import { pickSuggested } from "./suggested";
 
 const BASE_URL =
   process.env.COMETCOS_API_BASE_URL ||
-  process.env.PIRATECOS_API_BASE_URL ||
   "https://cos.uipirate.com";
-// The CMS was renamed pirateCOS -> cometCOS and the old path now answers with a
-// 308 redirect, so every call paid an extra round trip. Call the real path.
+// Current CMS API path (the old pirateCOS path now only redirects).
 const API_PREFIX = "/api/cometCOS/v1";
-const API_KEY = process.env.COMETCOS_API_KEY || process.env.PIRATECOS_API_KEY;
+const API_KEY = process.env.COMETCOS_API_KEY;
 
 /** The shape the existing reader components expect (legacy `_id`, `createdAt`). */
 export interface ReaderPost {
@@ -149,7 +146,7 @@ async function apiGet(
 
     if (!res.ok) {
       if (res.status !== 404) {
-        console.error(`PirateCOS v1 GET ${path} failed: ${res.status}`);
+        console.error(`cometCOS v1 GET ${path} failed: ${res.status}`);
       }
 
       return null;
@@ -157,7 +154,7 @@ async function apiGet(
 
     return await res.json();
   } catch (err) {
-    console.error(`PirateCOS v1 GET ${path} threw`, err);
+    console.error(`cometCOS v1 GET ${path} threw`, err);
 
     return null;
   }

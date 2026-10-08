@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { getPostBySlug, listPosts } from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPosts } from "@/lib/cometCOS/public-client";
 
 import { OGTemplate } from "../_og/template";
 

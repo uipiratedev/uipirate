@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import CaseStudies from "@/screens/caseStudies";
-import { listPosts } from "@/lib/pirateCOS/public-client";
+import { listPosts } from "@/lib/cometCOS/public-client";
 
 // ISR: revalidate every 60s so newly published CMS case studies show up
 // without a full rebuild (matches /blogs).

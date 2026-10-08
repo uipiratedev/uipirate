@@ -91,7 +91,7 @@ export const LANDING_FAQS: FaqItem[] = [
   {
     heading: "Can you help us set up a Design System and Component Library?",
     title1:
-      "Yes, we specialize in creating scalable design systems and component libraries.",
+      "Yes. Design systems and component libraries are delivered as part of our UX/UI Design and SaaS & AI Development work.",
     list: [
       "↳ Design Systems: A comprehensive setup of styles, colors, and typography for brand consistency.",
       "↳ Component Libraries: Reusable components for faster development and consistent design across pages.",
