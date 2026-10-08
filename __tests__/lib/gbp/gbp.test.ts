@@ -380,7 +380,7 @@ describe("planServices", () => {
     const { EXISTING_DESCRIPTIONS, STANDARD_DESCRIPTIONS } = await import("@/lib/gbp/profile");
 
     for (const d of [...Object.values(EXISTING_DESCRIPTIONS), ...Object.values(STANDARD_DESCRIPTIONS)])
-      expect(d.length).toBeGreaterThan(30), expect(d.length).toBeLessThanOrEqual(300);
+      expect(d.length).toBeGreaterThan(150), expect(d.length).toBeLessThanOrEqual(300);
   });
 
   it("prices only what the pricing page prices, in the format Google expects", async () => {
@@ -411,6 +411,29 @@ describe("planServices", () => {
     const mine = { ...free("UI/UX", "per Hour"), price: { currencyCode: "INR", units: "1200" } };
 
     expect(planServices([mine]).next).toContain(mine);
+  });
+
+  it("refresh replaces earlier short text, but a plain run never overwrites it", async () => {
+    const { planServices, SITE_SERVICES, STANDARD_DESCRIPTIONS } = await import("@/lib/gbp/profile");
+    const oldStd = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design", description: "Short." } };
+    const oldFree = free("UX Designer", "Short.");
+    const oldSite = free("UX Audits", "Short.");
+
+    const plain = planServices([oldStd, oldFree, oldSite]);
+
+    expect(plain.described).toEqual([]);
+    expect(plain.next[0]).toBe(oldStd);
+
+    const fresh = planServices([oldStd, oldFree, oldSite], SITE_SERVICES, { refresh: true });
+    const text = (n: string) =>
+      fresh.next.find((s) => s.freeFormServiceItem?.label.displayName === n)!.freeFormServiceItem!.label
+        .description;
+
+    expect(fresh.next[0].structuredServiceItem?.description).toBe(STANDARD_DESCRIPTIONS.web_design);
+    expect(text("UX Designer")).toMatch(/wireframes/);
+    expect(text("UX Audits")).toMatch(/heuristic/i);
+    // Replaced, never duplicated.
+    expect(fresh.next.filter((s) => s.freeFormServiceItem?.label.displayName === "UX Audits")).toHaveLength(1);
   });
 
   it("does not add a service the listing already has", async () => {
@@ -461,6 +484,7 @@ describe("planServices", () => {
     for (const s of SITE_SERVICES) {
       expect(s.name.length).toBeLessThanOrEqual(140);
       expect(s.description.length).toBeLessThanOrEqual(300);
+      expect(s.description.length).toBeGreaterThan(150);
     }
   });
 });

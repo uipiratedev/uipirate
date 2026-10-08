@@ -6,6 +6,7 @@
  * Apply. The previous value is saved before every write.
  */
 import { INFO_API, call, getGbpConfig, GbpError } from "./client";
+import { EXISTING_COPY, SITE_COPY, STANDARD_COPY } from "./serviceCopy";
 
 export const DEFAULT_CATEGORY = "categories/gcid:website_designer";
 
@@ -22,132 +23,37 @@ export interface SiteService {
  * (screens/landing/businessHelp). Wording follows the site's own metadata.
  * Google limits: name 140 characters, description 300.
  */
-export const SITE_SERVICES: SiteService[] = [
-  {
-    name: "UX & UI Design",
-    description:
-      "Product thinking, competitive analysis, information architecture and UX/UI design for SaaS and mobile apps, from vision to dev-ready screens in Angular, React and Next.js.",
-    price: { currencyCode: "USD", units: 499 },
-  },
-  {
-    name: "Full Stack Development",
-    description:
-      "Backend architecture, database design, APIs and production deployment on Node.js, Python, AWS, GCP and Azure.",
-    price: { currencyCode: "USD", units: 499 },
-  },
-  {
-    name: "SaaS Development",
-    description:
-      "Full-stack engineering for SaaS products, from architecture to production, including AI-generated code taken to production.",
-    price: { currencyCode: "USD", units: 499 },
-  },
-  {
-    name: "AI Integrations",
-    description:
-      "AI and LLM integration into your product, with the APIs and backend it needs to run in production.",
-  },
-  {
-    name: "Landing Pages",
-    description:
-      "High-converting landing pages built around your positioning and user journey in React, Next.js, Framer or Webflow.",
-    price: { currencyCode: "USD", units: 2000 },
-  },
-  {
-    name: "Business Websites",
-    description:
-      "Business websites that turn visitors into customers, built in React, Next.js, Framer or Webflow.",
-    price: { currencyCode: "USD", units: 2000 },
-  },
-  {
-    name: "UX Audits",
-    description:
-      "Heuristic UX audits with drop-off analysis and a prioritised, actionable roadmap. Most audits run 1 to 2 weeks.",
-  },
-  {
-    name: "UX Consultation",
-    description:
-      "Find the friction blocking growth before you build more, with guidance on UX decisions for your product.",
-  },
-  {
-    // From the pricing page and its FAQ: a monthly retainer you can pause, with
-    // a paid pilot first. No price is quoted; the site shows more than one.
-    name: "Design Subscription",
-    description:
-      "A monthly design retainer for SaaS teams: a dedicated design team without full-time headcount. Pause anytime with no lock-ins, and start with a 5-day pilot to try us first.",
-    price: { currencyCode: "USD", units: 499 },
-  },
-  // Pricing page "Try before you commit": the pilot fee is deducted from the
-  // invoice if the client goes ahead.
-  {
-    name: "5-Day Design Pilot",
-    description:
-      "Try our design work first: 5 screens or 1 full user flow, a polished Figma file ready for development. The pilot fee is deducted if you move forward.",
-    price: { currencyCode: "USD", units: 150 },
-  },
-  {
-    name: "5-Day Development Pilot",
-    description:
-      "Try our engineering first: a working component or feature with production-ready code, in 5 days. The pilot fee is deducted if you move forward.",
-    price: { currencyCode: "USD", units: 250 },
-  },
-  {
-    name: "5-Day Design + Dev Pilot",
-    description:
-      "Designed and built in 5 days, and you own all the files and code. The pilot fee is deducted if you move forward.",
-    price: { currencyCode: "USD", units: 350 },
-  },
-  {
-    name: "Custom Project",
-    description:
-      "Fully scoped design and development projects with dedicated ownership, priority handling and close collaboration with your stakeholders.",
-    price: { currencyCode: "USD", units: 2000 },
-  },
-];
-
 /**
- * Descriptions for Google's standard services that match what the website
- * offers. Only written where the listing has none, so wording an admin already
- * set is never overwritten. HTML and graphic design are not on the website, so
- * they get none.
+ * Starting prices, USD, from the pricing page: the monthly plan is $499, the
+ * custom plan starts at $2K, and the pilots are $150 / $250 / $350. Only
+ * services that map onto one of those plans carry a price.
  */
-export const STANDARD_DESCRIPTIONS: Record<string, string> = {
-  web_design:
-    "Conversion-focused website and landing page design built around your positioning and user journey.",
-  web_development:
-    "Fast, responsive websites and web apps built with React, Next.js and Angular, with Node.js and Python back ends.",
-  responsive_design:
-    "Interfaces that work properly on phones, tablets and desktops, designed and built mobile-first.",
-  mobile_app_development:
-    "UX/UI design for mobile apps and the engineering to build them, from vision to dev-ready screens and production.",
-  software_development:
-    "Full-stack engineering for SaaS and AI products: architecture, databases, APIs and production deployment.",
-  html: "Clean, semantic HTML and CSS builds for fast, accessible, responsive pages.",
-  graphic_design:
-    "Interface and visual graphics for digital products: UI kits, illustrations and marketing visuals.",
+const PRICES: Record<string, number> = {
+  "UX & UI Design": 499,
+  "Full Stack Development": 499,
+  "SaaS Development": 499,
+  "Landing Pages": 2000,
+  "Business Websites": 2000,
+  "Design Subscription": 499,
+  "5-Day Design Pilot": 150,
+  "5-Day Development Pilot": 250,
+  "5-Day Design + Dev Pilot": 350,
+  "Custom Project": 2000,
 };
 
-/**
- * Descriptions for the custom entries already on the listing, matched by name.
- * Like the standard ones they only fill an empty description.
- */
-export const EXISTING_DESCRIPTIONS: Record<string, string> = {
-  "visual design":
-    "Brand-aligned visual design for web and mobile products: UI kits, components and polished screens.",
-  "next js developer":
-    "Next.js development for fast, search-friendly websites and web apps with server rendering and clean, maintainable code.",
-  "website development":
-    "Fast, responsive websites built with React and Next.js, from landing pages to full business sites.",
-  "frontend developer":
-    "Production-ready front ends in React, Next.js and Angular, built to match the design.",
-  "react js developer":
-    "React.js interfaces and web apps: reusable components, clean state management and responsive layouts.",
-  "ui developement":
-    "Turning UI designs into pixel-accurate, responsive and accessible front-end code.",
-  "ui designer":
-    "User interface design for SaaS and mobile products: screens, components and design systems.",
-  "ux designer":
-    "User experience design: flows, wireframes and prototypes that reduce friction and move people toward action.",
-};
+export const SITE_SERVICES: SiteService[] = Object.entries(SITE_COPY).map(
+  ([name, description]) => ({
+    name,
+    description,
+    ...(PRICES[name] ? { price: { currencyCode: "USD", units: PRICES[name] } } : {}),
+  }),
+);
+
+/** Standard services get their copy only where the listing has none. */
+export const STANDARD_DESCRIPTIONS = STANDARD_COPY;
+
+/** Custom entries already on the listing, matched by normalised name. */
+export const EXISTING_DESCRIPTIONS = EXISTING_COPY;
 
 /** A service as Google stores it. */
 export interface ServiceItem {
@@ -179,7 +85,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 export function planServices(
   current: ServiceItem[],
   site: SiteService[] = SITE_SERVICES,
-  opts: { prune?: boolean } = {},
+  opts: { prune?: boolean; refresh?: boolean } = {},
 ): ServicePlan {
   const described: string[] = [];
   const structured = current
@@ -188,7 +94,11 @@ export function planServices(
       const id = s.structuredServiceItem!.serviceTypeId.replace("job_type_id:", "");
       const text = STANDARD_DESCRIPTIONS[id];
 
-      if (!text || s.structuredServiceItem!.description?.trim()) return s;
+      const current = s.structuredServiceItem!.description?.trim();
+
+      // `refresh` replaces earlier text with the current wording; otherwise only
+      // an empty description is filled.
+      if (!text || (current && (!opts.refresh || current === text))) return s;
 
       described.push(id);
 
@@ -200,7 +110,9 @@ export function planServices(
       const label = s.freeFormServiceItem!.label;
       const text = EXISTING_DESCRIPTIONS[norm(label.displayName)];
 
-      if (!text || label.description?.trim()) return s;
+      const current = label.description?.trim();
+
+      if (!text || (current && (!opts.refresh || current === text))) return s;
 
       described.push(label.displayName);
 
@@ -234,7 +146,10 @@ export function planServices(
     const existing = have.get(norm(s.name));
 
     if (!existing) add.push(s);
-    else if (opts.prune && existing.freeFormServiceItem?.label.description !== s.description)
+    else if (
+      (opts.prune || opts.refresh) &&
+      existing.freeFormServiceItem?.label.description !== s.description
+    )
       add.push(s);
     else same.push(s.name);
   }
