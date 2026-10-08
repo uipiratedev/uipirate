@@ -1,0 +1,155 @@
+/**
+ * Turns a CMS post into a Google Business Profile "What's new" post.
+ *
+ * Pure (no I/O) so every rule here is unit tested — this is the code that
+ * decides what is said publicly on the business's Google listing.
+ */
+import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
+import { buildUtmUrl } from "@/lib/analytics/utm";
+import { postHref } from "@/lib/pirateCOS/suggested";
+
+export const SITE_ORIGIN = "https://uipirate.com";
+
+/** Google rejects a summary over 1,500 characters. */
+export const MAX_SUMMARY = 1500;
+/** Leave headroom: the title and a line break are added around the excerpt. */
+const TARGET_SUMMARY = 1200;
+
+export interface GbpSourcePost {
+  slug: string;
+  title: string;
+  excerpt?: string;
+  postType?: string;
+  featuredImage?: string;
+  bannerImage?: string;
+  seo?: { noIndex?: boolean };
+  publishedAt?: string | null;
+}
+
+export interface Eligibility {
+  eligible: boolean;
+  /** Why not — shown in the admin and stored with the record. */
+  reason?: string;
+}
+
+/**
+ * Whether a post may be announced on Google.
+ *
+ * Mirrors the indexing rules: held drafts must never be pushed to Google until
+ * they are deliberately released, and a post marked noindex is one the owner
+ * does not want surfaced there either.
+ */
+export function eligibility(post: GbpSourcePost): Eligibility {
+  if (HELD_DRAFT_SLUGS.has(post.slug))
+    return { eligible: false, reason: "Held draft — not released yet" };
+
+  if (post.seo?.noIndex) return { eligible: false, reason: "Marked noindex" };
+
+  if (!post.title?.trim()) return { eligible: false, reason: "No title" };
+
+  if (!post.publishedAt)
+    return { eligible: false, reason: "Not published in the CMS" };
+
+  return { eligible: true };
+}
+
+/** Plain text from HTML or markdown-ish excerpts. */
+export function toPlainText(input: string | undefined | null): string {
+  if (!input) return "";
+
+  return input
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Google's guidelines discourage links in post text; the button carries it. */
+function stripUrls(text: string): string {
+  return text
+    .replace(/https?:\/\/\S+/gi, "")
+    .replace(/\bwww\.\S+/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+/** Shorten at a word boundary, ending in an ellipsis when cut. */
+export function truncateWords(text: string, max: number): string {
+  if (text.length <= max) return text;
+
+  const cut = text.slice(0, max - 1);
+  const at = cut.lastIndexOf(" ");
+
+  return `${(at > max * 0.6 ? cut.slice(0, at) : cut).replace(/[\s,.;:!?-]+$/, "")}…`;
+}
+
+/** The post body: the title, a blank line, then the excerpt. */
+export function buildSummary(post: GbpSourcePost): string {
+  const title = stripUrls(toPlainText(post.title));
+  const excerpt = stripUrls(toPlainText(post.excerpt));
+  const body = excerpt && excerpt !== title ? `${title}\n\n${excerpt}` : title;
+
+  return truncateWords(body, TARGET_SUMMARY);
+}
+
+/** The "Learn more" destination: the canonical page, tagged so visits show up. */
+export function buildCtaUrl(post: GbpSourcePost): string {
+  const url = buildUtmUrl({
+    url: `${SITE_ORIGIN}${postHref(post)}`,
+    source: "google",
+    medium: "business-profile",
+    campaign: "gbp-post",
+    content: post.slug,
+  });
+
+  // buildUtmUrl only fails on an unusable URL; fall back to the bare page.
+  return url ?? `${SITE_ORIGIN}${postHref(post)}`;
+}
+
+/** Make a CMS image reference absolute, or `null` if it cannot be used. */
+export function absoluteImageUrl(value: string | undefined): string | null {
+  if (!value) return null;
+  if (value.startsWith("data:")) return null;
+
+  const abs = value.startsWith("/") ? `${SITE_ORIGIN}${value}` : value;
+
+  if (!/^https:\/\//i.test(abs)) return null;
+
+  // Google accepts JPG and PNG. The stock blog banner is an SVG placeholder.
+  const path = abs.split("?")[0].toLowerCase();
+
+  if (path.endsWith(".svg") || path.endsWith(".gif")) return null;
+
+  return abs;
+}
+
+export interface LocalPostPayload {
+  languageCode: string;
+  topicType: "STANDARD";
+  summary: string;
+  callToAction: { actionType: "LEARN_MORE"; url: string };
+  media?: Array<{ mediaFormat: "PHOTO"; sourceUrl: string }>;
+}
+
+export function buildLocalPost(post: GbpSourcePost): LocalPostPayload {
+  const payload: LocalPostPayload = {
+    languageCode: "en-US",
+    topicType: "STANDARD",
+    summary: buildSummary(post),
+    callToAction: { actionType: "LEARN_MORE", url: buildCtaUrl(post) },
+  };
+
+  const image =
+    absoluteImageUrl(post.featuredImage) ?? absoluteImageUrl(post.bannerImage);
+
+  if (image) payload.media = [{ mediaFormat: "PHOTO", sourceUrl: image }];
+
+  return payload;
+}
