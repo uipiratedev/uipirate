@@ -140,10 +140,12 @@ export default function GoogleBusinessClient() {
         setNotice({ tone: "ok", text: `Connected. ${j.accounts.length} account(s) visible.` });
       } else if (action === "accept" && j.ok) {
         setNotice({
-          tone: "ok",
+          tone: j.accepted.length ? "ok" : "err",
           text: j.accepted.length
             ? `Accepted: ${j.accepted.join(", ")}. Press Check connection.`
-            : "No pending invitations found.",
+            : j.ignored?.length
+              ? `Not accepted — ${j.ignored.join(" | ")}`
+              : "No pending invitations found.",
         });
       } else if (j.ok === false) {
         setNotice({ tone: "err", text: j.message || j.error || "That did not work.", hint: j.hint });

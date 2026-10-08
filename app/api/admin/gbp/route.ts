@@ -131,8 +131,13 @@ export async function POST(req: NextRequest) {
             continue;
           }
 
-          await acceptInvitation(inv.name);
-          accepted.push(inv.target);
+          try {
+            await acceptInvitation(inv.name);
+            accepted.push(inv.target);
+          } catch (e) {
+            // Report each invite on its own so one failure does not hide the rest.
+            ignored.push(`${inv.target} (${inv.role}): ${e instanceof Error ? e.message : "failed"}`);
+          }
         }
       }
 
