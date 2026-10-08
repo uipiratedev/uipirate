@@ -304,3 +304,284 @@ describe("cleanOverview", () => {
     expect(out.endsWith(".")).toBe(true);
   });
 });
+
+describe("several images per post", () => {
+  it("sends up to three: featured, banner, then pictures from the article", () => {
+    const media = buildLocalPost(
+      post({
+        featuredImage: "https://x.co/a.jpg",
+        bannerImage: "https://x.co/b.jpg",
+        content: '<p>hi</p><img src="https://x.co/c.png"><img src="https://x.co/d.png">',
+      }),
+    ).media!;
+
+    expect(media.map((m) => m.sourceUrl)).toEqual([
+      "https://x.co/a.jpg",
+      "https://x.co/b.jpg",
+      "https://x.co/c.png",
+    ]);
+  });
+
+  it("skips repeats and anything Google cannot use", () => {
+    const media = buildLocalPost(
+      post({
+        featuredImage: "https://x.co/a.jpg",
+        content:
+          '<img src="https://x.co/a.jpg"><img src="data:image/png;base64,AAAA"><img src="/x.svg"><img src=\'https://x.co/e.jpg\'>',
+      }),
+    ).media!;
+
+    expect(media.map((m) => m.sourceUrl)).toEqual(["https://x.co/a.jpg", "https://x.co/e.jpg"]);
+  });
+
+  it("falls back to the generated card when the post has no usable photo", () => {
+    expect(buildLocalPost(post({ content: "<p>text only</p>" })).media).toHaveLength(1);
+  });
+});
+
+describe("planServices", () => {
+  const free = (n: string, d?: string) => ({
+    freeFormServiceItem: { category: "categories/gcid:website_designer", label: { displayName: n, description: d } },
+  });
+  const std = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design" } };
+
+  it("by default keeps everything already listed and only adds the site's services", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const mine = free("UI/UX", "per Hour");
+    const plan = planServices([std, mine, free("UX Designer")]);
+
+    expect(plan.remove).toEqual([]);
+    expect(plan.add).toHaveLength(SITE_SERVICES.length);
+    expect(plan.next).toContain(mine);
+    expect(plan.next).toHaveLength(1 + 2 + SITE_SERVICES.length);
+    expect(plan.add.map((s) => s.name)).toContain("Design Subscription");
+  });
+
+  it("describes existing entries that have no description, and leaves written ones alone", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const plan = planServices([
+      free("UX Designer"),
+      free("UI/UX", "per Hour"),
+      { structuredServiceItem: { serviceTypeId: "job_type_id:html" } },
+    ]);
+    const labels = plan.next
+      .filter((s) => s.freeFormServiceItem)
+      .map((s) => [s.freeFormServiceItem!.label.displayName, s.freeFormServiceItem!.label.description]);
+
+    expect(plan.described).toEqual(expect.arrayContaining(["html", "UX Designer"]));
+    expect(plan.described).not.toContain("UI/UX");
+    expect(labels).toContainEqual(["UI/UX", "per Hour"]);
+    expect(labels.find(([n]) => n === "UX Designer")![1]).toMatch(/wireframes/);
+    // Nothing the listing already had is dropped.
+    expect(plan.next.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("every existing entry and standard service we know has a usable description", async () => {
+    const { EXISTING_DESCRIPTIONS, STANDARD_DESCRIPTIONS } = await import("@/lib/gbp/profile");
+
+    for (const d of [...Object.values(EXISTING_DESCRIPTIONS), ...Object.values(STANDARD_DESCRIPTIONS)])
+      expect(d.length).toBeGreaterThan(150), expect(d.length).toBeLessThanOrEqual(300);
+  });
+
+  it("prices only what the pricing page prices, in the format Google expects", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const items = planServices([]).next.filter((s) => s.freeFormServiceItem);
+    const priced = Object.fromEntries(
+      items
+        .filter((s) => s.price)
+        .map((s) => [s.freeFormServiceItem!.label.displayName, s.price]),
+    );
+
+    expect(priced).toEqual({
+      "UX & UI Design": { currencyCode: "USD", units: "499" },
+      "Full Stack Development": { currencyCode: "USD", units: "499" },
+      "SaaS Development": { currencyCode: "USD", units: "499" },
+      "Landing Pages": { currencyCode: "USD", units: "2000" },
+      "Business Websites": { currencyCode: "USD", units: "2000" },
+      "Design Subscription": { currencyCode: "USD", units: "499" },
+      "5-Day Design Pilot": { currencyCode: "USD", units: "150" },
+      "5-Day Development Pilot": { currencyCode: "USD", units: "250" },
+      "5-Day Design + Dev Pilot": { currencyCode: "USD", units: "350" },
+      "Custom Project": { currencyCode: "USD", units: "2000" },
+    });
+  });
+
+  it("leaves the price on an existing entry untouched", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const mine = { ...free("UI/UX", "per Hour"), price: { currencyCode: "INR", units: "1200" } };
+
+    expect(planServices([mine]).next).toContain(mine);
+  });
+
+  it("refresh replaces earlier short text, but a plain run never overwrites it", async () => {
+    const { planServices, SITE_SERVICES, STANDARD_DESCRIPTIONS } = await import("@/lib/gbp/profile");
+    const oldStd = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design", description: "Short." } };
+    const oldFree = free("UX Designer", "Short.");
+    const oldSite = free("UX Audits", "Short.");
+
+    const plain = planServices([oldStd, oldFree, oldSite]);
+
+    expect(plain.described).toEqual([]);
+    expect(plain.next[0]).toBe(oldStd);
+
+    const fresh = planServices([oldStd, oldFree, oldSite], SITE_SERVICES, { refresh: true });
+    const text = (n: string) =>
+      fresh.next.find((s) => s.freeFormServiceItem?.label.displayName === n)!.freeFormServiceItem!.label
+        .description;
+
+    expect(fresh.next[0].structuredServiceItem?.description).toBe(STANDARD_DESCRIPTIONS.web_design);
+    expect(text("UX Designer")).toMatch(/wireframes/);
+    expect(text("UX Audits")).toMatch(/heuristic/i);
+    // Replaced, never duplicated.
+    expect(fresh.next.filter((s) => s.freeFormServiceItem?.label.displayName === "UX Audits")).toHaveLength(1);
+  });
+
+  it("does not add a service the listing already has", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const plan = planServices([free("Design Subscription", "My own wording")]);
+
+    expect(plan.add).toHaveLength(SITE_SERVICES.length - 1);
+    expect(plan.same).toEqual(["Design Subscription"]);
+  });
+
+  it("with prune, keeps standard services and replaces free-form ones with the site's", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const plan = planServices([std, free("UI Developement"), free("UX Designer")], SITE_SERVICES, {
+      prune: true,
+    });
+
+    expect(plan.keep).toEqual(["web_design"]);
+    expect(plan.remove).toEqual(["UI Developement", "UX Designer"]);
+    expect(plan.add).toHaveLength(SITE_SERVICES.length);
+    expect(plan.described).toContain("web_design");
+    expect(plan.next[0].structuredServiceItem?.description).toMatch(/website/i);
+    expect(plan.next).toHaveLength(1 + SITE_SERVICES.length);
+  });
+
+  it("never overwrites a description that is already set", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const own = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design", description: "Mine" } };
+    const plan = planServices([own]);
+
+    expect(plan.described).toEqual([]);
+    expect(plan.next[0].structuredServiceItem?.description).toBe("Mine");
+  });
+
+  it("reports nothing to do once the listing matches", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const matching = SITE_SERVICES.map((s) => free(s.name, s.description));
+    const html = { structuredServiceItem: { serviceTypeId: "job_type_id:html", description: "Done" } };
+    const plan = planServices([html, ...matching]);
+
+    expect(plan.described).toEqual([]);
+    expect(plan.remove).toEqual([]);
+    expect(plan.add).toEqual([]);
+  });
+
+  it("respects Google's length limits", async () => {
+    const { SITE_SERVICES } = await import("@/lib/gbp/profile");
+
+    for (const s of SITE_SERVICES) {
+      expect(s.name.length).toBeLessThanOrEqual(140);
+      expect(s.description.length).toBeLessThanOrEqual(300);
+      expect(s.description.length).toBeGreaterThan(150);
+    }
+  });
+});
+
+describe("planLinks", () => {
+  const attr = (n: string, ...uris: string[]) => ({ name: `attributes/${n}`, valueType: "URL", uriValues: uris.map((uri) => ({ uri })) });
+
+  it("adds the site's links and writes only those attributes", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_whatsapp", "https://wa.me/1")]);
+
+    expect(plan.add.map((l) => l.attr)).toEqual(["url_appointment", "url_linkedin", "url_twitter"]);
+    expect(plan.mask).toEqual(["attributes/url_appointment", "attributes/url_linkedin", "attributes/url_twitter"]);
+    // WhatsApp is never part of what is written.
+    expect(plan.attributes.some((a) => a.name.includes("whatsapp"))).toBe(false);
+  });
+
+  it("uses the contact page as the booking link", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const book = planLinks([]).attributes.filter((a) => a.name.endsWith("url_appointment"));
+
+    expect(book).toHaveLength(1);
+    expect(book[0].uriValues!.map((u) => u.uri)).toEqual(["https://uipirate.com/contact"]);
+  });
+
+  it("groups several links for the same attribute into one value", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([], [
+      { attr: "url_appointment", label: "Booking link", uri: "https://a.example/1" },
+      { attr: "url_appointment", label: "Booking link", uri: "https://a.example/2" },
+    ]);
+
+    expect(plan.attributes).toHaveLength(1);
+    expect(plan.attributes[0].uriValues!.map((u) => u.uri)).toEqual(["https://a.example/1", "https://a.example/2"]);
+  });
+
+  it("does not touch the booking link when it is already there", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_appointment", "https://uipirate.com/contact/")]);
+
+    expect(plan.same.map((l) => l.attr)).toContain("url_appointment");
+    expect(plan.mask).not.toContain("attributes/url_appointment");
+  });
+
+  it("treats a trailing slash or letter case as the same link", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_twitter", "https://X.com/UI_Pirate/")]);
+
+    expect(plan.same.map((l) => l.attr)).toEqual(["url_twitter"]);
+    expect(plan.mask).not.toContain("attributes/url_twitter");
+  });
+
+  it("keeps other booking links and replaces a different social link", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([
+      attr("url_appointment", "https://other.example/book"),
+      attr("url_linkedin", "https://www.linkedin.com/in/someone-else"),
+    ]);
+    const book = plan.attributes.find((a) => a.name.endsWith("url_appointment"))!;
+    const li = plan.attributes.find((a) => a.name.endsWith("url_linkedin"))!;
+
+    expect(book.uriValues!.map((u) => u.uri)).toEqual([
+      "https://other.example/book",
+      "https://uipirate.com/contact",
+    ]);
+    expect(li.uriValues).toHaveLength(1);
+    expect(li.uriValues![0].uri).toContain("company/ui-pirate");
+  });
+});
+
+describe("performance summary", () => {
+  it("adds up impressions across surfaces and reads the other metrics", async () => {
+    const { summarise } = await import("@/lib/gbp/performance");
+    const d = (day: number, value: string) => ({ date: { year: 2026, month: 9, day }, value });
+    const s = summarise(
+      {
+        multiDailyMetricTimeSeries: [
+          {
+            dailyMetricTimeSeries: [
+              { dailyMetric: "BUSINESS_IMPRESSIONS_DESKTOP_SEARCH", timeSeries: { datedValues: [d(1, "10"), d(2, "5")] } },
+              { dailyMetric: "BUSINESS_IMPRESSIONS_MOBILE_MAPS", timeSeries: { datedValues: [d(1, "7")] } },
+              { dailyMetric: "WEBSITE_CLICKS", timeSeries: { datedValues: [d(1, "3"), d(2, "1")] } },
+              { dailyMetric: "CALL_CLICKS", timeSeries: { datedValues: [d(2)] } },
+            ],
+          },
+        ],
+      } as never,
+      "2026-09-01",
+      "2026-09-02",
+    );
+
+    expect(s.views).toBe(22);
+    expect(s.websiteClicks).toBe(4);
+    expect(s.calls).toBe(0);
+    expect(s.daily).toEqual([
+      { date: "2026-09-01", views: 17, websiteClicks: 3 },
+      { date: "2026-09-02", views: 5, websiteClicks: 1 },
+    ]);
+  });
+});

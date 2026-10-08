@@ -19,6 +19,8 @@ export interface GbpSourcePost {
   excerpt?: string;
   /** Replaces the excerpt when set (AI-written or hand-edited in the admin). */
   overview?: string;
+  /** Article HTML, mined for extra photos. */
+  content?: string;
   postType?: string;
   featuredImage?: string;
   bannerImage?: string;
@@ -154,6 +156,35 @@ export function ogCardUrl(post: Pick<GbpSourcePost, "slug" | "postType">): strin
   return `${SITE_ORIGIN}${base}/opengraph-image/${post.slug}`;
 }
 
+/** Most photos sent with one post. */
+export const MAX_IMAGES = 3;
+
+/**
+ * Up to three usable photos: the featured image, the banner, then pictures from
+ * the article itself, without repeats. Anything Google cannot use (inline data,
+ * SVG, GIF, plain http) is skipped.
+ */
+export function collectImages(post: GbpSourcePost, max = MAX_IMAGES): string[] {
+  const inArticle = [...(post.content ?? "").matchAll(/<img\b[^>]*?\bsrc=["']([^"']+)["']/gi)].map(
+    (m) => m[1],
+  );
+  const seen = new Set<string>();
+  const out: string[] = [];
+
+  for (const candidate of [post.featuredImage, post.bannerImage, ...inArticle]) {
+    const url = absoluteImageUrl(candidate);
+
+    if (!url || seen.has(url)) continue;
+
+    seen.add(url);
+    out.push(url);
+
+    if (out.length >= max) break;
+  }
+
+  return out;
+}
+
 export interface LocalPostPayload {
   languageCode: string;
   topicType: "STANDARD";
@@ -170,14 +201,14 @@ export function buildLocalPost(post: GbpSourcePost): LocalPostPayload {
     callToAction: { actionType: "LEARN_MORE", url: buildCtaUrl(post) },
   };
 
-  // The post's own photo first; otherwise its generated card, so there is
+  // The post's own photos first; otherwise its generated card, so there is
   // always an image.
-  const image =
-    absoluteImageUrl(post.featuredImage) ??
-    absoluteImageUrl(post.bannerImage) ??
-    ogCardUrl(post);
+  const images = collectImages(post);
 
-  payload.media = [{ mediaFormat: "PHOTO", sourceUrl: image }];
+  payload.media = (images.length ? images : [ogCardUrl(post)]).map((sourceUrl) => ({
+    mediaFormat: "PHOTO" as const,
+    sourceUrl,
+  }));
 
   return payload;
 }
