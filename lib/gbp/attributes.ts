@@ -21,6 +21,8 @@ export interface SiteLink {
  */
 export const SITE_LINKS: SiteLink[] = [
   { attr: "url_appointment", label: "Booking link", uri: "https://cal.com/ui-pirate/15min" },
+  // The booking attribute holds several links; the contact page is a second way in.
+  { attr: "url_appointment", label: "Booking link", uri: "https://uipirate.com/contact" },
   {
     attr: "url_linkedin",
     label: "LinkedIn",
@@ -52,26 +54,40 @@ const trimSlash = (u: string) => u.replace(/\/+$/, "").toLowerCase();
 export function planLinks(current: Attribute[], links: SiteLink[] = SITE_LINKS): LinkPlan {
   const plan: LinkPlan = { add: [], update: [], same: [], attributes: [], mask: [] };
 
-  for (const l of links) {
-    const name = `attributes/${l.attr}`;
-    const have = current.find((a) => a.name === name)?.uriValues?.map((u) => u.uri) ?? [];
+  // Several links can target one attribute (the booking link); group them.
+  const groups = new Map<string, { label: string; uris: string[] }>();
 
-    if (have.some((u) => trimSlash(u) === trimSlash(l.uri))) {
-      plan.same.push(l);
+  for (const l of links) {
+    const g = groups.get(l.attr) ?? { label: l.label, uris: [] };
+
+    g.uris.push(l.uri);
+    groups.set(l.attr, g);
+  }
+
+  for (const [attr, g] of groups) {
+    const name = `attributes/${attr}`;
+    const have = current.find((a) => a.name === name)?.uriValues?.map((u) => u.uri) ?? [];
+    const repeatable = attr === "url_appointment";
+    // A single-value attribute (a social profile) only ever holds the first link.
+    const wanted = repeatable ? g.uris : g.uris.slice(0, 1);
+    const missing = wanted.filter((u) => !have.some((h) => trimSlash(h) === trimSlash(u)));
+
+    if (!missing.length) {
+      plan.same.push({ attr, label: g.label, uri: wanted.join(", ") });
       continue;
     }
 
-    // The booking link may hold several; keep the ones already there.
-    const keep = l.attr === "url_appointment" ? have : [];
+    const entry = { attr, label: g.label, uri: missing.join(", ") };
 
-    if (have.length) plan.update.push({ ...l, was: have });
-    else plan.add.push(l);
+    if (have.length) plan.update.push({ ...entry, was: have });
+    else plan.add.push(entry);
 
     plan.mask.push(name);
     plan.attributes.push({
       name,
       valueType: "URL",
-      uriValues: [...keep, l.uri].map((uri) => ({ uri })),
+      // The booking link keeps what is already there; others are replaced.
+      uriValues: [...(repeatable ? have : []), ...missing].map((uri) => ({ uri })),
     });
   }
 

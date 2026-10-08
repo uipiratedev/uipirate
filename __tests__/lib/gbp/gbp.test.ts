@@ -502,6 +502,29 @@ describe("planLinks", () => {
     expect(plan.attributes.some((a) => a.name.includes("whatsapp"))).toBe(false);
   });
 
+  it("puts both booking links in one attribute, not two", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([]);
+    const book = plan.attributes.filter((a) => a.name.endsWith("url_appointment"));
+
+    expect(book).toHaveLength(1);
+    expect(book[0].uriValues!.map((u) => u.uri)).toEqual([
+      "https://cal.com/ui-pirate/15min",
+      "https://uipirate.com/contact",
+    ]);
+  });
+
+  it("only adds the booking link that is missing", async () => {
+    const { planLinks } = await import("@/lib/gbp/attributes");
+    const plan = planLinks([attr("url_appointment", "https://cal.com/ui-pirate/15min/")]);
+    const book = plan.attributes.find((a) => a.name.endsWith("url_appointment"))!;
+
+    expect(book.uriValues!.map((u) => u.uri)).toEqual([
+      "https://cal.com/ui-pirate/15min/",
+      "https://uipirate.com/contact",
+    ]);
+  });
+
   it("treats a trailing slash or letter case as the same link", async () => {
     const { planLinks } = await import("@/lib/gbp/attributes");
     const plan = planLinks([attr("url_twitter", "https://X.com/UI_Pirate/")]);
@@ -522,6 +545,7 @@ describe("planLinks", () => {
     expect(book.uriValues!.map((u) => u.uri)).toEqual([
       "https://other.example/book",
       "https://cal.com/ui-pirate/15min",
+      "https://uipirate.com/contact",
     ]);
     expect(li.uriValues).toHaveLength(1);
     expect(li.uriValues![0].uri).toContain("company/ui-pirate");
