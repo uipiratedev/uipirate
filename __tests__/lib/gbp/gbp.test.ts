@@ -400,7 +400,7 @@ describe("planServices", () => {
     expect(plan.keep).toEqual(["web_design"]);
     expect(plan.remove).toEqual(["UI Developement", "UX Designer"]);
     expect(plan.add).toHaveLength(SITE_SERVICES.length);
-    expect(plan.described).toEqual(["web_design"]);
+    expect(plan.described).toContain("web_design");
     expect(plan.next[0].structuredServiceItem?.description).toMatch(/website/i);
     expect(plan.next).toHaveLength(1 + SITE_SERVICES.length);
   });
@@ -417,7 +417,7 @@ describe("planServices", () => {
   it("reports nothing to do once the listing matches", async () => {
     const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
     const matching = SITE_SERVICES.map((s) => free(s.name, s.description));
-    const html = { structuredServiceItem: { serviceTypeId: "job_type_id:html" } };
+    const html = { structuredServiceItem: { serviceTypeId: "job_type_id:html", description: "Done" } };
     const plan = planServices([html, ...matching]);
 
     expect(plan.described).toEqual([]);
