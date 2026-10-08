@@ -34,6 +34,7 @@ interface OverviewData {
   /** Consent-free totals — comparable to Vercel Analytics. */
   allVisits: number;
   botHits: number;
+  contactActions: number;
   consentRate: number | null;
   series: Array<{
     bucket: string;
@@ -115,9 +116,9 @@ export default function OverviewClient({ userName }: { userName: string }) {
                 hint: "Share of traffic the cookie tracker sees",
               },
               {
-                label: "Crawler hits",
-                value: fmtCompact(data?.botHits ?? 0),
-                hint: "Bots & AI crawlers — not counted as visits",
+                label: "Contact actions",
+                value: fmtCompact(data?.contactActions ?? 0),
+                hint: "WhatsApp, email, phone, calendar, forms",
               },
               {
                 label: "Bounce Rate",

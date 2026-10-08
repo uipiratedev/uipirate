@@ -11,6 +11,7 @@ import {
   getRecentLeads,
 } from "@/lib/analytics/queries";
 import { getAnonymousTotal, getBotTotal } from "@/lib/analytics/anonymous";
+import AnalyticsEvent from "@/models/analytics/AnalyticsEvent";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,6 +34,7 @@ export async function GET(req: NextRequest) {
     recentLeads,
     allVisits,
     botHits,
+    contactActions,
   ] = await Promise.all([
     getSummary(range),
     getTimeSeries(range, granularity),
@@ -43,6 +45,11 @@ export async function GET(req: NextRequest) {
     // Consent-free totals — these are the numbers comparable to Vercel.
     getAnonymousTotal(range).catch(() => 0),
     getBotTotal(range).catch(() => 0),
+    // WhatsApp / email / phone / calendar / Upwork clicks and form submits.
+    AnalyticsEvent.countDocuments({
+      occurredAt: { $gte: from, $lte: to },
+      type: { $in: ["conversion", "form_submit"] },
+    }).catch(() => 0),
   ]);
 
   return NextResponse.json({
@@ -50,6 +57,7 @@ export async function GET(req: NextRequest) {
     summary,
     allVisits,
     botHits,
+    contactActions,
     // How much of real traffic the consented tracker actually sees.
     consentRate: allVisits > 0 ? summary.pageviews / allVisits : null,
     series,

@@ -28,6 +28,7 @@ export interface IAnalyticsEvent extends Document {
   dwellMs?: number;
   scrollDepthMax?: number;
   formName?: string;
+  conversionKind?: string;
   device?: { type: string; os?: string; browser?: string };
   geo?: { country?: string; region?: string; city?: string };
   screen?: { w: number; h: number };
@@ -42,7 +43,14 @@ const AnalyticsEventSchema: Schema = new Schema(
   {
     type: {
       type: String,
-      enum: ["page_view", "click", "page_close", "ping", "form_submit"],
+      enum: [
+        "page_view",
+        "click",
+        "page_close",
+        "ping",
+        "form_submit",
+        "conversion",
+      ],
       required: true,
     },
     visitorId: { type: String, required: true },
@@ -59,6 +67,7 @@ const AnalyticsEventSchema: Schema = new Schema(
     dwellMs: Number,
     scrollDepthMax: Number,
     formName: String,
+    conversionKind: String,
     device: { type: Schema.Types.Mixed },
     geo: { type: Schema.Types.Mixed },
     screen: { w: Number, h: Number },

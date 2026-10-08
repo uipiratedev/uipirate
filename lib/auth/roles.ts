@@ -92,6 +92,7 @@ export const DASHBOARD_NAV: NavItem[] = [
   { label: "Overview", href: "/admin", icon: "grid", exact: true },
   { label: "Channels", href: "/admin/analytics/channels", icon: "share-2" },
   { label: "Content", href: "/admin/analytics/content", icon: "folder" },
+  { label: "Funnel", href: "/admin/analytics/funnel", icon: "filter" },
   { label: "Traffic", href: "/admin/analytics/traffic", icon: "trending-up" },
   { label: "Pages", href: "/admin/analytics/pages", icon: "file-text" },
   {
@@ -127,6 +128,7 @@ export const DASHBOARD_NAV: NavItem[] = [
     href: "/admin/analytics/search",
     icon: "radar",
   },
+  { label: "UTM Links", href: "/admin/utm-links", icon: "link" },
   {
     label: "Users & Roles",
     href: "/admin/settings/users",

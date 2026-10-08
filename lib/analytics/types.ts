@@ -5,7 +5,9 @@ export type AnalyticsEventType =
   | "click"
   | "page_close"
   | "ping"
-  | "form_submit";
+  | "form_submit"
+  /** A contact action: WhatsApp, email, phone, calendar booking, Upwork. */
+  | "conversion";
 
 export type ReferrerType =
   | "direct"
@@ -68,6 +70,8 @@ export interface RawEvent {
   scrollDepthMax?: number;
   /** form_submit only */
   formName?: string;
+  /** conversion only — a key of `CONVERSION_LABELS` in conversions.ts */
+  conversionKind?: string;
 }
 
 export interface CollectPayload {

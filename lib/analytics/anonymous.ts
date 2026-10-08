@@ -9,6 +9,7 @@
 import dbConnect from "@/lib/mongodb";
 import AnalyticsHitDaily from "@/models/analytics/AnalyticsHitDaily";
 import AnalyticsBotDaily from "@/models/analytics/AnalyticsBotDaily";
+import AnalyticsNotFoundDaily from "@/models/analytics/AnalyticsNotFoundDaily";
 
 export interface Range {
   from: Date;
@@ -160,4 +161,54 @@ export async function getBotTotal(range: Range): Promise<number> {
   ])) as Array<{ hits: number }>;
 
   return r?.hits ?? 0;
+}
+
+export interface NotFoundRow {
+  path: string;
+  hits: number;
+  /** Most common referring host for this URL ("" when direct). */
+  topReferrer: string;
+}
+
+/** Most-hit missing URLs, with who is linking to them. */
+export async function getNotFoundTop(
+  range: Range,
+  limit = 20,
+): Promise<NotFoundRow[]> {
+  await dbConnect();
+
+  const rows = (await AnalyticsNotFoundDaily.aggregate([
+    { $match: { date: keys(range) } },
+    {
+      $group: {
+        _id: { path: "$path", ref: "$referrerHost" },
+        hits: { $sum: "$hits" },
+      },
+    },
+  ])) as unknown as Array<{ _id: { path: string; ref: string }; hits: number }>;
+
+  const by = new Map<
+    string,
+    { hits: number; refs: Map<string, number> }
+  >();
+
+  for (const r of rows) {
+    const e = by.get(r._id.path) ?? { hits: 0, refs: new Map() };
+
+    e.hits += r.hits;
+    e.refs.set(r._id.ref, (e.refs.get(r._id.ref) ?? 0) + r.hits);
+    by.set(r._id.path, e);
+  }
+
+  return [...by.entries()]
+    .map(([path, e]) => {
+      // Prefer a real referrer over "direct" when naming the source.
+      const named = [...e.refs.entries()]
+        .filter(([ref]) => ref)
+        .sort((a, b) => b[1] - a[1]);
+
+      return { path, hits: e.hits, topReferrer: named[0]?.[0] ?? "" };
+    })
+    .sort((a, b) => b.hits - a.hits)
+    .slice(0, limit);
 }

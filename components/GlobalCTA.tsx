@@ -44,6 +44,7 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
         <div className="flex flex-col sm:flex-row gap-3 relative z-10 flex-shrink-0">
           <Link
             className="px-6 py-3 rounded-xl bg-[#FF5B04] text-white text-sm font-semibold hover:bg-[#e04e00] transition-colors text-center whitespace-nowrap"
+            data-analytics-id="cta-global-estimate"
             href="/contact"
             id="global-cta-contact"
           >
@@ -51,6 +52,7 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
           </Link>
           <Link
             className="px-6 py-3 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/20 transition-colors text-center whitespace-nowrap"
+            data-analytics-id="cta-global-work"
             href="/case-studies"
             id="global-cta-works"
           >

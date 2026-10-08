@@ -4,6 +4,8 @@ import BlogsDetailsHero from "./hero";
 import BlogContents from "./blogContents";
 import SuggestedReads from "./suggestedReads";
 
+import ArticleCta from "@/components/blog/ArticleCta";
+
 interface PostSEO {
   metaTitle?: string;
   metaDescription?: string;
@@ -50,6 +52,7 @@ const BlogsDetails = ({ blog, suggested }: BlogsDetailsProps) => {
     <div>
       <BlogsDetailsHero imageUrl={banner} tag={tag} title={blog.title} />
       <BlogContents blog={blog} />
+      <ArticleCta />
       <SuggestedReads posts={suggested} />
     </div>
   );
