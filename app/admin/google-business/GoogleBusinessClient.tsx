@@ -138,6 +138,13 @@ export default function GoogleBusinessClient() {
       } else if (action === "check" && j.ok) {
         setFound(j.locations);
         setNotice({ tone: "ok", text: `Connected. ${j.accounts.length} account(s) visible.` });
+      } else if (action === "accept" && j.ok) {
+        setNotice({
+          tone: "ok",
+          text: j.accepted.length
+            ? `Accepted: ${j.accepted.join(", ")}. Press Check connection.`
+            : "No pending invitations found.",
+        });
       } else if (j.ok === false) {
         setNotice({ tone: "err", text: j.message || j.error || "That did not work.", hint: j.hint });
       } else if (action === "publish") {
@@ -286,6 +293,15 @@ export default function GoogleBusinessClient() {
               onClick={() => act("check")}
             >
               {busy === "check:" ? "Checking…" : "Check connection"}
+            </button>
+            <button
+              className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
+              disabled={!!busy}
+              title="A service account cannot click the email link, so accept the invite here"
+              type="button"
+              onClick={() => act("accept")}
+            >
+              {busy === "accept:" ? "Accepting…" : "Accept invitations"}
             </button>
             <button
               className={`${btn} bg-gray-900 text-white ring-gray-900 hover:bg-gray-800`}

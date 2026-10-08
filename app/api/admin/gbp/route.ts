@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import GbpPost, { type IGbpPost } from "@/models/GbpPost";
 import { nextBacklogAt, type QueueItem } from "@/lib/gbp/schedule";
 import {
+  acceptInvitation,
+  listInvitations,
   GbpError,
   getGbpConfig,
   isPublishingEnabled,
@@ -76,6 +78,7 @@ export async function GET() {
 type Action =
   | "sync"
   | "check"
+  | "accept"
   | "preview"
   | "publish"
   | "skip"
@@ -113,6 +116,27 @@ export async function POST(req: NextRequest) {
       ).flat();
 
       return NextResponse.json({ ok: true, accounts, locations });
+    }
+
+    if (action === "accept") {
+      const accounts = await listAccounts();
+      const accepted: string[] = [];
+      const ignored: string[] = [];
+
+      for (const a of accounts) {
+        for (const inv of await listInvitations(a.id)) {
+          // Posting needs Manager only; never take Owner rights on a robot account.
+          if (inv.role === "OWNER") {
+            ignored.push(`${inv.target} (Owner invite ignored — re-invite as Manager)`);
+            continue;
+          }
+
+          await acceptInvitation(inv.name);
+          accepted.push(inv.target);
+        }
+      }
+
+      return NextResponse.json({ ok: true, accepted, ignored });
     }
 
     if (!slug || typeof slug !== "string")

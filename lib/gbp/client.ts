@@ -162,6 +162,42 @@ export async function listLocations(accountId: string): Promise<GbpLocation[]> {
   }));
 }
 
+export interface GbpInvitation {
+  /** Full resource name, e.g. accounts/1/invitations/2 — what accept needs. */
+  name: string;
+  /** The business being offered, for display. */
+  target: string;
+  role?: string;
+}
+
+/**
+ * Pending invitations to manage a profile. A service account cannot click the
+ * link in an email, so an invite stays "Invited" until it is accepted here.
+ */
+export async function listInvitations(accountId: string): Promise<GbpInvitation[]> {
+  const j = await call<{
+    invitations?: Array<{
+      name: string;
+      role?: string;
+      targetLocation?: { locationName?: string };
+      targetAccount?: { accountName?: string };
+    }>;
+  }>(`${ACCOUNTS_API}/accounts/${bareId(accountId)}/invitations`);
+
+  return (j.invitations ?? []).map((i) => ({
+    name: i.name,
+    role: i.role,
+    target: i.targetLocation?.locationName ?? i.targetAccount?.accountName ?? i.name,
+  }));
+}
+
+export async function acceptInvitation(name: string): Promise<void> {
+  await call(`${ACCOUNTS_API}/${name.replace(/^\/+/, "")}:accept`, {
+    method: "POST",
+    body: "{}",
+  });
+}
+
 /** Creates a "What's new" post. Returns Google's resource name for it. */
 export async function createLocalPost(
   cfg: GbpConfig,
