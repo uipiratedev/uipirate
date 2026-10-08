@@ -25,7 +25,7 @@ export const SITE_LINKS: SiteLink[] = [
   {
     attr: "url_linkedin",
     label: "LinkedIn",
-    uri: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
+    uri: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand",
   },
   { attr: "url_twitter", label: "X (Twitter)", uri: "https://x.com/UI_Pirate" },
 ];
