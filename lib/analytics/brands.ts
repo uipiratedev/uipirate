@@ -1,29 +1,32 @@
 /**
- * Maps a referrer hostname to a theSVG icon slug (https://thesvg.org).
+ * Maps a referrer hostname to a brand icon from theSVG (https://thesvg.org).
  *
- * Icons are served from the pinned jsDelivr mirror rather than bundled: the set
- * of referrer hosts is only known at runtime, so static imports (@thesvg/react)
- * would mean shipping thousands of unused components to the admin bundle.
+ * Icons are **vendored** into `public/icons/` with `npx @thesvg/cli add <slug>`
+ * rather than hot-linked. Serving them from theSVG's CDN would mean a runtime
+ * dependency on a third-party domain for an internal page, and `next/image`
+ * would additionally need `images.remotePatterns` plus `dangerouslyAllowSVG`.
+ * Local files are same-origin, immutable, and cannot break on an upstream
+ * rename — the published GitHub tag (v3.1.0) is already behind npm (3.3.12)
+ * and is missing newer icons such as `yahoo-badge`.
+ *
+ * To add a brand: `npx @thesvg/cli add <slug>`, then map the host below.
  *
  * theSVG's tooling is MIT; the brand marks remain the property of their
  * trademark holders and are used here only to label traffic sources.
  */
 
-/** Pinned — `@main` would let an upstream rename break every icon silently. */
-const THESVG_TAG = "3.1.0";
-const THESVG_BASE = `https://cdn.jsdelivr.net/gh/glincker/thesvg@${THESVG_TAG}/public/icons`;
+/** Vendored icons live here, named `<slug>.svg`. */
+const ICON_BASE = "/icons";
 
-/**
- * Hostname (or hostname suffix) → theSVG slug.
- *
- * Only `default` variants are referenced: `mono` is missing upstream for
- * several brands we need (openai, linkedin, bing, gemini) and 404s.
- */
-const HOST_TO_SLUG: Record<string, string> = {
+/** Hostname (or hostname suffix) → vendored icon slug. */
+export const HOST_TO_SLUG: Record<string, string> = {
   // Search
   "google.com": "google",
   "bing.com": "microsoft-bing",
   "duckduckgo.com": "duckduckgo",
+  // Upstream names the Yahoo mark `yahoo-badge`, not `yahoo`.
+  "yahoo.com": "yahoo-badge",
+  "search.yahoo.com": "yahoo-badge",
   "yandex.com": "yandex",
   "ecosia.org": "ecosia",
   "brave.com": "brave",
@@ -50,10 +53,12 @@ const HOST_TO_SLUG: Record<string, string> = {
   "facebook.com": "facebook",
   "youtube.com": "youtube",
   "producthunt.com": "product-hunt",
+  "news.ycombinator.com": "y-combinator",
+  "hackerearth.com": "hackerearth",
   "medium.com": "medium",
   "substack.com": "substack",
   "github.com": "github",
-  "dev.to": "devdotto",
+  "dev.to": "devto",
   "dribbble.com": "dribbble",
   "behance.net": "behance",
   "upwork.com": "upwork",
@@ -100,9 +105,9 @@ export function brandSlug(input: string | null | undefined): string | null {
   return null;
 }
 
-/** CDN URL for a theSVG slug. */
+/** Public path for a vendored icon slug. */
 export function brandIconUrl(slug: string): string {
-  return `${THESVG_BASE}/${slug}/default.svg`;
+  return `${ICON_BASE}/${slug}.svg`;
 }
 
 /** Icon URL for a referrer host, or `null` when unmapped. */

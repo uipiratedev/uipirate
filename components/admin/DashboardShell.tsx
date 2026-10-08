@@ -35,6 +35,18 @@ const PAGE_META: Array<{
   description: string;
 }> = [
   {
+    prefix: "/admin/analytics/channels",
+    title: "Channels",
+    description:
+      "Where traffic actually comes from — counted server-side, so it includes visitors who block scripts or decline cookies.",
+  },
+  {
+    prefix: "/admin/analytics/content",
+    title: "Content Performance",
+    description:
+      "Traffic, Search Console and index status per page, with flags for pages that need attention.",
+  },
+  {
     prefix: "/admin/analytics/traffic",
     title: "Traffic Pulse",
     description:

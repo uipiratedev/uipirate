@@ -126,20 +126,66 @@ owners' property.
   `producthunt` → `product-hunt`. No icon exists for Yahoo or Hacker News.
 - Unmapped hosts and load failures fall back to a neutral letter tile.
 
-### Phase 2 — Close the counting gap (~half day)
+### Phase 2 — Close the counting gap ✅ DONE
 
 | # | Change | Detail |
 | --- | --- | --- |
-| 2.1 | **Consent-free pageview counter** | New `AnalyticsPageDaily` increment on the server. No cookie, no visitor ID, no IP stored. Dimensions: `date`, `path`, `country`, `deviceType`, `channel`. Fires for every human hit. |
-| 2.2 | **Bot/AI crawler log** | Stop discarding bots. New `AnalyticsBotDaily`: `date`, `botName`, `path`, `hits`. Shows GPTBot/ClaudeBot/Googlebot behaviour. |
-| 2.3 | **Consent rate metric** | `trackedVisitors / anonymousVisitors` — quantifies the gap instead of hiding it. |
-| 2.4 | **Join GSC + Bing per page** | Cache GSC/Bing per-page rows daily into `AnalyticsPageSearchDaily` so the pages report can render impressions, clicks, CTR and position next to our own visitor counts without a live API call. |
+| 2.1 | ✅ **Consent-free counter** | `AnalyticsHitDaily`, written from **middleware**. No cookie, visitor id, IP or UA stored — only a `+1` per bucket. |
+| 2.2 | ✅ **Bot/AI crawler log** | `AnalyticsBotDaily` + `lib/analytics/botIdentity.ts` names 60+ crawlers. |
+| 2.3 | ✅ **Consent rate metric** | On Overview and Channels: tracked ÷ all visits. |
+| 2.4 | ✅ **Joined GSC per page** | Done live in `contentPerformance.ts` — see deviation below. |
 
-> **2.1 is the key change.** It gives a number that tracks Vercel closely
-> regardless of consent, while the consented tracker keeps providing the deep
-> session/journey data.
+#### Why middleware, not the page or a beacon
 
-### Phase 3 — The new dashboard (~half day)
+This was the one real architectural constraint. Blog pages are **ISR-cached**
+for SEO, so their server render does *not* re-run per visitor — counting there
+would miss nearly every hit. A client beacon would reintroduce exactly the
+blind spot we are trying to remove (ad blockers, no-JS, declined consent).
+
+Middleware is the only hook that sees **every** request, cached or not. Since
+Mongoose cannot run on the edge, middleware fires a non-blocking
+`event.waitUntil(fetch(...))` to `/api/analytics/hit`, which does the write in
+the Node runtime.
+
+Guards, all verified against a running server:
+- Skips `/api`, `/admin`, `/login`, `/_next` (and so cannot recurse).
+- Counts only `GET` + `Accept: text/html` — **RSC prefetches do not
+  double-count** (confirmed: a prefetch after a real hit left `hits: 1`).
+- Requires `x-internal-token`; a wrong token returns **401**.
+- Every failure is swallowed — counting can never break page delivery.
+
+> ⚠️ **Deployment requirement:** set `CRON_SECRET` (or
+> `INTERNAL_ANALYTICS_SECRET`) in the Vercel environment. It is **not set
+> today**, so counting stays off until it is, and the dashboard says so
+> explicitly rather than quietly reading zero.
+
+#### Deviation from plan: no `AnalyticsPageSearchDaily`
+
+The spec called for caching GSC rows into a new table behind a new cron. Built
+instead as a live join in `lib/analytics/contentPerformance.ts`, because
+`IndexedUrl` **already** stores per-URL index state and `getSearchIntelligence`
+already returns per-page rows. A new table plus cron would have added two
+moving parts and a staleness window for a page that is read a few times a day.
+Revisit if the Content screen gets slow.
+
+### Phase 3 — The new dashboard ✅ DONE
+
+Two new screens, both in the sidebar:
+
+| Screen | Route | What it answers |
+| --- | --- | --- |
+| **Channels** | `/admin/analytics/channels` | "Where does my traffic come from?" |
+| **Content** | `/admin/analytics/content` | "Which pages need work, and why?" |
+
+Overview KPIs were relabelled so no number is ambiguous: *All visits*,
+*Tracked*, *Consent rate*, *Crawler hits*, *Bounce rate*, *New leads* — each
+with a one-line definition underneath.
+
+**Empty-state honesty.** With the counter at zero, every indexed page would
+otherwise be flagged "indexed, no traffic" — a screen of false alarms on first
+deploy. Traffic-dependent flags are now withheld until the counter has recorded
+something, and a blue notice explains why. Verified: flags went from 5 false
+positives to 0.
 
 #### 3.1 Overview — "Executive" rewrite
 Five labelled KPIs, each with a one-line definition:
@@ -203,6 +249,22 @@ A daily cron (reusing the `app/api/admin/indexing/cron` pattern) refreshes the
 search cache so the dashboard never blocks on a live API call.
 
 ---
+
+## 5b. What is left to do
+
+| # | Action | Owner |
+| --- | --- | --- |
+| 1 | **Set `CRON_SECRET` in Vercel** — counting is off without it | You |
+| 2 | **Deploy** `vishal/dev2` → `main` (also carries the ISR/canonical fix) | You |
+| 3 | Confirm GSC service account is connected in production (`searchMocked` was `true` locally) | You |
+| 4 | After ~3 days of data, compare *All visits* against Vercel and tune | Either |
+
+Known pre-existing issues, untouched by this work:
+- `models/Lead.ts:74` — `TS2590: union type too complex`. Reproduces on a
+  clean checkout.
+- `__tests__/lib/ssrfGuard.test.ts` — DNS-dependent, 5s timeout, fails roughly
+  1 run in 3.
+- `~1,500` prettier CRLF warnings repo-wide (Windows line endings).
 
 ## 6. Open decisions
 

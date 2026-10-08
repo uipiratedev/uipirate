@@ -1,6 +1,10 @@
+import fs from "fs";
+import path from "path";
+
 import { describe, expect, it } from "vitest";
 
 import {
+  HOST_TO_SLUG,
   brandIconUrlForHost,
   brandLabel,
   brandSlug,
@@ -54,14 +58,35 @@ describe("brandSlug", () => {
 });
 
 describe("brandIconUrlForHost", () => {
-  it("builds a pinned jsDelivr url with the default variant", () => {
-    expect(brandIconUrlForHost("reddit.com")).toBe(
-      "https://cdn.jsdelivr.net/gh/glincker/thesvg@3.1.0/public/icons/reddit/default.svg",
-    );
+  it("points at the vendored public path", () => {
+    expect(brandIconUrlForHost("reddit.com")).toBe("/icons/reddit.svg");
   });
 
   it("null when unmapped", () => {
     expect(brandIconUrlForHost("nope.example")).toBeNull();
+  });
+});
+
+describe("vendored icon files", () => {
+  // Guards the gap between the host map and `public/icons`: a mapped slug with
+  // no file renders as a broken image, and the CLI's slugs are not guessable
+  // (yahoo -> yahoo-badge, dev.to -> devto, chatgpt.com -> openai).
+  // To add one: `npx @thesvg/cli add <slug>`.
+  const dir = path.join(process.cwd(), "public", "icons");
+  const vendored = new Set(
+    fs.readdirSync(dir).map((f) => f.replace(/\.svg$/, "")),
+  );
+
+  const mapped = [...new Set(Object.values(HOST_TO_SLUG))];
+
+  it.each(mapped)("%s has a vendored svg", (slug) => {
+    expect(vendored.has(slug)).toBe(true);
+  });
+
+  it("has no unused icon files", () => {
+    const unused = [...vendored].filter((s) => !mapped.includes(s));
+
+    expect(unused).toEqual([]);
   });
 });
 

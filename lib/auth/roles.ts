@@ -90,6 +90,8 @@ export interface NavItem {
 
 export const DASHBOARD_NAV: NavItem[] = [
   { label: "Overview", href: "/admin", icon: "grid", exact: true },
+  { label: "Channels", href: "/admin/analytics/channels", icon: "share-2" },
+  { label: "Content", href: "/admin/analytics/content", icon: "folder" },
   { label: "Traffic", href: "/admin/analytics/traffic", icon: "trending-up" },
   { label: "Pages", href: "/admin/analytics/pages", icon: "file-text" },
   {
