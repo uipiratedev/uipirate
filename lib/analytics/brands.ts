@@ -141,3 +141,36 @@ export function channelLabel(key: string | null | undefined): string {
 
   return CHANNEL_LABELS[key] ?? key;
 }
+
+/**
+ * ISO-3166 alpha-2 → country name, e.g. "IN" → "India".
+ *
+ * Uses the runtime's own ICU data rather than the hand-maintained
+ * `COUNTRY_CODE_TO_NAME` table in `lib/analytics/ip.ts`, for two reasons:
+ * that table covers 55 countries (so the long tail would render as bare
+ * codes), and `ip.ts` imports `node:crypto`, which must not be pulled into
+ * a client bundle.
+ */
+let countryNames: Intl.DisplayNames | null | undefined;
+
+export function countryName(code: string | null | undefined): string {
+  const c = (code || "").trim().toUpperCase();
+
+  if (!c) return "(unknown)";
+  // Not a country code — pass through whatever we were given.
+  if (!/^[A-Z]{2}$/.test(c)) return c;
+
+  if (countryNames === undefined) {
+    try {
+      countryNames = new Intl.DisplayNames(["en"], { type: "region" });
+    } catch {
+      countryNames = null;
+    }
+  }
+
+  try {
+    return countryNames?.of(c) || c;
+  } catch {
+    return c;
+  }
+}

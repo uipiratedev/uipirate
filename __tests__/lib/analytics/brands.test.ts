@@ -9,6 +9,7 @@ import {
   brandLabel,
   brandSlug,
   channelLabel,
+  countryName,
   normalizeHost,
 } from "@/lib/analytics/brands";
 
@@ -94,6 +95,26 @@ describe("brandLabel", () => {
   it("falls back to (direct)", () => {
     expect(brandLabel(null)).toBe("(direct)");
     expect(brandLabel("https://www.reddit.com/")).toBe("reddit.com");
+  });
+});
+
+describe("countryName", () => {
+  it("resolves the countries actually in our traffic", () => {
+    expect(countryName("IN")).toBe("India");
+    expect(countryName("US")).toBe("United States");
+    // Present in real sessions but outside the 55-entry hand-maintained map.
+    expect(countryName("HU")).toBe("Hungary");
+    expect(countryName("PK")).toBe("Pakistan");
+  });
+
+  it("is case-insensitive", () => {
+    expect(countryName("in")).toBe("India");
+  });
+
+  it("degrades to the raw value for junk input", () => {
+    expect(countryName("")).toBe("(unknown)");
+    expect(countryName(null)).toBe("(unknown)");
+    expect(countryName("ZZZ")).toBe("ZZZ");
   });
 });
 

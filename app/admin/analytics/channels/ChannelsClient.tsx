@@ -7,8 +7,7 @@ import { TrendChart, BreakdownBars } from "@/components/admin/charts";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import BrandLogo from "@/components/admin/BrandLogo";
 import { fmtInt, fmtPct } from "@/components/admin/format";
-import { channelLabel } from "@/lib/analytics/brands";
-import { COUNTRY_CODE_TO_NAME } from "@/lib/analytics/ip";
+import { channelLabel, countryName } from "@/lib/analytics/brands";
 
 interface SourceRow {
   referrer: string;
@@ -186,7 +185,7 @@ export default function ChannelsClient() {
               formatValue={fmtInt}
               max={10}
               rows={(data?.countries || []).map((c) => ({
-                key: COUNTRY_CODE_TO_NAME[c.key] || c.key,
+                key: countryName(c.key),
                 hits: c.hits,
               }))}
               valueKey="hits"
