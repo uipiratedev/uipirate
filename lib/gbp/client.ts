@@ -60,7 +60,10 @@ export function explain(status: number, body: string): GbpError {
   let apiMessage = "";
 
   try {
-    apiMessage = JSON.parse(body)?.error?.message ?? "";
+    const err = JSON.parse(body)?.error;
+    const detail = JSON.stringify(err?.details ?? "").slice(0, 300);
+
+    apiMessage = `${err?.message ?? ""}${detail && detail !== "\"\"" ? ` ${detail}` : ""}`.trim();
   } catch {
     apiMessage = body.slice(0, 200);
   }
