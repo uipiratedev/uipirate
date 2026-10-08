@@ -2,16 +2,14 @@
 // This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { headers } from "next/headers";
 
 import BlogsDetails from "@/screens/blogsDetails";
+import ViewTracker from "@/components/ViewTracker";
 import {
   getPostBySlug,
   listPostSlugs,
   listPosts,
 } from "@/lib/pirateCOS/public-client";
-import { trackView } from "@/lib/trackView";
-import { verifyAuth } from "@/lib/pirateCOS/auth";
 
 interface Props {
   params: { slug: string };
@@ -173,15 +171,11 @@ export default async function DynamicBlogPage({ params }: Props) {
   }
 
   try {
-    // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
-    const user = await verifyAuth();
-
-    trackView(slug, headers(), !!user).catch(() => {});
-
     const blogData = blog;
 
     // Suggested reads via the tenant-scoped v1 API; exclude the current post.
-    const suggested = (await listPosts({ limit: 4 }))
+    // A failure here must not turn a good post into a 404/degraded page.
+    const suggested = (await listPosts({ limit: 4 }).catch(() => []))
       .filter((p) => p._id !== blog._id)
       .slice(0, 3);
 
@@ -217,6 +211,7 @@ export default async function DynamicBlogPage({ params }: Props) {
           }}
           type="application/ld+json"
         />
+        <ViewTracker slug={slug} />
         <BlogsDetails blog={blogData} suggested={suggested} />
       </div>
     );
