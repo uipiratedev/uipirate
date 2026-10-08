@@ -63,6 +63,25 @@ export const SITE_SERVICES: SiteService[] = [
   },
 ];
 
+/**
+ * Descriptions for Google's standard services that match what the website
+ * offers. Only written where the listing has none, so wording an admin already
+ * set is never overwritten. HTML and graphic design are not on the website, so
+ * they get none.
+ */
+export const STANDARD_DESCRIPTIONS: Record<string, string> = {
+  web_design:
+    "Conversion-focused website and landing page design built around your positioning and user journey.",
+  web_development:
+    "Fast, responsive websites and web apps built with React, Next.js and Angular, with Node.js and Python back ends.",
+  responsive_design:
+    "Interfaces that work properly on phones, tablets and desktops, designed and built mobile-first.",
+  mobile_app_development:
+    "UX/UI design for mobile apps and the engineering to build them, from vision to dev-ready screens and production.",
+  software_development:
+    "Full-stack engineering for SaaS and AI products: architecture, databases, APIs and production deployment.",
+};
+
 /** A service as Google stores it. */
 export interface ServiceItem {
   structuredServiceItem?: { serviceTypeId: string; description?: string };
@@ -76,6 +95,8 @@ export interface ServiceItem {
 export interface ServicePlan {
   /** Google's standard services, always kept. */
   keep: string[];
+  /** Standard services that get a description because they have none. */
+  described: string[];
   /** Free-form entries that are not on the website. */
   remove: string[];
   add: SiteService[];
@@ -92,7 +113,19 @@ export function planServices(
   current: ServiceItem[],
   site: SiteService[] = SITE_SERVICES,
 ): ServicePlan {
-  const structured = current.filter((s) => s.structuredServiceItem);
+  const described: string[] = [];
+  const structured = current
+    .filter((s) => s.structuredServiceItem)
+    .map((s): ServiceItem => {
+      const id = s.structuredServiceItem!.serviceTypeId.replace("job_type_id:", "");
+      const text = STANDARD_DESCRIPTIONS[id];
+
+      if (!text || s.structuredServiceItem!.description?.trim()) return s;
+
+      described.push(id);
+
+      return { ...s, structuredServiceItem: { ...s.structuredServiceItem!, description: text } };
+    });
   const free = current.filter((s) => s.freeFormServiceItem);
   const category = free[0]?.freeFormServiceItem?.category ?? DEFAULT_CATEGORY;
   const wanted = new Map(site.map((s) => [norm(s.name), s]));
@@ -113,6 +146,7 @@ export function planServices(
   }
 
   return {
+    described,
     keep: structured.map((s) => s.structuredServiceItem!.serviceTypeId.replace("job_type_id:", "")),
     remove,
     add,

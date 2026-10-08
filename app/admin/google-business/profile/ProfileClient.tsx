@@ -12,6 +12,7 @@ interface ServiceItem {
 
 interface Plan {
   keep: string[];
+  described: string[];
   remove: string[];
   add: Array<{ name: string; description: string }>;
   same: string[];
@@ -85,7 +86,8 @@ export default function ProfileClient() {
   }
 
   const plan = data?.servicePlan;
-  const nothingToDo = plan && !plan.remove.length && !plan.add.length;
+  const nothingToDo =
+    plan && !plan.remove.length && !plan.add.length && !plan.described.length;
   const live = data?.profile.services ?? [];
 
   return (
@@ -145,6 +147,14 @@ export default function ProfileClient() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  )}
+                  {plan.described.length > 0 && (
+                    <div>
+                      <p className="font-semibold text-emerald-700">
+                        Standard services that get a description ({plan.described.length})
+                      </p>
+                      <p className="mt-1 text-gray-600">{plan.described.join(" · ")}</p>
                     </div>
                   )}
                   <div>

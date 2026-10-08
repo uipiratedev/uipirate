@@ -352,15 +352,27 @@ describe("planServices", () => {
     expect(plan.keep).toEqual(["web_design"]);
     expect(plan.remove).toEqual(["UI Developement", "UX Designer"]);
     expect(plan.add).toHaveLength(SITE_SERVICES.length);
-    expect(plan.next[0]).toBe(std);
+    expect(plan.described).toEqual(["web_design"]);
+    expect(plan.next[0].structuredServiceItem?.description).toMatch(/website/i);
     expect(plan.next).toHaveLength(1 + SITE_SERVICES.length);
+  });
+
+  it("never overwrites a description that is already set", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const own = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design", description: "Mine" } };
+    const plan = planServices([own]);
+
+    expect(plan.described).toEqual([]);
+    expect(plan.next[0].structuredServiceItem?.description).toBe("Mine");
   });
 
   it("reports nothing to do once the listing matches", async () => {
     const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
     const matching = SITE_SERVICES.map((s) => free(s.name, s.description));
-    const plan = planServices([std, ...matching]);
+    const html = { structuredServiceItem: { serviceTypeId: "job_type_id:html" } };
+    const plan = planServices([html, ...matching]);
 
+    expect(plan.described).toEqual([]);
     expect(plan.remove).toEqual([]);
     expect(plan.add).toEqual([]);
   });
