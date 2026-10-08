@@ -140,24 +140,49 @@ Built and operated by UI Pirate (https://uipirate.com/products):
 
 Index: https://uipirate.com/case-studies
 
-- **Xperiti** — market research enterprise SaaS platform (New York, USA).
+- **Xperiti** — market research enterprise SaaS platform serving researchers, coordinators, clients, and experts; rebuilt end to end (Angular, Tailwind).
   https://uipirate.com/case-studies/xperiti-market-research-enterprise-saas
-- **Generative legal AI knowledge management platform** — redesign for an APAC law firm.
+- **Generative legal AI knowledge management platform** — redesign for one of Asia's largest law firms.
   https://uipirate.com/case-studies/ai-knowledge-management-platform-redesign
-- **RevMigrate** — redesign of an AI-powered legacy migration platform.
+- **RevMigrate** — AI-powered legacy migration platform; replaced spreadsheet-based database migrations with visual mapping and clear AI workflows.
   https://uipirate.com/case-studies/case-study-redesigning-revmigrates-ai-powered-legacy-migration-platform
-- **SARGE** — law enforcement software.
+- **SARGE** — law enforcement software designed around legal liability, officer stress, and courtroom defensibility.
   https://uipirate.com/case-studies/designing-sarge-law-enforcement-software
-- **MedJourney** — patient support platform.
+- **MedJourney** — patient support platform, from naming and branding through design and build, connecting pharma, telecallers, labs, and pharmacies around one patient journey.
   https://uipirate.com/case-studies/designing-medjourney-patient-support-platform
-- **NxVoy** — AI flight booking UX.
+- **NxVoy** — AI travel assistant (Sasha) that replaces flight search forms with conversation without losing power users.
   https://uipirate.com/case-studies/nxvoy-ai-flight-booking-ux-case-study
-- **ConnectWise** — a unified product ecosystem for complex operations and event engagement.
+- **ConnectWise / IFTA** — unified communication ecosystem that streamlines support operations and event networking for members.
   https://uipirate.com/case-studies/designing-connectwise-how-we-solved-complex-operations-and-event-engagement-in-one-ecosystem
-- **PropTech rental lifecycle** — a connected multi-product UX ecosystem.
+- **StayPe** — connected PropTech ecosystem of four products for tenants, brokers, and landlords across the rental lifecycle.
   https://uipirate.com/case-studies/fixing-a-broken-rental-lifecycle-a-multi-product-ux-case-study
-- **Legacy enterprise software redesign** — simplifying without breaking what works.
+- **Legacy enterprise software redesign** — simplified 20 years of system complexity and configuration without breaking a successful product.
   https://uipirate.com/case-studies/how-to-redesign-legacy-enterprise-software-without-breaking-what-works---a-case-study
+
+## Founder
+
+**Vishal Anand** — founder of UI Pirate (2017). Product designer and software developer with 9+ years of experience across SaaS, fintech, legal, health, and AI products. Leads product strategy and UX/UI and works hands-on with clients. LinkedIn: https://www.linkedin.com/in/vishal-a-51bb49110
+
+---
+
+## How UI Pirate Compares
+
+| | UI Pirate | Typical agency | Freelancer | In-house hire |
+|---|---|---|---|---|
+| Monthly cost | from $499 | $8–15k | $3–5k | $8–12k |
+| Turnaround | 48–72 hours | 1–2 weeks | Variable | 1–3 weeks |
+| Contract | None; pause anytime | Usually required | Usually none | Employment |
+| Scope | Product thinking, design, and engineering in one team | Varies | One person's skills | One person's skills |
+
+Choose UI Pirate when you need design and engineering from one team, want to start small with a pilot, and need to scale up or down without a contract.
+
+---
+
+## Not a Fit For
+
+Physical product design, logo-only or print projects, and one-off stock-template sites. For those we recommend other partners.
+
+---
 
 ## Selected Clients
 
