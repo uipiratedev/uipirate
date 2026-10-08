@@ -1,0 +1,240 @@
+# Analytics Dashboard v2 — Build Plan
+
+**Status:** Draft · **Created:** 2026-10-08 · **Owner:** Vishal
+
+---
+
+## 1. Why v2
+
+The dashboard works, but it cannot answer the one question that matters:
+
+> *"Where is my traffic actually coming from, and is SEO working?"*
+
+Today four tools report four different numbers for the same 30 days and nothing
+on screen explains the gaps:
+
+| Source | Last 30d | What it actually counts |
+| --- | --- | --- |
+| Vercel Analytics | 616 visitors / 1,395 views | Every browser that ran the script. No consent needed. |
+| **Our dashboard** | *(lower — unmeasured)* | Only visitors who **granted cookie consent** and weren't blocked. |
+| Google Search Console | 30 clicks / 431 impressions | Only sessions that *started* from a Google result. |
+| Bing Webmaster | 1 click / 76 impressions | Same, for Bing. |
+
+Google sends ~46 of 616 visitors (~7%). The rest is Reddit (~71), X/t.co (18),
+ChatGPT (10), LinkedIn (9) and direct. **None of that is visible in GSC**, and
+our own dashboard under-counts all of it.
+
+### The headline insight v2 must surface automatically
+
+`/design-tokens-how-to-build-an-enterprise-grade-token-system` pulled **229
+visitors** — nearly the homepage (235) — while being **not indexed on Google**.
+That page earns traffic with zero search help. Nothing in the current dashboard
+makes that collision visible.
+
+---
+
+## 2. Root causes of the data gap
+
+Findings from reading the current implementation:
+
+### 2.1 Consent gate drops a large share of visitors
+`components/analytics/AnalyticsTracker.tsx` only starts when
+`localStorage["cookie-consent"].analytics === true`. No consent → zero events.
+
+### 2.2 Consent auto-accept depends on a fragile third-party call
+`components/CookieConsent.tsx:119` calls a **free external geolocation API** to
+decide if the visitor is in a GDPR country. If that call is blocked by an ad
+blocker, rate-limited, or slow, the banner shows instead of auto-accepting — and
+a non-EU visitor who ignores the banner is never counted.
+
+> Vercel already gives us the country for free in the `x-vercel-ip-country`
+> request header. Zero latency, zero failures, no third party.
+
+### 2.3 AI traffic is invisible — misclassified
+`lib/analytics/enrich.ts:39-43`:
+
+- `chatgpt.com` matches neither `SEARCH_HOSTS` nor `SOCIAL_HOSTS` → falls
+  through to generic **`referral`**.
+- `gemini.google.com` **matches `SEARCH_HOSTS`** → wrongly counted as
+  **organic search**.
+- `perplexity.ai`, `claude.ai`, `copilot.microsoft.com` → `referral`.
+
+With GPTBot/ClaudeBot explicitly allowed in `robots.txt`, AI referral traffic is
+a strategic channel and deserves its own bucket.
+
+### 2.4 Bot traffic is thrown away
+`app/api/analytics/collect/route.ts:54` returns early for any bot UA. We allow
+AI crawlers in `robots.txt` but have **no record of them ever visiting**.
+
+### 2.5 Search data is not joined to page data
+`/admin/analytics/pages` shows our visitors. `/admin/analytics/search` shows GSC
+clicks. They are never shown side by side, so "high traffic + zero impressions"
+is invisible.
+
+### 2.6 `mocked: true` can silently show fake data
+`lib/analytics/searchConsole.ts` returns `mocked: true` when credentials are
+missing. The UI must never render placeholder numbers without a loud banner.
+
+---
+
+## 3. Design principles for v2
+
+1. **Every number is labelled with what it counts.** No bare "Visitors".
+2. **Never hide a gap — explain it.** Show tracked vs. untracked side by side.
+3. **One screen answers "where is traffic from".** Channel is a first-class dimension.
+4. **SEO and traffic live together**, never on separate pages.
+5. **Privacy first.** Anonymous counting needs no cookie and no consent.
+
+---
+
+## 4. Scope
+
+### Phase 1 — Fix correctness ✅ DONE
+
+| # | Change | File |
+| --- | --- | --- |
+| 1.1 | ✅ Replaced third-party geo lookup with first-party `/api/geo` reading `x-vercel-ip-country` | `app/api/geo/route.ts`, `components/CookieConsent.tsx` |
+| 1.2 | ✅ Added `ai` to `ReferrerType`; AI hosts classified **before** search hosts | `lib/analytics/enrich.ts`, `lib/analytics/types.ts` |
+| 1.3 | ✅ Already present — amber "Preview Mode Active" banner | `SearchAnalyticsClient.tsx:469` |
+| 1.4 | ⬜ Deploy the pending ISR caching + canonical fix (commit `acaa60e`) | — |
+| 1.5 | ✅ Brand logos for referrers (theSVG) | `lib/analytics/brands.ts`, `components/admin/BrandLogo.tsx` |
+| 1.6 | ✅ `getTopReferrers` now groups by **host**, not full URL | `lib/analytics/queries.ts` |
+| 1.7 | ✅ Channel keys render as human labels ("AI assistants") | `lib/analytics/brands.ts` |
+
+**1.2 ordering matters:** `gemini.google.com` must be tested against the AI list
+*before* `SEARCH_HOSTS`, or it stays misclassified as organic. Covered by a
+regression test in `__tests__/lib/analytics/enrich.test.ts`.
+
+**1.1 behaviour change:** when the country cannot be determined the banner is
+now shown (consent required) rather than assumed non-EU. Safer default, and the
+header is reliable on Vercel so the unknown case should be rare.
+
+#### Brand icons — theSVG
+
+Source: [thesvg.org](https://thesvg.org) · tooling MIT, marks remain their
+owners' property.
+
+- **CDN, not npm.** Referrer hosts are only known at runtime, so the
+  tree-shakeable `@thesvg/react` package would mean bundling thousands of
+  unused components into the admin build.
+- **Pinned to `@3.1.0`.** `@main` would let an upstream rename break every icon
+  silently. Note the GitHub CDN has no `3.3.12` tag even though npm does.
+- **`default` variant only.** `mono` 404s upstream for `openai`, `linkedin`,
+  `bing` and `gemini`.
+- **Slugs are not guessable** — verified each against the CDN. `bing` →
+  `microsoft-bing`, `chatgpt.com` → `openai`, `twitter.com`/`t.co` → `x`,
+  `producthunt` → `product-hunt`. No icon exists for Yahoo or Hacker News.
+- Unmapped hosts and load failures fall back to a neutral letter tile.
+
+### Phase 2 — Close the counting gap (~half day)
+
+| # | Change | Detail |
+| --- | --- | --- |
+| 2.1 | **Consent-free pageview counter** | New `AnalyticsPageDaily` increment on the server. No cookie, no visitor ID, no IP stored. Dimensions: `date`, `path`, `country`, `deviceType`, `channel`. Fires for every human hit. |
+| 2.2 | **Bot/AI crawler log** | Stop discarding bots. New `AnalyticsBotDaily`: `date`, `botName`, `path`, `hits`. Shows GPTBot/ClaudeBot/Googlebot behaviour. |
+| 2.3 | **Consent rate metric** | `trackedVisitors / anonymousVisitors` — quantifies the gap instead of hiding it. |
+| 2.4 | **Join GSC + Bing per page** | Cache GSC/Bing per-page rows daily into `AnalyticsPageSearchDaily` so the pages report can render impressions, clicks, CTR and position next to our own visitor counts without a live API call. |
+
+> **2.1 is the key change.** It gives a number that tracks Vercel closely
+> regardless of consent, while the consented tracker keeps providing the deep
+> session/journey data.
+
+### Phase 3 — The new dashboard (~half day)
+
+#### 3.1 Overview — "Executive" rewrite
+Five labelled KPIs, each with a one-line definition:
+
+```
+Visitors (all)        1,395   every human pageview, no consent needed
+Tracked visitors        640   granted consent — powers journeys below
+Search clicks            31   Google 30 + Bing 1
+Search impressions      507   times we appeared in results
+AI + bot crawls       2,431   GPTBot, ClaudeBot, Googlebot
+```
+
+#### 3.2 Channels — the "where from" screen (new)
+A single screen replacing guesswork:
+
+| Channel | Visitors | % | Trend | Top source |
+| --- | --- | --- | --- | --- |
+| Direct | 410 | 38% | ↑ | — |
+| Social | 89 | 14% | ↑ | reddit.com (71) |
+| Organic search | 47 | 8% | → | google.com (46) |
+| **AI assistants** | 10 | 2% | ↑ | chatgpt.com |
+| Referral | 60 | 10% | → | … |
+
+Plus: channel-over-time stacked area, and **country × channel** breakdown.
+
+#### 3.3 Pages — traffic × search, together
+One row per page, sortable, with an **opportunity flag**:
+
+| Page | Visitors | Impr. | Clicks | Pos. | Indexed | Flag |
+| --- | --- | --- | --- | --- | --- | --- |
+| `/design-tokens-…` | 229 | 14 | 0 | — | ❌ | 🔴 Traffic, no index |
+| `/` | 235 | 113 | 22 | 4.5 | ✅ | — |
+| `/ui-ux-design-cost…` | 12 | 26 | 1 | 3.46 | ✅ | 🟡 Ranks, low CTR |
+
+**Flag rules**
+- 🔴 **Traffic, no index** — visitors > 50 and not indexed → highest priority.
+- 🟡 **Ranks, low CTR** — position < 10 and CTR < 2% → rewrite title/description.
+- 🟠 **Impressions, no clicks** — impressions > 10 and clicks = 0 → intent mismatch.
+- 🔵 **Indexed, no traffic** — indexed, visitors < 5 → thin or off-target content.
+
+#### 3.4 SEO health strip
+Persistent across admin pages: indexed count vs. sitemap count, open GSC issues
+by type, pages crawled in the last 7 days, and current Core Web Vitals.
+
+---
+
+## 5. Data model additions
+
+```ts
+// models/analytics/AnalyticsPageDaily.ts  (extend existing)
+{ date, path, country, deviceType, channel, views, uniques }
+
+// models/analytics/AnalyticsBotDaily.ts   (new)
+{ date, botName, botCategory: "search" | "ai" | "seo" | "other", path, hits }
+
+// models/analytics/AnalyticsPageSearchDaily.ts  (new — GSC/Bing cache)
+{ date, path, engine: "google" | "bing", clicks, impressions, ctr, position }
+```
+
+A daily cron (reusing the `app/api/admin/indexing/cron` pattern) refreshes the
+search cache so the dashboard never blocks on a live API call.
+
+---
+
+## 6. Open decisions
+
+1. **Consent-free counter (2.1)** — anonymous and cookie-free, so lawful under
+   GDPR/ePrivacy in most readings, but it is a judgement call. **Confirm before
+   building.**
+2. **Retention** — how long to keep raw `AnalyticsEvent` rows? Proposal: raw 90
+   days, daily rollups forever.
+3. **GSC service account** — is it connected in production? Needs verifying
+   before 2.4 can be built.
+4. **Vercel reconciliation** — show Vercel's number inside our dashboard via
+   their API, or keep them separate?
+
+---
+
+## 7. Sequencing
+
+```
+Phase 1  ──►  deploy  ──►  verify numbers move  ──►  Phase 2  ──►  Phase 3
+  (1h)                        (2–3 days of data)      (0.5d)       (0.5d)
+```
+
+Phase 1 ships alone and is independently valuable. Let 2–3 days of data land
+before Phase 2 so the consent-rate gap can be measured rather than guessed.
+
+---
+
+## 8. Success criteria
+
+- [ ] Dashboard visitor count within **10%** of Vercel (today: unknown gap).
+- [ ] Every KPI on screen carries a one-line definition of what it counts.
+- [ ] Channel attribution covers **100%** of visitors (no "unknown" bucket).
+- [ ] AI assistant traffic is its own channel, not lumped into referral.
+- [ ] Any page with traffic but no index is flagged within 24h.
+- [ ] `mocked: true` can never render without a visible warning.

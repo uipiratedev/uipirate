@@ -53,6 +53,35 @@ describe("classifyReferrer", () => {
     );
   });
 
+  it("ai from an AI assistant host", () => {
+    expect(classifyReferrer("https://chatgpt.com/", undefined, self)).toBe(
+      "ai",
+    );
+    expect(classifyReferrer("https://www.perplexity.ai/", undefined, self)).toBe(
+      "ai",
+    );
+    expect(classifyReferrer("https://claude.ai/chat/x", undefined, self)).toBe(
+      "ai",
+    );
+  });
+
+  it("ai wins over organic for assistants on a search-engine domain", () => {
+    // gemini.google.com matches SEARCH_HOSTS too — AI must be tested first,
+    // or assistant referrals silently inflate the organic Google number.
+    expect(
+      classifyReferrer("https://gemini.google.com/app", undefined, self),
+    ).toBe("ai");
+    expect(
+      classifyReferrer("https://copilot.microsoft.com/", undefined, self),
+    ).toBe("ai");
+  });
+
+  it("plain google is still organic, not ai", () => {
+    expect(classifyReferrer("https://www.google.com/", undefined, self)).toBe(
+      "organic",
+    );
+  });
+
   it("internal when referrer is our own host", () => {
     expect(
       classifyReferrer("https://uipirate.com/pricing", undefined, self),

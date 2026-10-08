@@ -12,6 +12,7 @@ import AnalyticsSession from "@/models/analytics/AnalyticsSession";
 import AnalyticsVisitor from "@/models/analytics/AnalyticsVisitor";
 import Lead from "@/models/Lead";
 import Estimate from "@/models/Estimate";
+import { normalizeHost } from "@/lib/analytics/brands";
 
 export type Granularity = "hour" | "day" | "week" | "month";
 
@@ -225,13 +226,31 @@ export async function getTrafficBreakdowns(range: Range) {
 export async function getTopReferrers(range: Range, limit = 15) {
   await dbConnect();
 
-  return AnalyticsSession.aggregate([
+  // Grouped by *host*, not by full URL: a single Reddit thread otherwise
+  // splits into a row per permalink and reads as many small sources instead
+  // of one large one. Over-fetch, fold in JS (Mongo cannot parse URLs), then
+  // trim to `limit`.
+  const rows = (await AnalyticsSession.aggregate([
     { $match: sessionMatch(range, { referrer: { $nin: [null, ""] } }) },
     { $group: { _id: "$referrer", sessions: { $sum: 1 } } },
     { $sort: { sessions: -1 } },
-    { $limit: limit },
+    { $limit: 500 },
     { $project: { _id: 0, referrer: "$_id", sessions: 1 } },
-  ]) as Promise<Array<{ referrer: string; sessions: number }>>;
+  ])) as Array<{ referrer: string; sessions: number }>;
+
+  const byHost = new Map<string, number>();
+
+  for (const r of rows) {
+    const host = normalizeHost(r.referrer);
+
+    if (!host) continue;
+    byHost.set(host, (byHost.get(host) ?? 0) + r.sessions);
+  }
+
+  return [...byHost.entries()]
+    .map(([referrer, sessions]) => ({ referrer, sessions }))
+    .sort((a, b) => b.sessions - a.sessions)
+    .slice(0, limit);
 }
 
 // ─── pages report ─────────────────────────────────────────────────────────────

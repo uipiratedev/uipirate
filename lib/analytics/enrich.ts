@@ -37,6 +37,13 @@ export function parseDevice(ua: string | null | undefined): DeviceInfo {
   };
 }
 
+/**
+ * AI assistants that send referral traffic. Tested BEFORE `SEARCH_HOSTS`:
+ * `gemini.google.com` and `copilot.microsoft.com` would otherwise match as
+ * plain organic search and silently inflate the Google/Bing numbers.
+ */
+const AI_HOSTS =
+  /(^|\.)(chatgpt|openai|perplexity|claude|anthropic|phind|poe)\.(com|ai|org)$|^(gemini|bard|aistudio)\.google\.com$|^copilot\.microsoft\.com$/i;
 const SEARCH_HOSTS =
   /(^|\.)(google|bing|yahoo|duckduckgo|yandex|baidu|ecosia|brave|startpage|qwant)\.[a-z.]+$/i;
 const SOCIAL_HOSTS =
@@ -83,6 +90,8 @@ export function classifyReferrer(
   )
     return "internal";
   if (EMAIL_HOSTS.test(host)) return "email";
+  // AI before search: gemini.google.com matches both.
+  if (AI_HOSTS.test(host)) return "ai";
   if (SEARCH_HOSTS.test(host)) return "organic";
   if (SOCIAL_HOSTS.test(host)) return "social";
 

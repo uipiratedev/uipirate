@@ -10,6 +10,8 @@ export type AnalyticsEventType =
 export type ReferrerType =
   | "direct"
   | "organic"
+  /** Referral from an AI assistant (ChatGPT, Perplexity, Claude, Gemini…). */
+  | "ai"
   | "social"
   | "referral"
   | "paid"
