@@ -93,20 +93,34 @@ export async function getContentPerformance(range: {
   const fromKey = range.from.toISOString().slice(0, 10);
   const toKey = range.to.toISOString().slice(0, 10);
 
-  const [hitRows, indexRows, search] = await Promise.all([
-    AnalyticsHitDaily.aggregate([
-      { $match: { date: { $gte: fromKey, $lte: toKey } } },
-      { $group: { _id: "$path", hits: { $sum: "$hits" } } },
-      { $sort: { hits: -1 } },
-      { $limit: 500 },
-    ]) as Promise<Array<{ _id: string; hits: number }>>,
+  // Each query is awaited into an explicitly typed local rather than fed
+  // through one `Promise.all`: combining Mongoose's generic return types in a
+  // tuple makes TypeScript expand them into a union too large to represent
+  // (TS2590), which fails `next build`. They are started together so there is
+  // no loss of parallelism.
+  const hitPromise = AnalyticsHitDaily.aggregate([
+    { $match: { date: { $gte: fromKey, $lte: toKey } } },
+    { $group: { _id: "$path", hits: { $sum: "$hits" } } },
+    { $sort: { hits: -1 } },
+    { $limit: 500 },
+  ]) as unknown as Promise<Array<{ _id: string; hits: number }>>;
 
-    IndexedUrl.find({}, { path: 1, "google.coverageState": 1 }).lean(),
+  const indexPromise = IndexedUrl.find(
+    {},
+    { path: 1, "google.coverageState": 1 },
+  ).lean() as unknown as Promise<
+    Array<{ path?: string; google?: { coverageState?: string | null } }>
+  >;
 
-    getSearchIntelligence({ from: fromKey, to: toKey, engine: "all" }).catch(
-      () => null,
-    ),
-  ]);
+  const searchPromise = getSearchIntelligence({
+    from: fromKey,
+    to: toKey,
+    engine: "all",
+  }).catch(() => null);
+
+  const hitRows = await hitPromise;
+  const indexRows = await indexPromise;
+  const search = await searchPromise;
 
   const byPath = new Map<string, ContentRow>();
 
@@ -150,10 +164,7 @@ export async function getContentPerformance(range: {
       r.position === null ? s.position : Math.min(r.position, s.position);
   }
 
-  for (const i of indexRows as Array<{
-    path?: string;
-    google?: { coverageState?: string | null };
-  }>) {
+  for (const i of indexRows) {
     const p = toPath(i.path);
 
     if (!p || !byPath.has(p)) continue;
