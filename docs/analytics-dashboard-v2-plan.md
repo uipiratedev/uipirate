@@ -480,8 +480,15 @@ Probed read-only with the existing service account (`seo-187@ui-pirate…`, proj
 
 ### Known limits
 
-- **16 of the 27 eligible posts have no usable image** (no featured image, or
-  only the SVG placeholder) and would go out text-only. Posts with a photo get
-  noticeably more attention on a listing; adding images in the CMS improves this.
+- **16 of the 27 eligible posts have no photo of their own**, so they use the
+  branded 1200×630 card the site already generates for every post
+  (`opengraph-image.tsx`, title on a designed background). All 27 image URLs
+  were fetched live and are valid (PNG/JPG, 10 KB–5 MB). A real photo usually
+  draws more attention than a title card, so adding featured images in the CMS
+  still helps.
+- **The post text is the CMS excerpt, not the article body**, and the button
+  label is fixed by Google to "Learn more" (it only offers BOOK, ORDER, SHOP,
+  LEARN_MORE, SIGN_UP, CALL). There is no one-click "write an overview" step:
+  whatever excerpt the CMS holds is what gets posted.
 - GBP posts do not improve organic rankings and their links do not pass SEO
   value; expect a modest, steady trickle of brand-search visits.

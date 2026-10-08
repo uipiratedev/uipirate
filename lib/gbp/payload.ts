@@ -130,6 +130,24 @@ export function absoluteImageUrl(value: string | undefined): string | null {
   return abs;
 }
 
+/**
+ * The branded 1200×630 card the site already generates for every post
+ * (`opengraph-image.tsx`). Used when a post has no photo of its own, so no
+ * post goes out as bare text — 16 of the 27 eligible posts had no usable image.
+ * Same URL shape the site's own metadata uses; PNG, well inside Google's size
+ * limits.
+ */
+export function ogCardUrl(post: Pick<GbpSourcePost, "slug" | "postType">): string {
+  const base =
+    post.postType === "case-study"
+      ? `/case-studies/${post.slug}`
+      : post.postType === "concept"
+        ? `/concepts/${post.slug}`
+        : `/${post.slug}`;
+
+  return `${SITE_ORIGIN}${base}/opengraph-image/${post.slug}`;
+}
+
 export interface LocalPostPayload {
   languageCode: string;
   topicType: "STANDARD";
@@ -146,10 +164,14 @@ export function buildLocalPost(post: GbpSourcePost): LocalPostPayload {
     callToAction: { actionType: "LEARN_MORE", url: buildCtaUrl(post) },
   };
 
+  // The post's own photo first; otherwise its generated card, so there is
+  // always an image.
   const image =
-    absoluteImageUrl(post.featuredImage) ?? absoluteImageUrl(post.bannerImage);
+    absoluteImageUrl(post.featuredImage) ??
+    absoluteImageUrl(post.bannerImage) ??
+    ogCardUrl(post);
 
-  if (image) payload.media = [{ mediaFormat: "PHOTO", sourceUrl: image }];
+  payload.media = [{ mediaFormat: "PHOTO", sourceUrl: image }];
 
   return payload;
 }

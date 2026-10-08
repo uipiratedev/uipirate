@@ -6,6 +6,7 @@ import {
   buildLocalPost,
   buildSummary,
   eligibility,
+  ogCardUrl,
   toPlainText,
   truncateWords,
 } from "@/lib/gbp/payload";
@@ -132,8 +133,31 @@ describe("images", () => {
     expect(absoluteImageUrl(undefined)).toBeNull();
   });
 
-  it("omits media when there is no usable image", () => {
-    expect(buildLocalPost(post()).media).toBeUndefined();
+  it("falls back to the generated card so no post goes out as bare text", () => {
+    expect(buildLocalPost(post()).media).toEqual([
+      {
+        mediaFormat: "PHOTO",
+        sourceUrl: "https://uipirate.com/design-tokens/opengraph-image/design-tokens",
+      },
+    ]);
+  });
+
+  it("uses the card when the only image is an unusable svg placeholder", () => {
+    expect(
+      buildLocalPost(post({ featuredImage: "/assets/blog-banner-default.svg" })).media![0].sourceUrl,
+    ).toContain("/opengraph-image/");
+  });
+
+  it("builds the card url under the route each post type actually lives at", () => {
+    expect(ogCardUrl({ slug: "a", postType: "case-study" })).toBe(
+      "https://uipirate.com/case-studies/a/opengraph-image/a",
+    );
+    expect(ogCardUrl({ slug: "a", postType: "concept" })).toBe(
+      "https://uipirate.com/concepts/a/opengraph-image/a",
+    );
+    expect(ogCardUrl({ slug: "a", postType: "tutorial" })).toBe(
+      "https://uipirate.com/a/opengraph-image/a",
+    );
   });
 
   it("prefers the featured image, falling back to the banner", () => {
