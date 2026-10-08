@@ -316,6 +316,12 @@ export default function GoogleBusinessClient() {
             >
               {busy === "check:" ? "Checking…" : "Check connection"}
             </button>
+            <a
+              className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
+              href="/admin/google-business/profile"
+            >
+              Business details
+            </a>
             {data?.oauth.connected ? (
               <button
                 className={`${btn} bg-white text-gray-600 ring-gray-200 hover:bg-gray-50`}

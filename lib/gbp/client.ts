@@ -18,7 +18,7 @@ import type { LocalPostPayload } from "./payload";
 const SCOPE = "https://www.googleapis.com/auth/business.manage";
 
 const ACCOUNTS_API = "https://mybusinessaccountmanagement.googleapis.com/v1";
-const INFO_API = "https://mybusinessbusinessinformation.googleapis.com/v1";
+export const INFO_API = "https://mybusinessbusinessinformation.googleapis.com/v1";
 const POSTS_API = "https://mybusiness.googleapis.com/v4";
 
 export class GbpError extends Error {
@@ -107,7 +107,7 @@ export function explain(status: number, body: string): GbpError {
   return new GbpError(apiMessage || `Google returned HTTP ${status}.`, status);
 }
 
-async function call<T>(url: string, init?: RequestInit): Promise<T> {
+export async function call<T>(url: string, init?: RequestInit): Promise<T> {
   // The owner's own sign-in first; the service account is the fallback.
   const token = (await getOAuthAccessToken()) ?? (await getGoogleAccessToken([SCOPE]));
 

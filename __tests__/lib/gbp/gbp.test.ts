@@ -338,3 +338,39 @@ describe("several images per post", () => {
     expect(buildLocalPost(post({ content: "<p>text only</p>" })).media).toHaveLength(1);
   });
 });
+
+describe("planServices", () => {
+  const free = (n: string, d?: string) => ({
+    freeFormServiceItem: { category: "categories/gcid:website_designer", label: { displayName: n, description: d } },
+  });
+  const std = { structuredServiceItem: { serviceTypeId: "job_type_id:web_design" } };
+
+  it("keeps Google's standard services and replaces free-form ones with the site's", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const plan = planServices([std, free("UI Developement"), free("UX Designer")]);
+
+    expect(plan.keep).toEqual(["web_design"]);
+    expect(plan.remove).toEqual(["UI Developement", "UX Designer"]);
+    expect(plan.add).toHaveLength(SITE_SERVICES.length);
+    expect(plan.next[0]).toBe(std);
+    expect(plan.next).toHaveLength(1 + SITE_SERVICES.length);
+  });
+
+  it("reports nothing to do once the listing matches", async () => {
+    const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
+    const matching = SITE_SERVICES.map((s) => free(s.name, s.description));
+    const plan = planServices([std, ...matching]);
+
+    expect(plan.remove).toEqual([]);
+    expect(plan.add).toEqual([]);
+  });
+
+  it("respects Google's length limits", async () => {
+    const { SITE_SERVICES } = await import("@/lib/gbp/profile");
+
+    for (const s of SITE_SERVICES) {
+      expect(s.name.length).toBeLessThanOrEqual(140);
+      expect(s.description.length).toBeLessThanOrEqual(300);
+    }
+  });
+});
