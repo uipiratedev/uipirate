@@ -1,21 +1,69 @@
-import type { NextRequest } from "next/server";
+import type { NextRequest, NextFetchEvent } from "next/server";
 
 import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE, verifySessionEdge } from "@/lib/auth/edge";
+import { internalAnalyticsSecret } from "@/lib/analytics/internalSecret";
+
+/** Never counted: internal surfaces, APIs, and anything non-navigational. */
+const UNCOUNTED = /^\/(api|admin|login|_next|monitoring)(\/|$)/;
 
 /**
- * Runs on (almost) every request. Two jobs:
+ * Fire-and-forget anonymous hit count.
+ *
+ * Middleware is the only server-side hook that sees *every* request: blog
+ * pages are ISR-cached, so their render does not re-run per visitor, and the
+ * consented client tracker misses anyone who blocks scripts or declines the
+ * banner. Counting here is what lets the dashboard agree with Vercel.
+ *
+ * Runs inside `waitUntil` so it never delays the response, and failures are
+ * swallowed — a counting problem must never break page delivery.
+ */
+function countHit(req: NextRequest, event: NextFetchEvent) {
+  const { pathname } = req.nextUrl;
+
+  if (UNCOUNTED.test(pathname)) return;
+  // Only count real page navigations, not RSC prefetches or data fetches.
+  if (req.method !== "GET") return;
+  if (req.headers.get("rsc") || req.headers.get("next-router-prefetch")) return;
+  if (!req.headers.get("accept")?.includes("text/html")) return;
+
+  const secret = internalAnalyticsSecret();
+
+  if (!secret) return;
+
+  event.waitUntil(
+    fetch(new URL("/api/analytics/hit", req.nextUrl.origin), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-internal-token": secret,
+      },
+      body: JSON.stringify({
+        path: pathname,
+        referrer: req.headers.get("referer") || "",
+        ua: req.headers.get("user-agent") || "",
+        country: req.headers.get("x-vercel-ip-country") || "",
+      }),
+    }).catch(() => {}),
+  );
+}
+
+/**
+ * Runs on (almost) every request. Three jobs:
  *   1. Expose the pathname to server components via `x-pathname`.
  *   2. Gate `/admin/*` behind a valid session cookie, and bounce an already
  *      signed-in user away from `/login`. Deep role checks happen in the
  *      /admin server layout and each API route — this is signature-only.
+ *   3. Count the request anonymously (see `countHit`).
  */
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, event: NextFetchEvent) {
   const url = req.nextUrl;
   const requestHeaders = new Headers(req.headers);
 
   requestHeaders.set("x-pathname", url.pathname);
+
+  countHit(req, event);
 
   const pass = NextResponse.next({ request: { headers: requestHeaders } });
 

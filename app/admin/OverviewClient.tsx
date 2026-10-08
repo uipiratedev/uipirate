@@ -31,6 +31,10 @@ interface OverviewData {
     pagesPerSession: number;
     newLeads: number;
   };
+  /** Consent-free totals — comparable to Vercel Analytics. */
+  allVisits: number;
+  botHits: number;
+  consentRate: number | null;
   series: Array<{
     bucket: string;
     pageviews: number;
@@ -92,15 +96,34 @@ export default function OverviewClient({ userName }: { userName: string }) {
         {s ? (
           <KpiRow
             items={[
-              { label: "Visitors", value: fmtCompact(s.visitors), hint: "Unique users" },
-              { label: "Sessions", value: fmtCompact(s.sessions), hint: "Total visits" },
-              { label: "Pageviews", value: fmtCompact(s.pageviews), hint: "Content views" },
               {
-                label: "Avg. Duration",
-                value: fmtDuration(s.avgSessionDurationMs),
-                hint: "Dwell per visit",
+                label: "All visits",
+                value: fmtCompact(data?.allVisits ?? 0),
+                hint: "Everyone — no consent needed",
               },
-              { label: "Bounce Rate", value: fmtPct(s.bounceRate, 0), hint: "Single-page exits" },
+              {
+                label: "Tracked",
+                value: fmtCompact(s.pageviews),
+                hint: "Consented only — powers the detail below",
+              },
+              {
+                label: "Consent rate",
+                value:
+                  data?.consentRate == null
+                    ? "—"
+                    : fmtPct(data.consentRate, 0),
+                hint: "Share of traffic the cookie tracker sees",
+              },
+              {
+                label: "Crawler hits",
+                value: fmtCompact(data?.botHits ?? 0),
+                hint: "Bots & AI crawlers — not counted as visits",
+              },
+              {
+                label: "Bounce Rate",
+                value: fmtPct(s.bounceRate, 0),
+                hint: "Single-page exits (tracked only)",
+              },
               { label: "New Leads", value: fmtInt(s.newLeads), hint: "Form submissions" },
             ]}
           />

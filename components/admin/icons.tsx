@@ -133,6 +133,15 @@ export const Icon = {
       <line x1="21" x2="16.65" y1="21" y2="16.65" />
     </svg>
   ),
+  "share-2": (p: P) => (
+    <svg {...base} className={p.className}>
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+      <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+    </svg>
+  ),
   radar: (p: P) => (
     <svg {...base} className={p.className}>
       <path d="M12 2a10 10 0 1 0 10 10" />

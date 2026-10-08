@@ -116,13 +116,15 @@ const CookieConsent = () => {
         return;
       }
 
-      // Use a free geolocation API to detect country
-      const response = await fetch("https://ipapi.co/json/");
-      const data = await response.json();
-      const userCountry = data.country_code as string;
+      // First-party geo lookup — reads the edge `x-vercel-ip-country` header.
+      // Same-origin, so ad blockers cannot drop it the way they dropped the
+      // previous third-party ipapi.co call.
+      const response = await fetch("/api/geo");
+      const data = (await response.json()) as { country: string | null };
+      const userCountry = data.country;
 
-      if (GDPR_COUNTRIES.includes(userCountry)) {
-        // User is in GDPR country - show banner
+      if (!userCountry || GDPR_COUNTRIES.includes(userCountry)) {
+        // In a GDPR country, or country unknown — ask for consent.
         setShowBanner(true);
       } else {
         // User is NOT in GDPR country - auto-accept all cookies

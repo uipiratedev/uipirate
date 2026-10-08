@@ -14,6 +14,8 @@ import {
   YAxis,
 } from "recharts";
 
+import BrandLogo from "./BrandLogo";
+
 import { INK, SEQ_BLUE, SERIES, fmtDate, fmtInt } from "./format";
 
 export interface SeriesDef {
@@ -129,12 +131,15 @@ export function BreakdownBars({
   labelKey = "key",
   formatValue = fmtInt,
   max,
+  showBrandIcons = false,
 }: {
   rows: readonly any[];
   valueKey?: string;
   labelKey?: string;
   formatValue?: (n: number) => string;
   max?: number;
+  /** Render the theSVG brand mark for each row — for referrer-host lists. */
+  showBrandIcons?: boolean;
 }) {
   if (!rows.length) {
     return <p className="py-6 text-center text-sm text-gray-400">No data.</p>;
@@ -152,8 +157,12 @@ export function BreakdownBars({
         return (
           <li key={`${label}-${i}`} className="text-sm">
             <div className="mb-1 flex items-center justify-between gap-2">
-              <span className="truncate text-gray-700" title={label}>
-                {label || "(none)"}
+              <span
+                className="flex min-w-0 items-center gap-2 text-gray-700"
+                title={label}
+              >
+                {showBrandIcons && <BrandLogo host={label} />}
+                <span className="truncate">{label || "(none)"}</span>
               </span>
               <span className="shrink-0 tabular-nums text-gray-500">
                 {formatValue(v)}

@@ -11,6 +11,7 @@ import {
   fmtInt,
   fmtPct,
 } from "@/components/admin/format";
+import { channelLabel } from "@/lib/analytics/brands";
 
 interface Row {
   key: string;
@@ -113,10 +114,16 @@ export default function TrafficClient() {
 
         <div className="mt-5 grid gap-5 lg:grid-cols-2">
           <Card subtitle="How sessions arrived" title="Channels">
-            <BreakdownBars rows={data?.source || []} />
+            <BreakdownBars
+              rows={(data?.source || []).map((r) => ({
+                ...r,
+                key: channelLabel(r.key),
+              }))}
+            />
           </Card>
           <Card title="Top referrers">
             <BreakdownBars
+              showBrandIcons
               labelKey="referrer"
               rows={data?.referrers || []}
               valueKey="sessions"
