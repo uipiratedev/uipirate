@@ -304,3 +304,37 @@ describe("cleanOverview", () => {
     expect(out.endsWith(".")).toBe(true);
   });
 });
+
+describe("several images per post", () => {
+  it("sends up to three: featured, banner, then pictures from the article", () => {
+    const media = buildLocalPost(
+      post({
+        featuredImage: "https://x.co/a.jpg",
+        bannerImage: "https://x.co/b.jpg",
+        content: '<p>hi</p><img src="https://x.co/c.png"><img src="https://x.co/d.png">',
+      }),
+    ).media!;
+
+    expect(media.map((m) => m.sourceUrl)).toEqual([
+      "https://x.co/a.jpg",
+      "https://x.co/b.jpg",
+      "https://x.co/c.png",
+    ]);
+  });
+
+  it("skips repeats and anything Google cannot use", () => {
+    const media = buildLocalPost(
+      post({
+        featuredImage: "https://x.co/a.jpg",
+        content:
+          '<img src="https://x.co/a.jpg"><img src="data:image/png;base64,AAAA"><img src="/x.svg"><img src=\'https://x.co/e.jpg\'>',
+      }),
+    ).media!;
+
+    expect(media.map((m) => m.sourceUrl)).toEqual(["https://x.co/a.jpg", "https://x.co/e.jpg"]);
+  });
+
+  it("falls back to the generated card when the post has no usable photo", () => {
+    expect(buildLocalPost(post({ content: "<p>text only</p>" })).media).toHaveLength(1);
+  });
+});

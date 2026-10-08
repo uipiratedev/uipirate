@@ -39,7 +39,7 @@ interface Preview {
   slug: string;
   summary: string;
   url: string;
-  image?: string;
+  images: string[];
 }
 
 const STATUS_STYLE: Record<Status, string> = {
@@ -153,7 +153,7 @@ export default function GoogleBusinessClient() {
           slug: j.slug,
           summary: j.payload.summary,
           url: j.payload.callToAction.url,
-          image: j.payload.media?.[0]?.sourceUrl,
+          images: (j.payload.media ?? []).map((m: { sourceUrl: string }) => m.sourceUrl),
         });
       } else if (action === "check" && j.ok) {
         setFound(j.locations);
@@ -502,9 +502,13 @@ export default function GoogleBusinessClient() {
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
               Exactly what Google will receive
             </p>
-            {preview.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img alt="" className="mt-3 max-h-56 w-full rounded-lg object-cover" src={preview.image} />
+            {preview.images.length ? (
+              <div className="mt-3 grid grid-flow-col auto-cols-fr gap-1.5">
+                {preview.images.map((src) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={src} alt="" className="h-40 w-full rounded-lg object-cover" src={src} />
+                ))}
+              </div>
             ) : (
               <p className="mt-3 rounded-lg bg-gray-50 p-3 text-xs text-gray-500">
                 No usable image — this post will go out text-only.
