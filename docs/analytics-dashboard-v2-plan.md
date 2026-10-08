@@ -418,3 +418,77 @@ near-empty page; they were crawled before the caching / API-failure fixes.
   estimates (`UI Pirate`, `xyz`) are still in the estimates collection.
 - **Request indexing** for the 3 duplicate pages and the weakest unindexed URLs
   (`/services/*`, the older blog posts) in Search Console.
+
+---
+
+## 11. Google Business Profile publishing
+
+Announces every CMS post on the Google Business Profile as a "What's new" post
+with a *Learn more* button. Screen: `/admin/google-business`.
+
+### How it behaves
+
+| | |
+| --- | --- |
+| **Which posts** | All published posts, case studies included. Held drafts (`HELD_DRAFT_SLUGS`) and `noindex` posts are refused — **even when published manually**. |
+| **New posts** | A post you publish is queued on the next daily sync and goes out within 24 hours, ahead of the backlog (max 3 per run). |
+| **Backlog** | The 27 existing posts drip out one at a time, newest first, at least 84 h apart (about 2 per week). Posting them all at once looks like spam and can get posts suppressed. |
+| **Manual** | Per-post **Preview** (shows exactly what Google receives), **Publish now**, **Skip**, **Re-queue**, plus **Sync now** and **Check connection**. |
+| **Automatic** | `/api/gbp/sync`, daily 05:30 UTC. **Only posts when `GBP_PUBLISH_ENABLED=1`**; otherwise it syncs the queue and reports what it would post. Manual publishing works without the flag. |
+| **Link tracking** | Each button URL carries `utm_source=google&utm_medium=business-profile&utm_campaign=gbp-post&utm_content=<slug>`, so the Channels screen shows what the listing sends. |
+
+### Safety rules (each is tested)
+
+- A post is claimed atomically (`queued → publishing`) *before* the API call; the
+  unique `slug` index makes posting idempotent.
+- A crash mid-publish is **never retried automatically** — it may already be
+  live. It is marked failed and left for a human.
+- Setup problems (401 / 403 / 404 / 429) do **not** consume a retry attempt and
+  **stop the run**, so a broken connection cannot produce a burst of failed calls.
+- Failed posts retry automatically up to 3 times; the cron route fails closed
+  without `CRON_SECRET`.
+
+### Verified
+
+Read-only against the live CMS: 28 posts → 27 eligible, 1 held draft refused;
+longest summary 363 chars (limit 1,500); no URLs left in summary text.
+End to end on a scratch database (dropped afterwards): first run is a dry run;
+28 rows created, idempotent on re-run; held draft refused when published by
+hand; unconfigured → refused and left queued; a real request to Google with fake
+ids was rejected harmlessly and the post returned to *queued* with 0 attempts;
+with 3 posts due and Google refusing, exactly 1 was attempted.
+
+### Setup — what is still needed (Google side)
+
+Probed read-only with the existing service account (`seo-187@ui-pirate…`, project
+`172561424321`):
+
+| API | State |
+| --- | --- |
+| Google My Business API (`mybusiness.googleapis.com`) | ✅ enabled — this creates the posts |
+| My Business Account Management API | ❌ **disabled** — needed to find the account |
+| My Business Business Information API | ❌ **disabled** — needed to find the location |
+
+1. Enable the two disabled APIs in Cloud project `172561424321`.
+2. Add the service account's email as a **Manager** of the profile
+   (Business Profile → People and access).
+3. New Google projects start with **0 quota** on these APIs — if calls return 429,
+   request Business Profile API access from Google.
+4. Admin → Google Business → **Check connection** → copy the ids into
+   `GBP_ACCOUNT_ID` / `GBP_LOCATION_ID` → redeploy.
+5. Publish one post manually, check it on Google, then set `GBP_PUBLISH_ENABLED=1`.
+
+### Known limits
+
+- **16 of the 27 eligible posts have no photo of their own**, so they use the
+  branded 1200×630 card the site already generates for every post
+  (`opengraph-image.tsx`, title on a designed background). All 27 image URLs
+  were fetched live and are valid (PNG/JPG, 10 KB–5 MB). A real photo usually
+  draws more attention than a title card, so adding featured images in the CMS
+  still helps.
+- **The post text is the CMS excerpt, not the article body**, and the button
+  label is fixed by Google to "Learn more" (it only offers BOOK, ORDER, SHOP,
+  LEARN_MORE, SIGN_UP, CALL). There is no one-click "write an overview" step:
+  whatever excerpt the CMS holds is what gets posted.
+- GBP posts do not improve organic rankings and their links do not pass SEO
+  value; expect a modest, steady trickle of brand-search visits.

@@ -130,6 +130,12 @@ export const DASHBOARD_NAV: NavItem[] = [
   },
   { label: "UTM Links", href: "/admin/utm-links", icon: "link" },
   {
+    label: "Google Business",
+    href: "/admin/google-business",
+    icon: "share-2",
+    capability: "manage:indexing",
+  },
+  {
     label: "Users & Roles",
     href: "/admin/settings/users",
     icon: "shield",

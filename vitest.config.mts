@@ -15,6 +15,7 @@ export default defineConfig({
       "__tests__/lib/rateLimit.test.ts",
       "__tests__/lib/postImages.test.ts",
       "__tests__/lib/suggested.test.ts",
+      "__tests__/lib/gbp/**/*.test.ts",
       "__tests__/lib/cssToTailwind.test.ts",
       "__tests__/lib/layeredShadow.test.ts",
       "__tests__/lib/concentricRadius.test.ts",

@@ -47,6 +47,12 @@ const PAGE_META: Array<{
       "How many visitors reach pricing or contact and act — by landing page, channel and contact route.",
   },
   {
+    prefix: "/admin/google-business",
+    title: "Google Business Profile",
+    description:
+      "Announce articles and case studies on your Google listing — new posts within a day, the backlog on a schedule.",
+  },
+  {
     prefix: "/admin/utm-links",
     title: "UTM Links",
     description:
