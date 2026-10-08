@@ -357,6 +357,32 @@ describe("planServices", () => {
     expect(plan.add.map((s) => s.name)).toContain("Design Subscription");
   });
 
+  it("describes existing entries that have no description, and leaves written ones alone", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const plan = planServices([
+      free("UX Designer"),
+      free("UI/UX", "per Hour"),
+      { structuredServiceItem: { serviceTypeId: "job_type_id:html" } },
+    ]);
+    const labels = plan.next
+      .filter((s) => s.freeFormServiceItem)
+      .map((s) => [s.freeFormServiceItem!.label.displayName, s.freeFormServiceItem!.label.description]);
+
+    expect(plan.described).toEqual(expect.arrayContaining(["html", "UX Designer"]));
+    expect(plan.described).not.toContain("UI/UX");
+    expect(labels).toContainEqual(["UI/UX", "per Hour"]);
+    expect(labels.find(([n]) => n === "UX Designer")![1]).toMatch(/wireframes/);
+    // Nothing the listing already had is dropped.
+    expect(plan.next.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("every existing entry and standard service we know has a usable description", async () => {
+    const { EXISTING_DESCRIPTIONS, STANDARD_DESCRIPTIONS } = await import("@/lib/gbp/profile");
+
+    for (const d of [...Object.values(EXISTING_DESCRIPTIONS), ...Object.values(STANDARD_DESCRIPTIONS)])
+      expect(d.length).toBeGreaterThan(30), expect(d.length).toBeLessThanOrEqual(300);
+  });
+
   it("does not add a service the listing already has", async () => {
     const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
     const plan = planServices([free("Design Subscription", "My own wording")]);

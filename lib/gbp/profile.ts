@@ -87,6 +87,32 @@ export const STANDARD_DESCRIPTIONS: Record<string, string> = {
     "UX/UI design for mobile apps and the engineering to build them, from vision to dev-ready screens and production.",
   software_development:
     "Full-stack engineering for SaaS and AI products: architecture, databases, APIs and production deployment.",
+  html: "Clean, semantic HTML and CSS builds for fast, accessible, responsive pages.",
+  graphic_design:
+    "Interface and visual graphics for digital products: UI kits, illustrations and marketing visuals.",
+};
+
+/**
+ * Descriptions for the custom entries already on the listing, matched by name.
+ * Like the standard ones they only fill an empty description.
+ */
+export const EXISTING_DESCRIPTIONS: Record<string, string> = {
+  "visual design":
+    "Brand-aligned visual design for web and mobile products: UI kits, components and polished screens.",
+  "next js developer":
+    "Next.js development for fast, search-friendly websites and web apps with server rendering and clean, maintainable code.",
+  "website development":
+    "Fast, responsive websites built with React and Next.js, from landing pages to full business sites.",
+  "frontend developer":
+    "Production-ready front ends in React, Next.js and Angular, built to match the design.",
+  "react js developer":
+    "React.js interfaces and web apps: reusable components, clean state management and responsive layouts.",
+  "ui developement":
+    "Turning UI designs into pixel-accurate, responsive and accessible front-end code.",
+  "ui designer":
+    "User interface design for SaaS and mobile products: screens, components and design systems.",
+  "ux designer":
+    "User experience design: flows, wireframes and prototypes that reduce friction and move people toward action.",
 };
 
 /** A service as Google stores it. */
@@ -134,7 +160,24 @@ export function planServices(
 
       return { ...s, structuredServiceItem: { ...s.structuredServiceItem!, description: text } };
     });
-  const free = current.filter((s) => s.freeFormServiceItem);
+  const free = current
+    .filter((s) => s.freeFormServiceItem)
+    .map((s): ServiceItem => {
+      const label = s.freeFormServiceItem!.label;
+      const text = EXISTING_DESCRIPTIONS[norm(label.displayName)];
+
+      if (!text || label.description?.trim()) return s;
+
+      described.push(label.displayName);
+
+      return {
+        ...s,
+        freeFormServiceItem: {
+          ...s.freeFormServiceItem!,
+          label: { ...label, description: text, languageCode: label.languageCode ?? "en" },
+        },
+      };
+    });
   const category = free[0]?.freeFormServiceItem?.category ?? DEFAULT_CATEGORY;
   const wanted = new Map(site.map((s) => [norm(s.name), s]));
   const have = new Map(free.map((s) => [norm(s.freeFormServiceItem!.label.displayName), s]));
