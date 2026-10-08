@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Enterprise Dashboard UX Analyzer | UI Pirate",
     description:
-      "Audit information density, KPI prominence, table usability, and multi-role action discovery from a real page fetch — no mock data.",
+      "Audit information density, KPI prominence, table usability, and multi-role action discovery from a real page fetch, no mock data.",
     url: "https://uipirate.com/tools/saas/dashboard-analyzer",
     siteName: "UI Pirate",
     type: "website",

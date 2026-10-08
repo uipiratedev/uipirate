@@ -13,6 +13,7 @@ import FeaturedCaseStudy, {
 import MiniProcess from "./miniProcess";
 
 import PageWrapper from "@/components/PageWrapper";
+import ConceptsTeaser from "@/screens/concepts/teaser";
 import PricingPerfectFor from "@/screens/pricing/perfectFor";
 
 // Dynamically import below-the-fold components for better initial load performance
@@ -67,6 +68,8 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
         <LandingBehanceFramor />
 
         <FeaturedCaseStudy study={featuredCaseStudy ?? null} />
+
+        <ConceptsTeaser />
 
         <LandingWhoWeAre />
 

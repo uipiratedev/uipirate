@@ -19,7 +19,7 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
     title: "Idea to Dev-Ready",
     titleHighlight: "SaaS & App Screens",
     description:
-      "Product thinking, competitive analysis & information architecture — then pixel-perfect UX/UI in Angular, React & Next.js.",
+      "Product thinking, competitive analysis & information architecture, then pixel-perfect UX/UI in Angular, React & Next.js.",
   },
   "saas-ai-development": {
     badge: "SaaS & AI Development",
@@ -33,7 +33,7 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
     title: "Pages Built to",
     titleHighlight: "Convert Visitors",
     description:
-      "High-converting landing pages & business websites in React, Next.js, Framer or Webflow — built around your positioning.",
+      "High-converting landing pages & business websites in React, Next.js, Framer or Webflow, built around your positioning.",
   },
   "ux-audits-consultation": {
     badge: "UX Audits & Consultation",

@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title:
       "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
     description:
-      "Not just designs — we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
+      "Not just designs, we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
     url: "https://uipirate.com",
     siteName: "UI Pirate",
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
+        alt: "UI Pirate - Product Design Agency - From Idea to Shipped Product",
       },
     ],
     locale: "en_US",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI Pirate | Product Design — Idea to Shipped Product",
+    title: "UI Pirate | Product Design - Idea to Shipped Product",
     description:
       "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
     images: [
@@ -163,7 +163,7 @@ export default function RootLayout({
               image:
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
-                "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
+                "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product, we carry the rest.",
               foundingDate: "2015",
               founder: {
                 "@type": "Person",
@@ -317,7 +317,7 @@ export default function RootLayout({
                   name: "Does UI Pirate do design only, or development too?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate provides end-to-end services — from product strategy and UX design to full frontend development in Angular, React, and Next.js. Designs can also be handed off to your existing development team.",
+                    text: "UI Pirate provides end-to-end services, from product strategy and UX design to full frontend development in Angular, React, and Next.js. Designs can also be handed off to your existing development team.",
                   },
                 },
                 {
@@ -325,7 +325,7 @@ export default function RootLayout({
                   name: "What makes UI Pirate different from other design agencies?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate combines product thinking with design and development — helping clients think through their product, plan its architecture, design the experience, and build it. We have shipped 50+ products with a 5.0 rating and specialize in complex enterprise applications.",
+                    text: "UI Pirate combines product thinking with design and development, helping clients think through their product, plan its architecture, design the experience, and build it. We have shipped 50+ products with a 5.0 rating and specialize in complex enterprise applications.",
                   },
                 },
                 {

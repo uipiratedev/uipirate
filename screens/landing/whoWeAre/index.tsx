@@ -93,7 +93,7 @@ const LandingWhoWeAre = () => {
                     The team that just gets it.
                   </p>
                   <p className="text-[12px] sm:text-[13px] text-gray-500 font-medium">
-                    — UI Pirate Team
+                   UI Pirate Team
                   </p>
                 </div>
 

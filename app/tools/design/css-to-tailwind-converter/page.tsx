@@ -5,7 +5,7 @@ import CssToTailwindConverterClient from "@/components/CssToTailwindConverter/Cs
 export const metadata: Metadata = {
   title: "CSS to Tailwind CSS Class Converter | UI Pirate",
   description:
-    "Free tool to convert raw CSS — including shorthand, pseudo-classes, and media queries — into idiomatic Tailwind CSS utility classes, instantly in your browser.",
+    "Free tool to convert raw CSS, including shorthand, pseudo-classes, and media queries, into idiomatic Tailwind CSS utility classes, instantly in your browser.",
   alternates: {
     canonical: "https://uipirate.com/tools/design/css-to-tailwind-converter",
   },
@@ -25,7 +25,7 @@ const jsonLd = {
   name: "CSS to Tailwind CSS Class Converter",
   url: "https://uipirate.com/tools/design/css-to-tailwind-converter",
   description:
-    "Convert raw CSS — including shorthand, pseudo-classes, and media queries — into idiomatic Tailwind CSS utility classes, instantly in your browser.",
+    "Convert raw CSS, including shorthand, pseudo-classes, and media queries, into idiomatic Tailwind CSS utility classes, instantly in your browser.",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "All",
   offers: {
@@ -52,7 +52,7 @@ const faqSchema = {
       name: "What's the difference between arbitrary values and arbitrary properties?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Arbitrary values (p-[13px]) customize the value for a utility Tailwind already knows about. Arbitrary properties ([mask-type:luminance]) let you use a raw CSS property Tailwind has no utility for at all — both compile to real, valid CSS.",
+        text: "Arbitrary values (p-[13px]) customize the value for a utility Tailwind already knows about. Arbitrary properties ([mask-type:luminance]) let you use a raw CSS property Tailwind has no utility for at all, both compile to real, valid CSS.",
       },
     },
     {
@@ -60,7 +60,7 @@ const faqSchema = {
       name: "Can I paste an entire stylesheet?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "You can, but this tool is tuned for component-level CSS — a button, a card, a nav bar. Very large stylesheets with deep nesting or hundreds of rules will still parse, but the output is easier to review in smaller chunks.",
+        text: "You can, but this tool is tuned for component-level CSS, a button, a card, a nav bar. Very large stylesheets with deep nesting or hundreds of rules will still parse, but the output is easier to review in smaller chunks.",
       },
     },
   ],

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SaaS Onboarding & Activation Analyzer | UI Pirate",
     description:
-      "Measure signup friction, progressive disclosure, empty states, and time-to-first-value from a real page fetch — no mock data.",
+      "Measure signup friction, progressive disclosure, empty states, and time-to-first-value from a real page fetch, no mock data.",
     url: "https://uipirate.com/tools/saas/saas-onboarding-analyzer",
     siteName: "UI Pirate",
     type: "website",

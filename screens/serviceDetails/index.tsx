@@ -12,6 +12,7 @@ import WhatYouGetAnimations from "./whatYouGetAnimations";
 import WhatYouGain from "./whatYouGain";
 
 import PageWrapper from "@/components/PageWrapper";
+import ConceptsTeaser from "@/screens/concepts/teaser";
 import { Reveal } from "@/components/motion";
 
 // Per-service images — keyed by normalized slug
@@ -94,6 +95,8 @@ const ServiceDetails = ({ data, slug }: { data: any; slug?: string }) => {
         )}
 
         {data.whoThisIsFor && <WhoThisIsFor data={data.whoThisIsFor} />}
+
+        {normalizedSlug === "saas-ai-development" && <ConceptsTeaser />}
 
         {data.recommendedNextSteps && (
           <RecommendedNextSteps data={data.recommendedNextSteps} />

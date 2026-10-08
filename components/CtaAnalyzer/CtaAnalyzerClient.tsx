@@ -90,7 +90,7 @@ export default function CtaAnalyzerClient() {
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Paste any public page. We fetch the real server-rendered HTML
-            and evaluate every button and button-styled link on it —
+            and evaluate every button and button-styled link on it,
             placement, action-verb copy, and real WCAG contrast wherever a
             color value can actually be resolved from the page itself.
           </p>

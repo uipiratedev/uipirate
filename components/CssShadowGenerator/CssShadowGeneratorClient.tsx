@@ -113,7 +113,7 @@ export default function CssShadowGeneratorClient() {
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Build realistic, non-muddy elevation shadows by stacking multiple
-            layers that fade like real ambient light — then export a
+            layers that fade like real ambient light, then export a
             synchronized xs–2xl elevation scale.
           </p>
 
@@ -503,11 +503,11 @@ export default function CssShadowGeneratorClient() {
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               A single CSS <code className="font-mono text-gray-800">box-shadow</code>{" "}
               has exactly one blur radius, so its edge fades at a constant
-              rate — which reads as flat and slightly artificial. Real shadows
+              rate, which reads as flat and slightly artificial. Real shadows
               don't fade evenly: light sources aren't points, so the soft edge
               (the penumbra) spreads and fades faster than the dark core (the
-              umbra) grows. Stacking several shadow layers — each with a
-              larger offset and blur but lower opacity than the last —
+              umbra) grows. Stacking several shadow layers, each with a
+              larger offset and blur but lower opacity than the last,
               approximates that natural falloff far better than any single
               blur value can.
             </p>
@@ -530,10 +530,10 @@ export default function CssShadowGeneratorClient() {
                 Layers &amp; Elevation Distance
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                More layers produce a smoother gradient of blur and opacity —
+                More layers produce a smoother gradient of blur and opacity,
                 3 layers reads as a clean UI shadow, 6 reads as a soft,
                 photographic falloff. Distance sets how far the farthest,
-                softest layer travels — effectively how "high" the element
+                softest layer travels, effectively how "high" the element
                 floats above the page.
               </p>
             </div>
@@ -547,7 +547,7 @@ export default function CssShadowGeneratorClient() {
                 <span className="font-semibold text-gray-700">
                   Smooth Diffusion
                 </span>{" "}
-                pushes layers out quickly and lets the tail ease off gently —
+                pushes layers out quickly and lets the tail ease off gently,
                 the most "ambient occlusion" looking option.{" "}
                 <span className="font-semibold text-gray-700">
                   Sharp Focus
@@ -561,7 +561,7 @@ export default function CssShadowGeneratorClient() {
                 Blur Intensity, Spread &amp; Opacity
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Blur Intensity scales blur relative to each layer's offset —
+                Blur Intensity scales blur relative to each layer's offset,
                 higher values look softer and more diffuse. Negative Spread
                 pulls the shadow's edges in slightly, which keeps large
                 shadows from looking like a blurry rectangle. Opacity sets how
@@ -581,7 +581,7 @@ export default function CssShadowGeneratorClient() {
               tool treats your current settings as the{" "}
               <span className="font-semibold text-gray-700">MD</span>{" "}
               baseline and scales the distance and spread up or down for each
-              level — while keeping the same angle, color, layer count, and
+              level, while keeping the same angle, color, layer count, and
               falloff curve. That's what keeps an entire elevation system
               looking like one consistent light source instead of six
               unrelated shadows.
@@ -607,7 +607,7 @@ export default function CssShadowGeneratorClient() {
               {[
                 {
                   title: "Start from a preset",
-                  desc: "Subtle Card, Raised Button, Modal / Dialog, and Dramatic Hero cover the most common elevation use cases — pick the closest one as a starting point.",
+                  desc: "Subtle Card, Raised Button, Modal / Dialog, and Dramatic Hero cover the most common elevation use cases, pick the closest one as a starting point.",
                 },
                 {
                   title: "Set your light direction and distance",
@@ -623,7 +623,7 @@ export default function CssShadowGeneratorClient() {
                 },
                 {
                   title: "Export the full scale",
-                  desc: "Copy the CSS custom properties or Tailwind boxShadow config — six synchronized tokens (xs through 2xl), ready to drop into your design system.",
+                  desc: "Copy the CSS custom properties or Tailwind boxShadow config, six synchronized tokens (xs through 2xl), ready to drop into your design system.",
                 },
               ].map((step, idx) => (
                 <div key={idx} className="flex gap-4">
@@ -652,11 +652,11 @@ export default function CssShadowGeneratorClient() {
               {[
                 {
                   q: "Why not just use one box-shadow with a bigger blur?",
-                  a: "A single blur value fades at a constant rate, which looks flat and can turn muddy at large sizes. Multiple layers with decreasing opacity mimic how real ambient light actually falls off — sharper near the object, softer and fainter further away.",
+                  a: "A single blur value fades at a constant rate, which looks flat and can turn muddy at large sizes. Multiple layers with decreasing opacity mimic how real ambient light actually falls off, sharper near the object, softer and fainter further away.",
                 },
                 {
                   q: "Why is my shadow color a dark navy instead of black?",
-                  a: "Pure black shadows can look harsh and disconnected from a colored background. A very dark, slightly saturated color (like #0F172A) tends to blend more naturally — most of the built-in presets use this instead of #000000.",
+                  a: "Pure black shadows can look harsh and disconnected from a colored background. A very dark, slightly saturated color (like #0F172A) tends to blend more naturally, most of the built-in presets use this instead of #000000.",
                 },
                 {
                   q: "What does negative spread do?",
@@ -664,11 +664,11 @@ export default function CssShadowGeneratorClient() {
                 },
                 {
                   q: "How many layers should I use?",
-                  a: "3–4 layers is plenty for small UI elements like buttons and cards. Reach for 5–6 layers on large, dramatic elevation — like a modal or a hero image — where the extra layers produce a noticeably smoother gradient.",
+                  a: "3–4 layers is plenty for small UI elements like buttons and cards. Reach for 5–6 layers on large, dramatic elevation, like a modal or a hero image, where the extra layers produce a noticeably smoother gradient.",
                 },
                 {
                   q: "Will this work with Tailwind's default shadow scale?",
-                  a: "The exported boxShadow config adds new keys (xs, sm, md, lg, xl, 2xl) to your theme.extend.boxShadow, so it layers on top of Tailwind's defaults rather than replacing them — use shadow-md, shadow-lg, etc. as normal.",
+                  a: "The exported boxShadow config adds new keys (xs, sm, md, lg, xl, 2xl) to your theme.extend.boxShadow, so it layers on top of Tailwind's defaults rather than replacing them, use shadow-md, shadow-lg, etc. as normal.",
                 },
               ].map((faq, idx) => (
                 <div

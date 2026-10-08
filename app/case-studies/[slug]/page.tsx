@@ -5,6 +5,7 @@ import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";
+import ConceptsTeaser from "@/screens/concepts/teaser";
 
 interface PageProps {
   params: { slug: string };
@@ -109,6 +110,12 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
         title={study.title}
       />
       <BlogContents blog={study} />
+      <div className="pb-16 max-md:pb-12">
+        <ConceptsTeaser
+          heading="Want something like this built?"
+          text="Explore the product concepts we have already planned out, or bring your own."
+        />
+      </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   keywords:
     "product design FAQ, design agency questions, SaaS design process, Angular development FAQ, UI design timeline, how to hire product designer, design agency process, idea to product",
   openGraph: {
-    title: "FAQs | UI Pirate — Product Design & Development Agency",
+    title: "FAQs | UI Pirate - Product Design & Development Agency",
     description:
       "Get answers about our product design & development services, pricing, process, and timelines.",
     url: "https://uipirate.com/faqs",

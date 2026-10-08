@@ -48,7 +48,7 @@ const ContactSuccessPage = () => {
       </h1>
       <p className="text-gray-600 text-lg max-md:text-base mb-10 max-w-[420px]">
         Your inquiry has been received. A member of our team will get in touch
-        with you shortly — typically within 2 hours.
+        with you shortly, typically within 2 hours.
       </p>
 
       <div className="w-full max-w-[280px]">

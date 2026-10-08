@@ -63,7 +63,7 @@ const WhyChooseUs = ({ className = "" }: WhyChooseUsProps) => {
                     Premium UI + Precise Handoff
                   </h3>
                   <p className="text-sm sm:text-base md:text-base lg:text-lg opacity-90 leading-relaxed">
-                    Documentation, tokens, spacing, states — developers love
+                    Documentation, tokens, spacing, states, developers love
                     working with us.
                   </p>
                 </div>
@@ -87,7 +87,7 @@ const WhyChooseUs = ({ className = "" }: WhyChooseUsProps) => {
                     AI-First UX Expertise
                   </h3>
                   <p className="text-sm sm:text-base md:text-base lg:text-lg opacity-90 leading-relaxed">
-                    We design predictable, trustworthy AI interactions — prompt
+                    We design predictable, trustworthy AI interactions, prompt
                     flows, confidence UI, output validation and more.
                   </p>
                 </div>

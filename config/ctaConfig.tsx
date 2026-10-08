@@ -42,7 +42,7 @@ export const ROUTE_CTA_CONFIGS: Record<string, PageCTAConfig> = {
       </>
     ),
     description:
-      "Book a free 15-minute call. Whether it's a quick UX audit or a full product build, tell us where you are — we'll tell you the fastest path forward.",
+      "Book a free 15-minute call. Whether it's a quick UX audit or a full product build, tell us where you are, we'll tell you the fastest path forward.",
     primaryButton: {
       label: "BOOK A FREE CALL",
       action: "link",
@@ -78,7 +78,7 @@ export const ROUTE_CTA_CONFIGS: Record<string, PageCTAConfig> = {
       </>
     ),
     description:
-      "Book a free 15-minute call. Tell us your vision — we'll show you how we can bring it to life.",
+      "Book a free 15-minute call. Tell us your vision, we'll show you how we can bring it to life.",
     primaryButton: {
       label: "BOOK A FREE CALL",
       action: "link",
@@ -99,7 +99,7 @@ export const ROUTE_CTA_CONFIGS: Record<string, PageCTAConfig> = {
       </>
     ),
     description:
-      "From idea to shipped product — product thinking, IA, UX/UI, and production-ready code.",
+      "From idea to shipped product, product thinking, IA, UX/UI, and production-ready code.",
     primaryButton: {
       label: "LETS VENTURE",
       action: "modal",

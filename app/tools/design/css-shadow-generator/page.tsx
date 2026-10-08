@@ -44,7 +44,7 @@ const faqSchema = {
       name: "Why not just use one box-shadow with a bigger blur?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A single blur value fades at a constant rate, which looks flat and can turn muddy at large sizes. Multiple layers with decreasing opacity mimic how real ambient light actually falls off — sharper near the object, softer and fainter further away.",
+        text: "A single blur value fades at a constant rate, which looks flat and can turn muddy at large sizes. Multiple layers with decreasing opacity mimic how real ambient light actually falls off, sharper near the object, softer and fainter further away.",
       },
     },
     {

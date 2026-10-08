@@ -33,8 +33,8 @@ export default function WebsiteToolsHubPage() {
         },
       ]}
       introParagraphs={[
-        "Most websites don't lose visitors to bad design — they lose them to ambiguity. A visitor lands, spends five seconds deciding whether the page is relevant to them, and leaves if the headline, CTA, or value proposition makes them think even slightly. That five-second decision happens before your copy, your pricing, or your case studies get read, which is why conversion problems are so often invisible to the people who wrote the page.",
-        "These tools run the same checks our designers run manually during a paid audit: above-the-fold clarity, CTA contrast and placement, copy readability, and the trust signals that reduce a buyer's perceived risk. Each one gives you a scored breakdown and specific, actionable fixes — not a generic checklist — so you can prioritize the change that will actually move your conversion rate instead of guessing at a redesign.",
+        "Most websites don't lose visitors to bad design, they lose them to ambiguity. A visitor lands, spends five seconds deciding whether the page is relevant to them, and leaves if the headline, CTA, or value proposition makes them think even slightly. That five-second decision happens before your copy, your pricing, or your case studies get read, which is why conversion problems are so often invisible to the people who wrote the page.",
+        "These tools run the same checks our designers run manually during a paid audit: above-the-fold clarity, CTA contrast and placement, copy readability, and the trust signals that reduce a buyer's perceived risk. Each one gives you a scored breakdown and specific, actionable fixes, not a generic checklist, so you can prioritize the change that will actually move your conversion rate instead of guessing at a redesign.",
       ]}
       methodology={[
         {

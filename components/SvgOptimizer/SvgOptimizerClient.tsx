@@ -140,7 +140,7 @@ export default function SvgOptimizerClient() {
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Paste raw SVG markup exported from Figma or Illustrator. It's
             stripped of editor bloat and comments, rounded to a sane
-            coordinate precision, and exported as a clean React component —
+            coordinate precision, and exported as a clean React component,
             processed on the fly and never stored anywhere.
           </p>
         </motion.div>

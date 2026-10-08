@@ -103,7 +103,7 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
             <Parallax className="h-full w-full" speed={0.08}>
               {/* slight overscale so the parallax shift never reveals an edge */}
               <img
-                alt={`${study.client} — ${study.title}`}
+                alt={`${study.client} - ${study.title}`}
                 className="h-full w-full scale-[1.12] select-none object-cover object-left"
                 loading="lazy"
                 src={study.heroImage}

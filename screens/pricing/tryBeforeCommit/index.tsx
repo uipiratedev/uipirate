@@ -19,7 +19,7 @@ const PILOT_OPTIONS = [
     type: "Design",
     price: "150",
     description:
-      "5 screens or 1 full user flow — polished Figma file, ready for dev",
+      "5 screens or 1 full user flow, polished Figma file, ready for dev",
   },
   {
     type: "Development",
@@ -30,7 +30,7 @@ const PILOT_OPTIONS = [
     type: "Design + Dev",
     price: "350",
     description:
-      "Designed and built in 5 days — you own all the files and code",
+      "Designed and built in 5 days, you own all the files and code",
   },
 ];
 
@@ -59,7 +59,7 @@ const TryBeforeCommit = () => {
           </h2>
 
           <p className="text-gray-500 text-center max-w-2xl mx-auto mb-8 max-md:text-sm">
-            Test our work before committing. See real results in 5 days — your
+            Test our work before committing. See real results in 5 days, your
             fee is
             <span className="text-white font-semibold">
               {" "}
@@ -93,7 +93,7 @@ const TryBeforeCommit = () => {
                 <h4 className="text-white font-semibold">Real Deliverables</h4>
               </div>
               <p className="text-gray-500 text-sm">
-                Walk away with a working mini-build or polished design — ready
+                Walk away with a working mini-build or polished design, ready
                 to scale.
               </p>
             </div>

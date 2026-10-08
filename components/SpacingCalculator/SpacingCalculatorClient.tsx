@@ -146,7 +146,7 @@ export default function SpacingCalculatorClient() {
                 <>
                   <span className="font-bold">{alignment.px}px is not aligned</span> to the {baseUnit}
                   pt grid. Nearest values: <span className="font-mono font-bold">{alignment.nearestDown}px</span> (down) or{" "}
-                  <span className="font-mono font-bold">{alignment.nearestUp}px</span> (up) — closest is{" "}
+                  <span className="font-mono font-bold">{alignment.nearestUp}px</span> (up), closest is{" "}
                   <span className="font-mono font-bold">{alignment.nearest}px</span>.
                 </>
               )}

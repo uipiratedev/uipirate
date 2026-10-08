@@ -34,14 +34,14 @@ const SCALE_RATIOS = [
     name: "Major Third",
     bestFor: "Content-led marketing sites & SaaS landing pages",
     description:
-      "The default in this generator. A warm, classic ratio that gives headings real presence while keeping body copy comfortably readable — the sweet spot for most SaaS marketing and product pages.",
+      "The default in this generator. A warm, classic ratio that gives headings real presence while keeping body copy comfortably readable, the sweet spot for most SaaS marketing and product pages.",
   },
   {
     value: 1.333,
     name: "Perfect Fourth",
     bestFor: "Landing pages & editorial layouts",
     description:
-      "Noticeably bolder jumps between steps. Headlines start to command real attention, which works well for pages built to sell a single idea fast — hero sections, launch pages, editorial features.",
+      "Noticeably bolder jumps between steps. Headlines start to command real attention, which works well for pages built to sell a single idea fast, hero sections, launch pages, editorial features.",
   },
   {
     value: 1.414,
@@ -62,7 +62,7 @@ const SCALE_RATIOS = [
     name: "Golden Ratio",
     bestFor: "Portfolios, editorial & premium brand experiences",
     description:
-      "The most dramatic ratio, derived from the golden proportion found throughout classical art and architecture. Produces striking, editorial-feeling type hierarchies — best used where typography carries most of the visual weight.",
+      "The most dramatic ratio, derived from the golden proportion found throughout classical art and architecture. Produces striking, editorial-feeling type hierarchies, best used where typography carries most of the visual weight.",
   },
 ];
 
@@ -346,7 +346,7 @@ export default function TypographyScaleGeneratorClient() {
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Generate a mathematically harmonious type scale, a proportional
-            line-height ramp, and responsive CSS clamp() fluid font sizes —
+            line-height ramp, and responsive CSS clamp() fluid font sizes,
             export straight to CSS variables or a Tailwind config.
           </p>
 
@@ -440,7 +440,7 @@ export default function TypographyScaleGeneratorClient() {
               >
                 {SCALE_RATIOS.map((r) => (
                   <option key={r.value} value={r.value}>
-                    {r.value.toFixed(3)} — {r.name}
+                    {r.value.toFixed(3)}, {r.name}
                   </option>
                 ))}
               </select>
@@ -477,7 +477,7 @@ export default function TypographyScaleGeneratorClient() {
                   >
                     {SCALE_RATIOS.map((r) => (
                       <option key={r.value} value={r.value}>
-                        {r.value.toFixed(3)} — {r.name}
+                        {r.value.toFixed(3)}, {r.name}
                       </option>
                     ))}
                   </select>
@@ -583,7 +583,7 @@ export default function TypographyScaleGeneratorClient() {
               )}
             </div>
             <p className="text-[11px] text-gray-400 mb-4">
-              Every row re-renders at its real computed size — this is not a
+              Every row re-renders at its real computed size, this is not a
               mockup.
             </p>
 
@@ -697,7 +697,7 @@ export default function TypographyScaleGeneratorClient() {
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
               A modular scale multiplies a base font size by a fixed ratio to
               generate a harmonious progression of sizes for headings, body
-              copy, and UI text — instead of picking arbitrary pixel values by
+              copy, and UI text, instead of picking arbitrary pixel values by
               eye. The technique borrows its ratio names (Minor Third, Perfect
               Fifth, Golden Ratio) from musical interval theory and classical
               typography, both of which rely on the same idea: proportions
@@ -755,11 +755,11 @@ export default function TypographyScaleGeneratorClient() {
             </h3>
             <p className="text-xs text-gray-500 leading-relaxed mb-4">
               CSS <code className="font-mono text-gray-800">clamp()</code>{" "}
-              takes three values —{" "}
+              takes three values,{" "}
               <code className="font-mono text-gray-800">
                 clamp(MIN, PREFERRED, MAX)
               </code>{" "}
-              — and picks whichever is in the middle. The{" "}
+             , and picks whichever is in the middle. The{" "}
               <span className="font-semibold text-gray-700">PREFERRED</span>{" "}
               value is a linear equation mixing a fixed{" "}
               <code className="font-mono text-gray-800">rem</code> amount with
@@ -768,7 +768,7 @@ export default function TypographyScaleGeneratorClient() {
               Below the minimum viewport it locks to{" "}
               <span className="font-semibold text-gray-700">MIN</span>, above
               the maximum viewport it locks to{" "}
-              <span className="font-semibold text-gray-700">MAX</span> — no
+              <span className="font-semibold text-gray-700">MAX</span>, no
               media queries required.
             </p>
             <p className="text-xs text-gray-500 leading-relaxed mb-4">
@@ -803,11 +803,11 @@ export default function TypographyScaleGeneratorClient() {
             </div>
             <p className="text-xs text-gray-500 leading-relaxed mt-4">
               Notice that Body, Small, and Caption don't scale fluidly in this
-              tool — that's intentional. Real-world fluid type systems (like
+              tool, that's intentional. Real-world fluid type systems (like
               Utopia's) almost always keep body copy near-constant across
               screen sizes, since paragraph text needs a consistent, readable
-              size on every device. Only headings and display text — which
-              exist to create visual hierarchy — benefit from scaling with the
+              size on every device. Only headings and display text, which
+              exist to create visual hierarchy, benefit from scaling with the
               viewport.
             </p>
           </div>
@@ -835,7 +835,7 @@ export default function TypographyScaleGeneratorClient() {
             </div>
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
               <h3 className="text-sm font-bold text-gray-900 font-jakarta mb-2">
-                rem vs. px — Which Unit Should You Export?
+                rem vs. px, Which Unit Should You Export?
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 <span className="font-mono text-gray-800">rem</span> units
@@ -868,7 +868,7 @@ export default function TypographyScaleGeneratorClient() {
                 },
                 {
                   title: "Choose a desktop scale ratio",
-                  desc: "Use the ratio guide above to match your product's tone — subtle ratios (1.067–1.125) for dense dashboards, bolder ratios (1.25–1.618) for marketing and editorial layouts.",
+                  desc: "Use the ratio guide above to match your product's tone, subtle ratios (1.067–1.125) for dense dashboards, bolder ratios (1.25–1.618) for marketing and editorial layouts.",
                 },
                 {
                   title: "Enable fluid typography",
@@ -921,7 +921,7 @@ export default function TypographyScaleGeneratorClient() {
                 },
                 {
                   q: "Do I need JavaScript to use clamp() typography in production?",
-                  a: "No. clamp() is native CSS, supported in every modern browser. Paste the generated CSS variables (or Tailwind config) straight into your stylesheet — there's no runtime cost or JavaScript required.",
+                  a: "No. clamp() is native CSS, supported in every modern browser. Paste the generated CSS variables (or Tailwind config) straight into your stylesheet, there's no runtime cost or JavaScript required.",
                 },
                 {
                   q: "Will fluid typography hurt Core Web Vitals or cause layout shift?",

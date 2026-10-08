@@ -92,7 +92,7 @@ const ABOUT_FAQS = [
   {
     question: "Do you only design, or do you build too?",
     answer:
-      "Both. We handle product thinking, UX/UI design, and production-ready front-end code in React, Angular, and Next.js — the same team, start to finish.",
+      "Both. We handle product thinking, UX/UI design, and production-ready front-end code in React, Angular, and Next.js, the same team, start to finish.",
   },
 ];
 
@@ -324,7 +324,7 @@ export default function AboutPage() {
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
               We are a product design and development studio. We help SaaS
               founders, enterprise teams, and AI product teams think through the
-              product, design for real users, and ship production-ready code —
+              product, design for real users, and ship production-ready code,
               whether you&apos;re starting from a blank page or a prototype
               built with an AI tool.
             </p>
@@ -337,7 +337,7 @@ export default function AboutPage() {
                   <span className="font-semibold text-gray-900">
                     US Timezone Friendly
                   </span>{" "}
-                  — EST & PST hours
+                 (EST & PST hours)
                 </span>
               </div>
             </div>

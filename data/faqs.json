@@ -10,15 +10,15 @@
         "✅ Design Systems & Component Libraries",
         "✅ UX Audits & Product Consultation"
       ],
-      "title2": "Whether you need design-only, dev-only, or full product delivery — we support end-to-end execution."
+      "title2": "Whether you need design-only, dev-only, or full product delivery, we support end-to-end execution."
     },
     {
       "heading": "🎯 Do you offer both design and development?",
-      "title1": "Yes — we work in 3 flexible modes:",
+      "title1": "Yes, we work in 3 flexible modes:",
       "list": [
-        "🎨 Design Only — UX, UI, Figma assets, motion",
-        "💻 Development Only — React, HTML/CSS/JS, integrations",
-        "⚡ Design + Dev — full product delivery"
+        "🎨 Design Only: UX, UI, Figma assets, motion",
+        "💻 Development Only: React, HTML/CSS/JS, integrations",
+        "⚡ Design + Dev, full product delivery"
       ],
       "title2": "Choose based on your team, timeline, and project phase."
     },
@@ -35,7 +35,7 @@
     },
     {
       "heading": "💻 Do you offer Webflow, Shopify, or React development?",
-      "title1": "Yes — we support modern stacks for fast performance:",
+      "title1": "Yes, we support modern stacks for fast performance:",
       "list": [
         "⚡ No-code: Webflow, Framer",
         "🛒 E-commerce: Shopify, WooCommerce",
@@ -46,7 +46,7 @@
     },
     {
       "heading": "🖊️ Can I start with design and add development later?",
-      "title1": "Absolutely — many clients start with Design-Only.",
+      "title1": "Absolutely, many clients start with Design-Only.",
       "list": [
         "✅ Dev-friendly Figma files",
         "✅ Structured components",
@@ -66,7 +66,7 @@
     },
     {
       "heading": "🛠️ Do you offer support after the project ends?",
-      "title1": "Yes — we offer ongoing support:",
+      "title1": "Yes, we offer ongoing support:",
       "list": [
         "✅ Retainers",
         "✅ Bug fixes",
@@ -105,7 +105,7 @@
   "SaaS Web & Mobile Apps": [
     {
       "heading": "🛠️ Do you offer both design and development for SaaS apps?",
-      "title1": "✅ Yes — choose the model that fits your needs:",
+      "title1": "✅ Yes, choose the model that fits your needs:",
       "list": [
         "🎨 Design Only",
         "💻 Development Only",
@@ -115,7 +115,7 @@
     },
     {
       "heading": "🎨 Can I hire you just for UI design, and use my own developers?",
-      "title1": "Absolutely — you get pixel-perfect Figma files:",
+      "title1": "Absolutely, you get pixel-perfect Figma files:",
       "list": [
         "✅ Dev-ready components",
         "✅ Organized layers & naming",
@@ -147,7 +147,7 @@
     },
     {
       "heading": "📊 Do you handle complex features like user roles or dashboards?",
-      "title1": "Yes — we simplify complex SaaS apps:",
+      "title1": "Yes, we simplify complex SaaS apps:",
       "list": [
         "👥 Multi-role platforms",
         "📊 Data dashboards",
@@ -160,7 +160,7 @@
   "UX Audits & Consultation": [
     {
       "heading": "🧠 Do I need a live product for this?",
-      "title1": "Nope! You can share a Figma prototype or staging link — we audit both for usability and consistency.",
+      "title1": "Nope! You can share a Figma prototype or staging link, we audit both for usability and consistency.",
       "list": [
         "✅ Figma prototype audits",
         "✅ Live product or staging review",
@@ -180,7 +180,7 @@
     },
     {
       "heading": "🔧 Can you help us implement the fixes too?",
-      "title1": "Yes — many clients continue with us post-audit to execute improvements.",
+      "title1": "Yes, many clients continue with us post-audit to execute improvements.",
       "list": [
         "🎨 UX & UI refinements",
         "💻 Frontend fixes and enhancements",
@@ -190,7 +190,7 @@
     },
     {
       "heading": "🏷️ Is this white-labeled for agencies?",
-      "title1": "Yes — we deliver branded reports for your clients:",
+      "title1": "Yes, we deliver branded reports for your clients:",
       "list": [
         "🧾 Custom branding and color scheme",
         "🤝 Perfect for agency partnerships",
@@ -222,7 +222,7 @@
   "Landing Pages & Business Websites": [
     {
       "heading": "✍️ Can you help write copy for my landing page?",
-      "title1": "Yes — we can help craft engaging content that drives conversions.",
+      "title1": "Yes, we can help craft engaging content that drives conversions.",
       "list": [
         "🧠 Strategic messaging for clarity and impact",
         "📝 Copywriting and content structuring",
@@ -242,7 +242,7 @@
     },
     {
       "heading": "📱 Will my site be mobile-optimized?",
-      "title1": "Absolutely — every website we design is mobile-first and fully responsive.",
+      "title1": "Absolutely, every website we design is mobile-first and fully responsive.",
       "list": [
         "📲 Adaptive layouts across devices",
         "🧩 Seamless navigation and user experience",
@@ -252,7 +252,7 @@
     },
     {
       "heading": "🔍 Do you support SEO?",
-      "title1": "Yes — all websites are built with SEO best practices in mind.",
+      "title1": "Yes, all websites are built with SEO best practices in mind.",
       "list": [
         "🏗️ Semantic HTML structure",
         "⚡ Fast load times",
@@ -262,7 +262,7 @@
     },
     {
       "heading": "🧑‍💻 Can I request development only or design only?",
-      "title1": "Yes — we’re flexible with engagement models.",
+      "title1": "Yes, we’re flexible with engagement models.",
       "list": [
         "🎨 Design-only: UI/UX and layout in Figma",
         "💻 Dev-only: Code from existing designs",
@@ -292,7 +292,7 @@
         "🧩 Design Systems & Component Libraries",
         "🔍 UX Audits & Product Consultation"
       ],
-      "title2": "Whether you need design-only, dev-only, or both — we support end-to-end product execution."
+      "title2": "Whether you need design-only, dev-only, or both, we support end-to-end product execution."
     },
     {
       "heading": "🧑‍💻 Do you offer both design and development?",
@@ -327,7 +327,7 @@
     },
     {
       "heading": "🧱 Can I start with design and add development later?",
-      "title1": "Yes — many clients start with our Design-Only phase and continue into development later.",
+      "title1": "Yes, many clients start with our Design-Only phase and continue into development later.",
       "list": [
         "🎨 Dev-friendly Figma files with organized components",
         "📘 Handoff documentation for seamless transition",
@@ -347,7 +347,7 @@
     },
     {
       "heading": "🔄 Do you offer support after the project ends?",
-      "title1": "Yes — we provide ongoing support, retainers, and one-time updates.",
+      "title1": "Yes, we provide ongoing support, retainers, and one-time updates.",
       "list": [
         "🛠️ Post-launch tweaks and optimizations",
         "📅 Retainer plans for continuous design/dev needs",
@@ -368,7 +368,7 @@
     },
     {
       "heading": "🚀 How do I get started with your team?",
-      "title1": "Getting started is easy — choose any of the following:",
+      "title1": "Getting started is easy, choose any of the following:",
       "list": [
         "📅 Book a free 15-minute discovery call",
         "📝 Fill out our quick project brief",

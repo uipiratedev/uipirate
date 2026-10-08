@@ -96,7 +96,7 @@ export default function OnboardingAnalyzerClient() {
             Paste a real signup page or onboarding flow. We fetch the page
             server-side and run deterministic checks for signup friction,
             progressive disclosure, empty-state guidance, and time-to-first-value
-            — every result is explainable, nothing is guessed.
+           , every result is explainable, nothing is guessed.
           </p>
 
           <div className="mt-8 max-w-2xl mx-auto">
@@ -129,7 +129,7 @@ export default function OnboardingAnalyzerClient() {
               </button>
             </form>
             <p className="text-[11px] text-gray-400 mt-3">
-              Works best on your actual signup page — a marketing homepage
+              Works best on your actual signup page, a marketing homepage
               won't have a form to evaluate.
             </p>
           </div>
@@ -150,7 +150,7 @@ export default function OnboardingAnalyzerClient() {
                 <span className="font-bold">Low-confidence result:</span> this
                 page returned very little content in its initial HTML
                 response. It may be a client-rendered single-page app or
-                require authentication — this analyzer only sees the raw
+                require authentication, this analyzer only sees the raw
                 server response, not what renders after JavaScript runs. For
                 best results, test a publicly accessible signup page.
               </div>
@@ -233,8 +233,8 @@ export default function OnboardingAnalyzerClient() {
               How This Analyzer Works
             </h2>
             <p className="text-xs text-gray-500 mt-3 leading-relaxed">
-              This tool fetches the exact HTML your server sends for a URL —
-              the same thing a search engine crawler would see — and runs
+              This tool fetches the exact HTML your server sends for a URL,
+              the same thing a search engine crawler would see, and runs
               deterministic, rule-based checks against it. There's no AI
               guessing and no fake scoring: every check below is visible in
               the results, with the specific DOM evidence that produced it.
@@ -245,11 +245,11 @@ export default function OnboardingAnalyzerClient() {
             {[
               {
                 title: "Signup Friction",
-                desc: "Counts form fields and required fields, checks for social login / SSO buttons, and flags CAPTCHA challenges or a mandatory phone number field — all things known to reduce signup completion rate.",
+                desc: "Counts form fields and required fields, checks for social login / SSO buttons, and flags CAPTCHA challenges or a mandatory phone number field, all things known to reduce signup completion rate.",
               },
               {
                 title: "Progressive Disclosure",
-                desc: "Looks for \"Step X of Y\" copy, progress bars, and wizard/multistep container markup — signals that a flow asks for information gradually instead of dumping every field on one overwhelming screen.",
+                desc: "Looks for \"Step X of Y\" copy, progress bars, and wizard/multistep container markup, signals that a flow asks for information gradually instead of dumping every field on one overwhelming screen.",
               },
               {
                 title: "Empty States & Onboarding Guidance",
@@ -269,8 +269,8 @@ export default function OnboardingAnalyzerClient() {
               <h3 className="text-sm font-bold font-jakarta mb-2">Want a full manual teardown?</h3>
               <p className="text-xs text-gray-300 leading-relaxed mb-4">
                 This automated pass is a starting point. Our product design
-                engineers can walk your entire activation funnel — signup,
-                empty states, and the first real session — end to end.
+                engineers can walk your entire activation funnel, signup,
+                empty states, and the first real session, end to end.
               </p>
               <Link
                 className="text-xs font-bold text-[#FF5B04] hover:text-white transition-colors"
@@ -289,9 +289,9 @@ export default function OnboardingAnalyzerClient() {
             <p className="text-xs text-gray-500 leading-relaxed mb-4">
               Most SaaS products lose more users between "signed up" and
               "found value" than at any other point in the funnel. Activation
-              rate — the share of new signups who reach a defined
+              rate, the share of new signups who reach a defined
               first-value moment (sending a message, creating a project,
-              connecting a data source) — is the strongest predictor of
+              connecting a data source), is the strongest predictor of
               whether a trial converts to paid and whether a paid account
               renews. A few concrete mechanisms this tool checks for:
             </p>
@@ -299,7 +299,7 @@ export default function OnboardingAnalyzerClient() {
               <li>
                 <span className="font-semibold text-gray-700">Every additional form field costs completion rate.</span>{" "}
                 Forms with more than 5-7 fields see measurably higher
-                abandonment than lean ones — ask for the minimum to create an
+                abandonment than lean ones, ask for the minimum to create an
                 account, and collect the rest later once the user has
                 already seen value.
               </li>
@@ -313,14 +313,14 @@ export default function OnboardingAnalyzerClient() {
               <li>
                 <span className="font-semibold text-gray-700">Empty states are a design surface, not an accident.</span>{" "}
                 A blank dashboard with no data and no guidance is a dead end.
-                A designed empty state — a checklist, a sample project, a
-                clear "add your first X" call to action — turns that same
+                A designed empty state, a checklist, a sample project, a
+                clear "add your first X" call to action, turns that same
                 moment into the fastest path to activation.
               </li>
               <li>
                 <span className="font-semibold text-gray-700">Ambiguous pricing risk kills signups before they start.</span>{" "}
                 If a visitor can't tell whether they'll be charged, how much,
-                or when, many will simply not start the signup flow at all —
+                or when, many will simply not start the signup flow at all,
                 stating "free trial, no credit card required" removes that
                 hesitation entirely.
               </li>
@@ -333,7 +333,7 @@ export default function OnboardingAnalyzerClient() {
               Known Limitations
             </h3>
             <p className="text-xs text-gray-500 leading-relaxed mb-4">
-              This is a static-HTML analyzer, not a browser — it never
+              This is a static-HTML analyzer, not a browser, it never
               executes JavaScript, submits a form, or logs into anything.
               That's an honest boundary, not a hidden one:
             </p>
@@ -341,7 +341,7 @@ export default function OnboardingAnalyzerClient() {
               <li>
                 Client-rendered signup pages (most React/Vue/Angular SPAs)
                 often return an almost-empty HTML shell before JavaScript
-                runs — the analyzer will flag this as a "low-confidence"
+                runs, the analyzer will flag this as a "low-confidence"
                 result rather than fabricate a score.
               </li>
               <li>
@@ -353,7 +353,7 @@ export default function OnboardingAnalyzerClient() {
               <li>
                 Only <code className="font-mono text-gray-700">http://</code> and{" "}
                 <code className="font-mono text-gray-700">https://</code> URLs
-                that resolve to a public IP address are accepted — internal
+                that resolve to a public IP address are accepted, internal
                 and private network addresses are blocked for security.
               </li>
             </ul>
@@ -372,11 +372,11 @@ export default function OnboardingAnalyzerClient() {
                 },
                 {
                   q: "Why did the Signup Friction score come back capped with a 'no form detected' message?",
-                  a: "The page you tested doesn't contain a <form> element in its server-rendered HTML — either it's not the right URL, or the form is injected by client-side JavaScript this tool doesn't execute.",
+                  a: "The page you tested doesn't contain a <form> element in its server-rendered HTML, either it's not the right URL, or the form is injected by client-side JavaScript this tool doesn't execute.",
                 },
                 {
                   q: "Is my URL stored anywhere?",
-                  a: "No. The URL is fetched, analyzed in memory, and the result is returned to your browser — nothing is written to a database.",
+                  a: "No. The URL is fetched, analyzed in memory, and the result is returned to your browser, nothing is written to a database.",
                 },
                 {
                   q: "Why can't I analyze a localhost or internal URL?",

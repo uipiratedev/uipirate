@@ -93,7 +93,7 @@ export default function ColorPaletteGeneratorClient() {
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Enter one brand color and get a full 50-950 shade ramp, plus a
-            matching low-saturation neutral scale — every shade computed
+            matching low-saturation neutral scale, every shade computed
             live with its own WCAG contrast ratio and a recommended text
             color, not a fixed lookup table.
           </p>

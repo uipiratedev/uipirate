@@ -401,7 +401,7 @@ const BentoGrid = () => {
                   Websites & Landing Pages
                 </h3>
                 <p className="text-gray-600 font-medium text-sm md:text-sm leading-snug">
-                  Pages built to convert visitors into leads — not just to look
+                  Pages built to convert visitors into leads, not just to look
                   good on Awwwards.
                 </p>
               </div>
@@ -423,7 +423,7 @@ const BentoGrid = () => {
                   Built With the Best
                 </h3>
                 <p className="text-gray-600 font-medium max-md:text-sm">
-                  React, Angular, Next.js, Figma, GSAP — we use what your
+                  React, Angular, Next.js, Figma, GSAP, we use what your
                   product actually needs, not what&apos;s trending.
                 </p>
               </div>
