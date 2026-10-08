@@ -70,8 +70,10 @@ const LeadSchema = new Schema<ILead>(
 
 LeadSchema.index({ createdAt: -1 });
 
-const Lead =
-  (mongoose.models.Lead as mongoose.Model<ILead>) ||
-  mongoose.model<ILead>("Lead", LeadSchema);
+// The generic `mongoose.model<ILead>(…)` overload makes TypeScript expand the
+// schema's inferred type into a union too large to represent (TS2590), which
+// fails `next build`. Same cast-through pattern as the analytics models.
+const Lead = (mongoose.models.Lead ||
+  mongoose.model("Lead", LeadSchema as never)) as unknown as mongoose.Model<ILead>;
 
 export default Lead;
