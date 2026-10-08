@@ -14,7 +14,7 @@ interface Plan {
   keep: string[];
   described: string[];
   remove: string[];
-  add: Array<{ name: string; description: string }>;
+  add: Array<{ name: string; description: string; price?: { currencyCode: string; units: number } }>;
   same: string[];
 }
 
@@ -143,6 +143,11 @@ export default function ProfileClient() {
                         {plan.add.map((s) => (
                           <li key={s.name}>
                             <span className="font-medium text-gray-900">{s.name}</span>
+                            {s.price && (
+                              <span className="ml-2 text-xs font-semibold text-emerald-700">
+                                from {s.price.currencyCode} {s.price.units.toLocaleString("en-US")}
+                              </span>
+                            )}
                             <span className="block text-xs text-gray-500">{s.description}</span>
                           </li>
                         ))}

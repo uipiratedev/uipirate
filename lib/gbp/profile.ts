@@ -12,6 +12,8 @@ export const DEFAULT_CATEGORY = "categories/gcid:website_designer";
 export interface SiteService {
   name: string;
   description: string;
+  /** A starting price shown on the listing, only where the pricing page has one. */
+  price?: { currencyCode: string; units: number };
 }
 
 /**
@@ -67,6 +69,33 @@ export const SITE_SERVICES: SiteService[] = [
     name: "Design Subscription",
     description:
       "A monthly design retainer for SaaS teams: a dedicated design team without full-time headcount. Pause anytime with no lock-ins, and start with a 5-day pilot to try us first.",
+    price: { currencyCode: "USD", units: 499 },
+  },
+  // Pricing page "Try before you commit": the pilot fee is deducted from the
+  // invoice if the client goes ahead.
+  {
+    name: "5-Day Design Pilot",
+    description:
+      "Try our design work first: 5 screens or 1 full user flow, a polished Figma file ready for development. The pilot fee is deducted if you move forward.",
+    price: { currencyCode: "USD", units: 150 },
+  },
+  {
+    name: "5-Day Development Pilot",
+    description:
+      "Try our engineering first: a working component or feature with production-ready code, in 5 days. The pilot fee is deducted if you move forward.",
+    price: { currencyCode: "USD", units: 250 },
+  },
+  {
+    name: "5-Day Design + Dev Pilot",
+    description:
+      "Designed and built in 5 days, and you own all the files and code. The pilot fee is deducted if you move forward.",
+    price: { currencyCode: "USD", units: 350 },
+  },
+  {
+    name: "Custom Project",
+    description:
+      "Fully scoped design and development projects with dedicated ownership, priority handling and close collaboration with your stakeholders.",
+    price: { currencyCode: "USD", units: 2000 },
   },
 ];
 
@@ -219,6 +248,9 @@ export function planServices(
       ...kept.filter((s) => !reworded.has(norm(s.freeFormServiceItem!.label.displayName))),
       ...add.map(
         (s): ServiceItem => ({
+          ...(s.price
+            ? { price: { currencyCode: s.price.currencyCode, units: String(s.price.units) } }
+            : {}),
           freeFormServiceItem: {
             category,
             label: {

@@ -383,6 +383,31 @@ describe("planServices", () => {
       expect(d.length).toBeGreaterThan(30), expect(d.length).toBeLessThanOrEqual(300);
   });
 
+  it("prices only what the pricing page prices, in the format Google expects", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const items = planServices([]).next.filter((s) => s.freeFormServiceItem);
+    const priced = Object.fromEntries(
+      items
+        .filter((s) => s.price)
+        .map((s) => [s.freeFormServiceItem!.label.displayName, s.price]),
+    );
+
+    expect(priced).toEqual({
+      "Design Subscription": { currencyCode: "USD", units: "499" },
+      "5-Day Design Pilot": { currencyCode: "USD", units: "150" },
+      "5-Day Development Pilot": { currencyCode: "USD", units: "250" },
+      "5-Day Design + Dev Pilot": { currencyCode: "USD", units: "350" },
+      "Custom Project": { currencyCode: "USD", units: "2000" },
+    });
+  });
+
+  it("leaves the price on an existing entry untouched", async () => {
+    const { planServices } = await import("@/lib/gbp/profile");
+    const mine = { ...free("UI/UX", "per Hour"), price: { currencyCode: "INR", units: "1200" } };
+
+    expect(planServices([mine]).next).toContain(mine);
+  });
+
   it("does not add a service the listing already has", async () => {
     const { planServices, SITE_SERVICES } = await import("@/lib/gbp/profile");
     const plan = planServices([free("Design Subscription", "My own wording")]);
