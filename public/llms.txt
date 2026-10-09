@@ -53,9 +53,10 @@ More: https://uipirate.com/process
 
 ## Our Own Products
 
-- **Alfred OS** — enterprise multi-agent AI platform (5 focused agents, deterministic safety policies): https://alfred.uipirate.com/
-- **AI Voice Caller** — conversational voice agents for scheduling, front desk, and triage: https://aicalling.uipirate.com/
-- **cometCOS** — multi-tenant content operating system with an AI publishing studio: https://cos.uipirate.com/
+- **Alfred OS** — multi-agent AI platform: five specialist agents and a rules-based policy engine that answer customers from your own information and act only when allowed; embeddable, API-first, self-hostable: https://alfred.uipirate.com/
+- **AI Voice Caller** — AI voice agents that answer calls, book appointments, and handle reschedules 24/7; healthcare agent live (Epic, Cerner, Athenahealth, Google, Outlook sync; English and Spanish; HIPAA/SOC2 ready): https://aicalling.uipirate.com/
+- **cometCOS** — the writing studio with AI inside it: rich-text TipTap editor with AI side panel, chapter-aware ebook workspace, scrubbable version history, BYOK multi-LLM engine (0% token markup), and one-click publishing to WordPress, Ghost, Medium, LinkedIn, and Buffer: https://cos.uipirate.com/
+- **MedJourney** — patient support program (PSP) platform: connects telecallers, doctors, diagnostic labs, pharmacies, and pharma teams on one unified patient timeline with automated refill alerts, 9 roles (111 privileges), zone scoping, and HIPAA/DISHA-aligned consent workflows: https://psp.dev.uipirate.com/
 - All products: https://uipirate.com/products
 
 ## Case Studies

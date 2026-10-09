@@ -126,13 +126,17 @@ AI products and platforms; PropTech; e-commerce; EdTech.
 
 Built and operated by UI Pirate (https://uipirate.com/products):
 
-- **Alfred OS** — enterprise multi-agent AI platform: 5 focused agents (Planner, Knowledge Researcher,
-  Policy Checker, Monitor, Responder), a deterministic safety engine, and a predictable 2-call cost
-  model. https://alfred.uipirate.com/
-- **AI Voice Caller** — conversational voice agents for scheduling, front desk, and triage with
-  sub-500ms response, calendar/EHR sync, and English/Spanish support. https://aicalling.uipirate.com/
-- **cometCOS** — multi-tenant content operating system with an AI drafting studio,
-  automated JSON-LD/SEO schema, and an edge-cached public API. https://cos.uipirate.com/
+- **Alfred OS** — multi-agent AI platform: an AI team that answers customers, checks the facts, and acts only when
+  your rules allow it. Five specialist agents (planner, researcher, action-taker, watcher, messenger); only two use an
+  AI model. A policy engine written in plain code checks every action in under 85ms; 2 AI calls per request; failover
+  across Claude, Gemini, OpenAI, and Mistral; prompt-injection guard; one-click GDPR erasure. Embed a chat widget, call the REST API, or self-host as one Docker image. https://alfred.uipirate.com/
+- **AI Voice Caller** — AI voice agents that answer calls, book appointments, answer patient questions, and handle
+  reschedules 24/7 with zero hold times. Healthcare agent live now; sub-500ms latency; two-way sync with Epic, Cerner,
+  Athenahealth, Google Calendar, and Outlook 365; English and Spanish; call transcripts and SMS confirmations; HIPAA
+  and SOC2 ready (BAA available). Legal, real estate, finance, retail, education, automotive, and insurance are in
+  early access. https://aicalling.uipirate.com/
+- **cometCOS** — multi-tenant AI content operating system and writing studio. A real rich-text workspace (TipTap) with an AI side panel, chapter-aware ebook editor, scrubbable version history with author attribution, and per-workspace Brand Brains. Bring your own key (Anthropic Claude, OpenAI GPT, Google Gemini, Mistral AI, xAI Grok, OpenRouter) at 0% token markup with an agency AI cost HUD. 1-click syndication to WordPress, Ghost, Medium, LinkedIn, and Buffer with clean export to Markdown, HTML, PDF, and EPUB. https://cos.uipirate.com/
+- **MedJourney** — patient support program (PSP) healthcare operating platform. Connects telecallers, doctors, diagnostic labs, pharmacies, and pharma teams on one unified live timeline. Solves post-pharmacy patient drop-off with automated refill alerts, care manager outreach queues, inventory batch/expiry tracking, multi-organization zone scoping, 9 distinct roles with 111 precise privileges, and HIPAA & DISHA-aligned consent workflows with full audit logging: https://psp.dev.uipirate.com/
 
 ---
 

@@ -5,9 +5,9 @@ import OurProductsScreen from "@/screens/products";
 export const metadata: Metadata = {
   title: "Our Products | In-House Platforms & Software Systems",
   description:
-    "Explore proprietary products and platforms built and operated by UI Pirate: Alfred OS, AI Voice Caller, cometCOS, Smart Onboarding Engine, Component Lab, and developer engineering tools.",
+    "Explore proprietary products and platforms built and operated by UI Pirate: Alfred OS, AI Voice Caller, cometCOS, Component Lab, and developer engineering tools.",
   keywords:
-    "UI Pirate products, Alfred OS, AI Voice Caller, SaaS products, in-house platforms, cometCOS, content operating system, AI voice support, smart onboarding engine, component lab, developer tools, design systems, ready-to-deploy software",
+    "UI Pirate products, Alfred OS, AI Voice Caller, SaaS products, in-house platforms, cometCOS, content operating system, AI voice support, component lab, developer tools, design systems, ready-to-deploy software",
   alternates: {
     canonical: "https://uipirate.com/products",
   },
@@ -50,7 +50,7 @@ export default function ProductsPage() {
         name: "Alfred OS",
         applicationCategory: "BusinessApplication",
         description:
-          "Autonomous AI Butler & 5-agent enterprise workforce platform with deterministic safety policies.",
+          "Multi-agent AI platform: five specialist agents with a rules-based policy engine that answer customers from your own information and act only when allowed. Embeddable on any website, API-first, and self-hostable.",
         url: "https://alfred.uipirate.com/",
       },
       {
@@ -59,7 +59,7 @@ export default function ProductsPage() {
         name: "AI Voice Caller",
         applicationCategory: "CommunicationApplication",
         description:
-          "Human-grade conversational voice AI agents for appointment booking, EHR calendar sync, and front-desk triage.",
+          "AI voice agents that answer calls, book appointments, answer patient questions, and handle reschedules 24/7. Healthcare agent live with Epic, Cerner, Athenahealth, Google, and Outlook sync; English and Spanish; HIPAA and SOC2 ready.",
         url: "https://aicalling.uipirate.com/",
       },
       {
@@ -68,17 +68,17 @@ export default function ProductsPage() {
         name: "cometCOS",
         applicationCategory: "BusinessApplication",
         description:
-          "Multi-tenant Content Operating System and AI publishing engine with Edge read APIs.",
+          "The multi-tenant AI content operating system: a real writing studio with an AI side panel, chapter-aware ebook workspace, scrubbable version history, BYOK multi-LLM engine with 0% token markup, and 1-click publishing to WordPress, Ghost, Medium, LinkedIn, and Buffer.",
         url: "https://cos.uipirate.com/",
       },
       {
         "@type": "SoftwareApplication",
         position: 4,
-        name: "Smart Onboarding Engine",
-        applicationCategory: "BusinessApplication",
+        name: "MedJourney",
+        applicationCategory: "HealthcareApplication",
         description:
-          "Personalized, role-based product tour and behavioral activation engine for SaaS applications.",
-        url: "https://uipirate.com/apps4sale/smart-onboarding-engine",
+          "Patient support program (PSP) healthcare platform connecting telecallers, doctors, labs, pharmacies, and pharma teams on one unified timeline with automated refill alerts, 9 roles (111 privileges), and HIPAA & DISHA compliance.",
+        url: "https://psp.dev.uipirate.com/",
       },
       {
         "@type": "SoftwareApplication",

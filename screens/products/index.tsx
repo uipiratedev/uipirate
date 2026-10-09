@@ -3,135 +3,185 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Input } from "@heroui/input";
 
 import PageWrapper from "@/components/PageWrapper";
 import GlassSurface from "@/components/GlassSurface";
 import LetsTalkButton from "@/components/LetsTalkButton";
-import { SearchIcon } from "@/components/icons";
+
+export interface KeyPoint {
+  title: string;
+  text: string;
+}
 
 export interface ProductItem {
   id: string;
+  indexStr: string;
   title: string;
+  badgeLetter: string;
   badge: string;
-  badgeColor?: "orange" | "purple" | "blue" | "emerald";
+  badgeColor: "purple" | "emerald" | "orange" | "blue";
   subtitle: string;
   description: string;
-  category: "AI & Automation" | "Content & Publishing" | "Developer Tools" | "Micro-SaaS";
-  metric: { label: string; value: string };
-  features: string[];
-  techStack: string[];
+  category: "AI & Automation" | "Content & Publishing" | "Developer Tools";
+  keyPoints: KeyPoint[];
   primaryLink: string;
   primaryLinkText: string;
-  secondaryLink?: string;
-  secondaryLinkText?: string;
 }
 
 const PRODUCTS: ProductItem[] = [
   {
     id: "alfred-os",
+    indexStr: "01",
     title: "Alfred OS",
-    badge: "Enterprise Multi-Agent Platform",
+    badgeLetter: "A",
+    badge: "AI TEAM FOR YOUR BUSINESS",
     badgeColor: "purple",
-    subtitle: "Autonomous AI Butler & 5-Agent Enterprise Workforce",
+    subtitle: "Your business, minus the busywork.",
     description:
-      "Pairs leading AI models with a specialized 5-agent architecture and deterministic safety policies. Automate complex customer conversations, ticket triage, and operational workflows safely with zero hallucinations.",
+      "An AI assistant for your customers and your team. It answers from your own information by chat or voice, looks things up in your systems, and waits for your OK before anything risky.",
     category: "AI & Automation",
-    metric: { label: "Architecture", value: "5 Focused Agents" },
-    features: [
-      "5-agent division of labor: Planner, Knowledge Researcher, Policy Checker, Monitor & Responder",
-      "Deterministic safety engine: enforces business rules & blocks prompt injection before execution",
-      "Predictable 2-call cost model: exactly 2 AI calls per query, preventing runaway loops",
-      "Shadow DOM embed widget: instant chat + voice streaming with WCAG 2.1 AA compliance",
-      "Production-ready single container: FastAPI, Temporal workflows, MongoDB, and OpenTelemetry",
+    keyPoints: [
+      {
+        title: "Answers from your information",
+        text: "Cited sources. No making things up.",
+      },
+      {
+        title: "Acts before risky actions",
+        text: "Refunds and changes follow your rules.",
+      },
+      {
+        title: "Every step is traced",
+        text: "Plan, rule checks, and replay—all visible.",
+      },
     ],
-    techStack: ["FastAPI", "Temporal", "MongoDB", "OpenTelemetry", "SSE Streaming"],
     primaryLink: "https://alfred.uipirate.com/",
-    primaryLinkText: "Launch Alfred OS",
-    secondaryLink: "https://cal.com/ui-pirate/15min",
-    secondaryLinkText: "Schedule Architecture Review",
+    primaryLinkText: "Explore Alfred",
   },
   {
     id: "ai-voice-caller",
+    indexStr: "02",
     title: "AI Voice Caller",
-    badge: "Conversational Voice AI",
+    badgeLetter: "V",
+    badge: "AI PHONE AGENT",
     badgeColor: "emerald",
-    subtitle: "Autonomous Voice Agents for Scheduling, Front-Desk & Triage",
+    subtitle: "Never miss another call.",
     description:
-      "Human-grade conversational voice intelligence that answers incoming calls, books appointments, coordinates reschedules, and handles customer triage 24/7/365 with zero hold times or dropped calls.",
+      "An AI phone agent that answers calls, books appointments, and handles reschedules around the clock. Live today for healthcare clinics.",
     category: "AI & Automation",
-    metric: { label: "Voice Latency", value: "< 500ms" },
-    features: [
-      "Natural sub-500ms voice turnaround that sounds genuinely human without robotic delays",
-      "Two-way calendar & EHR synchronization (Epic, Cerner, Athenahealth, Google Calendar, Outlook)",
-      "Bilingual voice engine: native English & Spanish with automatic spoken language detection",
-      "Automated post-call SMS confirmations and real-time double-booking prevention",
-      "HIPAA & SOC2 ready with AES-256 encryption, call audit logs, and medical emergency escalation",
+    keyPoints: [
+      {
+        title: "Answers every call",
+        text: "Day or night, zero hold time.",
+      },
+      {
+        title: "Books into your calendar",
+        text: "No double-booking.",
+      },
+      {
+        title: "Works with your software",
+        text: "No need to switch systems.",
+      },
     ],
-    techStack: ["WebSockets", "Streaming Audio", "NLU Engine", "Twilio / SIP", "EHR Connectors"],
     primaryLink: "https://aicalling.uipirate.com/",
-    primaryLinkText: "Launch AI Voice Caller",
-    secondaryLink: "https://cal.com/ui-pirate/15min",
-    secondaryLinkText: "Book Live Demo",
+    primaryLinkText: "See it live",
   },
   {
     id: "cometCOS",
+    indexStr: "03",
     title: "cometCOS",
-    badge: "Enterprise AI Publishing Platform",
+    badgeLetter: "C",
+    badge: "AI CONTENT OPERATING SYSTEM",
     badgeColor: "orange",
-    subtitle: "Multi-Tenant Content Operating System & AI Publishing Engine",
+    subtitle: "A writing studio with AI inside it.",
     description:
-      "A complete content platform built for high-output design and development teams. Multi-tenant CMS architecture with an integrated AI drafting studio, automated SEO schema generation, and zero-latency public Edge APIs.",
+      "Draft articles and ebooks in a real workspace, direct edits with an AI side panel, keep every version in a scrubbable timeline, and publish straight to your site—with zero token markup.",
     category: "Content & Publishing",
-    metric: { label: "Performance", value: "99+ Lighthouse" },
-    features: [
-      "Tenant-isolated editorial workspaces with custom domain binding",
-      "AI workspace for drafting, tone adjustment & multi-channel repurposing",
-      "Edge-cached public read API for instantaneous static and SSR sites",
-      "Real-time view analytics with bot, duplicate, and crawler filtering",
-      "Automated JSON-LD, OpenGraph & meta schema generation",
+    keyPoints: [
+      {
+        title: "AI side panel, craft stays human",
+        text: "Direct edits on selected text. You decide what stays.",
+      },
+      {
+        title: "Ebooks & long-form workspace",
+        text: "Chapter-aware context across 30k+ words. Export cleanly.",
+      },
+      {
+        title: "Publish anywhere & BYOK",
+        text: "1-click push to WordPress, Ghost, Medium, LinkedIn & Buffer.",
+      },
     ],
-    techStack: ["Next.js 15", "PostgreSQL", "Tailwind CSS", "Edge API"],
     primaryLink: "https://cos.uipirate.com/",
-    primaryLinkText: "Launch cometCOS",
-    secondaryLink: "https://cos.uipirate.com/register",
-    secondaryLinkText: "See Live in Production",
+    primaryLinkText: "Explore cometCOS",
+  },
+  {
+    id: "medjourney",
+    indexStr: "04",
+    title: "MedJourney",
+    badgeLetter: "M",
+    badge: "PATIENT SUPPORT PROGRAM PLATFORM",
+    badgeColor: "blue",
+    subtitle: "Your patient support program, actually supporting patients.",
+    description:
+      "One unified platform for telecallers, doctors, labs, pharmacies, and pharma teams. Every role sees the patient they need, with automated refills and compliance built in.",
+    category: "AI & Automation",
+    keyPoints: [
+      {
+        title: "Unified patient timeline",
+        text: "Calls, refills, orders, and lab results in one place.",
+      },
+      {
+        title: "9 roles, 111 privileges",
+        text: "Multi-org, regional zone scoping and strict access.",
+      },
+      {
+        title: "HIPAA & DISHA aligned",
+        text: "Integrated consent workflow and full audit trail.",
+      },
+    ],
+    primaryLink: "https://psp.dev.uipirate.com/",
+    primaryLinkText: "Explore MedJourney",
   },
 ];
 
-
 const CATEGORIES = [
-  "All",
-  "AI & Automation",
-  "Content & Publishing",
-  "Developer Tools",
+  { label: "All products", key: "All", count: "04" },
+  { label: "AI & Automation", key: "AI & Automation", count: "03" },
+  { label: "Content & Publishing", key: "Content & Publishing", count: "01" },
+  { label: "Developer Tools", key: "Developer Tools", count: "00" },
 ];
 
-const badgeColors = {
-  orange: "border-[#FF5B04]/30 bg-[#FF5B04]/10 text-[#FF5B04]",
-  purple: "border-purple-500/30 bg-purple-500/10 text-purple-600 dark:text-purple-400",
-  blue: "border-blue-500/30 bg-blue-500/10 text-blue-600 dark:text-blue-400",
-  emerald: "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+const colorStyles = {
+  purple: {
+    letterBox: "border-purple-300 dark:border-purple-500/40 bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400",
+    badgeText: "text-purple-600 dark:text-purple-400",
+    subtitle: "text-purple-600 dark:text-purple-400",
+    checkBg: "bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400",
+  },
+  emerald: {
+    letterBox: "border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400",
+    badgeText: "text-emerald-600 dark:text-emerald-400",
+    subtitle: "text-emerald-600 dark:text-emerald-400",
+    checkBg: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400",
+  },
+  orange: {
+    letterBox: "border-[#FF5B04]/40 bg-[#FF5B04]/10 text-[#FF5B04]",
+    badgeText: "text-[#FF5B04]",
+    subtitle: "text-[#FF5B04]",
+    checkBg: "bg-[#FF5B04]/15 text-[#FF5B04]",
+  },
+  blue: {
+    letterBox: "border-blue-300 dark:border-blue-500/40 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400",
+    badgeText: "text-blue-600 dark:text-blue-400",
+    subtitle: "text-blue-600 dark:text-blue-400",
+    checkBg: "bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400",
+  },
 };
 
 export default function OurProductsScreen() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const isExternalUrl = (url: string) => url.startsWith("http");
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
   const filteredProducts = PRODUCTS.filter((item) => {
-    const matchesCat =
-      activeCategory === "All" || item.category === activeCategory;
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.techStack.some((tech) =>
-        tech.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-
-    return matchesCat && matchesSearch;
+    return activeCategory === "All" || item.category === activeCategory;
   });
 
   return (
@@ -143,8 +193,8 @@ export default function OurProductsScreen() {
           className="absolute pointer-events-none -mt-20"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+              linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
             `,
             backgroundSize: "40px 40px",
             top: 0,
@@ -176,7 +226,7 @@ export default function OurProductsScreen() {
           style={{ overflow: "visible" }}
         >
           {/* Header Section */}
-          <div className="text-center flex flex-col items-center mb-12 md:mb-16 px-4">
+          <div className="text-center flex flex-col items-center mb-6 sm:mb-10 px-4">
             <GlassSurface
               backgroundOpacity={0.1}
               blueOffset={20}
@@ -210,222 +260,299 @@ export default function OurProductsScreen() {
               Our <span className="text-[#FF5B04]">Products</span>
             </h1>
 
-            <p className="sub-header max-w-3xl mt-4 text-base sm:text-lg text-gray-600 dark:text-gray-300 font-jakarta leading-relaxed">
+            <p className="sub-header max-w-2xl mt-4 text-base sm:text-lg text-gray-600 dark:text-gray-300 font-jakarta leading-relaxed">
               Proprietary platforms, AI systems, and production engines designed,
               built, and operated by UI Pirate. Engineered for scale, zero hand-off
               friction, and proven in live production.
             </p>
-
-            {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8 mt-10 w-full max-w-4xl p-6 rounded-2xl bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-gray-200/80 dark:border-white/10 shadow-sm">
-              <div className="flex flex-col items-center justify-center text-center">
-                <span className="font-jetbrains text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
-                  7+
-                </span>
-                <span className="text-xs uppercase tracking-wider font-medium text-gray-500 mt-1">
-                  Active Systems
-                </span>
-              </div>
-              <div className="flex flex-col items-center justify-center text-center border-l border-gray-200 dark:border-zinc-800">
-                <span className="font-jetbrains text-2xl sm:text-3xl font-black text-[#FF5B04]">
-                  100%
-                </span>
-                <span className="text-xs uppercase tracking-wider font-medium text-gray-500 mt-1">
-                  In-House Built
-                </span>
-              </div>
-              <div className="flex flex-col items-center justify-center text-center border-l max-sm:border-l-0 sm:border-l border-gray-200 dark:border-zinc-800">
-                <span className="font-jetbrains text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
-                  50+
-                </span>
-                <span className="text-xs uppercase tracking-wider font-medium text-gray-500 mt-1">
-                  Shipped Projects
-                </span>
-              </div>
-              <div className="flex flex-col items-center justify-center text-center border-l border-gray-200 dark:border-zinc-800">
-                <span className="font-jetbrains text-2xl sm:text-3xl font-black text-gray-900 dark:text-white">
-                  Enterprise
-                </span>
-                <span className="text-xs uppercase tracking-wider font-medium text-gray-500 mt-1">
-                  Production Grade
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 pb-24 relative z-10">
-
-          {/* Search & Category Filter Controls */}
-          <div className="max-w-4xl mx-auto mb-12 px-4 space-y-6">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-[#FF5B04]/5 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity" />
-              <Input
-                classNames={{
-                  base: "max-w-full",
-                  mainWrapper: "h-14 sm:h-16",
-                  input: "text-base sm:text-lg px-4 font-geist",
-                  inputWrapper:
-                    "h-14 sm:h-16 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 focus-within:!border-[#FF5B04] shadow-sm transition-all duration-300",
-                }}
-                placeholder="Search products by name, capability, or tech stack..."
-                radius="full"
-                size="lg"
-                startContent={<SearchIcon className="text-zinc-400 text-xl" />}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative z-10">
+        {/* Top Floating Metrics Bar */}
+        <div className="max-w-5xl mx-auto mb-16 sm:mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-gray-200/90 dark:border-white/10 shadow-sm overflow-hidden py-6 sm:py-8 px-4 sm:px-6">
+            <div className="flex flex-col items-center justify-center text-center py-2">
+              <span className="font-jetbrains text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                7+
+              </span>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold text-gray-400 dark:text-zinc-500 mt-2 font-jetbrains">
+                Active Systems
+              </span>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex flex-wrap justify-center items-center gap-2">
-              {CATEGORIES.map((cat) => {
-                const isActive = activeCategory === cat;
+            <div className="flex flex-col items-center justify-center text-center py-2 border-l border-gray-200/80 dark:border-zinc-800">
+              <span className="font-jetbrains text-3xl sm:text-4xl font-bold text-[#FF5B04]">
+                100%
+              </span>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold text-gray-400 dark:text-zinc-500 mt-2 font-jetbrains">
+                In-House Built
+              </span>
+            </div>
 
-                return (
-                  <button
-                    key={cat}
-                    className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${isActive
-                      ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/25"
-                      : "bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-zinc-800 hover:border-[#FF5B04]/40"
-                      }`}
-                    onClick={() => setActiveCategory(cat)}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
+            <div className="flex flex-col items-center justify-center text-center py-2 border-l max-md:border-l-0 md:border-l border-t max-md:border-t border-gray-200/80 dark:border-zinc-800 max-md:mt-4 md:mt-0">
+              <span className="font-jetbrains text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                50+
+              </span>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold text-gray-400 dark:text-zinc-500 mt-2 font-jetbrains">
+                Shipped Projects
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center text-center py-2 border-l border-gray-200/80 dark:border-zinc-800 border-t max-md:border-t max-md:mt-4 md:mt-0">
+              <span className="font-jetbrains text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                Enterprise
+              </span>
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-semibold text-gray-400 dark:text-zinc-500 mt-2 font-jetbrains">
+                Production Grade
+              </span>
             </div>
           </div>
+        </div>
 
-          {/* Product Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
-            {/* @ts-ignore - AnimatePresence type issue with React 19 / Next.js */}
-            <AnimatePresence>
-              {filteredProducts.map((product) => {
-                const badgeStyle =
-                  badgeColors[product.badgeColor || "orange"] ||
-                  badgeColors.orange;
-                const isPrimaryExternal = isExternalUrl(product.primaryLink);
-                const isSecondaryExternal =
-                  product.secondaryLink && isExternalUrl(product.secondaryLink);
+        {/* Section Header: Left Title / Right Subtitle */}
+        <div className="mb-10 sm:mb-12">
+          <span className="block text-xs uppercase font-bold tracking-[0.2em] text-[#FF5B04] font-jetbrains mb-3">
+            PRODUCT SUITE / 04
+          </span>
 
-                return (
-                  <motion.div
-                    key={product.id}
-                    layout
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col justify-between rounded-3xl p-6 sm:p-8 bg-white dark:bg-[#181818] border border-gray-200 dark:border-white/10 hover:border-[#FF5B04]/50 shadow-sm hover:shadow-xl hover:shadow-[#FF5B04]/10 transition-all duration-300 group"
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    initial={{ opacity: 0, y: 20 }}
-                  >
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-gray-900 dark:text-white font-jakarta">
+              Systems that do the work.
+            </h1>
+            <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 font-jakarta max-w-md md:text-right pb-1">
+              Focused products, built around real operational bottlenecks.
+            </p>
+          </div>
+        </div>
+
+        {/* Category Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2.5 mb-10 sm:mb-12">
+          {CATEGORIES.map((cat) => {
+            const isActive = activeCategory === cat.key;
+
+            return (
+              <button
+                key={cat.key}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#FF5B04] text-white shadow-sm"
+                    : "bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-300 border border-gray-200/90 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700"
+                }`}
+                onClick={() => setActiveCategory(cat.key)}
+              >
+                <span>{cat.label}</span>
+                <span
+                  className={`text-[10px] font-jetbrains px-1.5 py-0.5 rounded-full ${
+                    isActive
+                      ? "bg-white/20 text-white"
+                      : "bg-gray-100 dark:bg-zinc-800 text-gray-500 dark:text-gray-400"
+                  }`}
+                >
+                  {cat.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Product Cards Stack */}
+        <div className="flex flex-col gap-8">
+          {/* @ts-ignore - AnimatePresence type issue with React 19 / Next.js */}
+          <AnimatePresence mode="popLayout">
+            {filteredProducts.map((product) => {
+              const styles = colorStyles[product.badgeColor] || colorStyles.orange;
+              const host = product.primaryLink.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+              return (
+                <motion.article
+                  key={product.id}
+                  layout
+                  animate={{ opacity: 1, y: 0 }}
+                  className="relative rounded-[28px] sm:rounded-3xl p-6 sm:p-8 md:p-10 bg-white dark:bg-[#151515] border border-gray-200/90 dark:border-white/10 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.03)] hover:shadow-md transition-all duration-300"
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                >
+                  {/* Card Index Indicator in top right */}
+                  <span className="absolute top-6 sm:top-8 right-8 text-xs font-jetbrains text-gray-300 dark:text-zinc-600 hidden md:block">
+                    {product.indexStr}
+                  </span>
+
+                  {/* Desktop Layout: Horizontal Grid */}
+                  <div className="hidden lg:grid lg:grid-cols-12 gap-8 items-stretch">
+                    {/* Left Column (Product Info): 4 cols */}
+                    <div className="lg:col-span-4 flex flex-col justify-between pr-4">
+                      <div>
+                        {/* Top Letter Icon Badge + Text */}
+                        <div className="flex items-center gap-2.5 mb-5">
+                          <span
+                            className={`w-6 h-6 rounded-md border flex items-center justify-center font-jetbrains text-xs font-bold ${styles.letterBox}`}
+                          >
+                            {product.badgeLetter}
+                          </span>
+                          <span
+                            className={`text-[11px] font-bold uppercase tracking-wider font-jetbrains ${styles.badgeText}`}
+                          >
+                            {product.badge}
+                          </span>
+                        </div>
+
+                        <h2 className="text-3xl font-bold font-jakarta text-gray-900 dark:text-white tracking-tight">
+                          {product.title}
+                        </h2>
+
+                        <p className={`mt-1.5 text-sm font-semibold font-jakarta ${styles.subtitle}`}>
+                          {product.subtitle}
+                        </p>
+
+                        <p className="mt-4 text-[13px] sm:text-sm text-gray-500 dark:text-gray-400 font-jakarta leading-relaxed">
+                          {product.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Middle 3 Highlight Columns: 6 cols (2 cols each) */}
+                    <div className="lg:col-span-6 grid grid-cols-3">
+                      {product.keyPoints.map((point, idx) => (
+                        <div
+                          key={point.title}
+                          className="flex flex-col justify-between px-5 sm:px-6 border-l border-gray-200/70 dark:border-zinc-800"
+                        >
+                          <div>
+                            {/* Step Number + Check Icon */}
+                            <div className="flex items-center justify-between mb-4">
+                              <span className="text-xs font-jetbrains text-gray-400 dark:text-zinc-500">
+                                0{idx + 1}
+                              </span>
+                              <span
+                                className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold ${styles.checkBg}`}
+                              >
+                                ✓
+                              </span>
+                            </div>
+
+                            <h3 className="text-[14px] font-bold text-gray-900 dark:text-white font-jakarta leading-snug">
+                              {point.title}
+                            </h3>
+
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 leading-relaxed font-jakarta">
+                              {point.text}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Right Column (CTA Button + Host): 2 cols */}
+                    <div className="lg:col-span-2 flex flex-col items-end justify-center pl-4">
+                      <LetsTalkButton
+                        showArrow
+                        href={product.primaryLink}
+                        size="sm"
+                        variant="dark"
+                      >
+                        {product.primaryLinkText}
+                      </LetsTalkButton>
+
+                      <span className="text-[11px] text-gray-400 dark:text-zinc-500 font-jetbrains mt-3 text-right">
+                        {host}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Mobile / Tablet Layout (Matching Screenshots 3 & 4) */}
+                  <div className="lg:hidden flex flex-col gap-6">
+                    {/* Top Identity */}
                     <div>
-                      {/* Top Bar: Badge & Metric */}
-                      <div className="flex items-center justify-between gap-3 mb-5">
+                      <div className="flex items-center gap-2.5 mb-4">
                         <span
-                          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider font-jetbrains ${badgeStyle}`}
+                          className={`w-6 h-6 rounded-md border flex items-center justify-center font-jetbrains text-xs font-bold ${styles.letterBox}`}
+                        >
+                          {product.badgeLetter}
+                        </span>
+                        <span
+                          className={`text-[11px] font-bold uppercase tracking-wider font-jetbrains ${styles.badgeText}`}
                         >
                           {product.badge}
                         </span>
-
-                        <div className="flex items-center gap-1.5 text-right font-jetbrains">
-                          <span className="text-xs text-gray-400">
-                            {product.metric.label}:
-                          </span>
-                          <span className="text-xs font-bold text-gray-900 dark:text-white">
-                            {product.metric.value}
-                          </span>
-                        </div>
                       </div>
 
-                      {/* Title & Subtitle */}
-                      <h2 className="text-2xl sm:text-3xl font-bold font-jakarta text-gray-900 dark:text-white group-hover:text-[#FF5B04] transition-colors duration-200">
+                      <h2 className="text-2xl sm:text-3xl font-bold font-jakarta text-gray-900 dark:text-white">
                         {product.title}
                       </h2>
-                      <p className="text-sm font-semibold text-[#FF5B04] mt-1 font-jakarta">
+
+                      <p className={`mt-1 text-sm font-semibold font-jakarta ${styles.subtitle}`}>
                         {product.subtitle}
                       </p>
 
-                      <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 font-jakarta leading-relaxed">
+                      <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-jakarta leading-relaxed">
                         {product.description}
                       </p>
+                    </div>
 
-                      {/* Feature Bullet Points */}
-                      <div className="mt-6 pt-5 border-t border-dashed border-gray-200 dark:border-zinc-800">
-                        <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 font-jetbrains mb-3">
-                          Key Capabilities
-                        </h3>
-                        <ul className="space-y-2">
-                          {product.features.map((feat, idx) => (
-                            <li
-                              key={idx}
-                              className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-700 dark:text-gray-300"
+                    {/* Highlights List with Horizontal Hairlines */}
+                    <div className="border-t border-b border-gray-100 dark:border-zinc-800 py-4 flex flex-col divide-y divide-gray-100 dark:divide-zinc-800">
+                      {product.keyPoints.map((point, idx) => (
+                        <div key={point.title} className="py-4 first:pt-0 last:pb-0">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-xs font-jetbrains text-gray-400">
+                              0{idx + 1}
+                            </span>
+                            <span
+                              className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold ${styles.checkBg}`}
                             >
-                              <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[#FF5B04] shrink-0" />
-                              <span>{feat}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Tech Stack Pills */}
-                      <div className="mt-6 flex flex-wrap gap-1.5">
-                        {product.techStack.map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2.5 py-1 text-[11px] font-mono rounded-md bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-gray-300"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
+                              ✓
+                            </span>
+                          </div>
+                          <h3 className="text-sm font-bold text-gray-900 dark:text-white font-jakarta">
+                            {point.title}
+                          </h3>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-jakarta">
+                            {point.text}
+                          </p>
+                        </div>
+                      ))}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="mt-8 pt-6 border-t border-gray-100 dark:border-zinc-800 flex flex-wrap items-center gap-3">
-                      <Link
-                        className="inline-flex items-center justify-center rounded-xl bg-black dark:bg-white text-white dark:text-black px-5 py-2.5 text-sm font-semibold hover:bg-[#FF5B04] dark:hover:bg-[#FF5B04] dark:hover:text-white transition-all duration-200 shadow-sm"
+                    {/* Bottom CTA */}
+                    <div>
+                      <LetsTalkButton
+                        fullWidth
+                        showArrow
                         href={product.primaryLink}
-                        {...(isPrimaryExternal
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
+                        variant="dark"
                       >
-                        {product.primaryLinkText} &rarr;
-                      </Link>
-
-                      {product.secondaryLink && product.secondaryLinkText && (
-                        <Link
-                          className="inline-flex items-center justify-center rounded-xl border border-gray-300 dark:border-zinc-700 hover:border-[#FF5B04] px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-[#FF5B04] transition-all duration-200"
-                          href={product.secondaryLink}
-                          {...(isSecondaryExternal
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                        >
-                          {product.secondaryLinkText}
-                        </Link>
-                      )}
+                        {product.primaryLinkText}
+                      </LetsTalkButton>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </AnimatePresence>
+        </div>
 
-          {/* Bottom Value Section */}
-          <div className="mt-24 rounded-3xl p-8 sm:p-12 bg-gradient-to-br from-[#141414] to-[#202020] text-white relative overflow-hidden border border-white/10 shadow-2xl">
-            <div className="relative z-10 max-w-3xl">
-              <span className="inline-block text-xs uppercase tracking-widest font-jetbrains text-[#FF5B04] font-semibold mb-3">
-                Why We Build In-House Products
+        {/* Bottom Banner Section (Matching Screenshot) */}
+        <div className="mt-20 sm:mt-24 rounded-[32px] p-8 sm:p-12 md:p-14 bg-[#131313] text-white relative overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
+          {/* Warm radial glow behind the badge on the right */}
+          <div className="absolute right-[-5%] top-1/2 -translate-y-1/2 w-[480px] h-[480px] bg-[radial-gradient(circle,_rgba(255,91,4,0.18)_0%,_rgba(255,91,4,0.06)_45%,_transparent_70%)] pointer-events-none rounded-full" />
+
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 relative z-10">
+            {/* Left Copy & Actions */}
+            <div className="max-w-2xl">
+              <span className="block text-xs uppercase tracking-[0.2em] font-jetbrains text-[#FF5B04] font-bold mb-4">
+                WHY WE BUILD IN-HOUSE PRODUCTS
               </span>
-              <h2 className="text-3xl sm:text-4xl font-bold font-jakarta leading-tight">
+
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal font-jakarta leading-tight tracking-tight">
                 We don&apos;t just design for others. We build, ship, and run real software.
               </h2>
-              <p className="mt-4 text-gray-300 font-jakarta leading-relaxed text-sm sm:text-base">
+
+              <p className="mt-5 text-gray-400 font-jakarta leading-relaxed text-sm sm:text-[15px] max-w-xl">
                 Most agencies produce Figma mockups and leave before the code is
                 deployed. We test our design paradigms, component physics, and
-                architectures on our own platforms first. When we build for you,
-                you benefit from systems that are already running in production.
+                architectures on our own platforms first.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -437,19 +564,41 @@ export default function OurProductsScreen() {
                   Book a Product Call
                 </LetsTalkButton>
 
-                <Link
-                  className="px-5 py-3 rounded-full text-sm font-semibold text-white/90 hover:text-white border border-white/20 hover:border-white/40 transition-colors"
+                <LetsTalkButton
+                  showArrow
                   href="/case-studies"
+                  variant="dark"
                 >
-                  Explore Client Case Studies &rarr;
-                </Link>
+                  Explore Client Case Studies
+                </LetsTalkButton>
               </div>
             </div>
 
-            {/* Decorative background glow */}
-            <div className="absolute right-0 bottom-0 w-96 h-96 bg-[#FF5B04]/15 blur-3xl pointer-events-none rounded-full" />
+            {/* Right Side Circular Badge Graphic (Matching Screenshot with Outer Solid Ring + Inner Dashed Ring + Tilted Text) */}
+            <div className="flex items-center justify-center lg:pr-8">
+              <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 rounded-full border border-white/10 bg-[#171413]/60 backdrop-blur-sm select-none shadow-2xl">
+                {/* Inner Dashed Ring */}
+                <div className="absolute inset-3 rounded-full border border-dashed border-zinc-600/70 pointer-events-none" />
+
+                {/* Centered Typography with Tilted IN-HOUSE */}
+                <div className="flex flex-col items-center justify-center text-center relative z-10">
+                  <span className="text-[10px] sm:text-[11px] tracking-[0.25em] text-zinc-400 font-jetbrains">
+                    BUILT
+                  </span>
+                  <span className="text-lg sm:text-xl font-black tracking-wider text-[#FF5B04] font-jetbrains my-1 transform -rotate-6">
+                    IN-HOUSE
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] tracking-[0.25em] text-zinc-500 font-jetbrains">
+                    EST. 2022
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
     </PageWrapper>
   );
 }
+
+
