@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import ToolCategoryHub from "@/components/ToolCategoryHub";
 
 export const metadata: Metadata = {
-  title: "Design Systems & Developer Tools Suite | UI Pirate",
+  title: "Design Systems & Developer Tools Suite",
   description:
     "Free SaaS design token generators, 8pt spacing calculators, modular typography ramps, and WCAG contrast checkers for Figma and Tailwind CSS.",
   alternates: {

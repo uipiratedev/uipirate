@@ -8,7 +8,7 @@ import { CheckIcon } from "@/components/icons";
 const COMPARISON_DATA = [
   {
     label: "Monthly Cost",
-    uipirate: "from $500",
+    uipirate: "from $499",
     agency: "$8-15k",
     freelancer: "$3-5k",
     inhouse: "$8-12k",

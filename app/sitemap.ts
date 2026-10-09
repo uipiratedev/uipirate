@@ -32,7 +32,7 @@ const BASE_URL = "https://uipirate.com";
 // deprioritise crawling (observed: ~40 URLs stuck "Discovered / Blocked -
 // not crawled" in Bing). Bump this constant (or set SITEMAP_STATIC_LASTMOD)
 // when static page content meaningfully changes.
-const STATIC_LASTMOD = process.env.SITEMAP_STATIC_LASTMOD || "2026-09-09";
+const STATIC_LASTMOD = process.env.SITEMAP_STATIC_LASTMOD || "2026-10-09";
 
 // Static pages with their priorities and change frequencies
 const STATIC_PAGES: {
@@ -328,7 +328,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const { listPosts, SITEMAP_FIELDS } = await import(
-      "@/lib/pirateCOS/public-client"
+      "@/lib/cometCOS/public-client"
     );
     const posts = await fetchAllPosts(listPosts, SITEMAP_FIELDS);
 

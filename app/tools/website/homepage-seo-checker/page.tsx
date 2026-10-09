@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import SeoCheckerClient from "@/components/SeoChecker/SeoCheckerClient";
 
 export const metadata: Metadata = {
-  title: "Homepage SEO & Metadata Checker | UI Pirate",
+  title: "Homepage SEO & Metadata Checker",
   description:
     "Free tool to audit a page's title, meta description, canonical URL, heading hierarchy, Open Graph tags, and structured data from its real server-rendered HTML.",
   alternates: {

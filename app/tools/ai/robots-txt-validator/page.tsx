@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import RobotsTxtValidatorClient from "@/components/RobotsTxtValidator/RobotsTxtValidatorClient";
 
 export const metadata: Metadata = {
-  title: "Free robots.txt Validator & Linter | UI Pirate",
+  title: "Free robots.txt Validator & Linter",
   description:
     "Test and validate any robots.txt syntax against RFC 9309. Catch blocking errors, unknown directives, and accidental AI crawler bans.",
   alternates: {

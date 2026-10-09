@@ -14,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
           "/admin",
           "/admin/",
           "/login",
-          "/pirateCOS/",
+          "/cometCOS/",
           "/blogs/create",
           "/blogs/edit/",
           "/api/",

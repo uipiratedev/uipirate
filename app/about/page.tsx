@@ -82,7 +82,7 @@ const ABOUT_FAQS = [
   {
     question: "What is UI Pirate?",
     answer:
-      "A product design and development agency founded by Vishal Anand in 2017. A seven-person team of designers and engineers who take products from first wireframe to shipped code.",
+      "A product design and development agency founded by Vishal Anand in 2022. A seven-person team of designers and engineers who take products from first wireframe to shipped code.",
   },
   {
     question: "Where is the team based?",
@@ -115,7 +115,7 @@ export default function AboutPage() {
               name: "UI Pirate by Vishal Anand",
               description:
                 "Full-service product design and development agency specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python.",
-              foundingDate: "2017",
+              foundingDate: "2022",
               numberOfEmployees: "7",
               founder: {
                 "@type": "Person",

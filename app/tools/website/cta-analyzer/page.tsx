@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import CtaAnalyzerClient from "@/components/CtaAnalyzer/CtaAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "CTA & Conversion Button Analyzer | UI Pirate",
+  title: "CTA & Conversion Button Analyzer",
   description:
     "Free tool to audit a page's call-to-action placement, action-verb copy, and real WCAG contrast (wherever colors are resolvable) from its real server-rendered HTML.",
   alternates: {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import SaasUxAuditClient from "@/components/SaasUxAudit/SaasUxAuditClient";
 
 export const metadata: Metadata = {
-  title: "Free SaaS Product UX & Friction Audit Tool | UI Pirate",
+  title: "Free SaaS Product UX & Friction Audit Tool",
   description:
     "Audit any SaaS product or dashboard URL for onboarding friction, navigation depth, information architecture, and CTA clarity. Instant 0–100 score.",
   alternates: {

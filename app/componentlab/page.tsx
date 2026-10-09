@@ -8,7 +8,7 @@ const UIComponentsScreen = dynamic(() => import("@/screens/uiComponents"), {
 });
 
 export const metadata: Metadata = {
-  title: "Component Lab & Design System | UI Pirate",
+  title: "Component Lab & Design System",
   description:
     "Handcrafted React, Tailwind, and Framer Motion UI components engineered with dev-mode pixel accuracy, 3D tactile physics, and rich micro-interactions.",
   keywords:

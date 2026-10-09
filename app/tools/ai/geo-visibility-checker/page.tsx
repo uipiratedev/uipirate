@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import AIBotCheckerClient from "@/components/AIBotChecker/AIBotCheckerClient";
 
 export const metadata: Metadata = {
-  title: "AI & GEO Visibility Score Checker | UI Pirate",
+  title: "AI & GEO Visibility Score Checker",
   description:
     "Test your website against 26+ AI crawlers (GPTBot, ClaudeBot, Perplexity) and Cloudflare WAF. Get an instant 0–100 GEO Visibility Score.",
   alternates: {

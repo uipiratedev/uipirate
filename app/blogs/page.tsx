@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import Blogs from "@/screens/blogs";
-import { listPosts } from "@/lib/pirateCOS/public-client";
+import { listPosts } from "@/lib/cometCOS/public-client";
 
 // ISR: revalidate the blog index every 60s (matches the v1 API Cache-Control).
 export const revalidate = 60;

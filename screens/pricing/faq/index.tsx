@@ -9,7 +9,7 @@ const PRICING_FAQS = [
   {
     question: "How much does UI/UX design cost?",
     answer:
-      "Our UI/UX design services start from $500/month for our retainer plan, giving you a dedicated design team without the full-time headcount. For specific scopes, we offer custom project estimates, and a $150-$350 pilot option to test our execution with zero risk.",
+      "Our UI/UX design services start from $499/month for our retainer plan, giving you a dedicated design team without the full-time headcount. For specific scopes, we offer custom project estimates, and a $150-$350 pilot option to test our execution with zero risk.",
   },
   {
     question: "Can I pause my subscription?",

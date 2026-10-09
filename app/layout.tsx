@@ -157,14 +157,15 @@ export default function RootLayout({
               "@type": "ProfessionalService",
               "@id": "https://uipirate.com/#organization",
               name: "UI Pirate",
-              alternateName: ["UI Pirate", "uipirate", "uipirates"],
+              alternateName: ["UI Pirate", "UIPirate", "uipirate", "uipirates", "UI Pirate by Vishal Anand", "uipirate.com"],
+              brand: { "@type": "Brand", name: "UI Pirate" },
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
               image:
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
                 "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product, we carry the rest.",
-              foundingDate: "2015",
+              foundingDate: "2022",
               founder: {
                 "@type": "Person",
                 name: "Vishal Anand",
@@ -189,15 +190,26 @@ export default function RootLayout({
               ],
               hasOfferCatalog: {
                 "@type": "OfferCatalog",
-                name: "Enterprise Design Services",
+                name: "UI Pirate Services",
                 itemListElement: [
                   {
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "SaaS Web & Mobile App Design & Development",
+                      name: "UX/UI Design",
                       description:
-                        "UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products",
+                        "SaaS, AI, and mobile app design: strategy, information architecture, wireframes, high-fidelity UI, interactive prototypes, and production-ready UI development in React, Next.js, or Angular",
+                      url: "https://uipirate.com/services/UX-UI-Design",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "SaaS & AI Development",
+                      description:
+                        "Full-stack development for SaaS and AI products: backend, databases, APIs, LLM integrations, AI agents, RAG pipelines, and cloud deployment on AWS, GCP, or Azure",
+                      url: "https://uipirate.com/services/SaaS-&-AI-Development",
                     },
                   },
                   {
@@ -206,16 +218,8 @@ export default function RootLayout({
                       "@type": "Service",
                       name: "Landing Pages & Business Websites",
                       description:
-                        "High-converting landing pages and corporate websites built with Angular, React, Framer, and Webflow for startups and enterprises",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Design Systems & Component Libraries",
-                      description:
-                        "Scalable design systems with custom tokens, UI kits, and documented Angular/React components for enterprise teams",
+                        "High-converting landing pages and business websites built with React, Next.js, Framer, or Webflow, optimised for search and AI discovery",
+                      url: "https://uipirate.com/services/Landing-Pages-&-Business-Websites",
                     },
                   },
                   {
@@ -224,7 +228,8 @@ export default function RootLayout({
                       "@type": "Service",
                       name: "UX Audits & Consultation",
                       description:
-                        "Heuristic analysis, usability testing, and strategic UX recommendations",
+                        "Heuristic UX audit, friction and drop-off insights, prioritised findings, and an action roadmap",
+                      url: "https://uipirate.com/services/UX-Audits-&-Consultation",
                     },
                   },
                 ],
@@ -309,7 +314,7 @@ export default function RootLayout({
                   name: "How long does a typical project take at UI Pirate?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Landing pages and business websites typically take 2-4 weeks. SaaS and complex web applications take 1-2 months. Monthly retainers are also available for ongoing design and development support.",
+                    text: "Landing pages and business websites typically take 2-4 weeks. SaaS and complex web applications take 1-2 months. UX audits usually take 1-2 weeks. Monthly retainers are also available for ongoing design and development support.",
                   },
                 },
                 {
@@ -317,7 +322,7 @@ export default function RootLayout({
                   name: "Does UI Pirate do design only, or development too?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate provides end-to-end services, from product strategy and UX design to full frontend development in Angular, React, and Next.js. Designs can also be handed off to your existing development team.",
+                    text: "UI Pirate provides end-to-end services, from product strategy and UX/UI design to front-end and full-stack development (React, Angular, Next.js, Node.js, Python) and AI integrations. Designs can also be handed off to your existing development team.",
                   },
                 },
                 {
@@ -341,7 +346,7 @@ export default function RootLayout({
                   name: "What is UI Pirate's pricing?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate offers pay-per-project, monthly retainers, and a 5-Day Pilot option to try the team risk-free. Landing pages start from $1,500 and SaaS products from $5,000. See detailed pricing at https://uipirate.com/pricing.",
+                    text: "Monthly retainers start from $499 per month and custom project quotes from $2,000. A paid 5-Day Pilot ($150-$350, deducted from the final invoice if you continue) lets you try the team first. See https://uipirate.com/pricing.",
                   },
                 },
                 {

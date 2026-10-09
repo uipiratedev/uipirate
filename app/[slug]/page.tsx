@@ -9,7 +9,7 @@ import {
   getPostBySlug,
   getSuggestedPosts,
   listPostSlugs,
-} from "@/lib/pirateCOS/public-client";
+} from "@/lib/cometCOS/public-client";
 
 interface Props {
   params: { slug: string };

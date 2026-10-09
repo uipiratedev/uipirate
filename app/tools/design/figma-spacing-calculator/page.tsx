@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import SpacingCalculatorClient from "@/components/SpacingCalculator/SpacingCalculatorClient";
 
 export const metadata: Metadata = {
-  title: "8pt Grid & Figma Spacing Calculator | UI Pirate",
+  title: "8pt Grid & Figma Spacing Calculator",
   description:
     "Free tool to generate an 8pt/4pt spacing scale with exact px/rem values, check any pixel value for grid alignment, and export CSS variables, Tailwind config, or Figma variables.",
   alternates: {

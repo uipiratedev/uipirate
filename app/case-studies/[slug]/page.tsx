@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPostSlugs } from "@/lib/cometCOS/public-client";
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";

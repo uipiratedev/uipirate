@@ -17,7 +17,7 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
 
   const shouldHideNavbar = useMemo(() => {
     const baseHide =
-      pathname.startsWith("/pirateCOS") ||
+      pathname.startsWith("/cometCOS") ||
       pathname.startsWith("/admin") ||
       pathname === "/login" ||
       pathname.startsWith("/componentlab/") ||

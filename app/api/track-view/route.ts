@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { verifyAuth } from "@/lib/cometCOS/auth";
 import { trackView } from "@/lib/trackView";
 
 export const dynamic = "force-dynamic";

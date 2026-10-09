@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import GeoCompetitorBenchmarkClient from "@/components/GeoCompetitorBenchmark/GeoCompetitorBenchmarkClient";
 
 export const metadata: Metadata = {
-  title: "GEO Competitor & AI Search Benchmark | UI Pirate",
+  title: "GEO Competitor & AI Search Benchmark",
   description:
     "Free tool to benchmark your domain's AI bot access, llms.txt adoption, and structured-data depth against a competitor's, fetched live from both sites' real robots.txt and homepage HTML.",
   alternates: {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import ColorPaletteGeneratorClient from "@/components/ColorPaletteGenerator/ColorPaletteGeneratorClient";
 
 export const metadata: Metadata = {
-  title: "Accessible SaaS Color Palette Generator | UI Pirate",
+  title: "Accessible SaaS Color Palette Generator",
   description:
     "Free tool to generate a full 50-950 brand color ramp and matching neutral scale from one input color, with a real WCAG contrast ratio and recommended text color computed for every shade.",
   alternates: {

@@ -2,10 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getPostBySlug, listPostSlugs } from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPostSlugs } from "@/lib/cometCOS/public-client";
 import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";
+import ViewTracker from "@/components/ViewTracker";
 import ConceptDetailScreen from "@/screens/concepts/detail";
 import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 
@@ -138,6 +139,7 @@ export default async function ConceptDetailPage({ params }: PageProps) {
         }}
         type="application/ld+json"
       />
+      <ViewTracker slug={concept.slug} />
       <BlogsDetailsHero
         imageUrl={concept.bannerImage || concept.featuredImage}
         tag="Concept"

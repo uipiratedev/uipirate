@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const bot = getBotById(id);
 
-  if (!bot) return { title: "Crawler Not Found | UI Pirate" };
+  if (!bot) return { title: "Crawler Not Found" };
 
   return {
-    title: `${bot.name} (${bot.company}): User Agent, robots.txt Rules & Guide | UI Pirate`,
+    title: `${bot.name} (${bot.company}): User Agent, robots.txt Rules & Guide`,
     description: `${bot.name} is operated by ${bot.company}. Learn its official User-Agent token, purpose, robots.txt block/allow rules, and SEO impact.`,
     alternates: {
       canonical: `https://uipirate.com/tools/ai/bot-directory/${bot.id}`,

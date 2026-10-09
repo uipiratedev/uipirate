@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { pickSuggested, postHref } from "@/lib/pirateCOS/suggested";
+import { pickSuggested, postHref } from "@/lib/cometCOS/suggested";
 
 // Newest first: p1 is the newest.
 const post = (n: number, postType?: string) => ({

@@ -7,7 +7,7 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
 
   formData.append("file", file);
 
-  const response = await fetch("/api/pirateCOS/media/upload", {
+  const response = await fetch("/api/cometCOS/media/upload", {
     method: "POST",
     body: formData,
   });
@@ -38,7 +38,7 @@ export async function deleteImagesFromCloudinary(
   if (!urls || urls.length === 0) return;
 
   try {
-    const response = await fetch("/api/pirateCOS/media/delete", {
+    const response = await fetch("/api/cometCOS/media/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -12,16 +12,16 @@ const Landing = dynamic(() => import("@/screens/landing"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title: "UI Pirate - SaaS Product Design & Development Agency | Ship Faster",
+  title: "UI Pirate (uipirate.com) | SaaS & AI Product Design & Development Agency",
   description:
-    "We design and build SaaS products from first wireframe to working software. 50+ products shipped across 6 countries. Book a free 15-minute consultation.",
+    "UI Pirate (uipirate.com) designs and builds SaaS and AI products, from first wireframe to working software. 50+ products shipped across 6 countries. Book a free 15-minute call.",
   keywords:
     "uipirate, uipirates, UI Pirate, SaaS design agency, product design and development agency, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
   alternates: {
     canonical: "https://uipirate.com",
   },
   openGraph: {
-    title: "UI Pirate - SaaS Product Design & Development Agency",
+    title: "UI Pirate (uipirate.com) | SaaS & AI Product Design & Development Agency",
     description:
       "We help SaaS founders and enterprise teams design, build, and ship products. 50+ shipped. Free 15-min call. uipirate.com",
     url: "https://uipirate.com",
@@ -41,7 +41,7 @@ export const revalidate = 60;
 
 async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
   return {
-    slug: "xperiti",
+    slug: "xperiti-market-research-enterprise-saas",
     client: "Xperiti",
     title: "Platform Redesign and Development",
     excerpt:

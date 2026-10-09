@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import CssShadowGeneratorClient from "@/components/CssShadowGenerator/CssShadowGeneratorClient";
 
 export const metadata: Metadata = {
-  title: "Smooth CSS Layered Shadow Generator | UI Pirate",
+  title: "Smooth CSS Layered Shadow Generator",
   description:
     "Free tool to generate realistic, multi-layered CSS box-shadows and a synchronized xs–2xl elevation token scale, entirely in your browser.",
   alternates: {

@@ -1,4 +1,4 @@
-import { getPostBySlug } from "@/lib/pirateCOS/public-client";
+import { getPostBySlug } from "@/lib/cometCOS/public-client";
 
 /**
  * Hardcoded list of known draft/held case study slugs that must NEVER be

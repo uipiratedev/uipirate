@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import MarketingSiteAuditClient from "@/components/MarketingSiteAudit/MarketingSiteAuditClient";
 
 export const metadata: Metadata = {
-  title: "SaaS Marketing Website UX Audit | UI Pirate",
+  title: "SaaS Marketing Website UX Audit",
   description:
     "Free tool to audit a B2B SaaS marketing homepage's feature communication, self-serve vs. sales-assisted conversion paths, enterprise trust signals, and social proof from its real server-rendered HTML.",
   alternates: {

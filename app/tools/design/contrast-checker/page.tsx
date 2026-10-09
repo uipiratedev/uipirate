@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import ContrastCheckerClient from "@/components/ContrastChecker/ContrastCheckerClient";
 
 export const metadata: Metadata = {
-  title: "WCAG & APCA Color Contrast Checker | UI Pirate",
+  title: "WCAG & APCA Color Contrast Checker",
   description:
     "Free tool to check text and background color pairs against WCAG 2.1 AA/AAA contrast ratios and the newer perceptual APCA (Lc) algorithm, computed live from the exact published formulas.",
   alternates: {

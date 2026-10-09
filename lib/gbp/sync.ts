@@ -13,7 +13,7 @@
  */
 import dbConnect from "@/lib/mongodb";
 import GbpPost, { type IGbpPost } from "@/models/GbpPost";
-import { getPostBySlug, listPosts } from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPosts } from "@/lib/cometCOS/public-client";
 import {
   buildLocalPost,
   eligibility,

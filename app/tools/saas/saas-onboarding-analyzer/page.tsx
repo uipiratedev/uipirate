@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import OnboardingAnalyzerClient from "@/components/OnboardingAnalyzer/OnboardingAnalyzerClient";
 
 export const metadata: Metadata = {
-  title: "SaaS Onboarding & Activation Analyzer | UI Pirate",
+  title: "SaaS Onboarding & Activation Analyzer",
   description:
     "Free tool to audit a signup or onboarding page's form friction, progressive disclosure, empty-state guidance, and time-to-first-value from its real server-rendered HTML.",
   alternates: {

@@ -1,12 +1,12 @@
 "use client";
 
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+import type { ReaderPost } from "@/lib/cometCOS/public-client";
 
 import { memo, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { postHref } from "@/lib/pirateCOS/suggested";
+import { postHref } from "@/lib/cometCOS/suggested";
 
 const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
 

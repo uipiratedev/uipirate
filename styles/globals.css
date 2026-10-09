@@ -2875,7 +2875,7 @@ pre.code-block-pre code {
 }
 
 /* ========================================
-   PIRATECOSEDITOR — PROSEMIRROR LIST STYLES
+   COMETCOSEDITOR — PROSEMIRROR LIST STYLES
    Applied globally so both create + edit pages
    get bullets regardless of which wrapper is used.
    Tailwind preflight resets list-style to none —

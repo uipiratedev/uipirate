@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import DesignTokensClient from "@/components/DesignTokens/DesignTokensClient";
 
 export const metadata: Metadata = {
-  title: "Free SaaS Design Token & Theme Generator | UI Pirate",
+  title: "Free SaaS Design Token & Theme Generator",
   description:
     "Generate production-ready design tokens, 8pt spacing scales, typography ramps, and Tailwind CSS config objects in seconds. Free tool by UI Pirate.",
   alternates: {
