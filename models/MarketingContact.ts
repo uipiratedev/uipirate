@@ -43,8 +43,18 @@ export interface IMarketingContact extends Document {
     channel: "call" | "whatsapp" | "email";
     at: Date;
     byName?: string;
+    /** WhatsApp only: the exact message text that was sent. */
+    message?: string;
   }>;
   notes: ILeadNote[];
+  /** Log of status / website / outreach / draft changes (calls, messages and
+   *  notes live in `touches` / `notes`). */
+  activities: Array<{
+    type: "status" | "website" | "outreach" | "draft";
+    at: Date;
+    byName?: string;
+    summary: string;
+  }>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -91,9 +101,22 @@ const MarketingContactSchema = new Schema<IMarketingContact>(
         },
         at: { type: Date, default: Date.now },
         byName: String,
+        message: String,
       },
     ],
     notes: [noteFieldDef],
+    activities: [
+      {
+        type: {
+          type: String,
+          enum: ["status", "website", "outreach", "draft"],
+          required: true,
+        },
+        at: { type: Date, default: Date.now },
+        byName: String,
+        summary: { type: String, required: true },
+      },
+    ],
   },
   { timestamps: true },
 );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -17,6 +17,7 @@ import {
   mailHref,
   telHref,
   waHref,
+  waMessage,
   type Channel,
   type Contact,
 } from "./types";
@@ -32,7 +33,6 @@ import { KpiRow } from "@/components/admin/KpiRow";
 import { DataTable, type Column } from "@/components/admin/DataTable";
 import { Icon } from "@/components/admin/icons";
 import { fmtInt } from "@/components/admin/format";
-import { sheetToRows } from "@/lib/marketing/parseSheet";
 import {
   MARKETING_STATUSES,
   WEBSITE_LABELS,
@@ -62,7 +62,6 @@ export default function MarketingClient({
   const [status, setStatus] = useState("");
   const [q, setQ] = useState("");
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
-  const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState<{
     contact: Contact;
     value: string;
@@ -70,7 +69,6 @@ export default function MarketingClient({
   } | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [openId, setOpenId] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const { data, loading, error, refetch } = useApi<MarketingData>(
     "/api/admin/outreach",
@@ -94,51 +92,11 @@ export default function MarketingClient({
     refetch();
   }
 
-  function touch(c: Contact, channel: Channel) {
-    void patch(c.id, { logTouch: channel });
-  }
-
-  async function onFile(file: File) {
-    setMsg(null);
-    if (!/\.csv$|\.txt$/i.test(file.name) && !file.type.includes("csv")) {
-      setMsg({
-        ok: false,
-        text: "Upload a .csv file (in Excel / Google Sheets: File → Download → CSV).",
-      });
-
-      return;
-    }
-    setBusy(true);
-    try {
-      const rows = sheetToRows(await file.text());
-
-      if (!rows.length) {
-        setMsg({
-          ok: false,
-          text: "No usable rows. The sheet needs a header row with name plus phone or email.",
-        });
-
-        return;
-      }
-      const res = await fetch("/api/admin/outreach", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, rows }),
-      });
-      const json = await res.json();
-
-      if (!res.ok) throw new Error(json.error || "Upload failed");
-      setMsg({
-        ok: true,
-        text: `${json.imported} new, ${json.updated} updated, ${json.unchanged} unchanged${json.skipped ? `, ${json.skipped} invalid skipped` : ""}.`,
-      });
-      refetch();
-    } catch (e) {
-      setMsg({ ok: false, text: (e as Error).message });
-    } finally {
-      setBusy(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
+  function touch(c: Contact, channel: Channel, message?: string) {
+    void patch(c.id, {
+      logTouch: channel,
+      ...(channel === "whatsapp" ? { message: message ?? waMessage(c) } : {}),
+    });
   }
 
   const websiteColumn: Column<Contact> = {
@@ -375,30 +333,10 @@ export default function MarketingClient({
               <Icon.refresh className="h-3.5 w-3.5 text-gray-400" />
               Refresh
             </button>
-            {canManage ? (
-              <>
-                <input
-                  ref={fileRef}
-                  accept=".csv,text/csv"
-                  className="hidden"
-                  type="file"
-                  onChange={(e) =>
-                    e.target.files?.[0] && onFile(e.target.files[0])
-                  }
-                />
-                <button
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-gray-800 disabled:opacity-60"
-                  disabled={busy}
-                  onClick={() => fileRef.current?.click()}
-                >
-                  {busy ? "Uploading…" : "Upload sheet"}
-                </button>
-              </>
-            ) : null}
           </>
         }
         badge="Marketing"
-        description="Upload a contact sheet, track every record and call from here."
+        description="Track every outreach record and call from here."
       />
 
       {msg ? (
@@ -509,7 +447,7 @@ export default function MarketingClient({
                 columns={columns}
                 emptyText={
                   stage === "leads"
-                    ? "No leads waiting — upload a sheet to get started."
+                    ? "No leads waiting."
                     : "Nothing in outreach yet — set Has Website on a lead."
                 }
                 layout="auto"

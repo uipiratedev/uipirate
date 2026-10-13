@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -173,9 +173,11 @@ interface Props {
 function NavLink({
   item,
   onNavigate,
+  collapsed = false,
 }: {
   item: NavItem;
   onNavigate: () => void;
+  collapsed?: boolean;
 }) {
   const pathname = usePathname();
   const active = item.exact
@@ -185,12 +187,13 @@ function NavLink({
 
   return (
     <Link
-      className={`group relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-150 ${
+      className={`group relative flex items-center gap-3 whitespace-nowrap rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
         active
           ? "bg-gray-900 text-white shadow-sm font-semibold"
           : "text-gray-600 hover:bg-gray-100/80 hover:text-gray-900"
       }`}
       href={item.href}
+      title={collapsed ? item.label : undefined}
       onClick={onNavigate}
     >
       <Glyph
@@ -198,9 +201,13 @@ function NavLink({
           active ? "text-white" : "text-gray-400 group-hover:text-gray-700"
         }`}
       />
-      <span>{item.label}</span>
+      <span
+        className={`transition-opacity duration-200 ${collapsed ? "opacity-0" : "opacity-100"}`}
+      >
+        {item.label}
+      </span>
       {active && (
-        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+        <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
       )}
     </Link>
   );
@@ -211,6 +218,28 @@ const LogOutIcon = Icon["log-out"];
 export function DashboardShell({ user, capabilities, children }: Props) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    try {
+      setCollapsed(localStorage.getItem("admin-sidebar-collapsed") === "1");
+    } catch {}
+    // Enable the width transition only after the stored state is applied.
+    const id = requestAnimationFrame(() => setMounted(true));
+
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  function toggleCollapsed() {
+    setCollapsed((c) => {
+      try {
+        localStorage.setItem("admin-sidebar-collapsed", c ? "0" : "1");
+      } catch {}
+
+      return !c;
+    });
+  }
 
   useDrawerScrollLock({
     enabled: mobileOpen,
@@ -231,69 +260,88 @@ export function DashboardShell({ user, capabilities, children }: Props) {
     window.location.assign("/login");
   }
 
-  const sidebar = (
-    <div className="flex h-full flex-col justify-between p-4">
-      <div className="space-y-6">
-        {/* Brand Header */}
+  const renderSidebar = (isCollapsed: boolean) => (
+    <div className="flex h-full min-h-0 flex-col p-4">
+      {/* Brand Header */}
+      <div
+        className="flex shrink-0 items-center gap-2 whitespace-nowrap pb-4"
+      >
         <Link
-          className="flex items-center justify-between gap-2 px-2 py-1 transition-opacity hover:opacity-90"
+          className="flex items-center gap-2.5 px-1 py-1 transition-opacity hover:opacity-90"
           href="/admin"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-sm ring-1 ring-black/10">
-              <span className="font-mono text-sm font-bold tracking-tight">
-                UI
-              </span>
-            </div>
-            <div>
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-sm ring-1 ring-black/10">
+            <span className="font-mono text-sm font-bold tracking-tight">
+              UI
+            </span>
+          </div>
+          <div
+            className={`transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}
+          >
               <span className="block text-sm font-bold tracking-tight text-gray-900">
                 UI Pirate
               </span>
               <span className="block text-[10px] font-medium text-gray-400">
-                {workspace === "outreach" ? "Marketing & Outreach" : "SEO & Tracking"}
+                {workspace === "outreach"
+                  ? "Marketing & Outreach"
+                  : "SEO & Tracking"}
               </span>
             </div>
-          </div>
-          <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-gray-600 ring-1 ring-gray-200">
-            Admin
-          </span>
         </Link>
-
-        {/* Navigation items */}
-        <nav className="space-y-1">
-          <div className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
-            Navigation
-          </div>
-          {nav.map((item) => (
-            <NavLink
-              key={item.href}
-              item={item}
-              onNavigate={() => setMobileOpen(false)}
-            />
-          ))}
-        </nav>
       </div>
 
-      {/* Footer / External link */}
-      <div className="space-y-1 border-t border-gray-100 pt-3">
+      {/* Scrollable navigation */}
+      <nav
+        className="-mr-2 min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain pr-2 [scrollbar-width:thin]"
+        data-lenis-prevent="true"
+      >
+        <div
+          className={`whitespace-nowrap px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-400 transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}
+        >
+          Navigation
+        </div>
+        {nav.map((item) => (
+          <NavLink
+            key={item.href}
+            collapsed={isCollapsed}
+            item={item}
+            onNavigate={() => setMobileOpen(false)}
+          />
+        ))}
+      </nav>
+
+      {/* Sticky footer */}
+      <div className="shrink-0 space-y-1 border-t border-gray-100 pt-3">
         <Link
-          className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+          className="flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
           href="/admin"
+          title="Switch workspace"
         >
           <span aria-hidden="true">←</span>
-          Switch workspace
+          <span
+            className={`transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}
+          >
+            Switch workspace
+          </span>
         </Link>
         <a
-          className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+          className="flex items-center justify-between gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
           href="/"
           rel="noreferrer"
           target="_blank"
+          title="Live Marketing Site"
         >
           <span className="flex items-center gap-2">
-            <Icon.external className="h-3.5 w-3.5 text-gray-400" />
-            Live Marketing Site
+            <Icon.external className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+            <span
+              className={`transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}
+            >
+              Live Marketing Site
+            </span>
           </span>
-          <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold text-gray-600">
+          <span
+            className={`rounded bg-gray-100 px-1.5 py-0.5 text-[10px] font-semibold text-gray-600 transition-opacity duration-200 ${isCollapsed ? "opacity-0" : "opacity-100"}`}
+          >
             ↗
           </span>
         </a>
@@ -327,10 +375,26 @@ export function DashboardShell({ user, capabilities, children }: Props) {
 
   return (
     <DashboardProvider capabilities={capabilities} user={user}>
-      <div className="flex min-h-screen bg-[#F8FAFC] text-gray-900 antialiased">
+      <div className="flex h-screen overflow-hidden bg-[#F8FAFC] text-gray-900 antialiased">
         {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-gray-200/80 bg-white lg:block">
-          <div className="sticky top-0 h-screen">{sidebar}</div>
+        <aside
+          className={`relative z-40 hidden shrink-0 border-r border-gray-200/80 bg-white lg:block lg:h-screen ${
+            mounted ? "transition-[width] duration-200 ease-in-out" : ""
+          } ${collapsed ? "w-[76px]" : "w-64"}`}
+        >
+          <button
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className="absolute -right-3 top-5 z-50 flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900"
+            type="button"
+            onClick={toggleCollapsed}
+          >
+            <Icon.chevron
+              className={`h-3.5 w-3.5 transition-transform ${
+                collapsed ? "-rotate-90" : "rotate-90"
+              }`}
+            />
+          </button>
+          <div className="h-full overflow-hidden">{renderSidebar(collapsed)}</div>
         </aside>
 
         {/* Mobile drawer with HeroUI Drawer and isolated scroll */}
@@ -346,13 +410,13 @@ export function DashboardShell({ user, capabilities, children }: Props) {
           onOpenChange={(open) => setMobileOpen(open)}
         >
           <DrawerContent>
-            {() => <DrawerBody data-lenis-prevent="true">{sidebar}</DrawerBody>}
+            {() => <DrawerBody data-lenis-prevent="true">{renderSidebar(false)}</DrawerBody>}
           </DrawerContent>
         </Drawer>
 
         {/* Main Content Area */}
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-gray-200/80 bg-white/80 px-4 sm:px-6 backdrop-blur-md">
+        <div className="flex h-screen min-w-0 flex-1 flex-col">
+          <header className="z-30 flex h-16 shrink-0 items-center justify-between gap-3 border-b border-gray-200/80 bg-white/80 px-4 sm:px-6 backdrop-blur-md">
             <div className="flex items-center gap-3 min-w-0">
               <button
                 aria-label="Open menu"
@@ -446,7 +510,12 @@ export function DashboardShell({ user, capabilities, children }: Props) {
             </div>
           </header>
 
-          <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+          <main
+            className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6 lg:p-8"
+            data-lenis-prevent="true"
+          >
+            {children}
+          </main>
         </div>
       </div>
     </DashboardProvider>

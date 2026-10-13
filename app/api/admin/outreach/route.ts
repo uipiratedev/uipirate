@@ -46,12 +46,19 @@ function serialize(c: any) {
         channel: t.channel,
         at: new Date(t.at).toISOString(),
         byName: t.byName,
+        message: t.message || "",
       })),
     notes: (c.notes || []).map((n: any) => ({
       id: String(n._id),
       byName: n.byName,
       at: new Date(n.at).toISOString(),
       text: n.text,
+    })),
+    activities: (c.activities || []).map((a: any) => ({
+      type: a.type,
+      at: new Date(a.at).toISOString(),
+      byName: a.byName,
+      summary: a.summary,
     })),
     createdAt: new Date(c.createdAt).toISOString(),
   };
