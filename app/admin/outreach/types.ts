@@ -24,8 +24,15 @@ export interface Contact {
     channel: "call" | "whatsapp" | "email";
     at: string;
     byName?: string;
+    message?: string;
   }>;
   notes: Array<{ id: string; byName?: string; at: string; text: string }>;
+  activities: Array<{
+    type: "status" | "website" | "outreach" | "draft";
+    at: string;
+    byName?: string;
+    summary: string;
+  }>;
   createdAt: string;
 }
 
@@ -44,11 +51,13 @@ export const fillDraft = (text: string, c: Contact) =>
     .replace(/\{\{\s*name\s*\}\}/gi, c.name)
     .replace(/\{\{\s*city\s*\}\}/gi, c.city);
 
+/** The WhatsApp text that will be sent (drafted, saved or default). */
+export const waMessage = (c: Contact, draft?: string) =>
+  fillDraft(draft?.trim() || c.whatsappDraft || DEFAULT_WA_DRAFT, c);
+
 /** wa.me link carrying the drafted message (or the default one). */
 export const waHref = (c: Contact, draft?: string) =>
-  `https://wa.me/${digits(c.phone)}?text=${encodeURIComponent(
-    fillDraft(draft?.trim() || c.whatsappDraft || DEFAULT_WA_DRAFT, c),
-  )}`;
+  `https://wa.me/${digits(c.phone)}?text=${encodeURIComponent(waMessage(c, draft))}`;
 
 export const mailHref = (c: Contact) =>
   `mailto:${c.email}?subject=${encodeURIComponent(`Quick idea for ${c.name}`)}`;

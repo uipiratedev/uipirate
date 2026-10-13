@@ -238,7 +238,7 @@ export default function GoogleBusinessClient() {
         const b = (a: string) => busy === `${a}:${r.slug}`;
 
         return (
-          <span className="flex justify-end gap-1.5">
+          <span className="flex justify-end gap-1.5 whitespace-nowrap">
             {r.status !== "published" && (
               <button
                 className={`${btn} bg-white text-gray-700 ring-gray-200 hover:bg-gray-50`}
@@ -427,6 +427,7 @@ export default function GoogleBusinessClient() {
             <DataTable
               columns={columns}
               initialSort={{ key: "status", dir: "asc" }}
+              layout="auto"
               rowKey={(r) => r.slug}
               rows={data?.rows ?? []}
             />

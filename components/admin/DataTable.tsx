@@ -65,7 +65,7 @@ export function DataTable<T>({
 
   return (
     <div
-      className="w-full rounded-xl border border-gray-200/80 bg-white"
+      className="w-full overflow-x-auto rounded-xl border border-gray-200/80 bg-white"
       style={maxHeight ? { maxHeight, overflowY: "auto" } : undefined}
     >
       <table className={`w-full border-collapse text-sm ${layout === "fixed" ? "table-fixed" : ""}`}>

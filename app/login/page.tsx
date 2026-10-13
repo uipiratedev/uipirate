@@ -13,6 +13,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,15 +56,13 @@ function LoginForm() {
         </div>
 
         <form
-          className="space-y-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+          className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
           onSubmit={onSubmit}
         >
           <Input
             isRequired
             autoComplete="email"
             label="Email"
-            labelPlacement="outside"
-            placeholder="you@uipirate.com"
             type="email"
             value={email}
             variant="bordered"
@@ -72,10 +71,18 @@ function LoginForm() {
           <Input
             isRequired
             autoComplete="current-password"
+            endContent={
+              <button
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="text-xs font-medium text-gray-500 hover:text-gray-900"
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            }
             label="Password"
-            labelPlacement="outside"
-            placeholder="••••••••"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             variant="bordered"
             onValueChange={setPassword}
@@ -83,7 +90,7 @@ function LoginForm() {
 
           {error ? (
             <p
-              className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"
+              className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
               role="alert"
             >
               {error}
@@ -91,7 +98,7 @@ function LoginForm() {
           ) : null}
 
           <Button
-            className="w-full"
+            className="w-full font-semibold"
             color="primary"
             isLoading={loading}
             type="submit"
