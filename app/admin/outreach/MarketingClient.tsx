@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -22,6 +22,7 @@ import {
   type Contact,
 } from "./types";
 
+import { sheetToRows } from "@/lib/marketing/parseSheet";
 import { useApi } from "@/lib/admin/useApi";
 import {
   PageHeader,
@@ -90,6 +91,52 @@ export default function MarketingClient({
       body: JSON.stringify(body),
     });
     refetch();
+  }
+
+  const [busy, setBusy] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onFile(file: File) {
+    setMsg(null);
+    if (!/\.csv$|\.txt$/i.test(file.name) && !file.type.includes("csv")) {
+      setMsg({
+        ok: false,
+        text: "Upload a .csv file (in Excel / Google Sheets: File → Download → CSV).",
+      });
+
+      return;
+    }
+    setBusy(true);
+    try {
+      const rows = sheetToRows(await file.text());
+
+      if (!rows.length) {
+        setMsg({
+          ok: false,
+          text: "No usable rows. The sheet needs a header row with name plus phone or email.",
+        });
+
+        return;
+      }
+      const res = await fetch("/api/admin/outreach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileName: file.name, rows }),
+      });
+      const json = await res.json();
+
+      if (!res.ok) throw new Error(json.error || "Upload failed");
+      setMsg({
+        ok: true,
+        text: `${json.imported} new, ${json.updated} updated, ${json.unchanged} unchanged${json.skipped ? `, ${json.skipped} invalid skipped` : ""}.`,
+      });
+      refetch();
+    } catch (e) {
+      setMsg({ ok: false, text: (e as Error).message });
+    } finally {
+      setBusy(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
   }
 
   function touch(c: Contact, channel: Channel, message?: string) {
@@ -333,10 +380,34 @@ export default function MarketingClient({
               <Icon.refresh className="h-3.5 w-3.5 text-gray-400" />
               Refresh
             </button>
+            {canManage && stage === "leads" ? (
+              <>
+                <input
+                  ref={fileRef}
+                  accept=".csv,text/csv"
+                  className="hidden"
+                  type="file"
+                  onChange={(e) =>
+                    e.target.files?.[0] && onFile(e.target.files[0])
+                  }
+                />
+                <button
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-gray-900 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-gray-800 disabled:opacity-60"
+                  disabled={busy}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  {busy ? "Uploading…" : "Upload sheet"}
+                </button>
+              </>
+            ) : null}
           </>
         }
         badge="Marketing"
-        description="Track every outreach record and call from here."
+        description={
+          stage === "leads"
+            ? "Upload a contact sheet, then set Has Website to move leads into Outreach."
+            : "Track every outreach record and call from here."
+        }
       />
 
       {msg ? (
@@ -447,7 +518,7 @@ export default function MarketingClient({
                 columns={columns}
                 emptyText={
                   stage === "leads"
-                    ? "No leads waiting."
+                    ? "No leads waiting — upload a sheet to get started."
                     : "Nothing in outreach yet — set Has Website on a lead."
                 }
                 layout="auto"

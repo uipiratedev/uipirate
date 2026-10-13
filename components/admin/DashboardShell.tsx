@@ -51,7 +51,7 @@ const PAGE_META: Array<{
     prefix: "/admin/outreach",
     title: "Marketing & Outreach",
     description:
-      "Upload contact sheets, track outreach records and call contacts directly.",
+      "Track outreach records and call contacts directly.",
   },
   {
     prefix: "/admin/analytics/channels",
