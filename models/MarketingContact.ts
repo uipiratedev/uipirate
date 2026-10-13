@@ -29,6 +29,8 @@ export interface IMarketingContact extends Document {
   /** Any extra sheet columns, kept verbatim. */
   extra?: Record<string, string>;
   batch: string;
+  /** Owning MarketingFolder id; unset for contacts uploaded before folders. */
+  folder?: string;
   status: MarketingStatus;
   callCount: number;
   lastCalledAt?: Date;
@@ -79,6 +81,7 @@ const MarketingContactSchema = new Schema<IMarketingContact>(
     inOutreach: { type: Boolean, default: false, index: true },
     extra: { type: Schema.Types.Mixed },
     batch: { type: String, required: true, index: true },
+    folder: { type: String, index: true },
     status: {
       type: String,
       enum: MARKETING_STATUSES,

@@ -11,6 +11,7 @@ import {
   ModalHeader,
 } from "@heroui/react";
 
+import { FolderPicker, type FolderRef } from "./FolderPicker";
 import { OutreachDrawer } from "./OutreachDrawer";
 import {
   canWhatsapp,
@@ -60,6 +61,33 @@ export default function MarketingClient({
   canManage: boolean;
   stage: "leads" | "outreach";
 }) {
+  const [folder, setFolder] = useState<FolderRef | null>(null);
+
+  if (!folder)
+    return <FolderPicker canManage={canManage} stage={stage} onOpen={setFolder} />;
+
+  return (
+    <ContactList
+      key={folder.id}
+      canManage={canManage}
+      folder={folder}
+      stage={stage}
+      onBack={() => setFolder(null)}
+    />
+  );
+}
+
+function ContactList({
+  canManage,
+  stage,
+  folder,
+  onBack,
+}: {
+  canManage: boolean;
+  stage: "leads" | "outreach";
+  folder: FolderRef;
+  onBack: () => void;
+}) {
   const [status, setStatus] = useState("");
   const [q, setQ] = useState("");
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
@@ -75,6 +103,7 @@ export default function MarketingClient({
     "/api/admin/outreach",
     {
       stage,
+      folder: folder.id,
       status: stage === "outreach" ? status || undefined : undefined,
       q: q || undefined,
     },
@@ -121,7 +150,11 @@ export default function MarketingClient({
       const res = await fetch("/api/admin/outreach", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fileName: file.name, rows }),
+        body: JSON.stringify({
+          fileName: file.name,
+          rows,
+          folderId: folder.id === "none" ? undefined : folder.id,
+        }),
       });
       const json = await res.json();
 
@@ -183,14 +216,13 @@ export default function MarketingClient({
       return next;
     });
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   async function deleteSelected() {
     const ids = [...selected];
 
-    if (
-      !ids.length ||
-      !window.confirm(`Delete ${ids.length} selected contact(s)?`)
-    )
-      return;
+    setConfirmDelete(false);
+    if (!ids.length) return;
     const res = await fetch("/api/admin/outreach", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -375,12 +407,18 @@ export default function MarketingClient({
           <>
             <button
               className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
+              onClick={onBack}
+            >
+              ← All folders
+            </button>
+            <button
+              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
               onClick={refetch}
             >
               <Icon.refresh className="h-3.5 w-3.5 text-gray-400" />
               Refresh
             </button>
-            {canManage && stage === "leads" ? (
+            {canManage && stage === "leads" && folder.id !== "none" ? (
               <>
                 <input
                   ref={fileRef}
@@ -402,10 +440,10 @@ export default function MarketingClient({
             ) : null}
           </>
         }
-        badge="Marketing"
+        badge={`Marketing · ${folder.name}`}
         description={
           stage === "leads"
-            ? "Upload a contact sheet, then set Has Website to move leads into Outreach."
+            ? "Upload a contact sheet into this folder, then set Has Website to move leads into Outreach."
             : "Track every outreach record and call from here."
         }
       />
@@ -506,7 +544,7 @@ export default function MarketingClient({
                 {selected.size ? (
                   <button
                     className="rounded-lg bg-red-600 px-3 py-1.5 font-semibold text-white hover:bg-red-700"
-                    onClick={deleteSelected}
+                    onClick={() => setConfirmDelete(true)}
                   >
                     Delete selected ({selected.size})
                   </button>
@@ -540,6 +578,30 @@ export default function MarketingClient({
           onTouch={touch}
         />
       ) : null}
+
+      <Modal isOpen={confirmDelete} onOpenChange={setConfirmDelete}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>Delete contacts</ModalHeader>
+              <ModalBody>
+                <p className="text-sm text-gray-700">
+                  Delete {selected.size} selected contact(s)? This cannot be
+                  undone.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="light" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button color="danger" onPress={deleteSelected}>
+                  Delete
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       <Modal
         isOpen={Boolean(pending)}

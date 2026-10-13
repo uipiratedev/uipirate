@@ -55,6 +55,19 @@ const GDPR_COUNTRIES = [
   "CH",
 ];
 
+// Fallback when the edge geo header is missing (localhost, non-Vercel hosts,
+// proxies): a European/Icelandic timezone is treated as GDPR, anything else
+// is not. Same-origin and unblockable, unlike a third-party IP lookup.
+function isEuropeanTimezone(): boolean {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+
+    return /^(Europe|Atlantic\/Reykjavik)/.test(tz);
+  } catch {
+    return true; // can't tell — ask for consent
+  }
+}
+
 interface CookiePreferences {
   necessary: boolean;
   analytics: boolean;
@@ -119,12 +132,23 @@ const CookieConsent = () => {
       // First-party geo lookup — reads the edge `x-vercel-ip-country` header.
       // Same-origin, so ad blockers cannot drop it the way they dropped the
       // previous third-party ipapi.co call.
-      const response = await fetch("/api/geo");
-      const data = (await response.json()) as { country: string | null };
-      const userCountry = data.country;
+      let userCountry: string | null = null;
 
-      if (!userCountry || GDPR_COUNTRIES.includes(userCountry)) {
-        // In a GDPR country, or country unknown — ask for consent.
+      try {
+        const response = await fetch("/api/geo");
+
+        userCountry = ((await response.json()) as { country: string | null })
+          .country;
+      } catch {
+        // Fall through to the timezone check below.
+      }
+
+      const needsConsent = userCountry
+        ? GDPR_COUNTRIES.includes(userCountry.toUpperCase())
+        : isEuropeanTimezone();
+
+      if (needsConsent) {
+        // In a GDPR country (or European timezone when country is unknown).
         setShowBanner(true);
       } else {
         // User is NOT in GDPR country - auto-accept all cookies
