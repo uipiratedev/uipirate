@@ -89,7 +89,7 @@ export interface NavItem {
 }
 
 export const DASHBOARD_NAV: NavItem[] = [
-  { label: "Overview", href: "/admin", icon: "grid", exact: true },
+  { label: "Overview", href: "/admin/seo-tracking", icon: "grid", exact: true },
   { label: "Channels", href: "/admin/analytics/channels", icon: "share-2" },
   { label: "Content", href: "/admin/analytics/content", icon: "folder" },
   { label: "Funnel", href: "/admin/analytics/funnel", icon: "filter" },
@@ -143,8 +143,31 @@ export const DASHBOARD_NAV: NavItem[] = [
   },
 ];
 
-export function navForRole(role: Role): NavItem[] {
-  return DASHBOARD_NAV.filter(
-    (item) => !item.capability || can(role, item.capability),
-  );
+/** Sidebar for the separate Marketing & Outreach workspace. */
+export const OUTREACH_NAV: NavItem[] = [
+  {
+    label: "Leads",
+    href: "/admin/outreach/leads",
+    icon: "inbox",
+    capability: "view:leads",
+  },
+  {
+    label: "Outreach",
+    href: "/admin/outreach",
+    icon: "users",
+    exact: true,
+    capability: "view:leads",
+  },
+];
+
+export type Workspace = "seo" | "outreach";
+
+export function workspaceForPath(pathname: string): Workspace {
+  return pathname.startsWith("/admin/outreach") ? "outreach" : "seo";
+}
+
+export function navForRole(role: Role, workspace: Workspace = "seo"): NavItem[] {
+  const items = workspace === "outreach" ? OUTREACH_NAV : DASHBOARD_NAV;
+
+  return items.filter((item) => !item.capability || can(role, item.capability));
 }

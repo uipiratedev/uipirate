@@ -20,6 +20,7 @@ import { DateRangeControl } from "./DateRangeControl";
 
 import {
   navForRole,
+  workspaceForPath,
   ROLE_LABELS,
   type Capability,
   type NavItem,
@@ -34,6 +35,24 @@ const PAGE_META: Array<{
   title: string;
   description: string;
 }> = [
+  {
+    prefix: "/admin/seo-tracking",
+    title: "SEO & Tracking",
+    description:
+      "High-level performance, traffic pulse, conversion velocity, and real-time site health.",
+  },
+  {
+    prefix: "/admin/outreach/leads",
+    title: "Outreach Leads",
+    description:
+      "Uploaded leads waiting for a website check. Set Has Website to move a lead into Outreach.",
+  },
+  {
+    prefix: "/admin/outreach",
+    title: "Marketing & Outreach",
+    description:
+      "Upload contact sheets, track outreach records and call contacts directly.",
+  },
   {
     prefix: "/admin/analytics/channels",
     title: "Channels",
@@ -133,9 +152,9 @@ const PAGE_META: Array<{
   {
     prefix: "/admin",
     exact: true,
-    title: "Executive Overview",
+    title: "Home",
     description:
-      "High-level performance, traffic pulse, conversion velocity, and real-time site health.",
+      "Choose between SEO & tracking analytics and marketing outreach.",
   },
 ];
 
@@ -198,7 +217,8 @@ export function DashboardShell({ user, capabilities, children }: Props) {
     onClose: () => setMobileOpen(false),
   });
 
-  const nav = navForRole(user.role);
+  const workspace = workspaceForPath(pathname);
+  const nav = navForRole(user.role, workspace);
   const initials = user.name
     .split(" ")
     .map((s) => s[0])
@@ -221,14 +241,16 @@ export function DashboardShell({ user, capabilities, children }: Props) {
         >
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-sm ring-1 ring-black/10">
-              <span className="font-mono text-sm font-bold tracking-tight">UI</span>
+              <span className="font-mono text-sm font-bold tracking-tight">
+                UI
+              </span>
             </div>
             <div>
               <span className="block text-sm font-bold tracking-tight text-gray-900">
                 UI Pirate
               </span>
               <span className="block text-[10px] font-medium text-gray-400">
-                Management Console
+                {workspace === "outreach" ? "Marketing & Outreach" : "SEO & Tracking"}
               </span>
             </div>
           </div>
@@ -253,7 +275,14 @@ export function DashboardShell({ user, capabilities, children }: Props) {
       </div>
 
       {/* Footer / External link */}
-      <div className="border-t border-gray-100 pt-3">
+      <div className="space-y-1 border-t border-gray-100 pt-3">
+        <Link
+          className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+          href="/admin"
+        >
+          <span aria-hidden="true">←</span>
+          Switch workspace
+        </Link>
         <a
           className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
           href="/"
@@ -271,6 +300,30 @@ export function DashboardShell({ user, capabilities, children }: Props) {
       </div>
     </div>
   );
+
+  if (pathname === "/admin") {
+    return (
+      <DashboardProvider capabilities={capabilities} user={user}>
+        <div className="min-h-screen bg-[#F8FAFC] text-gray-900 antialiased">
+          <header className="flex h-16 items-center justify-between border-b border-gray-200/80 bg-white px-4 sm:px-8">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-sm">
+                <span className="font-mono text-sm font-bold">UI</span>
+              </div>
+              <span className="text-sm font-bold tracking-tight">UI Pirate</span>
+            </div>
+            <button
+              className="rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
+              onClick={logout}
+            >
+              Sign out
+            </button>
+          </header>
+          <main className="mx-auto max-w-4xl p-4 sm:p-8">{children}</main>
+        </div>
+      </DashboardProvider>
+    );
+  }
 
   return (
     <DashboardProvider capabilities={capabilities} user={user}>
@@ -293,11 +346,7 @@ export function DashboardShell({ user, capabilities, children }: Props) {
           onOpenChange={(open) => setMobileOpen(open)}
         >
           <DrawerContent>
-            {() => (
-              <DrawerBody data-lenis-prevent="true">
-                {sidebar}
-              </DrawerBody>
-            )}
+            {() => <DrawerBody data-lenis-prevent="true">{sidebar}</DrawerBody>}
           </DrawerContent>
         </Drawer>
 
@@ -316,10 +365,13 @@ export function DashboardShell({ user, capabilities, children }: Props) {
               {/* Title & Description Tooltip in Header */}
               {(() => {
                 const currentMeta = PAGE_META.find((m) =>
-                  m.exact ? pathname === m.prefix : pathname.startsWith(m.prefix),
+                  m.exact
+                    ? pathname === m.prefix
+                    : pathname.startsWith(m.prefix),
                 ) || {
                   title: "Admin Console",
-                  description: "Management, analytics and system operations console.",
+                  description:
+                    "Management, analytics and system operations console.",
                 };
 
                 return (
@@ -349,7 +401,7 @@ export function DashboardShell({ user, capabilities, children }: Props) {
             </div>
 
             <div className="ml-auto flex items-center gap-3 shrink-0">
-              <DateRangeControl />
+              {workspace === "seo" ? <DateRangeControl /> : null}
 
               <Dropdown placement="bottom-end">
                 <DropdownTrigger>
