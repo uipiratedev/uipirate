@@ -52,7 +52,7 @@ export default function ContactPageClient() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white pt-24 max-md:pt-20">
+    <div className="min-h-screen pt-24 max-md:pt-20">
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="container mx-auto px-8 max-md:px-4 pt-12 pb-8 text-center">
         <motion.p
@@ -82,7 +82,7 @@ export default function ContactPageClient() {
           initial="hidden"
           variants={fadeUp}
         >
-          Tell us what you're building — we'll take it from there. Book a
+          Tell us what you're building, we'll take it from there. Book a
           15-minute call, or use the estimator to get a quick ballpark first. No
           pressure, no commitment.
         </motion.p>

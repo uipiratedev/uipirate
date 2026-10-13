@@ -2,16 +2,14 @@
 // This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { headers } from "next/headers";
 
 import BlogsDetails from "@/screens/blogsDetails";
+import ViewTracker from "@/components/ViewTracker";
 import {
   getPostBySlug,
+  getSuggestedPosts,
   listPostSlugs,
-  listPosts,
-} from "@/lib/pirateCOS/public-client";
-import { trackView } from "@/lib/trackView";
-import { verifyAuth } from "@/lib/pirateCOS/auth";
+} from "@/lib/cometCOS/public-client";
 
 interface Props {
   params: { slug: string };
@@ -32,6 +30,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // swallow it and fall through to the generic "Blog" metadata.
   if ((blog as any)?.postType === "case-study") {
     permanentRedirect(`/case-studies/${slug}`);
+  }
+
+  if ((blog as any)?.postType === "concept") {
+    permanentRedirect(`/concepts/${slug}`);
   }
 
   try {
@@ -82,6 +84,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     const twitterCard = seo?.twitterCard || "summary_large_image";
 
+    // Next does NOT auto-wire the file-based opengraph-image route once a
+    // page defines its own `openGraph`/`twitter` objects, so point at it
+    // explicitly when there's no CMS photo (the route's generateImageMetadata
+    // id is the slug itself).
+    const fallbackImage = `https://uipirate.com/${slug}/opengraph-image/${slug}`;
+    const finalImage = imageUrl || fallbackImage;
+
     return {
       title,
       description,
@@ -91,16 +100,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: ogDescription,
         url: `https://uipirate.com/${slug}`,
         siteName: "UI Pirate by Vishal Anand",
-        images: imageUrl
-          ? [
-              {
-                url: imageUrl,
-                width: 1200,
-                height: 630,
-                alt: ogTitle,
-              },
-            ]
-          : [],
+        images: [
+          {
+            url: finalImage,
+            width: 1200,
+            height: 630,
+            alt: ogTitle,
+          },
+        ],
         locale: "en_US",
         type: "article",
       },
@@ -108,7 +115,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: twitterCard,
         title: ogTitle,
         description: ogDescription,
-        images: imageUrl ? [imageUrl] : [],
+        images: [finalImage],
       },
       alternates: {
         canonical: seo?.canonicalUrl?.trim() || `https://uipirate.com/${slug}`,
@@ -157,18 +164,19 @@ export default async function DynamicBlogPage({ params }: Props) {
     permanentRedirect(`/case-studies/${slug}`);
   }
 
+  // Concepts/proposals are authored here with postType "concept" but belong
+  // under /concepts, not the blog template — same reasoning as case studies.
+  if ((blog as any).postType === "concept") {
+    permanentRedirect(`/concepts/${slug}`);
+  }
+
   try {
-    // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
-    const user = await verifyAuth();
-
-    trackView(slug, headers(), !!user).catch(() => {});
-
     const blogData = blog;
 
     // Suggested reads via the tenant-scoped v1 API; exclude the current post.
-    const suggested = (await listPosts({ limit: 4 }))
-      .filter((p) => p._id !== blog._id)
-      .slice(0, 3);
+    // Rotating picks (not "the newest 3") so every article earns inbound links;
+    // already returns [] on failure, so a CMS hiccup cannot degrade this page.
+    const suggested = await getSuggestedPosts(slug);
 
     return (
       <div>
@@ -202,6 +210,7 @@ export default async function DynamicBlogPage({ params }: Props) {
           }}
           type="application/ld+json"
         />
+        <ViewTracker slug={slug} />
         <BlogsDetails blog={blogData} suggested={suggested} />
       </div>
     );

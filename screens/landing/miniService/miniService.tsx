@@ -1,17 +1,15 @@
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
 const MiniService = () => {
   return (
     <div className="section-container">
-      <div className="autoShow">
-        <div className="flex flex-row items-center justify-center mb-6">
-          <GlassBadge variant="gradient">Design & Development</GlassBadge>
-        </div>
-        <h2 className="heading-center mb-8">
+      <Reveal variant="up">
+        <SectionHeader chip="Design & Development">
           <span className="text-gray-900">We design products that ship.</span>
           <br /> <span className="text-brand-orange ">You launch them.</span>
-        </h2>
-      </div>
+        </SectionHeader>
+      </Reveal>
     </div>
   );
 };

@@ -46,6 +46,45 @@ const nextConfig = {
     optimizePackageImports: ["@heroui/react", "framer-motion"],
   },
 
+  // Permanent redirects for consolidated / renamed routes
+  async redirects() {
+    return [
+      // /components was a duplicate of /componentlab (same screen, orphaned —
+      // no internal links point to it). Consolidate to avoid cannibalization.
+      {
+        source: "/components",
+        destination: "/componentlab",
+        permanent: true,
+      },
+      // /buttons and every /buttons/<slug> studio page were merged into Component
+      // Lab; the detail slugs match 1:1 with /componentlab/<slug>.
+      {
+        source: "/buttons",
+        destination: "/componentlab",
+        permanent: true,
+      },
+      {
+        source: "/buttons/:slug",
+        destination: "/componentlab/:slug",
+        permanent: true,
+      },
+      // /type-scale-generator was an orphaned duplicate of the live tool at
+      // /typography-scale-generator (flagged in audits/07 as duplicate content).
+      {
+        source: "/tools/design/type-scale-generator",
+        destination: "/tools/design/typography-scale-generator",
+        permanent: true,
+      },
+      // /8pt-grid-calculator was an orphaned duplicate of the live tool at
+      // /figma-spacing-calculator (same registry entry, never linked directly).
+      {
+        source: "/tools/design/8pt-grid-calculator",
+        destination: "/tools/design/figma-spacing-calculator",
+        permanent: true,
+      },
+    ];
+  },
+
   // Add security headers, and only add long-term static caching in production
   async headers() {
     const headers = [

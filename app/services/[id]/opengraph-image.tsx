@@ -16,38 +16,31 @@ interface ServiceMeta {
 const SERVICE_OG: Record<string, ServiceMeta> = {
   "ux-ui-design": {
     badge: "UX/UI Design",
-    title: "From Vision to",
-    titleHighlight: "Shipped SaaS Product",
+    title: "Idea to Dev-Ready",
+    titleHighlight: "SaaS & App Screens",
     description:
-      "Product thinking, competitive analysis, IA, and UX/UI design for SaaS & mobile apps. We take your idea and design it right.",
+      "Product thinking, competitive analysis & information architecture, then pixel-perfect UX/UI in Angular, React & Next.js.",
   },
   "saas-ai-development": {
     badge: "SaaS & AI Development",
-    title: "Full-Stack Engineering",
-    titleHighlight: "for SaaS & AI Products",
+    title: "Full-Stack Engineering,",
+    titleHighlight: "Built to Ship",
     description:
-      "Backend architecture, APIs, database design, and AI/LLM integration in Angular, React, Next.js & Node.js. We build what the interface runs on.",
+      "Backend architecture, APIs, AI/LLM integration & production deployment on Node.js, Python, AWS, GCP & Azure.",
   },
   "landing-pages-business-websites": {
     badge: "Landing Pages & Websites",
-    title: "Landing Pages",
-    titleHighlight: "That Convert",
+    title: "Pages Built to",
+    titleHighlight: "Convert Visitors",
     description:
-      "High-converting landing pages and business websites in React, Next.js, Framer, or Webflow. Built around your positioning.",
-  },
-  "design-system-component-library": {
-    badge: "Design Systems",
-    title: "Design Systems at",
-    titleHighlight: "Enterprise Scale",
-    description:
-      "Custom design tokens, branded UI kits, and dev-ready component libraries for Angular, React & beyond.",
+      "High-converting landing pages & business websites in React, Next.js, Framer or Webflow, built around your positioning.",
   },
   "ux-audits-consultation": {
-    badge: "UX Audits",
-    title: "UX Audit —",
-    titleHighlight: "Find & Fix Friction",
+    badge: "UX Audits & Consultation",
+    title: "Find the Friction.",
+    titleHighlight: "Fix What's Costing You.",
     description:
-      "Heuristic analysis, usability testing & actionable recommendations. Improve conversion rates in your SaaS product.",
+      "Heuristic audits, drop-off analysis & a prioritised, actionable roadmap. Most audits run 1 to 2 weeks.",
   },
 };
 
@@ -61,7 +54,7 @@ export function generateImageMetadata({ params }: { params: { id: string } }) {
   return [
     {
       id: slug,
-      alt: meta ? meta.title : `${params.id} — UI Pirate`,
+      alt: meta ? meta.title : `${params.id} | UI Pirate`,
     },
   ];
 }

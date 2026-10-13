@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 import Blogs from "@/screens/blogs";
-import { listPosts } from "@/lib/pirateCOS/public-client";
+import { listPosts } from "@/lib/cometCOS/public-client";
 
 // ISR: revalidate the blog index every 60s (matches the v1 API Cache-Control).
 export const revalidate = 60;
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   keywords:
     "UI/UX design blog, SaaS design tips, design system articles, UX case studies, enterprise design insights, AI app design, product design blog",
   openGraph: {
-    title: "Design Blog | UI Pirate — UI/UX Insights & Case Studies",
+    title: "Design Blog | UI Pirate - UI/UX Insights & Case Studies",
     description:
       "Expert UI/UX design insights, SaaS design tips, and case studies from our Fortune 500 design work.",
     url: "https://uipirate.com/blogs",

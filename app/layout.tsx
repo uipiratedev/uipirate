@@ -3,8 +3,6 @@ import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
-import Script from "next/script";
-import { headers } from "next/headers";
 
 import { Providers } from "./providers";
 
@@ -16,11 +14,12 @@ import {
   fontJetBrainsMono,
 } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
+import { ThirdPartyScripts } from "@/components/analytics/ThirdPartyScripts";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
-import PageTransition from "@/components/PageTransition";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -35,9 +34,10 @@ export const metadata: Metadata = {
   keywords:
     "uipirate, uipirates, UI Pirate, product design agency, product development agency, SaaS development agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, Angular development, React development, Next.js development, full stack agency, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
+    title:
+      "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
     description:
-      "Not just designs — we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
+      "Not just designs, we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
     url: "https://uipirate.com",
     siteName: "UI Pirate",
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
+        alt: "UI Pirate - Product Design Agency - From Idea to Shipped Product",
       },
     ],
     locale: "en_US",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI Pirate | Product Design — Idea to Shipped Product",
+    title: "UI Pirate | Product Design - Idea to Shipped Product",
     description:
       "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
     images: [
@@ -62,8 +62,20 @@ export const metadata: Metadata = {
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
   },
+  // Relative values resolve against `metadataBase` + the current route at build
+  // time, so every page gets a correct self-referential canonical + hreflang set
+  // WITHOUT a runtime `headers()` call (which would force the whole site to be
+  // dynamically rendered and kill <Link> prefetch / fast navigation).
   alternates: {
-    canonical: "https://uipirate.com",
+    canonical: "./",
+    languages: {
+      "en-US": "./",
+      "en-GB": "./",
+      "en-SG": "./",
+      "en-IN": "./",
+      "en-AU": "./",
+      "x-default": "./",
+    },
   },
   icons: {
     icon: "/favicon.ico?v=2",
@@ -90,41 +102,23 @@ export const viewport: Viewport = {
   ],
 };
 
-export default async function RootLayout({
+// NOTE: This component must stay synchronous and free of dynamic APIs
+// (`headers()`, `cookies()`, `searchParams`, `noStore()`, …). Any dynamic API
+// used in the ROOT layout opts every route in the app into dynamic rendering,
+// which disables static prerendering + <Link> prefetch and makes every
+// navigation a full server round-trip (the "click does nothing for 2s" bug).
+//
+// The `cos.` subdomain shell that used to live here was gated on an `x-is-cos`
+// request header that is not set anywhere in this codebase (middleware only sets
+// `x-pathname`), so the branch was dead. Subdomain nav/footer stripping is
+// handled client-side in ConditionalNavbar / ConditionalFooter. If a real COS
+// HTML shell is needed again, put it behind a `(cos)` route group with its own
+// layout, or a middleware rewrite — not a `headers()` call in the root layout.
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const requestHeaders = await headers();
-  const isCos = requestHeaders.get("x-is-cos") === "true";
-  const canonicalUrl = `https://uipirate.com${requestHeaders.get("x-pathname") || "/"}`;
-
-  if (isCos) {
-    return (
-      <html suppressHydrationWarning lang="en">
-        <head>
-          <meta content="width=device-width, initial-scale=1" name="viewport" />
-          <link href="/favicon.ico?v=2" rel="icon" />
-          <title>PirateCOS | UI Pirate</title>
-        </head>
-        <body
-          className={clsx(
-            "min-h-screen font-sans antialiased bg-[#F7F7F6]",
-            fontSans.variable,
-            fontJakarta.variable,
-            fontGeist.variable,
-            fontGeistMono.variable,
-            fontJetBrainsMono.variable,
-          )}
-        >
-          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-            <main className="min-h-screen">{children}</main>
-          </Providers>
-        </body>
-      </html>
-    );
-  }
-
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -139,7 +133,7 @@ export default async function RootLayout({
         <meta content="ai-assisted" name="ai-content-declaration" />
         <meta content="text/html; charset=utf-8" name="content-type" />
         <meta content="English" name="language" />
-        <meta content="Vishal Anand - UI Pirate" name="author" />
+        <meta content="UI Pirate" name="author" />
         <meta
           content="UI/UX Design Services, SaaS Design, AI Application Design"
           name="subject"
@@ -162,15 +156,16 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
               "@id": "https://uipirate.com/#organization",
-              name: "UI Pirate by Vishal Anand",
-              alternateName: ["UI Pirate", "uipirate", "uipirates"],
+              name: "UI Pirate",
+              alternateName: ["UI Pirate", "UIPirate", "uipirate", "uipirates", "UI Pirate by Vishal Anand", "uipirate.com"],
+              brand: { "@type": "Brand", name: "UI Pirate" },
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
               image:
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
-                "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
-              foundingDate: "2015",
+                "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product, we carry the rest.",
+              foundingDate: "2022",
               founder: {
                 "@type": "Person",
                 name: "Vishal Anand",
@@ -195,15 +190,26 @@ export default async function RootLayout({
               ],
               hasOfferCatalog: {
                 "@type": "OfferCatalog",
-                name: "Enterprise Design Services",
+                name: "UI Pirate Services",
                 itemListElement: [
                   {
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "SaaS Web & Mobile App Design & Development",
+                      name: "UX/UI Design",
                       description:
-                        "UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products",
+                        "SaaS, AI, and mobile app design: strategy, information architecture, wireframes, high-fidelity UI, interactive prototypes, and production-ready UI development in React, Next.js, or Angular",
+                      url: "https://uipirate.com/services/UX-UI-Design",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "SaaS & AI Development",
+                      description:
+                        "Full-stack development for SaaS and AI products: backend, databases, APIs, LLM integrations, AI agents, RAG pipelines, and cloud deployment on AWS, GCP, or Azure",
+                      url: "https://uipirate.com/services/SaaS-&-AI-Development",
                     },
                   },
                   {
@@ -212,16 +218,8 @@ export default async function RootLayout({
                       "@type": "Service",
                       name: "Landing Pages & Business Websites",
                       description:
-                        "High-converting landing pages and corporate websites built with Angular, React, Framer, and Webflow for startups and enterprises",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Design Systems & Component Libraries",
-                      description:
-                        "Scalable design systems with custom tokens, UI kits, and documented Angular/React components for enterprise teams",
+                        "High-converting landing pages and business websites built with React, Next.js, Framer, or Webflow, optimised for search and AI discovery",
+                      url: "https://uipirate.com/services/Landing-Pages-&-Business-Websites",
                     },
                   },
                   {
@@ -230,7 +228,8 @@ export default async function RootLayout({
                       "@type": "Service",
                       name: "UX Audits & Consultation",
                       description:
-                        "Heuristic analysis, usability testing, and strategic UX recommendations",
+                        "Heuristic UX audit, friction and drop-off insights, prioritised findings, and an action roadmap",
+                      url: "https://uipirate.com/services/UX-Audits-&-Consultation",
                     },
                   },
                 ],
@@ -242,8 +241,9 @@ export default async function RootLayout({
                 "https://www.behance.net/UI-Pirate",
                 "https://dribbble.com/vishalanandUIUX",
                 "https://www.upwork.com/agencies/1837026757439552424/",
-                "https://clutch.co/profile/ui-pirate-vishal-anand",
+                "https://clutch.co/profile/ui-pirate",
                 "https://x.com/UI_Pirate",
+                "https://www.reddit.com/user/UI-Pirate/",
                 "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
               ],
             }),
@@ -314,7 +314,7 @@ export default async function RootLayout({
                   name: "How long does a typical project take at UI Pirate?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "Landing pages and business websites typically take 2-4 weeks. SaaS and complex web applications take 1-2 months. Monthly retainers are also available for ongoing design and development support.",
+                    text: "Landing pages and business websites typically take 2-4 weeks. SaaS and complex web applications take 1-2 months. UX audits usually take 1-2 weeks. Monthly retainers are also available for ongoing design and development support.",
                   },
                 },
                 {
@@ -322,7 +322,7 @@ export default async function RootLayout({
                   name: "Does UI Pirate do design only, or development too?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate provides end-to-end services — from product strategy and UX design to full frontend development in Angular, React, and Next.js. Designs can also be handed off to your existing development team.",
+                    text: "UI Pirate provides end-to-end services, from product strategy and UX/UI design to front-end and full-stack development (React, Angular, Next.js, Node.js, Python) and AI integrations. Designs can also be handed off to your existing development team.",
                   },
                 },
                 {
@@ -330,7 +330,7 @@ export default async function RootLayout({
                   name: "What makes UI Pirate different from other design agencies?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate combines product thinking with design and development — helping clients think through their product, plan its architecture, design the experience, and build it. We have shipped 50+ products with a 5.0 rating and specialize in complex enterprise applications.",
+                    text: "UI Pirate combines product thinking with design and development, helping clients think through their product, plan its architecture, design the experience, and build it. We have shipped 50+ products with a 5.0 rating and specialize in complex enterprise applications.",
                   },
                 },
                 {
@@ -346,7 +346,7 @@ export default async function RootLayout({
                   name: "What is UI Pirate's pricing?",
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: "UI Pirate offers pay-per-project, monthly retainers, and a 5-Day Pilot option to try the team risk-free. Landing pages start from $1,500 and SaaS products from $5,000. See detailed pricing at https://uipirate.com/pricing.",
+                    text: "Monthly retainers start from $499 per month and custom project quotes from $2,000. A paid 5-Day Pilot ($150-$350, deducted from the final invoice if you continue) lets you try the team first. See https://uipirate.com/pricing.",
                   },
                 },
                 {
@@ -366,16 +366,16 @@ export default async function RootLayout({
         {/* AI Data Reference (kept for AI crawlers that do follow links) */}
         <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
         <link href="/llms.txt" rel="alternate" type="text/plain" />
-        <link href="/llms-full.txt" rel="alternate" type="text/plain" title="Full AI Context" />
+        <link
+          href="/llms-full.txt"
+          rel="alternate"
+          title="Full AI Context"
+          type="text/plain"
+        />
 
-        {/* Hreflang for international targeting — self-referential per page,
-            since every locale variant serves the same URL/content. */}
-        <link href={canonicalUrl} hrefLang="en-us" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-gb" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-sg" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-in" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="en-au" rel="alternate" />
-        <link href={canonicalUrl} hrefLang="x-default" rel="alternate" />
+        {/* Hreflang + canonical are emitted per-route by the Metadata API via
+            `metadata.alternates` above (self-referential, resolved statically at
+            build time). Kept out of here so the layout needs no `headers()`. */}
 
         {/* Social Media and Business Profile Links for SEO */}
         <link
@@ -386,7 +386,7 @@ export default async function RootLayout({
         <link href="https://dribbble.com/vishalanandUIUX" rel="me" />
         <link href="https://x.com/UI_Pirate" rel="me" />
         <link
-          href="https://clutch.co/profile/ui-pirate-vishal-anand"
+          href="https://clutch.co/profile/ui-pirate"
           rel="me"
         />
 
@@ -398,7 +398,7 @@ export default async function RootLayout({
       </head>
       <body
         className={clsx(
-          "min-h-screen  font-sans antialiased bg-white",
+          "min-h-screen  font-sans antialiased bg-[#fafafa]",
           fontSans.variable,
           fontJakarta.variable,
           fontGeist.variable,
@@ -406,32 +406,6 @@ export default async function RootLayout({
           fontJetBrainsMono.variable,
         )}
       >
-        {/* noscript fallback — ensures AI crawlers that don't execute JS see real content */}
-        <noscript>
-          <div style={{ padding: "2rem", fontFamily: "sans-serif", maxWidth: "900px", margin: "0 auto" }}>
-            <h1>UI Pirate | SaaS &amp; AI Product Design Agency</h1>
-            <p>Product design &amp; development agency. We turn SaaS and AI ideas into shipped products. UX/UI design, Angular &amp; React development. Serving clients in USA, UK, Singapore, India, and Australia.</p>
-            <h2>Services</h2>
-            <ul>
-              <li><a href="/services/SaaS-Web-&amp;-Mobile-Apps">SaaS Web &amp; Mobile App Design &amp; Development</a></li>
-              <li><a href="/services/Landing-Pages-&amp;-Business-Websites">Landing Pages &amp; Business Websites</a></li>
-              <li><a href="/services/Design-System-&amp;-Component-Library">Design Systems &amp; Component Libraries</a></li>
-              <li><a href="/services/UX-Audits-&amp;-Consultation">UX Audits &amp; Consultation</a></li>
-            </ul>
-            <h2>Navigation</h2>
-            <ul>
-              <li><a href="/case-studies">Case Studies &amp; Portfolio</a></li>
-              <li><a href="/pricing">Pricing</a></li>
-              <li><a href="/blogs">Blog</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/faqs">FAQs</a></li>
-              <li><a href="/tools">Free Tools</a></li>
-              <li><a href="/contact">Contact</a></li>
-            </ul>
-            <p>Founded by Vishal Anand. 50+ products shipped. 5.0 rating. <a href="/contact">Contact us</a></p>
-          </div>
-        </noscript>
-
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           {/* Skip Link for Keyboard Navigation */}
           <a
@@ -443,7 +417,6 @@ export default async function RootLayout({
 
           <div className="relative flex flex-col min-h-screen">
             <SmoothScroll />
-            <PageTransition />
             <PageLoader>
               <header>
                 <ConditionalNavbar />
@@ -456,50 +429,14 @@ export default async function RootLayout({
             </PageLoader>
             <SpeedInsights />
             <Analytics />
+            <AnalyticsTracker />
             <CookieConsent />
             <StickyMobileCTA />
           </div>
         </Providers>
 
-        {/* Google Analytics with Consent Mode - Lazy loaded for better performance */}
-        <Script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('consent', 'default', {
-                'analytics_storage': 'denied',
-                'ad_storage': 'denied',
-                'wait_for_update': 500
-              });
-              gtag('js', new Date());
-              gtag('config', 'G-ZS77RQCWYM', {
-                'anonymize_ip': true
-              });
-            `,
-          }}
-          id="gtag-base"
-          strategy="lazyOnload"
-        />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
-          strategy="lazyOnload"
-        />
-
-        {/* Microsoft Clarity - Lazy loaded for better performance */}
-        <Script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "txqkzeahh6");
-            `,
-          }}
-          id="clarity-script"
-          strategy="lazyOnload"
-        />
+        {/* GA4 + Clarity — public pages only (skips /admin, /login) */}
+        <ThirdPartyScripts />
       </body>
     </html>
   );

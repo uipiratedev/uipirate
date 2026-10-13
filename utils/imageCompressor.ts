@@ -7,7 +7,7 @@ export const compressImage = (
   file: File,
   maxWidth = 1200,
   maxHeight = 1200,
-  quality = 0.7
+  quality = 0.7,
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     if (!file.type.startsWith("image/")) {
@@ -16,6 +16,7 @@ export const compressImage = (
 
     // Limit maximum accepted file size to 5MB
     const maxLimit = 5 * 1024 * 1024;
+
     if (file.size > maxLimit) {
       return reject(new Error("Image size exceeds the maximum limit of 5MB."));
     }
@@ -24,17 +25,21 @@ export const compressImage = (
     // to preserve pixel perfection, transparency, and GIF animations.
     if (file.size <= 200 * 1024) {
       const reader = new FileReader();
+
       reader.onload = (e) => {
         resolve(e.target?.result as string);
       };
       reader.onerror = (err) => reject(err);
       reader.readAsDataURL(file);
+
       return;
     }
 
     const reader = new FileReader();
+
     reader.onload = (readerEvent) => {
       const image = new Image();
+
       image.onload = () => {
         const canvas = document.createElement("canvas");
         let width = image.width;
@@ -57,16 +62,19 @@ export const compressImage = (
         canvas.height = height;
 
         const ctx = canvas.getContext("2d");
+
         if (!ctx) {
           // Fallback to original read if canvas context cannot be initialized
           resolve(readerEvent.target?.result as string);
+
           return;
         }
 
         ctx.drawImage(image, 0, 0, width, height);
-        
+
         // Convert canvas image to compressed JPEG format
         const dataUrl = canvas.toDataURL("image/jpeg", quality);
+
         resolve(dataUrl);
       };
       image.onerror = (err) => reject(err);

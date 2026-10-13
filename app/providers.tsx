@@ -19,7 +19,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <HeroUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
         {/* "user" makes every Framer Motion animation site-wide respect the
-            OS-level prefers-reduced-motion setting automatically — animations
+            OS-level prefers-reduced-motion setting automatically, animations
             still play normally for everyone else. */}
         <MotionConfig reducedMotion="user">{children}</MotionConfig>
       </NextThemesProvider>

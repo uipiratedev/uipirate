@@ -1,12 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import {
-  getPostBySlug,
-  listPostSlugs,
-} from "@/lib/pirateCOS/public-client";
+import { getPostBySlug, listPostSlugs } from "@/lib/cometCOS/public-client";
+import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
 import BlogsDetailsHero from "@/screens/blogsDetails/hero";
 import BlogContents from "@/screens/blogsDetails/blogContents";
+import ConceptsTeaser from "@/screens/concepts/teaser";
 
 interface PageProps {
   params: { slug: string };
@@ -42,8 +41,17 @@ export async function generateMetadata({
   }
 
   const url = `https://uipirate.com/case-studies/${study.slug}`;
-  const description =
-    study.seo?.metaDescription || study.excerpt || undefined;
+  const description = study.seo?.metaDescription || study.excerpt || undefined;
+
+  // Held/unreleased case studies must never be indexable, regardless of CMS SEO.
+  const noIndex = HELD_DRAFT_SLUGS.has(study.slug) || !!study.seo?.noIndex;
+
+  // Next does NOT auto-wire the file-based opengraph-image route once a page
+  // defines its own `openGraph` object, so point at it explicitly when there's
+  // no CMS photo (the route's generateImageMetadata id is the slug itself).
+  const fallbackImage = `${url}/opengraph-image/${study.slug}`;
+
+  const ogImage = study.featuredImage || fallbackImage;
 
   return {
     title: study.seo?.metaTitle || `${study.title} | Case Study`,
@@ -54,11 +62,15 @@ export async function generateMetadata({
       description,
       url,
       type: "article",
-      images: study.featuredImage
-        ? [{ url: study.featuredImage, alt: study.title }]
-        : undefined,
+      images: [{ url: ogImage, alt: study.title }],
     },
-    robots: study.seo?.noIndex ? { index: false, follow: false } : undefined,
+    twitter: {
+      card: "summary_large_image",
+      title: study.seo?.ogTitle || study.title,
+      description,
+      images: [ogImage],
+    },
+    robots: noIndex ? { index: false, follow: false } : undefined,
   };
 }
 
@@ -98,6 +110,12 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
         title={study.title}
       />
       <BlogContents blog={study} />
+      <div className="pb-16 max-md:pb-12">
+        <ConceptsTeaser
+          heading="Want something like this built?"
+          text="Explore the product concepts we have already planned out, or bring your own."
+        />
+      </div>
     </div>
   );
 }

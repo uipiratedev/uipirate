@@ -7,38 +7,23 @@ import GlassSurface from "@/components/GlassSurface";
 const ServiceDetailsHero = ({ data }: any) => {
   return (
     <>
-      <div className="hero-wrapper">
-        {/* Subtle Grid Background Pattern */}
+      <section className="hero-wrapper max-md:!pt-14 max-md:gap-y-0 pb-12">
+        {/* Grid Background */}
         <div
-          className="absolute pointer-events-none -mt-20 "
+          className="absolute pointer-events-none inset-0"
           style={{
             backgroundImage: `
               linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
               linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
-
             `,
             backgroundSize: "40px 40px",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            marginLeft: "calc(-50vw + 50%)",
           }}
         />
-        {/* Layered gradient with gentle mist animation */}
         <div
-          className="absolute pointer-events-none -mt-20 "
+          className="absolute pointer-events-none inset-0"
           style={{
-            backgroundImage: `
-              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
-              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
-            `,
-            animation: "gentle-mist 8s ease-in-out infinite",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            marginLeft: "calc(-50vw + 50%)",
+            background:
+              "linear-gradient(to top, rgba(255, 255, 255, 1) 0%, transparent 40%)",
           }}
         />
         <div
@@ -73,7 +58,7 @@ const ServiceDetailsHero = ({ data }: any) => {
           >
             {/* Text */}
             <p className="badge-text relative z-10 max-md:text-xs uppercase">
-              {data.badge || "EMPOWERING 40+ Business ACROSS 6 COUNTRIES"}
+              {data.badge || "50+ PRODUCTS SHIPPED ACROSS 6 COUNTRIES"}
             </p>
           </GlassSurface>
           {/* Animated Headline Replacement using Data Props */}
@@ -102,7 +87,12 @@ const ServiceDetailsHero = ({ data }: any) => {
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
-            <Link className="relative z-10" href="/contact">
+            <a
+              className="relative z-10"
+              href="https://cal.com/ui-pirate/15min"
+              rel="noreferrer"
+              target="_blank"
+            >
               <div
                 className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
                 style={{
@@ -210,17 +200,12 @@ const ServiceDetailsHero = ({ data }: any) => {
                 </div>
                 <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
-                  Start Your Product Journey — Book a 15-Min Call
+                  Start Your Product Journey, Book a 15-Min Call
                 </p>
               </div>
-            </Link>
+            </a>
             <div className="w-[100%] z-10">
-              <a
-                className="w-full"
-                href="https://wa.link/i35lma"
-                rel="noreferrer"
-                target="_blank"
-              >
+              <Link className="w-full" href="/pricing">
                 <Button
                   className="text-black font-bold w-full py-[27px] max-md:py-[20px]"
                   color="primary"
@@ -236,21 +221,16 @@ const ServiceDetailsHero = ({ data }: any) => {
                   variant="bordered"
                 >
                   <div className="flex flex-row items-center gap-3">
-                    <img
-                      alt="WhatsApp Logo"
-                      className="w-[30px] h-[30px] max-md:w-[20px] max-md:h-[20px]"
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    />
                     <p className="text-base font-semibold max-md:text-sm max-md:font-regular">
-                      Lets Talk via Whatsapp
+                      See Pricing
                     </p>
                   </div>
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

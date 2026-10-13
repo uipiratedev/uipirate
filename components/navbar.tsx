@@ -156,25 +156,25 @@ export const Navbar = () => {
     };
   }, [isMenuOpen]);
 
+  const isNavbarHidden = isFooterVisible || isScrollHidden;
+
   return (
     <>
       {/* ✅ Navbar */}
       <div
         className="fixed top-3 left-0 right-0 z-[100000001] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
         style={{
-          opacity: isFooterVisible ? 0 : 1,
-          transform: isScrollHidden
-            ? "translateY(-120%)"
-            : isFooterVisible
-              ? "translateY(-16px)"
-              : "translateY(0)",
-          pointerEvents: isFooterVisible ? "none" : undefined,
+          opacity: isNavbarHidden ? 0 : 1,
+          transform: isNavbarHidden ? "translateY(-150%)" : "translateY(0)",
+          pointerEvents: isNavbarHidden ? "none" : undefined,
+          visibility: isNavbarHidden ? "hidden" : "visible",
         }}
       >
         {!loading && (
           <div
             className={clsx(
-              "section-container max-md:px-0 pointer-events-auto",
+              "section-container max-md:px-0",
+              isNavbarHidden ? "pointer-events-none" : "pointer-events-auto",
             )}
           >
             <GlassSurface
@@ -282,6 +282,7 @@ export const Navbar = () => {
                         {item.hasDropdown && item.dropdownItems ? (
                           <NavbarDropdown
                             isDarkSection={isDarkSection}
+                            isDisabled={isNavbarHidden}
                             isServicesMenu={item.label === "Services"}
                             items={item.dropdownItems}
                             label={item.label}
@@ -314,6 +315,7 @@ export const Navbar = () => {
                     <Button
                       as={NextLink}
                       className="group relative overflow-hidden text-sm font-[500] text-white bg-black border-[#FF5B04] border-2 pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem] px-5 min-w-[135px] hover:!opacity-100 data-[hover=true]:!opacity-100"
+                      data-analytics-id="cta-nav-contact"
                       href="/contact"
                       style={{ paddingTop: 0 }}
                       variant="solid"
@@ -323,8 +325,18 @@ export const Navbar = () => {
 
                       {/* Static Foreground Content */}
                       <span className="relative z-10 flex items-center justify-center gap-2">
-                        <svg className="w-4 h-4 text-white group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        <svg
+                          className="w-4 h-4 text-white group-hover:text-white transition-colors duration-300"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                          />
                         </svg>
                         Let's Talk
                       </span>

@@ -1,8 +1,10 @@
+import type { ReaderPost } from "@/lib/cometCOS/public-client";
+
 import BlogsDetailsHero from "./hero";
 import BlogContents from "./blogContents";
 import SuggestedReads from "./suggestedReads";
 
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+import ArticleCta from "@/components/blog/ArticleCta";
 
 interface PostSEO {
   metaTitle?: string;
@@ -50,6 +52,7 @@ const BlogsDetails = ({ blog, suggested }: BlogsDetailsProps) => {
     <div>
       <BlogsDetailsHero imageUrl={banner} tag={tag} title={blog.title} />
       <BlogContents blog={blog} />
+      <ArticleCta />
       <SuggestedReads posts={suggested} />
     </div>
   );

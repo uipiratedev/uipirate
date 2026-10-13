@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 import { useIsMobile } from "@/hooks";
 import LetsTalkButton from "@/components/LetsTalkButton";
+import { Reveal, RevealGroup } from "@/components/motion";
 
 // Sun Rays Component
 const SunRays = ({
@@ -73,59 +74,28 @@ const ServicesSection = () => {
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
-      title: "Landing Pages & Websites",
+      title: "Landing Pages",
+    },
+    {
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
+      title: "Business Websites",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
-      title: "UX Audits & Consultation",
+      title: "UX Audits ",
+    },
+    {
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
+      title: "UX Consultation",
     },
   ];
 
-  // Subtle animation for the main container
-  const containerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  };
-
   return (
-    <motion.div
-      className="pt-6 max-md:pt-4"
-      initial="hidden"
-      variants={containerVariants}
-      viewport={{ once: true, amount: 0.1 }}
-      whileInView="show"
-    >
-      {/* top card  */}
-      {/* <div>
-        <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
-          <CardBody className="p-5 max-md:p-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-2xl max-md:text-lg font-semibold tracking-[-1px]">
-                Check Suite of Products Ready for Sale
-              </h3>
-              <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-              
-
-    
-                 <LetsTalkButton fullWidth variant="dark" children="See Products In Action" href="/contact"/>
-           
-               
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      </div> */}
+    <RevealGroup>
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 my-6">
         {/* Left Card - Apps, SaaS, Websites & More */}
-        <div className="lg:col-span-2">
+        <Reveal className="lg:col-span-2" variant="up">
           <Card
             className="w-full rounded-[20px]  max-md:rounded-[12px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
             style={{ padding: "0px" }}
@@ -184,10 +154,10 @@ const ServicesSection = () => {
               </div>
             </CardBody>
           </Card>
-        </div>
+        </Reveal>
 
         {/* Right Card - One-stop shop */}
-        <div className="lg:col-span-3">
+        <Reveal className="lg:col-span-3" variant="up">
           <Card
             className="w-full rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full"
             style={{
@@ -220,11 +190,11 @@ const ServicesSection = () => {
               </div>
             </CardBody>
           </Card>
-        </div>
+        </Reveal>
       </div>
 
       {/* Bottom Card - Need Something Custom */}
-      <div>
+      <Reveal variant="up">
         <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-black/10 shadow-sm">
           <CardBody className="p-5 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center max-md:items-start justify-between gap-6">
@@ -232,18 +202,15 @@ const ServicesSection = () => {
                 Need Something Custom ?
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <LetsTalkButton
-                  children="Tell Us What You Need →"
-                  fullWidth
-                  href="/contact"
-                  variant="light"
-                />
+                <LetsTalkButton fullWidth href="/contact" variant="light">
+                  Tell Us What You Need →
+                </LetsTalkButton>
               </div>
             </div>
           </CardBody>
         </Card>
-      </div>
-    </motion.div>
+      </Reveal>
+    </RevealGroup>
   );
 };
 

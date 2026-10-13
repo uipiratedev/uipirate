@@ -1,26 +1,44 @@
 "use client";
 import Image from "next/image";
 
-import GlassBadge from "@/components/GlassBadge";
-import { ContainerScroll } from "@/components/container-scroll-animation";
-import * as Visuals from "@/components/visuals";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal, RevealGroup } from "@/components/motion";
+import * as UxAuditVisuals from "@/components/visuals/UxAuditVisuals";
+import * as SaasDevVisuals from "@/components/visuals/SaasDevVisuals";
+import * as LandingVisuals from "@/components/visuals/LandingVisuals";
+import * as UxUiVisuals from "@/components/visuals/UxUiVisuals";
 
+/**
+ * `whatYouGet` card `heading` strings are LOAD-BEARING: an exact match here swaps
+ * the card's static `image`/`img` SVG for an animated visual. Renaming a heading
+ * in `data/sericesDetailsList.json` without updating this map silently drops the
+ * animation (the card falls back to its `image`). Keep the two in sync.
+ *
+ * Cards with no entry below (e.g. the SaaS & AI Development set) intentionally
+ * render their `image` SVG — that's fine, just not animated.
+ */
 const VISUAL_MAPPING: Record<string, any> = {
-  // SaaS
-  "UX/UI Design & Prototype": Visuals.VisualUX,
-  "UI Development & Integration": Visuals.VisualCode,
-  "Idea to MVP": Visuals.VisualMVP,
-  "Mobile Optimization": Visuals.VisualMobile,
-  // Landing
-  "Landing Pages & Corporate Websites": Visuals.VisualLanding,
-  "Design & Frontend Development": Visuals.VisualFrontend,
-  "SEO Performance & AI-Readable Websites": Visuals.VisualSEO,
-  "Fully Responsive Experience": Visuals.VisualResponsive,
-  // Audit
-  "Heuristic UX Audit Report": Visuals.VisualAudit,
-  "Drop-Off & Friction Insights": Visuals.VisualFriction,
-  "Flow & Interaction Review": Visuals.VisualFlow,
-  "Walkthrough Video": Visuals.VisualVideo,
+  // UX/UI Design
+  "UX/UI Design & Prototype": UxUiVisuals.VisualUxUiNew,
+  "UI Development & Integration": UxUiVisuals.VisualUiDevNew,
+  "New Build or Redesign": UxUiVisuals.VisualRedesignNew,
+  "Mobile Optimization": UxUiVisuals.VisualMobileOptNew,
+  // SaaS & AI Development
+  "Full-Stack Architecture": SaasDevVisuals.VisualFullStackNew,
+  "Full-Stack Development, Idea to Production": SaasDevVisuals.VisualFullStackNew,
+  "AI Models & API Integrations": SaasDevVisuals.VisualAILLMNew,
+  "Cloud Deployment & Scaling": SaasDevVisuals.VisualCloudNew,
+  "AI-Generated Code, Production-Ready": SaasDevVisuals.VisualAiCodeNew,
+  // Landing Pages & Business Websites
+  "Landing Pages & Corporate Websites": LandingVisuals.VisualLandingNew,
+  "Design & Frontend Development": LandingVisuals.VisualFrontendNew,
+  "SEO Performance & AI-Readable Websites": LandingVisuals.VisualSEONew,
+  "Fully Responsive Experience": LandingVisuals.VisualResponsiveNew,
+  // UX Audits & Consultation
+  "Heuristic UX Audit Report": UxAuditVisuals.VisualAuditNew,
+  "Drop-Off & Friction Insights": UxAuditVisuals.VisualFrictionNew,
+  "Flow & Interaction Review": UxAuditVisuals.VisualFlowNew,
+  "Walkthrough Video": UxAuditVisuals.VisualVideoNew,
 };
 
 const WhatYouGetCard = ({ heading, description, image, img }: any) => {
@@ -28,9 +46,9 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
   const VisualComponent = VISUAL_MAPPING[heading];
 
   return (
-    <div className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <div className="relative flex flex-col h-full rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
       {/* Image/Visual area */}
-      <div className="flex-1 flex items-center justify-center bg-[#F8F9FB] overflow-hidden">
+      <div className="w-full h-[200px] md:h-[220px] flex-shrink-0 flex items-center justify-center bg-[#F8F9FB] overflow-hidden">
         {VisualComponent ? (
           <div className="w-full h-full">
             <VisualComponent />
@@ -49,7 +67,7 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
       </div>
 
       {/* Content */}
-      <div className="px-5 py-4 md:px-6 md:py-5 bg-white relative z-10">
+      <div className="flex-1 flex flex-col justify-start px-5 py-4 md:px-6 md:py-5 bg-white relative z-10">
         <h3 className="text-[18px] md:text-[22px] font-semibold text-[#111827] leading-snug tracking-tight">
           {heading}
         </h3>
@@ -64,27 +82,17 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
 const WhatYouGetAnimations = ({ data }: any) => {
   return (
     <div className="section-container">
-      {/* Cards grid with ContainerScroll */}
-      <ContainerScroll
-        titleComponent={
-          <>
-            <div className="autoShow text-center mb-10 md:mb-1">
-              <div className="flex items-center justify-center mb-6">
-                <GlassBadge size="sm" variant="gradient">
-                  {data.badge}
-                </GlassBadge>
-              </div>
-              <h2 className="heading-center">{data.heading}</h2>
-            </div>
-          </>
-        }
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mt-6 max-md:mt-4 autoShowBottom">
-          {data.card.map((feature: any) => (
-            <WhatYouGetCard key={feature.heading} {...feature} />
-          ))}
-        </div>
-      </ContainerScroll>
+      <Reveal variant="up">
+        <SectionHeader chip={data.badge}>{data.heading}</SectionHeader>
+      </Reveal>
+
+      <RevealGroup className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {data.card.map((feature: any) => (
+          <Reveal key={feature.heading} className="h-full flex flex-col" variant="up">
+            <WhatYouGetCard {...feature} />
+          </Reveal>
+        ))}
+      </RevealGroup>
     </div>
   );
 };

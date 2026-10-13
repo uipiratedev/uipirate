@@ -4,7 +4,7 @@ import Link from "next/link";
 // Transactional "thank you" page — not meant to rank in search, but needs a
 // real URL so it can be used as a Google Ads "page load" conversion trigger.
 export const metadata: Metadata = {
-  title: "You're All Set | UI Pirate",
+  title: "You're All Set",
   description: "Your project inquiry has been received.",
   robots: { index: false, follow: true },
   alternates: {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const ContactSuccessPage = () => {
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 pt-24 max-md:pt-20 pb-16 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-24 max-md:pt-20 pb-16 text-center">
       <div className="mb-8">
         <svg
           fill="none"
@@ -48,7 +48,7 @@ const ContactSuccessPage = () => {
       </h1>
       <p className="text-gray-600 text-lg max-md:text-base mb-10 max-w-[420px]">
         Your inquiry has been received. A member of our team will get in touch
-        with you shortly — typically within 2 hours.
+        with you shortly, typically within 2 hours.
       </p>
 
       <div className="w-full max-w-[280px]">

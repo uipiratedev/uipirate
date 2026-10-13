@@ -8,6 +8,7 @@ import clsx from "clsx";
 
 interface DropdownItem {
   category: string;
+  shortCategory?: string;
   icon?: string;
   href?: string;
   isLargeCard?: boolean;
@@ -19,6 +20,7 @@ interface NavbarDropdownProps {
   items: DropdownItem[];
   isDarkSection?: boolean;
   isServicesMenu?: boolean;
+  isDisabled?: boolean;
 }
 
 export const NavbarDropdown = ({
@@ -26,6 +28,7 @@ export const NavbarDropdown = ({
   items,
   isDarkSection = false,
   isServicesMenu = false,
+  isDisabled = false,
 }: NavbarDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -39,7 +42,16 @@ export const NavbarDropdown = ({
     };
   }, []);
 
+  // Force close dropdown if navbar becomes disabled/hidden (e.g. at footer or scrolled away)
+  useEffect(() => {
+    if (isDisabled) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setIsOpen(false);
+    }
+  }, [isDisabled]);
+
   const handleMouseEnter = () => {
+    if (isDisabled) return;
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
   };
@@ -59,15 +71,16 @@ export const NavbarDropdown = ({
   // If more than 4, show 3 and push rest to right.
   // If less than 4, standard behavior.
   const showFourRow = allLargeCards.length === 4;
+  const isTwoRow = allLargeCards.length === 2 && regularListItems.length === 0;
 
-  const displayLargeCards = showFourRow
+  const displayLargeCards = showFourRow || isTwoRow
     ? allLargeCards
     : allLargeCards.length > 4
       ? allLargeCards.slice(0, 3)
       : allLargeCards;
 
   const displayRightItems = [
-    ...(showFourRow ? [] : allLargeCards.slice(3)), // If >4, surplus goes here. If 4, none go here.
+    ...(showFourRow || isTwoRow ? [] : allLargeCards.slice(3)), // If >4, surplus goes here. If 4 or 2, none go here.
     ...regularListItems,
   ];
 
@@ -110,13 +123,14 @@ export const NavbarDropdown = ({
 
       {/* Dropdown Menu - Portal to Body to escape overflow/stacking contexts */}
       {mounted &&
+        !isDisabled &&
         typeof document !== "undefined" &&
         (createPortal(
           /* @ts-ignore - AnimatePresence type issue with TypeScript strict mode */
           <AnimatePresence mode="wait">
             {isOpen ? (
               <div className="fixed left-0 right-0 top-[68px] z-[99999]">
-                <div className="container mx-auto">
+                <div className={clsx("container mx-auto", isTwoRow && "max-w-4xl")}>
                   <motion.div
                     key="dropdown-menu"
                     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -153,7 +167,7 @@ export const NavbarDropdown = ({
                       <div
                         className={clsx(
                           "flex flex-col gap-4", // Always flex-col on mobile
-                          showFourRow ? "md:flex-col" : "md:flex-row", // If 4-row, stack vertically (cards full width, list items below). Else side-by-side.
+                          showFourRow || isTwoRow ? "md:flex-col" : "md:flex-row", // If 4-row or 2-row, stack vertically. Else side-by-side.
                         )}
                       >
                         {/* Left Side - Main Feature Cards with 3D Flip */}
@@ -163,9 +177,11 @@ export const NavbarDropdown = ({
                               "grid gap-3 self-stretch min-w-0",
                               showFourRow
                                 ? "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4"
-                                : displayRightItems.length > 0
-                                  ? "md:w-3/4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-                                  : "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
+                                : isTwoRow
+                                  ? "w-full grid-cols-1 sm:grid-cols-2"
+                                  : displayRightItems.length > 0
+                                    ? "md:w-3/4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                                    : "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
                             )}
                           >
                             {displayLargeCards.map((item, index) => (
@@ -173,9 +189,11 @@ export const NavbarDropdown = ({
                                 key={index}
                                 className={clsx(
                                   "group relative [perspective:1000px] h-full",
-                                  showFourRow
+                                  isTwoRow
                                     ? "aspect-[16/10]"
-                                    : "aspect-[4/3]",
+                                    : showFourRow
+                                      ? "aspect-[16/10]"
+                                      : "aspect-[4/3]",
                                 )}
                               >
                                 <NextLink
@@ -200,7 +218,7 @@ export const NavbarDropdown = ({
 
                                     <div className="absolute inset-0 p-5 flex flex-col justify-end">
                                       <h3 className="text-gray-900 font-semibold text-base group-hover:text-brand-orange transition-colors duration-300">
-                                        {item.category}
+                                        {item.shortCategory || item.category}
                                       </h3>
                                     </div>
                                   </div>
@@ -209,8 +227,13 @@ export const NavbarDropdown = ({
                                   <div className="absolute inset-0 w-full h-full rounded-[24px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-white p-5 flex flex-col justify-start border border-gray-200">
                                     <div className="flex items-center gap-2.5 mb-2">
                                       <span className="text-xl flex-shrink-0 flex items-center">
-                                        {typeof item.icon === 'string' && item.icon.startsWith('http') ? (
-                                          <img src={item.icon} alt={`${item.category} icon`} className="w-8 h-8 object-contain" />
+                                        {typeof item.icon === "string" &&
+                                        item.icon.startsWith("http") ? (
+                                          <img
+                                            alt={`${item.category} icon`}
+                                            className="w-8 h-8 object-contain"
+                                            src={item.icon}
+                                          />
                                         ) : (
                                           item.icon || "✨"
                                         )}
@@ -221,7 +244,8 @@ export const NavbarDropdown = ({
                                     </div>
                                     <p className="text-[11px] text-gray-500 line-clamp-4 leading-relaxed">
                                       {/* @ts-ignore - description added directly in siteConfig */}
-                                      {item.description || "Explore our latest resources & blueprints."}
+                                      {item.description ||
+                                        "Explore our latest resources & blueprints."}
                                     </p>
                                   </div>
                                 </NextLink>
@@ -268,7 +292,8 @@ export const NavbarDropdown = ({
                                 >
                                   <div className="w-auto h-full aspect-square rounded-[8px] bg-white text-gray-700 flex items-center justify-center text-lg group-hover:bg-orange-50 group-hover:text-orange-600 border border-gray-200 group-hover:border-orange-200 transition-all shrink-0">
                                     {item.icon ? (
-                                      item.icon.startsWith("http") || item.icon.startsWith("/") ? (
+                                      item.icon.startsWith("http") ||
+                                      item.icon.startsWith("/") ? (
                                         <img
                                           alt={item.category}
                                           className="w-4 h-4 invert"

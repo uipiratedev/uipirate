@@ -1,7 +1,6 @@
 import {
   Inter as FontSans,
   Plus_Jakarta_Sans,
-  JetBrains_Mono,
 } from "next/font/google";
 import localFont from "next/font/local";
 
@@ -47,9 +46,29 @@ export const fontGeistMono = localFont({
   fallback: ["monospace"],
 });
 
-export const fontJetBrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+export const fontJetBrainsMono = localFont({
+  src: [
+    {
+      path: "../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-jetbrains-mono",
   display: "swap",
   preload: true,

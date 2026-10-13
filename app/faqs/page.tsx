@@ -10,11 +10,19 @@ export const metadata: Metadata = {
   keywords:
     "product design FAQ, design agency questions, SaaS design process, Angular development FAQ, UI design timeline, how to hire product designer, design agency process, idea to product",
   openGraph: {
-    title: "FAQs | UI Pirate — Product Design & Development Agency",
+    title: "FAQs | UI Pirate - Product Design & Development Agency",
     description:
       "Get answers about our product design & development services, pricing, process, and timelines.",
     url: "https://uipirate.com/faqs",
     siteName: "UI Pirate by Vishal Anand",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
+        width: 1200,
+        height: 630,
+        alt: "UI Pirate FAQs",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
@@ -29,7 +37,18 @@ function buildFaqSchema() {
   const serviceFaqs = (FaqData as any).Services || [];
 
   // Combine general + services FAQs for the schema (most relevant)
-  const allFaqs = [...generalFaqs, ...serviceFaqs];
+  // "general" and "Services" repeat some questions; emit each question once.
+  const seen = new Set<string>();
+  const allFaqs = [...generalFaqs, ...serviceFaqs].filter(
+    (faq: { heading: string }) => {
+      const key = faq.heading.replace(/^[^\w]*/, "").trim().toLowerCase();
+
+      if (seen.has(key)) return false;
+      seen.add(key);
+
+      return true;
+    },
+  );
 
   return {
     "@context": "https://schema.org",

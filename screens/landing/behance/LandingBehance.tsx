@@ -67,13 +67,10 @@ const getRowConfig = (index: number, isMobile: boolean) => {
   // Rotation: only on desktop
   const rotateTarget = isMobile ? 0 : isEven ? -45 : 45;
 
-  // Staggered scroll ranges for smooth "flower blooming" effect
-  // Rows overlap slightly for smoother transition
-  // Row 0: 0.00 - 0.50
-  // Row 1: 0.20 - 0.70
-  // Row 2: 0.40 - 0.90
-  const staggerDelay = 0.2; // 20% delay between each row starting
-  const animationDuration = 0.5; // Each row animates over 50% of scroll (slower)
+  // Mobile animates faster so images clear out quickly, revealing the text below
+  // Desktop keeps the slower "flower blooming" stagger
+  const staggerDelay = isMobile ? 0.1 : 0.2;
+  const animationDuration = isMobile ? 0.25 : 0.5;
 
   const scrollStart = row * staggerDelay;
   const scrollEnd = scrollStart + animationDuration;
@@ -145,34 +142,93 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
     return () => window.removeEventListener("resize", updateVisibleData);
   }, [updateVisibleData]);
 
+  // MOBILE (<=768px): the absolute-overlay "images bloom away to reveal the
+  // centred CTA" mechanic doesn't work without the scroll transforms — the
+  // stacked images just sit on top of the CTA and hide it. Render a plain
+  // document-flow layout instead, with a lightweight in-view entrance
+  // animation per element. Web/tablet is untouched (the `else` branch is the
+  // original markup verbatim).
+  if (isMobile) {
+    return (
+      <div className="flex flex-col items-center px-4 py-10 text-center">
+        <motion.h2
+          className="heading-center mb-3 text-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          Recent <span className="text-brand-orange">Works</span>
+        </motion.h2>
+
+        <motion.p
+          className="mb-8 max-w-md text-base font-[500]"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          Explore our diverse portfolio of projects that highlight our
+          creativity and craftsmanship.
+        </motion.p>
+
+        <div className="mb-8 grid w-full grid-cols-1 gap-4">
+          {visibleData.map((item, index) => (
+            <motion.img
+              key={index}
+              alt={item.heading}
+              className="w-full h-auto object-cover rounded-[20px] grayscale-[25%] box-shadow"
+              initial={{ opacity: 0, y: 30 }}
+              src={item.img}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, amount: 0.2 }}
+              whileInView={{ opacity: 1, y: 0 }}
+            />
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <LetsTalkButton fullWidth href="/case-studies" variant="dark">
+            Explore All Work
+          </LetsTalkButton>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative 3xl:container 3xl:mx-auto">
-      {/* Centered Info */}
+      {/* Centered Info - absolutely centered on both mobile and desktop */}
       <div
         className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"
         id="info"
       >
-        <p className="heading-center  mb-6 mt-6 max-md:text-2xl autoShow">
+        {/* Revealed progressively by the images blooming away on scroll —
+            no separate entrance animation here (it would play while the
+            images still cover this block). */}
+        <h2 className="heading-center mb-4 max-md:text-2xl">
           Recent <span className="text-brand-orange">Works</span>
-        </p>
-        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12  w-1/2 max-md:text-base autoShow">
+        </h2>
+        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 w-1/2  max-md:text-base">
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <div className="autoShow">
-          <LetsTalkButton
-            children="Explore All Work"
-            fullWidth
-            href="/case-studies"
-            variant="dark"
-          />
+        <div>
+          <LetsTalkButton fullWidth href="/case-studies" variant="dark">
+            Explore All Work
+          </LetsTalkButton>
         </div>
       </div>
 
       {/* Image Grid with Overlap */}
       <div
         ref={containerRef}
-        className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4"
+        className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-4 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4"
       >
         {visibleData.map((item, index) => (
           <BehanceImage

@@ -12,7 +12,7 @@ const Faqs = () => {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="relative overflow-hidden bg-white">
+      <div className="relative overflow-hidden">
         <div className="relative container mx-auto px-32 lg:px-20 max-md:px-4 pb-16 pt-10 md:pt-14">
           <FaqsHero
             searchQuery={searchQuery}

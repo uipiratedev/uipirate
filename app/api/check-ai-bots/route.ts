@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { AI_BOTS, BotInfo, BotCategory } from "@/data/bots";
 export type { BotInfo, BotCategory };
 
@@ -30,16 +31,20 @@ function parseRobotsTxt(text: string): ParsedRobots {
 
     if (lower.startsWith("user-agent:")) {
       const ua = line.substring("user-agent:".length).trim();
+
       current = { userAgent: ua, allow: [], disallow: [] };
       ruleSets.push(current);
     } else if (lower.startsWith("disallow:") && current) {
       const path = line.substring("disallow:".length).trim();
+
       if (path) current.disallow.push(path);
     } else if (lower.startsWith("allow:") && current) {
       const path = line.substring("allow:".length).trim();
+
       if (path) current.allow.push(path);
     } else if (lower.startsWith("crawl-delay:") && current) {
       const delay = parseFloat(line.substring("crawl-delay:".length).trim());
+
       if (!isNaN(delay)) current.crawlDelay = delay;
     } else if (lower.startsWith("sitemap:")) {
       sitemaps.push(line.substring("sitemap:".length).trim());
@@ -66,15 +71,16 @@ function normalizeName(name: string) {
 
 function resolveBotStatus(
   bot: BotInfo,
-  ruleSets: RuleSet[]
+  ruleSets: RuleSet[],
 ): Omit<BotResult, keyof BotInfo> {
   const botNorm = normalizeName(bot.userAgent);
   const specificRules = ruleSets.filter(
-    (rs) => normalizeName(rs.userAgent) === botNorm
+    (rs) => normalizeName(rs.userAgent) === botNorm,
   );
   const wildcardRules = ruleSets.filter((rs) => rs.userAgent === "*");
 
-  const applicableRules = specificRules.length > 0 ? specificRules : wildcardRules;
+  const applicableRules =
+    specificRules.length > 0 ? specificRules : wildcardRules;
   const matchedAgent =
     specificRules.length > 0
       ? specificRules[0].userAgent
@@ -93,12 +99,15 @@ function resolveBotStatus(
 
   const allDisallowed: string[] = applicableRules.flatMap((r) => r.disallow);
   const allAllowed: string[] = applicableRules.flatMap((r) => r.allow);
-  const crawlDelay = applicableRules.find((r) => r.crawlDelay != null)?.crawlDelay;
+  const crawlDelay = applicableRules.find(
+    (r) => r.crawlDelay != null,
+  )?.crawlDelay;
 
   const blocksRoot = allDisallowed.includes("/");
   const hasPartialAllows = allAllowed.length > 0 && blocksRoot;
 
   let status: BotStatus;
+
   if (blocksRoot && !hasPartialAllows) {
     status = "blocked";
   } else if (blocksRoot && hasPartialAllows) {
@@ -139,21 +148,24 @@ function detectWaf(headers: Headers): WafDetection {
     return {
       detected: true,
       provider: "Cloudflare",
-      description: "Cloudflare Web Application Firewall detected. Ensure 'AI Scrapers and Crawlers' protection rules aren't blocking legitimate retrieval bots.",
+      description:
+        "Cloudflare Web Application Firewall detected. Ensure 'AI Scrapers and Crawlers' protection rules aren't blocking legitimate retrieval bots.",
     };
   }
   if (xSucuri) {
     return {
       detected: true,
       provider: "Sucuri WAF",
-      description: "Sucuri WAF detected. May challenge automated AI bots with JS challenge or Captcha.",
+      description:
+        "Sucuri WAF detected. May challenge automated AI bots with JS challenge or Captcha.",
     };
   }
   if (xAmz || server.includes("cloudfront")) {
     return {
       detected: true,
       provider: "AWS CloudFront",
-      description: "AWS CloudFront CDN/WAF detected. Verify AWS WAF rate-limiting rules allow AI crawlers.",
+      description:
+        "AWS CloudFront CDN/WAF detected. Verify AWS WAF rate-limiting rules allow AI crawlers.",
     };
   }
   if (xFastly) {
@@ -174,7 +186,8 @@ function detectWaf(headers: Headers): WafDetection {
     return {
       detected: true,
       provider: "Vercel Edge Network",
-      description: "Vercel Edge Network detected with global caching and DDoS mitigation.",
+      description:
+        "Vercel Edge Network detected with global caching and DDoS mitigation.",
     };
   }
   if (xNetlify) {
@@ -215,7 +228,7 @@ function calculateVisibilityScore(
   hasLlmsTxt: boolean,
   hasLlmsFullTxt: boolean,
   hasSitemaps: boolean,
-  hasXRobotsRestriction: boolean
+  hasXRobotsRestriction: boolean,
 ): ScoreBreakdown {
   // 1. Bot Access Score (Weighted based on bot importance)
   let maxWeight = 0;
@@ -230,10 +243,12 @@ function calculateVisibilityScore(
     }
   }
 
-  const botAccessScore = maxWeight > 0 ? Math.round((earnedWeight / maxWeight) * 100) : 100;
+  const botAccessScore =
+    maxWeight > 0 ? Math.round((earnedWeight / maxWeight) * 100) : 100;
 
   // 2. AI Infrastructure Score
   let infraScore = 0;
+
   if (hasRobots) infraScore += 30;
   if (hasLlmsTxt) infraScore += 40;
   if (hasLlmsFullTxt) infraScore += 30;
@@ -241,22 +256,37 @@ function calculateVisibilityScore(
 
   // 3. Technical Signals Score
   let techScore = 60; // baseline for reachable HTTPS
+
   if (hasSitemaps) techScore += 25;
   if (!hasXRobotsRestriction) techScore += 15;
   const technicalSignalsScore = Math.min(100, techScore);
 
   // Weighted overall score: 60% bot access, 25% AI files, 15% technical
   const overallScore = Math.round(
-    botAccessScore * 0.6 + aiInfrastructureScore * 0.25 + technicalSignalsScore * 0.15
+    botAccessScore * 0.6 +
+      aiInfrastructureScore * 0.25 +
+      technicalSignalsScore * 0.15,
   );
 
   let grade: ScoreBreakdown["grade"] = "F";
   let statusText = "Needs Immediate Attention";
-  if (overallScore >= 95) { grade = "A+"; statusText = "Optimized for AI Engines"; }
-  else if (overallScore >= 85) { grade = "A"; statusText = "High AI Search Visibility"; }
-  else if (overallScore >= 70) { grade = "B"; statusText = "Good AI Search Readiness"; }
-  else if (overallScore >= 50) { grade = "C"; statusText = "Partially Accessible to AI"; }
-  else if (overallScore >= 35) { grade = "D"; statusText = "Low AI Search Visibility"; }
+
+  if (overallScore >= 95) {
+    grade = "A+";
+    statusText = "Optimized for AI Engines";
+  } else if (overallScore >= 85) {
+    grade = "A";
+    statusText = "High AI Search Visibility";
+  } else if (overallScore >= 70) {
+    grade = "B";
+    statusText = "Good AI Search Readiness";
+  } else if (overallScore >= 50) {
+    grade = "C";
+    statusText = "Partially Accessible to AI";
+  } else if (overallScore >= 35) {
+    grade = "D";
+    statusText = "Low AI Search Visibility";
+  }
 
   const recommendations: ScoreBreakdown["recommendations"] = [];
 
@@ -264,7 +294,8 @@ function calculateVisibilityScore(
     recommendations.push({
       priority: "high",
       title: "Add llms-full.txt file for comprehensive AI context",
-      description: "Provides full structured information, services, and FAQs directly to AI crawler knowledge bases.",
+      description:
+        "Provides full structured information, services, and FAQs directly to AI crawler knowledge bases.",
     });
   }
 
@@ -272,16 +303,25 @@ function calculateVisibilityScore(
     recommendations.push({
       priority: "high",
       title: "Add llms.txt standard file at domain root",
-      description: "llms.txt gives AI crawlers a clean summary of your website, authority links, and preferred citation syntax.",
+      description:
+        "llms.txt gives AI crawlers a clean summary of your website, authority links, and preferred citation syntax.",
     });
   }
 
-  const blockedAIBots = bots.filter((b) => (b.category === "ai-search" || b.category === "ai-training") && b.status === "blocked");
+  const blockedAIBots = bots.filter(
+    (b) =>
+      (b.category === "ai-search" || b.category === "ai-training") &&
+      b.status === "blocked",
+  );
+
   if (blockedAIBots.length > 0) {
     recommendations.push({
       priority: "high",
       title: `Unblock ${blockedAIBots.length} key AI bots in robots.txt`,
-      description: `Major AI bots like ${blockedAIBots.slice(0, 3).map((b) => b.name).join(", ")} are blocked from crawling your pages.`,
+      description: `Major AI bots like ${blockedAIBots
+        .slice(0, 3)
+        .map((b) => b.name)
+        .join(", ")} are blocked from crawling your pages.`,
     });
   }
 
@@ -289,7 +329,8 @@ function calculateVisibilityScore(
     recommendations.push({
       priority: "medium",
       title: "Declare XML sitemap inside robots.txt",
-      description: "Adding 'Sitemap: https://yourdomain.com/sitemap.xml' helps AI crawlers map all your content efficiently.",
+      description:
+        "Adding 'Sitemap: https://yourdomain.com/sitemap.xml' helps AI crawlers map all your content efficiently.",
     });
   }
 
@@ -311,17 +352,25 @@ export async function GET(req: NextRequest) {
   const urlParam = req.nextUrl.searchParams.get("url");
 
   if (!urlParam) {
-    return NextResponse.json({ error: "Missing url parameter" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing url parameter" },
+      { status: 400 },
+    );
   }
 
   let targetUrl: URL;
+
   try {
     const normalized = urlParam.startsWith("http")
       ? urlParam
       : `https://${urlParam}`;
+
     targetUrl = new URL(normalized);
   } catch {
-    return NextResponse.json({ error: "Invalid URL provided" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid URL provided" },
+      { status: 400 },
+    );
   }
 
   const baseOrigin = `${targetUrl.protocol}//${targetUrl.hostname}`;
@@ -333,7 +382,11 @@ export async function GET(req: NextRequest) {
   let robotsFound = false;
   let xRobotsTag: string | null = null;
   let fetchError: string | null = null;
-  let wafInfo: WafDetection = { detected: false, provider: null, description: null };
+  let wafInfo: WafDetection = {
+    detected: false,
+    provider: null,
+    description: null,
+  };
   let llmsTxtFound = false;
   let llmsFullTxtFound = false;
 
@@ -343,12 +396,20 @@ export async function GET(req: NextRequest) {
     (async () => {
       try {
         const res = await fetch(robotsUrl, {
-          headers: { "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)" },
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)",
+          },
           signal: AbortSignal.timeout(8000),
         });
+
         if (res.ok) {
           const contentType = res.headers.get("content-type") || "";
-          if (contentType.includes("text") || contentType.includes("plain") || res.status === 200) {
+
+          if (
+            contentType.includes("text") ||
+            contentType.includes("plain") ||
+            res.status === 200
+          ) {
             rawRobotsTxt = await res.text();
             robotsFound = true;
           }
@@ -369,9 +430,12 @@ export async function GET(req: NextRequest) {
       try {
         const headRes = await fetch(baseOrigin, {
           method: "HEAD",
-          headers: { "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)" },
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)",
+          },
           signal: AbortSignal.timeout(6000),
         });
+
         xRobotsTag = headRes.headers.get("x-robots-tag");
         wafInfo = detectWaf(headRes.headers);
       } catch {
@@ -384,9 +448,12 @@ export async function GET(req: NextRequest) {
       try {
         const res = await fetch(llmsTxtUrl, {
           method: "HEAD",
-          headers: { "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)" },
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)",
+          },
           signal: AbortSignal.timeout(5000),
         });
+
         if (res.ok && res.status === 200) {
           llmsTxtFound = true;
         }
@@ -400,9 +467,12 @@ export async function GET(req: NextRequest) {
       try {
         const res = await fetch(llmsFullTxtUrl, {
           method: "HEAD",
-          headers: { "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)" },
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; AIBotChecker/2.0)",
+          },
           signal: AbortSignal.timeout(5000),
         });
+
         if (res.ok && res.status === 200) {
           llmsFullTxtFound = true;
         }
@@ -430,7 +500,8 @@ export async function GET(req: NextRequest) {
   const currentXRobots = xRobotsTag as string | null;
   const hasXRobotsRestriction = Boolean(
     currentXRobots &&
-      (currentXRobots.toLowerCase().includes("noai") || currentXRobots.toLowerCase().includes("noindex"))
+    (currentXRobots.toLowerCase().includes("noai") ||
+      currentXRobots.toLowerCase().includes("noindex")),
   );
 
   const scoreBreakdown = calculateVisibilityScore(
@@ -439,7 +510,7 @@ export async function GET(req: NextRequest) {
     llmsTxtFound,
     llmsFullTxtFound,
     parsed.sitemaps.length > 0,
-    hasXRobotsRestriction
+    hasXRobotsRestriction,
   );
 
   // Generate recommended robots.txt snippet if needed

@@ -1,24 +1,21 @@
 "use client";
 
-import FaqsAccordion from "./accordion";
+import FaqsAccordion from "@/components/FaqsAccordion";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
 const LandingFaqs = () => {
   return (
     <div className="section-container pb-16 max-md:pb-12">
-      {/* Header section */}
-      <div className="flex flex-col items-center justify-center pb-4 max-md:pb-0 autoShow">
-        <GlassBadge variant="gradient">FAQs</GlassBadge>
-      </div>
-      <h2 className="heading-center autoShow">
-        Everything you need to <span className="text-brand-orange"> know</span>
-      </h2>
+      <Reveal variant="up">
+        <SectionHeader chip="FAQs">
+          Everything you need to <span className="text-brand-orange"> know</span>
+        </SectionHeader>
+      </Reveal>
 
       {/* Accordion section */}
-      <div className="mt-6 max-md:mt-4 autoShowBottom">
-        <FaqsAccordion />
-      </div>
+      <FaqsAccordion />
     </div>
   );
 };

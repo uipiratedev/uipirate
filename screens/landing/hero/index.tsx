@@ -7,6 +7,7 @@ import Link from "next/link";
 import AnimatedHeadline from "./AnimatedHeadline";
 
 import GlassSurface from "@/components/GlassSurface";
+import { Magnetic } from "@/components/motion";
 import {
   HERO_BADGE_PRESET,
   HERO_BADGE_CLASSNAME,
@@ -46,7 +47,7 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="hero-wrapper">
+      <div className="hero-wrapper max-md:!pt-14 max-md:gap-y-0">
         {/* Subtle Grid Background Pattern */}
         <div
           className="absolute pointer-events-none -mt-20 "
@@ -66,7 +67,7 @@ const LandingHero = () => {
         />
         {/* Layered gradient with gentle mist animation */}
         <div
-          className="absolute pointer-events-none -mt-20 "
+          className="hero-mist absolute pointer-events-none -mt-20 "
           style={{
             backgroundImage: `
               linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
@@ -209,7 +210,7 @@ const LandingHero = () => {
                       >
                         <img
                           alt={`${testimonial.name} - Client testimonial`}
-                          className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+                          className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-[transform,filter] duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
                           src={testimonial.image}
                           style={{
                             animation:
@@ -235,18 +236,19 @@ const LandingHero = () => {
           <div className="relative z-10">
             <AnimatedHeadline />
           </div>
-          <p className="sub-header">
-            You have a product to build. You need someone who can think through it, 
-            design it, and ship it - not hand you a Figma file and walk away. 
-            That's what we do.
+          <p className="sub-header max-md:!text-[12px]">
+            You have a product to build. You need someone who can think through
+            it, design it, and ship it - not hand you a Figma file and walk
+            away. That&apos;s what we do.
           </p>
           <div
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
-            <Link className="relative z-10" href="/contact">
+            <Magnetic className="relative z-10" radius={140} strength={16}>
+             <Link href="/contact">
               <div
-                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
+                className="bg-black text-white h-auto group transition-[background-color,box-shadow] duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
                 style={{
                   borderRadius: "11.889px",
                   background: "#000",
@@ -352,10 +354,11 @@ const LandingHero = () => {
                 </div>
                 <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
-                  Tell Us Your Idea — Free Consultation
+                  Tell Us Your Idea: Free Consultation
                 </p>
               </div>
-            </Link>
+             </Link>
+            </Magnetic>
             <a
               className="flex items-center gap-2 mt-1 text-xs font-semibold text-gray-600 hover:text-black transition-colors"
               href="https://www.upwork.com/freelancers/~010b0f5459bfcf5ed8/"

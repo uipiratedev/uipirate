@@ -232,7 +232,9 @@ const SPRING_TRANSITION: Transition = {
  * Tactile Neumorphic Pill Toggle Switch
  * Debossed neumorphic pill with a brushed metallic sliding thumb.
  */
-export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = ({
+export const TactileNeumorphicToggle: React.FC<
+  TactileNeumorphicToggleProps
+> = ({
   checked: controlledChecked,
   defaultChecked = false,
   stateMode = "interactive",
@@ -250,10 +252,10 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
     stateMode === "hover"
       ? true
       : stateMode === "standerd"
-      ? false
-      : isControlled
-      ? controlledChecked
-      : internalChecked;
+        ? false
+        : isControlled
+          ? controlledChecked
+          : internalChecked;
 
   const config = SIZE_CONFIG[size];
   const themeStyle = THEME_STYLES[theme];
@@ -263,6 +265,7 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
   const handleToggle = () => {
     if (disabled || stateMode !== "interactive") return;
     const nextVal = !isChecked;
+
     if (!isControlled) {
       setInternalChecked(nextVal);
     }
@@ -280,15 +283,12 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
   return (
     <div className={`inline-flex items-center gap-3 select-none ${className}`}>
       <div
-        role="switch"
         aria-checked={isChecked}
         aria-label={label || "Tactile Neumorphic Toggle"}
-        tabIndex={disabled ? -1 : 0}
-        onClick={handleToggle}
-        onKeyDown={handleKeyDown}
         className={`relative inline-flex items-center cursor-pointer transition-opacity outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 rounded-full ${
           disabled ? "opacity-45 cursor-not-allowed" : "active:scale-[0.98]"
         }`}
+        role="switch"
         style={{
           width: config.width,
           height: config.height,
@@ -297,6 +297,9 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
           borderRadius: config.height / 2,
           padding: config.padding,
         }}
+        tabIndex={disabled ? -1 : 0}
+        onClick={handleToggle}
+        onKeyDown={handleKeyDown}
       >
         {/* Track Etched Indicators (Off Left / On Right) */}
         {showIcons && (
@@ -307,23 +310,23 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
                 opacity: isChecked ? 0.3 : 0.85,
                 scale: isChecked ? 0.8 : 1,
               }}
-              transition={{ duration: 0.2 }}
               className="flex items-center justify-center"
               style={{ width: config.iconSize, height: config.iconSize }}
+              transition={{ duration: 0.2 }}
             >
               <svg
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
                 className="w-full h-full"
+                fill="none"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <circle
                   cx="8"
                   cy="8"
                   r="5"
                   stroke={themeStyle.indicatorOff}
-                  strokeWidth="2"
                   strokeOpacity="0.8"
+                  strokeWidth="2"
                 />
               </svg>
             </motion.div>
@@ -334,21 +337,23 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
                 opacity: isChecked ? 0.95 : 0.25,
                 scale: isChecked ? 1 : 0.8,
               }}
-              transition={{ duration: 0.2 }}
               className="flex items-center justify-center"
               style={{ width: config.iconSize, height: config.iconSize }}
+              transition={{ duration: 0.2 }}
             >
               <svg
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
                 className="w-full h-full"
+                fill="none"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M8 3V13"
-                  stroke={isChecked ? themeStyle.indicatorOn : themeStyle.indicatorOff}
-                  strokeWidth="2.4"
+                  stroke={
+                    isChecked ? themeStyle.indicatorOn : themeStyle.indicatorOff
+                  }
                   strokeLinecap="round"
+                  strokeWidth="2.4"
                 />
               </svg>
             </motion.div>
@@ -360,7 +365,6 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
           animate={{
             x: isChecked ? travelDistance : 0,
           }}
-          transition={SPRING_TRANSITION}
           className="relative z-10 flex items-center justify-center overflow-hidden"
           style={{
             width: config.thumbWidth,
@@ -369,6 +373,7 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
             background: themeStyle.thumbGradient,
             boxShadow: themeStyle.thumbShadow,
           }}
+          transition={SPRING_TRANSITION}
         >
           {/* Top Bevel Specular Highlight */}
           <div
@@ -409,23 +414,23 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
             animate={{
               opacity: isChecked ? 0.8 : 0,
             }}
-            transition={{ duration: 0.25 }}
             className="absolute inset-0 pointer-events-none rounded-full"
             style={{
               background: `radial-gradient(circle at 50% 100%, ${themeStyle.activeGlow} 0%, transparent 70%)`,
             }}
+            transition={{ duration: 0.25 }}
           />
         </motion.div>
       </div>
 
       {label && (
         <span
-          onClick={handleToggle}
           className={`font-medium cursor-pointer ${config.fontSize} ${
             disabled
               ? "text-slate-400 cursor-not-allowed"
               : "text-slate-700 dark:text-slate-200"
           }`}
+          onClick={handleToggle}
         >
           {label}
         </span>

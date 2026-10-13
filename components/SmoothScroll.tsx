@@ -20,6 +20,7 @@ export default function SmoothScroll() {
         (window as any).__lenis.destroy();
         (window as any).__lenis = null;
       }
+
       return;
     }
 
@@ -57,6 +58,7 @@ export default function SmoothScroll() {
 
   useEffect(() => {
     const cleanupPromise = initSmoothScroll();
+
     return () => {
       cleanupPromise.then((cleanup) => cleanup?.());
     };

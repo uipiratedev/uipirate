@@ -10,7 +10,10 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
     : "Let's Build It Together";
 
   return (
-    <section className="section-container mb-16 mt-8">
+    <section
+      className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16 mb-8 pt-0"
+      data-section="Global CTA"
+    >
       <div className="relative rounded-[28px] bg-gray-900 overflow-hidden px-10 py-12 max-md:px-6 max-md:py-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
         {/* Background accent */}
         <div
@@ -41,6 +44,7 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
         <div className="flex flex-col sm:flex-row gap-3 relative z-10 flex-shrink-0">
           <Link
             className="px-6 py-3 rounded-xl bg-[#FF5B04] text-white text-sm font-semibold hover:bg-[#e04e00] transition-colors text-center whitespace-nowrap"
+            data-analytics-id="cta-global-estimate"
             href="/contact"
             id="global-cta-contact"
           >
@@ -48,6 +52,7 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
           </Link>
           <Link
             className="px-6 py-3 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/20 transition-colors text-center whitespace-nowrap"
+            data-analytics-id="cta-global-work"
             href="/case-studies"
             id="global-cta-works"
           >

@@ -3,56 +3,23 @@ import React from "react";
 
 import TestimonialCards from "./testimonialCards";
 
-import GlassBadge from "@/components/GlassBadge";
-import testimonialData from "@/data/testimonials.json";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
-// Build Review + AggregateRating JSON-LD from real testimonial data
-const reviewSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": "https://uipirate.com/#organization",
-  name: "UI Pirate by Vishal Anand",
-  alternateName: ["UI Pirate", "uipirate", "uipirates"],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5.0",
-    bestRating: "5",
-    worstRating: "1",
-    reviewCount: String(testimonialData.length),
-  },
-  review: testimonialData.slice(0, 8).map((t) => ({
-    "@type": "Review",
-    author: {
-      "@type": "Person",
-      name: t.name,
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: "5",
-      bestRating: "5",
-    },
-    reviewBody: t.review,
-    name: t.occupation || "Client Review",
-  })),
-};
+// No Review / AggregateRating JSON-LD here: Google treats self-serving review
+// markup (reviews of our own org, on our own site) as ineligible for rich
+// results and a policy risk. Testimonials render as visible content only; the
+// organization entity is defined once in app/layout.tsx.
 
 function LandingTestimonials() {
   return (
     <div className="w-full">
-      {/* Review schema for Google rich results */}
-      <script
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
-        type="application/ld+json"
-      />
-
-      <div className="autoShow">
-        <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-4">
-          <GlassBadge variant="gradient">testimonials</GlassBadge>
-        </div>
-      </div>
-      <div className="autoShowBottom">
-        <TestimonialCards />
-      </div>
+      <Reveal variant="up">
+        <SectionHeader chip="testimonials">
+          What <span className="text-brand-orange">Clients Say</span>
+        </SectionHeader>
+      </Reveal>
+      <TestimonialCards />
     </div>
   );
 }

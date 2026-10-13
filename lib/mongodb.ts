@@ -1,18 +1,27 @@
+import dns from "node:dns";
+
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+// A local stub resolver (VPN client, Docker, corporate proxy) or a router that
+// only advertises a link-local IPv6 DNS server makes Node's resolver fail the
+// mongodb+srv SRV lookup with `querySrv ECONNREFUSED`. When the only configured
+// resolvers are loopback, fall back to public DNS for the SRV lookup.
+// Override the fallback list with MONGODB_DNS_SERVERS="1.1.1.1,8.8.8.8".
+const dnsOverride = process.env.MONGODB_DNS_SERVERS?.split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
-if (!MONGODB_URI) {
-  throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local",
-  );
+const currentServers = dns.getServers();
+const onlyLoopback =
+  currentServers.length === 0 ||
+  currentServers.every((s) => s.startsWith("127.") || s === "::1");
+
+if (dnsOverride?.length) {
+  dns.setServers(dnsOverride);
+} else if (onlyLoopback) {
+  dns.setServers(["1.1.1.1", "8.8.8.8"]);
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
@@ -29,6 +38,14 @@ if (!global.mongoose) {
 }
 
 async function dbConnect(): Promise<typeof mongoose> {
+  const MONGODB_URI = process.env.MONGODB_URI;
+
+  if (!MONGODB_URI) {
+    throw new Error(
+      "Please define the MONGODB_URI environment variable inside .env.local",
+    );
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -38,7 +55,7 @@ async function dbConnect(): Promise<typeof mongoose> {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });
   }

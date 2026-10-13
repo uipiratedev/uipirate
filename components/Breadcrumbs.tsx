@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
@@ -16,9 +15,9 @@ const SEGMENT_LABELS: Record<string, string> = {
   privacy: "Privacy Policy",
   terms: "Terms & Conditions",
   resources: "Resources",
-  apps4sale: "Apps for Sale",
   componentlab: "Component Lab",
   buttons: "Buttons",
+  products: "Our Products",
 };
 
 // Service detail page slug labels
@@ -26,7 +25,6 @@ const SERVICE_LABELS: Record<string, string> = {
   "UX-UI-Design": "UX/UI Design",
   "SaaS-&-AI-Development": "SaaS & AI Development",
   "Landing-Pages-&-Business-Websites": "Landing Pages & Business Websites",
-  "Design-System-&-Component-Library": "Design System & Component Library",
   "UX-Audits-&-Consultation": "UX Audits & Consultation",
 };
 
@@ -48,9 +46,9 @@ export default function Breadcrumbs() {
     if (
       pathname === "/" ||
       pathname.startsWith("/admin") ||
+      pathname === "/login" ||
       pathname.startsWith("/tools") ||
       pathname.startsWith("/componentlab") ||
-      pathname.startsWith("/buttons") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
       /^\/case-studies\/[^/]+/.test(pathname) ||
       (segments.length === 1 && !SEGMENT_LABELS[segments[0]])

@@ -40,3 +40,6 @@ next-env.d.ts
 # AI Agents & Plugins
 .agents/
 .claude/
+
+scripts/.gbp-services-backup-*.json
+scripts/.gbp-links-backup-*.json

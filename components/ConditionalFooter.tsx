@@ -15,8 +15,9 @@ export const ConditionalFooter = memo(function ConditionalFooter() {
 
   const shouldHideFooter = useMemo(() => {
     const baseHide =
-      pathname.startsWith("/pirateCOS") ||
+      pathname.startsWith("/cometCOS") ||
       pathname.startsWith("/admin") ||
+      pathname === "/login" ||
       pathname.startsWith("/componentlab/");
 
     if (!mounted) {

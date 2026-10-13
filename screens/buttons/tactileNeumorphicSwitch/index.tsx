@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
+
 import {
   TactileNeumorphicSwitch,
   TactileSwitchTheme,
@@ -101,12 +100,15 @@ export const SWITCH_SPRING = {
 export default function TactileNeumorphicSwitchScreen() {
   const [theme, setTheme] = useState<TactileSwitchTheme>("emerald-photon");
   const [size, setSize] = useState<TactileSwitchSize>("md");
-  const [stateMode, setStateMode] = useState<TactileSwitchStateMode>("interactive");
+  const [stateMode, setStateMode] =
+    useState<TactileSwitchStateMode>("interactive");
   const [showGrid, setShowGrid] = useState(true);
   const [clickCount, setClickCount] = useState(0);
   const [customActiveColor, setCustomActiveColor] = useState<string>("#10E599");
   const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<"component" | "usage" | "css" | "framer">("component");
+  const [activeTab, setActiveTab] = useState<
+    "component" | "usage" | "css" | "framer"
+  >("component");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [copiedInstall, setCopiedInstall] = useState(false);
 
@@ -176,13 +178,20 @@ export default function Example() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Dual-Dome Neumorphic Switch • OFF &amp; ON</span>
               <span className="text-gray-500">•</span>
-              <span className="text-emerald-400">React + Tailwind + Framer Motion</span>
+              <span className="text-emerald-400">
+                React + Tailwind + Framer Motion
+              </span>
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-              Tactile Neumorphic <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Dual-Dome Switch</span>
+              Tactile Neumorphic{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+                Dual-Dome Switch
+              </span>
             </h1>
             <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-              Photorealistic skeuomorphic switch featuring an outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.
+              Photorealistic skeuomorphic switch featuring an outer recessed
+              bevel cavity, deep carved shadow trench, illuminated emerald
+              photon channel, and dual-dome sculpted tactile thumb.
             </p>
           </header>
 
@@ -190,11 +199,13 @@ export default function Example() {
           <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
             <StudioCanvas minHeight="min-h-[420px]">
               <TactileNeumorphicSwitch
-                theme={theme}
+                customActiveColor={
+                  useCustomColor ? customActiveColor : undefined
+                }
+                showGrid={showGrid}
                 size={size}
                 stateMode={stateMode}
-                showGrid={showGrid}
-                customActiveColor={useCustomColor ? customActiveColor : undefined}
+                theme={theme}
                 onChange={() => setClickCount((c) => c + 1)}
               />
 
@@ -208,7 +219,9 @@ export default function Example() {
 
           {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
+              Customizer
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5 text-xs">
               {/* State Mode Selector */}
               <div className="space-y-1.5">
@@ -216,16 +229,18 @@ export default function Example() {
                   State Mode
                 </label>
                 <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/5">
-                  {(["interactive", "off", "on"] as TactileSwitchStateMode[]).map((mode) => (
+                  {(
+                    ["interactive", "off", "on"] as TactileSwitchStateMode[]
+                  ).map((mode) => (
                     <button
                       key={mode}
-                      type="button"
-                      onClick={() => setStateMode(mode)}
                       className={`flex-1 py-1.5 rounded-lg font-mono text-[11px] uppercase transition-all cursor-pointer ${
                         stateMode === mode
                           ? "bg-emerald-500 text-black font-bold shadow"
                           : "text-white/50 hover:text-white"
                       }`}
+                      type="button"
+                      onClick={() => setStateMode(mode)}
                     >
                       {mode === "off" ? "OFF" : mode === "on" ? "ON" : "Live"}
                     </button>
@@ -239,18 +254,24 @@ export default function Example() {
                   Theme &amp; Chassis Preset
                 </label>
                 <select
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                   value={theme}
                   onChange={(e) => {
                     setTheme(e.target.value as TactileSwitchTheme);
                     setUseCustomColor(false);
                   }}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                 >
-                  {(Object.keys(SWITCH_THEMES) as TactileSwitchTheme[]).map((key) => (
-                    <option key={key} value={key} className="bg-[#12141A] text-white">
-                      {SWITCH_THEMES[key].name}
-                    </option>
-                  ))}
+                  {(Object.keys(SWITCH_THEMES) as TactileSwitchTheme[]).map(
+                    (key) => (
+                      <option
+                        key={key}
+                        className="bg-[#12141A] text-white"
+                        value={key}
+                      >
+                        {SWITCH_THEMES[key].name}
+                      </option>
+                    ),
+                  )}
                 </select>
               </div>
 
@@ -261,25 +282,27 @@ export default function Example() {
                 </label>
                 <div className="flex items-center gap-2">
                   <select
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer text-xs"
                     value={
                       !useCustomColor
                         ? "default"
                         : [
-                            "#10E599",
-                            "#00E5FF",
-                            "#38BDF8",
-                            "#3B82F6",
-                            "#A855F7",
-                            "#FF5B04",
-                            "#F43F5E",
-                            "#84CC16",
-                            "#FBBF24",
-                          ].includes(customActiveColor)
-                        ? customActiveColor
-                        : "custom"
+                              "#10E599",
+                              "#00E5FF",
+                              "#38BDF8",
+                              "#3B82F6",
+                              "#A855F7",
+                              "#FF5B04",
+                              "#F43F5E",
+                              "#84CC16",
+                              "#FBBF24",
+                            ].includes(customActiveColor)
+                          ? customActiveColor
+                          : "custom"
                     }
                     onChange={(e) => {
                       const val = e.target.value;
+
                       if (val === "default") {
                         setUseCustomColor(false);
                       } else if (val === "custom") {
@@ -289,36 +312,35 @@ export default function Example() {
                         setUseCustomColor(true);
                       }
                     }}
-                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer text-xs"
                   >
-                    <option value="default" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="default">
                       Theme Default
                     </option>
-                    <option value="#10E599" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#10E599">
                       🟢 Emerald (#10E599)
                     </option>
-                    <option value="#00E5FF" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#00E5FF">
                       💎 Cyan (#00E5FF)
                     </option>
-                    <option value="#38BDF8" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#38BDF8">
                       💠 Sky (#38BDF8)
                     </option>
-                    <option value="#3B82F6" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#3B82F6">
                       🔷 Blue (#3B82F6)
                     </option>
-                    <option value="#A855F7" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#A855F7">
                       🟣 Violet (#A855F7)
                     </option>
-                    <option value="#FF5B04" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#FF5B04">
                       🔥 Magma (#FF5B04)
                     </option>
-                    <option value="#F43F5E" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#F43F5E">
                       🌸 Rose (#F43F5E)
                     </option>
-                    <option value="#84CC16" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#84CC16">
                       🍏 Lime (#84CC16)
                     </option>
-                    <option value="#FBBF24" className="bg-[#12141A] text-white">
+                    <option className="bg-[#12141A] text-white" value="#FBBF24">
                       ⭐ Gold (#FBBF24)
                     </option>
                   </select>
@@ -329,13 +351,17 @@ export default function Example() {
                     title="Click to pick any custom HEX color"
                   >
                     <input
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                       type="color"
-                      value={useCustomColor ? customActiveColor : SWITCH_THEMES[theme]?.accent || "#10E599"}
+                      value={
+                        useCustomColor
+                          ? customActiveColor
+                          : SWITCH_THEMES[theme]?.accent || "#10E599"
+                      }
                       onChange={(e) => {
                         setCustomActiveColor(e.target.value);
                         setUseCustomColor(true);
                       }}
-                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                     />
                     <span
                       className="w-4 h-4 rounded-full shadow-sm border border-black/20"
@@ -355,20 +381,22 @@ export default function Example() {
                   Scale Size
                 </label>
                 <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/5">
-                  {(["sm", "md", "lg", "xl"] as TactileSwitchSize[]).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setSize(s)}
-                      className={`flex-1 py-1.5 rounded-lg font-mono text-xs uppercase transition-all ${
-                        size === s
-                          ? "bg-emerald-500 text-black font-bold"
-                          : "text-white/50 hover:text-white"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
+                  {(["sm", "md", "lg", "xl"] as TactileSwitchSize[]).map(
+                    (s) => (
+                      <button
+                        key={s}
+                        className={`flex-1 py-1.5 rounded-lg font-mono text-xs uppercase transition-all ${
+                          size === s
+                            ? "bg-emerald-500 text-black font-bold"
+                            : "text-white/50 hover:text-white"
+                        }`}
+                        type="button"
+                        onClick={() => setSize(s)}
+                      >
+                        {s}
+                      </button>
+                    ),
+                  )}
                 </div>
               </div>
             </div>
@@ -392,9 +420,9 @@ export default function Example() {
                 </div>
 
                 <button
+                  className="text-xs font-mono text-white/40 hover:text-white transition-colors cursor-pointer"
                   type="button"
                   onClick={() => setUseCustomColor(false)}
-                  className="text-xs font-mono text-white/40 hover:text-white transition-colors cursor-pointer"
                 >
                   Reset to Theme Preset
                 </button>
@@ -416,7 +444,8 @@ export default function Example() {
                 </h2>
               </div>
               <p className="text-xs text-gray-400 font-mono">
-                Click or hover over switches to test spring physics &amp; photorealistic lighting
+                Click or hover over switches to test spring physics &amp;
+                photorealistic lighting
               </p>
             </div>
 
@@ -432,9 +461,9 @@ export default function Example() {
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="emerald-photon"
-                      stateMode="off"
                       size="sm"
+                      stateMode="off"
+                      theme="emerald-photon"
                     />
                   </div>
                   <span className="text-[11px] font-mono text-gray-500 text-center">
@@ -452,9 +481,9 @@ export default function Example() {
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="emerald-photon"
-                      stateMode="on"
                       size="sm"
+                      stateMode="on"
+                      theme="emerald-photon"
                     />
                   </div>
                   <span className="text-[11px] font-mono text-gray-500 text-center">
@@ -465,16 +494,18 @@ export default function Example() {
                 {/* 3. Interactive Live Switch */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[260px] transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Interactive Spring</span>
+                    <span className="text-white font-semibold">
+                      Interactive Spring
+                    </span>
                     <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">
                       mode=&quot;live&quot;
                     </span>
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="emerald-photon"
-                      stateMode="interactive"
                       size="sm"
+                      stateMode="interactive"
+                      theme="emerald-photon"
                     />
                   </div>
                   <span className="text-[11px] font-mono text-gray-500 text-center">
@@ -485,16 +516,18 @@ export default function Example() {
                 {/* 4. Cyber Laser Cyan */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[260px] transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Cyber Laser Cyan</span>
+                    <span className="text-white font-semibold">
+                      Cyber Laser Cyan
+                    </span>
                     <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">
                       theme=&quot;cyber-cyan&quot;
                     </span>
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="cyber-cyan"
-                      stateMode="interactive"
                       size="sm"
+                      stateMode="interactive"
+                      theme="cyber-cyan"
                     />
                   </div>
                   <span className="text-[11px] font-mono text-gray-500 text-center">
@@ -505,16 +538,18 @@ export default function Example() {
                 {/* 5. UI Pirate Magma */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[260px] transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">UI Pirate Magma</span>
+                    <span className="text-white font-semibold">
+                      UI Pirate Magma
+                    </span>
                     <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">
                       theme=&quot;magma-orange&quot;
                     </span>
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="magma-orange"
-                      stateMode="interactive"
                       size="sm"
+                      stateMode="interactive"
+                      theme="magma-orange"
                     />
                   </div>
                   <span className="text-[11px] font-mono text-gray-500 text-center">
@@ -525,16 +560,18 @@ export default function Example() {
                 {/* 6. Dark Obsidian Stealth */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[260px] transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Dark Obsidian Stealth</span>
+                    <span className="text-white font-semibold">
+                      Dark Obsidian Stealth
+                    </span>
                     <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-sky-400">
                       theme=&quot;dark-obsidian&quot;
                     </span>
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="dark-obsidian"
-                      stateMode="interactive"
                       size="sm"
+                      stateMode="interactive"
+                      theme="dark-obsidian"
                     />
                   </div>
                   <span className="text-[11px] font-mono text-gray-500 text-center">
@@ -549,17 +586,20 @@ export default function Example() {
               INSTALLATION & SETUP
              ───────────────────────────────────────────────────────────── */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Installation &amp; Setup
+            </h2>
             <div className="bg-[#151518] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
               <p className="text-sm text-gray-300 leading-relaxed">
-                Install the required dependencies for Framer Motion spring animations and utility classes:
+                Install the required dependencies for Framer Motion spring
+                animations and utility classes:
               </p>
 
               <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
                 <span>npm install framer-motion clsx</span>
                 <button
-                  onClick={handleCopyInstall}
                   className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+                  onClick={handleCopyInstall}
                 >
                   {copiedInstall ? "Copied Command!" : "Copy Command"}
                 </button>
@@ -572,23 +612,27 @@ export default function Example() {
              ───────────────────────────────────────────────────────────── */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
+              <h2 className="text-2xl font-bold text-white tracking-tight">
+                Code &amp; Integration
+              </h2>
               <button
+                className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
                 onClick={() =>
                   handleCopy(
                     activeTab === "component"
                       ? componentSourceCode
                       : activeTab === "usage"
-                      ? usageCode
-                      : activeTab === "css"
-                      ? cssTokensCode
-                      : framerPhysicsCode,
-                    activeTab
+                        ? usageCode
+                        : activeTab === "css"
+                          ? cssTokensCode
+                          : framerPhysicsCode,
+                    activeTab,
                   )
                 }
-                className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
               >
-                {copiedCode === activeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
+                {copiedCode === activeTab
+                  ? "✓ Copied to Clipboard"
+                  : "Copy Active Tab Code"}
               </button>
             </div>
 
@@ -599,52 +643,54 @@ export default function Example() {
                     {activeTab === "component"
                       ? "TactileNeumorphicSwitch.tsx"
                       : activeTab === "usage"
-                      ? "Usage.tsx"
-                      : activeTab === "css"
-                      ? "Tokens.css"
-                      : "Physics.ts"}
+                        ? "Usage.tsx"
+                        : activeTab === "css"
+                          ? "Tokens.css"
+                          : "Physics.ts"}
                   </span>
-                  <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+                  <span className="text-xs text-gray-500 font-mono">
+                    • Production Ready
+                  </span>
                 </div>
 
                 <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
                   <button
-                    onClick={() => setActiveTab("component")}
                     className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
                       activeTab === "component"
                         ? "bg-emerald-500 text-black font-bold"
                         : "text-gray-400 hover:text-white"
                     }`}
+                    onClick={() => setActiveTab("component")}
                   >
                     Component.tsx
                   </button>
                   <button
-                    onClick={() => setActiveTab("usage")}
                     className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
                       activeTab === "usage"
                         ? "bg-emerald-500 text-black font-bold"
                         : "text-gray-400 hover:text-white"
                     }`}
+                    onClick={() => setActiveTab("usage")}
                   >
                     Usage.tsx
                   </button>
                   <button
-                    onClick={() => setActiveTab("css")}
                     className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
                       activeTab === "css"
                         ? "bg-emerald-500 text-black font-bold"
                         : "text-gray-400 hover:text-white"
                     }`}
+                    onClick={() => setActiveTab("css")}
                   >
                     Tokens.css
                   </button>
                   <button
-                    onClick={() => setActiveTab("framer")}
                     className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
                       activeTab === "framer"
                         ? "bg-emerald-500 text-black font-bold"
                         : "text-gray-400 hover:text-white"
                     }`}
+                    onClick={() => setActiveTab("framer")}
                   >
                     Physics.ts
                   </button>
@@ -657,10 +703,10 @@ export default function Example() {
                     {activeTab === "component"
                       ? componentSourceCode
                       : activeTab === "usage"
-                      ? usageCode
-                      : activeTab === "css"
-                      ? cssTokensCode
-                      : framerPhysicsCode}
+                        ? usageCode
+                        : activeTab === "css"
+                          ? cssTokensCode
+                          : framerPhysicsCode}
                   </code>
                 </pre>
               </div>
@@ -671,7 +717,9 @@ export default function Example() {
               PROPS & API REFERENCE TABLE
              ───────────────────────────────────────────────────────────── */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Component API Reference
+            </h2>
             <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs sm:text-sm">
@@ -685,15 +733,20 @@ export default function Example() {
                   </thead>
                   <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">checked</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        checked
+                      </td>
                       <td className="py-3 px-6 text-blue-300">boolean</td>
                       <td className="py-3 px-6 text-gray-400">undefined</td>
                       <td className="py-3 px-6 font-sans text-gray-300">
-                        Controlled boolean state of the switch (true = ON, false = OFF)
+                        Controlled boolean state of the switch (true = ON, false
+                        = OFF)
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">defaultChecked</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        defaultChecked
+                      </td>
                       <td className="py-3 px-6 text-blue-300">boolean</td>
                       <td className="py-3 px-6 text-gray-400">false</td>
                       <td className="py-3 px-6 font-sans text-gray-300">
@@ -701,39 +754,66 @@ export default function Example() {
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">stateMode</td>
-                      <td className="py-3 px-6 text-blue-300">&quot;interactive&quot; | &quot;off&quot; | &quot;on&quot;</td>
-                      <td className="py-3 px-6 text-gray-400">&quot;interactive&quot;</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        stateMode
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        &quot;interactive&quot; | &quot;off&quot; |
+                        &quot;on&quot;
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;interactive&quot;
+                      </td>
                       <td className="py-3 px-6 font-sans text-gray-300">
                         Force a static OFF or ON state, or interactive toggle
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">theme</td>
-                      <td className="py-3 px-6 text-blue-300">TactileSwitchTheme</td>
-                      <td className="py-3 px-6 text-gray-400">&quot;emerald-photon&quot;</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        theme
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        TactileSwitchTheme
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;emerald-photon&quot;
+                      </td>
                       <td className="py-3 px-6 font-sans text-gray-300">
-                        Color scheme for illuminated channel and shadow aesthetics
+                        Color scheme for illuminated channel and shadow
+                        aesthetics
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
-                      <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
-                      <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        size
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; |
+                        &quot;xl&quot;
+                      </td>
+                      <td className="py-3 px-6 text-gray-400">
+                        &quot;md&quot;
+                      </td>
                       <td className="py-3 px-6 font-sans text-gray-300">
                         Proportional scaling dimension preset
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">onChange</td>
-                      <td className="py-3 px-6 text-blue-300">(checked: boolean) =&gt; void</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        onChange
+                      </td>
+                      <td className="py-3 px-6 text-blue-300">
+                        (checked: boolean) =&gt; void
+                      </td>
                       <td className="py-3 px-6 text-gray-400">undefined</td>
                       <td className="py-3 px-6 font-sans text-gray-300">
                         Callback fired whenever the switch is toggled
                       </td>
                     </tr>
                     <tr>
-                      <td className="py-3 px-6 text-emerald-400 font-semibold">showGrid</td>
+                      <td className="py-3 px-6 text-emerald-400 font-semibold">
+                        showGrid
+                      </td>
                       <td className="py-3 px-6 text-blue-300">boolean</td>
                       <td className="py-3 px-6 text-gray-400">true</td>
                       <td className="py-3 px-6 font-sans text-gray-300">

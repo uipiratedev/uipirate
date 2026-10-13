@@ -1,46 +1,25 @@
 import GlassBadge from "@/components/GlassBadge";
 
 const StreamlinedProcess = ({ data }: any) => {
-  // Flatten all workflow cards into a single array with index numbers
-  const allCards: { heading: string; description: string; index: number }[] =
-    [];
+  // Each workflow group renders as one row (max 2 rows × 3 cards to match the
+  // design). The group `badge` (e.g. "Review Workflow" / "Handover Workflow")
+  // labels its row so the two-phase structure stays visible.
+  type Step = { heading: string; description: string; index: number };
+  const rows: { badge?: string; cards: Step[] }[] = [];
   let cardIndex = 1;
 
   if (data.workflow) {
-    data.workflow.forEach((workflow: any) => {
-      workflow.card.forEach((card: any) => {
-        allCards.push({
+    data.workflow.slice(0, 2).forEach((workflow: any) => {
+      rows.push({
+        badge: workflow.badge,
+        cards: (workflow.card || []).slice(0, 3).map((card: any) => ({
           heading: card.heading,
           description: card.description,
           index: cardIndex++,
-        });
+        })),
       });
     });
   }
-
-  // Use only the first 6 steps to match the design (2 rows of 3 cards)
-  const displayCards = allCards.slice(0, 6);
-
-  // Split cards into rows of 3 for the rope effect
-  const rows: (typeof allCards)[] = [];
-
-  for (let i = 0; i < displayCards.length; i += 3) {
-    rows.push(displayCards.slice(i, i + 3));
-  }
-
-  // Slight pseudo-random rotation for each card to simulate natural hanging
-  const getCardRotation = (cardIndex: number): string => {
-    const rotations = [
-      "-2deg",
-      "1.3deg",
-      "-1.1deg",
-      "1.7deg",
-      "-1.6deg",
-      "0.9deg",
-    ];
-
-    return rotations[(cardIndex - 1) % rotations.length];
-  };
 
   // Rope Curve Math: Y = 10 + 120 * t * (1 - t)
   const getRopeParam = (colIndex: number, localT: number) => {
@@ -86,24 +65,24 @@ const StreamlinedProcess = ({ data }: any) => {
   };
 
   return (
-    <div className="pt-6 overflow-hidden">
+    <div className="pt-6 pb-8 md:pb-10 overflow-hidden">
       {/* Header */}
       <div className="autoShow text-center mb-12 max-md:mb-4">
         <div className="flex flex-row items-center justify-center mb-6 ">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <h2 className="heading-center">How We Work</h2>
+        <h2 className="heading-center">{data.heading || "How We Work"}</h2>
       </div>
 
       {/* Cards Section */}
-      <div className="relative mx-auto max-md:mb-4 max-md:-mt-4 autoShowBottom">
+      <div className="relative mx-auto mb-0 max-md:-mt-4 autoShowBottom">
         {/* Mobile: Continuous Straight Vertical Rope on Left */}
         <div className="md:hidden absolute left-[23px] top-0 bottom-12 w-[3px] bg-[#FF5B04] z-0" />
 
         {rows.map((row, rowIndex) => (
           <div
             key={rowIndex}
-            className="relative mb-0 md:mb-32 last:mb-0 max-md:mt-6"
+            className="relative mb-0 md:mb-16 last:mb-0 max-md:mt-6"
           >
             {/* Desktop: Curved Horizontal Rope with Texture */}
             <div className="hidden md:block absolute left-0 right-0 top-[-10px] h-[100px] z-0 opacity-100 pointer-events-none">
@@ -140,9 +119,10 @@ const StreamlinedProcess = ({ data }: any) => {
               </svg>
             </div>
 
+
             {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 section-container gap-4 md:gap-6 relative z-10 pt-1 md:pt-0 md:mb-32">
-              {row.map((card, colIdx) => (
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 section-container gap-4 md:gap-6 relative z-10 pt-1 md:pt-0 mb-0">
+              {row.cards.map((card, colIdx) => (
                 <div
                   key={card.index}
                   className="flex md:flex-col items-start md:items-center relative transition-all duration-700 h-full group/unit md:mt-[var(--rope-offset)]"

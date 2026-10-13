@@ -1,22 +1,18 @@
 import ServicesSection from "./servicesSection";
 
-import GlassBadge from "@/components/GlassBadge";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
 const LandingBusinessHelp = () => {
   return (
     <div className="section-container">
-      <div className="autoShow">
-        <div className="flex flex-row items-center justify-center mb-6">
-          <GlassBadge variant="gradient">SERVICES</GlassBadge>
-        </div>
-        <h2 className="heading-center">
+      <Reveal variant="up">
+        <SectionHeader chip="SERVICES">
           What We{" "}
           <span className="text-brand-orange"> Design, Build, & Scale</span>
-        </h2>
-      </div>
-      <div className="autoShowBottom">
-        <ServicesSection />
-      </div>
+        </SectionHeader>
+      </Reveal>
+      <ServicesSection />
     </div>
   );
 };

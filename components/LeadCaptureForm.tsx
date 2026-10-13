@@ -10,6 +10,8 @@ import {
   Chip,
 } from "@heroui/react";
 
+import { trackFormSubmit } from "@/lib/analytics/client";
+
 export interface LeadFormData {
   name: string;
   email: string;
@@ -106,6 +108,7 @@ export default function LeadCaptureForm({
       }
 
       setStatus("success");
+      trackFormSubmit(source ? `contact:${source}` : "contact-form");
       onSuccess?.();
     } catch {
       setErrorMsg("Network error. Please try again.");
@@ -135,7 +138,7 @@ export default function LeadCaptureForm({
           Message Received!
         </h3>
         <p className="text-gray-500 text-sm max-w-xs">
-          We typically respond within 2 hours. Check your inbox — we'll reach
+          We typically respond within 2 hours. Check your inbox, we'll reach
           out to schedule a call.
         </p>
       </div>

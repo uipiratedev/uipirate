@@ -1,20 +1,17 @@
 "use client";
 
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+import type { ReaderPost } from "@/lib/cometCOS/public-client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import ClientLogosMarquee from "./ClientLogosMarquee";
 import CaseStudiesFAQ from "./CaseStudiesFAQ";
 
 import PageWrapper from "@/components/PageWrapper";
-import ProjectEstimate from "@/components/ProjectEstimate";
-import GlassBadge from "@/components/GlassBadge";
 import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
-import LandingTestimonials from "@/screens/landing/testimonials";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 const DEFAULT_CASE_STUDY_IMAGE = "/assets/blog-banner-default.svg";
 
@@ -80,15 +77,150 @@ interface CaseStudiesProps {
   cmsCaseStudies?: ReaderPost[];
 }
 
+interface CaseStudiesNextCTAProps {
+  isInline?: boolean;
+}
+
+const CaseStudiesNextCTA = ({ isInline = false }: CaseStudiesNextCTAProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tileStyle, setTileStyle] = useState<{ backgroundSize?: string }>({
+    backgroundSize: "113px 113px",
+  });
+
+  useEffect(() => {
+    const el = cardRef.current;
+
+    if (!el) return;
+
+    const computeGrid = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+
+      if (!w || !h) return;
+
+      // Target square size ~56.5px (matching 113px tile)
+      const targetSquare = 56.5;
+
+      const cols = Math.max(2, Math.round(w / targetSquare));
+      const rows = Math.max(2, Math.round(h / targetSquare));
+
+      // Exact square dimensions so each row and column ends cleanly without cut-off
+      const squareW = w / cols;
+      const squareH = h / rows;
+
+      // 2 squares per repeating tile
+      const tileW = squareW * 2;
+      const tileH = squareH * 2;
+
+      setTileStyle({
+        backgroundSize: `${tileW.toFixed(2)}px ${tileH.toFixed(2)}px`,
+      });
+    };
+
+    computeGrid();
+    const ro = new ResizeObserver(computeGrid);
+
+    ro.observe(el);
+
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={cardRef}
+      className={`group relative w-full h-full rounded-3xl border border-gray-200/60 overflow-hidden shadow-lg hover:shadow-2xl hover:border-gray-300 transition-all duration-500 flex flex-col ${isInline ? "p-8 max-md:p-6 text-left items-start" : "p-16 max-md:p-8 text-center items-center"
+        } mx-auto`}
+      style={{
+        backgroundImage: `conic-gradient(#f5f5f5 90deg, #ffffff 90deg 180deg, #f5f5f5 180deg 270deg, #ffffff 270deg)`,
+        backgroundPosition: "0 0",
+        ...tileStyle,
+      }}
+    >
+      {/* Top content area with flex-grow to push CTA to bottom */}
+      <div
+        className={`flex flex-col flex-grow ${isInline ? "items-start text-left" : "items-center text-center"
+          } justify-start w-full`}
+      >
+        {isInline && (
+          <div className="flex items-start justify-start gap-4 mb-6 max-md:mb-4 w-full">
+            <div className="px-3 py-1.5 bg-gray-50 border border-gray-200/70 rounded-full shadow-sm shrink-0">
+              <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
+                YOUR PROJECT NEXT
+              </p>
+            </div>
+          </div>
+        )}
+
+        <h2
+          className={`${isInline
+            ? "text-2xl max-md:text-xl mb-1.5 text-left"
+            : "text-3xl max-md:text-2xl mb-4 text-center"
+            } font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors`}
+        >
+          Your product could be featured here next.
+        </h2>
+
+        <p
+          className={`${isInline
+            ? "text-sm max-md:text-xs text-left"
+            : "text-base max-md:text-sm max-w-2xl mb-10 text-center mx-auto"
+            } text-gray-700 leading-relaxed font-medium mb-2`}
+        >
+          Every case study here started as a simple conversation. Tell us about the product you are building, and we will walk through how we approach it from idea to ship. Whether you need deep product thinking, UI/UX design, or a full Angular and React frontend carried out, we are here to help. Our typical response time is under 2 hours.
+        </p>
+      </div>
+
+      {/* Bottom-aligned CTA buttons */}
+      <div
+        className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isInline
+          ? "justify-start items-stretch sm:items-center mt-auto pt-4 border-t border-gray-200/60"
+          : "justify-center items-center mt-8"
+          } w-full`}
+      >
+        <LetsTalkButton
+          href="https://cal.com/ui-pirate/15min"
+          showArrow={true}
+          target="_blank"
+          variant="color"
+        >
+          Book a 15-Min Call
+        </LetsTalkButton>
+        <LetsTalkButton
+          href="/pricing"
+          showArrow={true}
+          variant="light"
+        >
+          See Pricing
+        </LetsTalkButton>
+      </div>
+    </div>
+  );
+};
+
 const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("All");
 
   const caseStudies: CaseStudyCard[] = useMemo(
     () => cmsCaseStudies.map(normalizeCmsCaseStudy),
     [cmsCaseStudies],
   );
 
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+
+    caseStudies.forEach(s => {
+      if (s.industry) cats.add(s.industry);
+    });
+
+    return Array.from(cats).sort();
+  }, [caseStudies]);
+
   const filteredStudies = caseStudies.filter((study) => {
+    if (category !== "All" && study.industry !== category) {
+      return false;
+    }
+
     if (searchQuery === "") return true;
 
     const query = searchQuery.toLowerCase().trim();
@@ -149,74 +281,23 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
 
       <div>
         {/* Hero — portfolio + case studies positioning */}
-        <CaseStudiesHero />
+        <CaseStudiesHero
+          categories={categories}
+          category={category}
+          searchQuery={searchQuery}
+          setCategory={setCategory}
+          setSearchQuery={setSearchQuery}
+        />
 
-        {/* Client Logos Marquee */}
-        <ClientLogosMarquee />
+
 
         {/* Featured deep-dive case studies (from the CMS) */}
-        <section className="section-container pt-12 max-md:pt-6">
-          <div className="autoShow">
-            <div className="mb-6 flex flex-row items-center justify-center">
-              <GlassBadge variant="gradient">case studies</GlassBadge>
-            </div>
-            <h2 className="heading-center">
-              Product design & development in practice
-            </h2>
-            <p className="text-gray-500 text-center max-w-2xl mx-auto mt-4 mb-10">
-              Deep dives into how we turn ideas into shipped products — from
-              product thinking and IA to UX/UI and Angular/React development.
-            </p>
-          </div>
+        <section className="section-container ">
 
-          {/* Search Bar */}
-          <div className="autoShow max-w-xl mx-auto mb-8 max-md:mb-6">
-            <div className="relative">
-              <input
-                className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-sm"
-                placeholder="Search by client, industry, or technology..."
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-              {searchQuery && (
-                <button
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600 transition-colors"
-                  onClick={() => setSearchQuery("")}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M6 18L18 6M6 6l12 12"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                </button>
-              )}
-            </div>
-          </div>
+
 
           {/* Results Count */}
-          {searchQuery && (
+          {(searchQuery || category !== "All") && (
             <div className="flex items-center justify-between mb-6 max-md:mb-4 text-sm">
               <p className="text-gray-600 font-medium">
                 Showing{" "}
@@ -224,22 +305,16 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   {filteredStudies.length}
                 </span>{" "}
                 of <span className="font-bold">{caseStudies.length}</span>{" "}
-                projects
-                {searchQuery && (
-                  <span className="ml-2 text-gray-500">
-                    matching "
-                    <span className="font-semibold text-gray-700">
-                      {searchQuery}
-                    </span>
-                    "
-                  </span>
-                )}
+                projects matching filters
               </p>
               <button
                 className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
-                onClick={() => setSearchQuery("")}
+                onClick={() => {
+                  setSearchQuery("");
+                  setCategory("All");
+                }}
               >
-                Clear search
+                Clear filters
               </button>
             </div>
           )}
@@ -271,189 +346,154 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                       ? "Try adjusting your search term"
                       : "Check back soon"}
                   </p>
-                  {searchQuery && (
+                  {(searchQuery || category !== "All") && (
                     <div className="flex gap-3 justify-center">
                       <button
                         className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-full hover:border-[#FF5B04] hover:text-[#FF5B04] transition-all duration-300 font-semibold text-sm"
-                        onClick={() => setSearchQuery("")}
+                        onClick={() => {
+                          setSearchQuery("");
+                          setCategory("All");
+                        }}
                       >
-                        Clear search
+                        Clear filters
                       </button>
                     </div>
                   )}
                 </div>
               </div>
             ) : (
-              filteredStudies.map((study, index) => {
-                const primaryMetric =
-                  study.metrics?.[0]?.value || study.industry;
-                const isNew = isNewCaseStudy(study.publishedAt);
+              <>
+                {filteredStudies.map((study, index) => {
+                  const primaryMetric = study.metrics?.[0]?.value;
+                  const isNew = isNewCaseStudy(study.publishedAt);
 
-                return (
-                  <motion.div
-                    key={study.slug}
-                    animate={{ opacity: 1, y: 0 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: index * 0.1,
-                      ease: [0.25, 0.1, 0.25, 1],
-                    }}
-                  >
-                    <Link
-                      className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
-                      href={`/case-studies/${study.slug}`}
+                  return (
+                    <motion.div
+                      key={study.slug}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex h-full"
+                      initial={{ opacity: 0, y: 20 }}
+                      transition={{
+                        duration: 0.4,
+                        delay: index * 0.1,
+                        ease: [0.25, 0.1, 0.25, 1],
+                      }}
                     >
-                      {/* Blurred background image - more visible.
-                          Not next/image: heroImage is SVG (needs
-                          dangerouslyAllowSVG) and CMS-sourced ones may come
-                          from domains outside next.config's image allowlist.
-                          loading="lazy" still defers every off-screen card. */}
-                      <div className="absolute inset-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          alt={`${study.client} background`}
-                          className="w-full h-full object-cover blur-sm scale-110 opacity-60"
-                          decoding="async"
-                          loading="lazy"
-                          src={study.heroImage}
-                        />
-                      </div>
-
-                      {isNew && (
-                        <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
-                          <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
-                            New
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Glass overlay with content */}
-                      <div className="relative z-10 bg-gradient-to-br from-white/80 to-white/70 backdrop-blur-sm p-8 max-md:p-6 h-full">
-                        {/* Top row: Industry chip + Metric chip */}
-                        <div className="flex items-center justify-between mb-6 max-md:mb-4">
-                          <div className="px-3 py-1.5 bg-white/90 backdrop-blur-xl border border-gray-200/70 rounded-full shadow-sm">
-                            <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
-                              {study.industry}
-                              {study.region ? ` · ${study.region}` : ""}
+                      <Link
+                        className="group flex flex-col w-full relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
+                        href={`/case-studies/${study.slug}`}
+                      >
+                        {isNew && (
+                          <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
+                            <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
+                              New
                             </p>
                           </div>
-                          <div className="px-3 py-1.5 bg-[#FF5B04] backdrop-blur-xl rounded-full shadow-md">
-                            <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
-                              {primaryMetric}
+                        )}
+
+                        {/* Card content with pure white background */}
+                        <div className="relative z-10 p-8 max-md:p-6 flex flex-col flex-grow bg-white">
+                          {/* Top row: Industry chip + Metric chip */}
+                          <div className="flex items-start justify-between gap-4 mb-6 max-md:mb-4">
+                            <div className="px-3 py-1.5 bg-gray-50 border border-gray-200/70 rounded-full shadow-sm shrink-0">
+                              <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
+                                {study.industry}
+                                {study.region ? ` · ${study.region}` : ""}
+                              </p>
+                            </div>
+                            {primaryMetric && (
+                              <div className="px-3 py-1.5 bg-[#FF5B04] rounded-full shadow-md text-right">
+                                <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
+                                  {primaryMetric}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Company name + Project title + Excerpt */}
+                          <div className="mb-6 max-md:mb-4 flex-grow">
+                            <h3 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-1.5 group-hover:text-[#FF5B04] transition-colors">
+                              {study.client}
+                            </h3>
+                            <p className="text-sm max-md:text-xs text-gray-600 font-semibold mb-3">
+                              {study.title.split(" — ")[1] || study.title}
+                            </p>
+                            <p className="text-sm max-md:text-xs text-gray-700 leading-relaxed line-clamp-2">
+                              {study.excerpt}
                             </p>
                           </div>
-                        </div>
 
-                        {/* Company name + Project title + Excerpt */}
-                        <div className="mb-6 max-md:mb-4">
-                          <h3 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-1.5 group-hover:text-[#FF5B04] transition-colors">
-                            {study.client}
-                          </h3>
-                          <p className="text-sm max-md:text-xs text-gray-600 font-semibold mb-3">
-                            {study.title.split(" — ")[1] || study.title}
-                          </p>
-                          <p className="text-sm max-md:text-xs text-gray-700 leading-relaxed line-clamp-2">
-                            {study.excerpt}
-                          </p>
-                        </div>
+                          {/* Tech stack pills + CTA */}
+                          <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200/60 mt-auto">
+                            <div className="flex gap-1.5 flex-wrap">
+                              {study.technologies
+                                ?.slice(0, 3)
+                                .map((tech: string) => (
+                                  <span
+                                    key={tech}
+                                    className="px-2.5 py-1 bg-white/95 backdrop-blur-sm border border-gray-300/60 rounded-full text-[10px] font-jetbrains-mono text-gray-800 shadow-sm font-medium"
+                                  >
+                                    {tech}
+                                  </span>
+                                ))}
+                            </div>
 
-                        {/* Tech stack pills + CTA */}
-                        <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-300/60">
-                          <div className="flex gap-1.5 flex-wrap">
-                            {study.technologies
-                              ?.slice(0, 3)
-                              .map((tech: string) => (
-                                <span
-                                  key={tech}
-                                  className="px-2.5 py-1 bg-white/95 backdrop-blur-sm border border-gray-300/60 rounded-full text-[10px] font-jetbrains-mono text-gray-800 shadow-sm font-medium"
-                                >
-                                  {tech}
+                            <div className="flex flex-col items-end gap-2.5 shrink-0">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                alt={`${study.client} logo`}
+                                className="w-10 h-10 max-md:w-8 max-md:h-8 object-contain drop-shadow-sm"
+                                src={study.clientLogo || study.heroImage}
+                              />
+                              <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-bold text-[#FF5B04]">
+                                <span className="hidden md:inline">
+                                  Read case study
                                 </span>
-                              ))}
-                          </div>
-
-                          <div className="flex flex-col items-end gap-2.5 shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              alt={`${study.client} logo`}
-                              className="w-10 h-10 max-md:w-8 max-md:h-8 object-contain drop-shadow-sm"
-                              src={study.clientLogo || study.heroImage}
-                            />
-                            <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-bold text-[#FF5B04]">
-                              <span className="hidden md:inline">
-                                Read case study
-                              </span>
-                              <span className="md:hidden">Read</span>
-                              <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
-                                →
-                              </span>
+                                <span className="md:hidden">Read</span>
+                                <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
+                                  →
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+
+                {/* CTA card: shown inline in grid when odd count, hidden when even (rendered below instead) */}
+                {filteredStudies.length % 2 !== 0 && (
+                  <motion.div
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex h-full"
+                    initial={{ opacity: 0, y: 20 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: filteredStudies.length * 0.1,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
+                  >
+                    <CaseStudiesNextCTA isInline />
                   </motion.div>
-                );
-              })
+                )}
+              </>
             )}
           </div>
         </section>
 
-        {/* What's Next CTA */}
-        <section className="section-container pt-12 max-md:pt-6">
-          <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#212121] to-[#151514] noise-texture px-12 py-20 max-md:px-6 max-md:py-12 text-center">
-            <p className="text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-[#FF5B04] mb-3">
-              What&apos;s next
-            </p>
-            <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4">
-              Let&apos;s Build Something Like This For You
-            </h2>
-            <p className="text-gray-500 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
-              From idea to shipped product — product thinking, IA, UX/UI, and
-              Angular/React frontend carried end-to-end. Typical response under
-              2 hours.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                className="px-8 py-4 bg-[#FF5B04] text-white font-bold rounded-full hover:bg-[#e04e00] transition-all duration-300 shadow-lg hover:shadow-xl"
-                href="/contact"
-              >
-                Start Your Project →
-              </Link>
-              <Link
-                className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 border border-white/20"
-                href="/pricing"
-              >
-                View Pricing
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Client Testimonials */}
-        <LandingTestimonials />
+        {/* What's Next CTA — only shown below when study count is even */}
+        {filteredStudies.length % 2 === 0 && (
+          <section className="section-container pt-12 max-md:pt-6 pb-24">
+            <CaseStudiesNextCTA />
+          </section>
+        )}
 
         {/* Why Choose Us */}
         <WhyChooseUs />
 
         {/* FAQ Section */}
         <CaseStudiesFAQ />
-
-        {/* Pricing CTA */}
-        <div className="section-container pb-16">
-          <div className="mb-12">
-            <div className="autoShow">
-              <div className="mb-6 flex flex-row items-center justify-center">
-                <GlassBadge variant="gradient">pricing</GlassBadge>
-              </div>
-              <h2 className="heading-center">Pricing That Makes Sense</h2>
-            </div>
-            <div className="autoShowBottom mt-6 max-md:mt-4 max-w-2xl mx-auto">
-              <ProjectEstimate className="min-h-[600px]" />
-            </div>
-          </div>
-        </div>
       </div>
     </PageWrapper>
   );

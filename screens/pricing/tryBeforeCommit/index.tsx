@@ -15,9 +15,23 @@ const fadeUp = {
 };
 
 const PILOT_OPTIONS = [
-  { type: "Design", price: "150", description: "5 screens or 1 full user flow — polished Figma file, ready for dev" },
-  { type: "Development", price: "250", description: "Working component or feature, production-ready code" },
-  { type: "Design + Dev", price: "350", description: "Designed and built in 5 days — you own all the files and code" },
+  {
+    type: "Design",
+    price: "150",
+    description:
+      "5 screens or 1 full user flow, polished Figma file, ready for dev",
+  },
+  {
+    type: "Development",
+    price: "250",
+    description: "Working component or feature, production-ready code",
+  },
+  {
+    type: "Design + Dev",
+    price: "350",
+    description:
+      "Designed and built in 5 days, you own all the files and code",
+  },
 ];
 
 const TryBeforeCommit = () => {
@@ -45,7 +59,7 @@ const TryBeforeCommit = () => {
           </h2>
 
           <p className="text-gray-500 text-center max-w-2xl mx-auto mb-8 max-md:text-sm">
-            Test our work before committing. See real results in 5 days — your
+            Test our work before committing. See real results in 5 days, your
             fee is
             <span className="text-white font-semibold">
               {" "}
@@ -59,7 +73,7 @@ const TryBeforeCommit = () => {
             <div className="bg-white/5 border border-white/10 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center">
-                  <span className="text-xl">🧩</span>
+                  <i className="ti ti-puzzle text-brand-orange text-xl" />
                 </div>
                 <h4 className="text-white font-semibold">
                   Low-Risk, High-Value
@@ -74,12 +88,12 @@ const TryBeforeCommit = () => {
             <div className="bg-white/5 border border-white/10 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center">
-                  <span className="text-xl">⚡</span>
+                  <i className="ti ti-bolt text-brand-orange text-xl" />
                 </div>
                 <h4 className="text-white font-semibold">Real Deliverables</h4>
               </div>
               <p className="text-gray-500 text-sm">
-                Walk away with a working mini-build or polished design — ready
+                Walk away with a working mini-build or polished design, ready
                 to scale.
               </p>
             </div>

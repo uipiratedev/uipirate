@@ -1,0 +1,12 @@
+# Google disavow file for uipirate.com
+#
+# Upload at: https://search.google.com/search-console/disavow-links
+#   (select the sc-domain:uipirate.com property, upload this exact file)
+# Google only reads the uploaded copy; keeping it here is for version history.
+# Re-uploading replaces the previous list, so keep every entry that should stay disavowed.
+#
+# Format: one URL or "domain:example.com" per line. Lines starting with # are comments.
+
+# 2026-09-08 — link-selling / PBN network, unsolicited spam backlink to the homepage
+# Seen as a referring URL in GSC URL Inspection for https://uipirate.com/
+domain:best-backlink-provider.com.in

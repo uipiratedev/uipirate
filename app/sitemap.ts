@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
 
-import apps4saleProducts from "@/data/apps4sale.json";
 import { DETAILED_BOTS } from "@/data/bots";
+import { HELD_DRAFT_SLUGS } from "@/lib/indexing/publishable";
+import { ALL_DASHBOARD_COMPONENTS } from "@/screens/uiComponents/dashboardComponents";
+import { CONCEPT_DETAILS } from "@/screens/concepts/details";
 
 /**
  * Dynamic sitemap generation for Next.js App Router.
@@ -21,11 +23,23 @@ export const revalidate = 600;
 
 const BASE_URL = "https://uipirate.com";
 
+// `lastmod` for pages that aren't backed by a CMS `updatedAt` (static pages,
+// service/componentlab/bot entries).
+//
+// NEVER use `new Date()` here. A per-request timestamp makes every URL look
+// freshly modified on every crawl, which destroys the sitemap's freshness
+// signal — Bing and Google then learn to distrust `lastmod` entirely and
+// deprioritise crawling (observed: ~40 URLs stuck "Discovered / Blocked -
+// not crawled" in Bing). Bump this constant (or set SITEMAP_STATIC_LASTMOD)
+// when static page content meaningfully changes.
+const STATIC_LASTMOD = process.env.SITEMAP_STATIC_LASTMOD || "2026-10-09";
+
 // Static pages with their priorities and change frequencies
 const STATIC_PAGES: {
   path: string;
   priority: number;
   changeFrequency: MetadataRoute.Sitemap[0]["changeFrequency"];
+  lastModified?: string;
 }[] = [
   { path: "/", priority: 1.0, changeFrequency: "daily" },
   // /services hub page was removed in favor of direct links to each service (see SERVICE_SLUGS below).
@@ -37,15 +51,9 @@ const STATIC_PAGES: {
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
   { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
   { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
-  { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/products", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/concepts", priority: 0.85, changeFrequency: "weekly" },
   { path: "/componentlab", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/components", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/buttons", priority: 0.9, changeFrequency: "weekly" },
-  { path: "/buttons/tactile-pill-button", priority: 0.85, changeFrequency: "weekly" },
-  { path: "/buttons/scaling-capsule-button", priority: 0.85, changeFrequency: "weekly" },
-  { path: "/buttons/smash-tactile-button", priority: 0.85, changeFrequency: "weekly" },
-  { path: "/buttons/animated-slide-button", priority: 0.8, changeFrequency: "weekly" },
-  { path: "/buttons/magnetic-pulse-cta", priority: 0.8, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
 
@@ -59,41 +67,157 @@ const STATIC_PAGES: {
   { path: "/tools/ai", priority: 0.9, changeFrequency: "weekly" as const },
 
   // ── 1. SaaS & Product UX (Core Agency Expertise)
-  { path: "/tools/saas/saas-ux-audit", priority: 0.9, changeFrequency: "monthly" as const },
-  { path: "/tools/saas/pricing-page-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/saas/dashboard-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/saas/saas-onboarding-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/saas/saas-ux-audit",
+    priority: 0.9,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/saas/pricing-page-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/saas/dashboard-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/saas/saas-onboarding-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 
   // ── 2. Website & Conversion Tools (Commercial CRO)
-  { path: "/tools/website/landing-page-analyzer", priority: 0.9, changeFrequency: "monthly" as const },
-  { path: "/tools/website/saas-website-audit", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/cta-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/website-readability-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/homepage-seo-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/website-performance-score", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/website/ux-audit", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/website/landing-page-analyzer",
+    priority: 0.9,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/saas-website-audit",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/cta-analyzer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/website-readability-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/homepage-seo-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/website-performance-score",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/website/ux-audit",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 
   // ── 3. Design Systems & Code
-  { path: "/tools/design/design-tokens", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/color-palette-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/contrast-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/figma-spacing-calculator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/css-shadow-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/border-radius-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/typography-scale-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/css-to-tailwind-converter", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/svg-optimizer", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/design/breakpoint-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/design/design-tokens",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/color-palette-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/contrast-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/figma-spacing-calculator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/css-shadow-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/border-radius-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/typography-scale-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/css-to-tailwind-converter",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/svg-optimizer",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/design/breakpoint-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 
   // ── 4. AI & GEO Visibility Toolkit
-  { path: "/tools/ai/ai-bot-checker", priority: 0.9, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/llms-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/robots-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/robots-txt-validator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/schema-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/batch-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/geo-competitor-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/ai/bot-directory", priority: 0.85, changeFrequency: "monthly" as const },
+  {
+    path: "/tools/ai/ai-bot-checker",
+    priority: 0.9,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/llms-txt-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/robots-txt-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/robots-txt-validator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/schema-generator",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/batch-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/geo-competitor-checker",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/tools/ai/bot-directory",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
 ];
 
 // Service detail pages (from sericesDetailsList.json slugs)
@@ -101,7 +225,6 @@ const SERVICE_SLUGS = [
   "UX-UI-Design",
   "SaaS-&-AI-Development",
   "Landing-Pages-&-Business-Websites",
-  "Design-System-&-Component-Library",
   "UX-Audits-&-Consultation",
 ];
 
@@ -113,14 +236,16 @@ async function fetchAllPosts(
   listPosts: (opts: {
     page: number;
     limit: number;
+    fields?: string;
   }) => Promise<Array<{ [key: string]: any }>>,
+  fields?: string,
 ) {
   const pageSize = 100;
   const maxPages = 20;
   let all: Array<{ [key: string]: any }> = [];
 
   for (let page = 1; page <= maxPages; page++) {
-    const batch = await listPosts({ page, limit: pageSize });
+    const batch = await listPosts({ page, limit: pageSize, fields });
 
     all = all.concat(batch);
     if (batch.length < pageSize) break;
@@ -130,12 +255,23 @@ async function fetchAllPosts(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date().toISOString();
+  // Normalise a CMS date field to ISO; fall back to STATIC_LASTMOD (never `now`)
+  // so a missing/blank `updatedAt` can't inject a per-request timestamp.
+  const toLastMod = (...candidates: Array<string | null | undefined>) => {
+    for (const c of candidates) {
+      if (!c) continue;
+      const d = new Date(c);
+
+      if (!isNaN(d.getTime()) && d.getTime() > 0) return d.toISOString();
+    }
+
+    return STATIC_LASTMOD;
+  };
 
   // 1. Static pages
   const staticEntries: MetadataRoute.Sitemap = STATIC_PAGES.map((page) => ({
     url: `${BASE_URL}${page.path}`,
-    lastModified: now,
+    lastModified: page.lastModified || STATIC_LASTMOD,
     changeFrequency: page.changeFrequency,
     priority: page.priority,
   }));
@@ -143,7 +279,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 2. AI Bot Dossier pages from DETAILED_BOTS registry
   const botEntries: MetadataRoute.Sitemap = DETAILED_BOTS.map((bot) => ({
     url: `${BASE_URL}/tools/ai/bot-directory/${bot.id}`,
-    lastModified: now,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
@@ -151,22 +287,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Service detail pages
   const serviceEntries: MetadataRoute.Sitemap = SERVICE_SLUGS.map((slug) => ({
     url: `${BASE_URL}/services/${encodeURIComponent(slug)}`,
-    lastModified: now,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: "weekly" as const,
     priority: 0.9,
   }));
 
-  // 4. Apps4sale products
-  const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
-    (product) => ({
-      url: `${BASE_URL}/apps4sale/${product.slug}`,
-      lastModified: now,
+  // 4. Component Lab detail pages — one canonical URL per component.
+  // Each /componentlab/[slug] page has unique server-rendered spec content,
+  // so they belong in the sitemap as first-class indexable URLs.
+  const componentLabEntries: MetadataRoute.Sitemap = ALL_DASHBOARD_COMPONENTS.map(
+    (component) => ({
+      url: `${BASE_URL}/componentlab/${component.id}`,
+      lastModified: STATIC_LASTMOD,
       changeFrequency: "monthly" as const,
-      priority: 0.6,
+      priority: 0.7,
     }),
   );
 
-  // 5. Blog posts and CMS case studies from API
+  // 6. Blog posts and CMS case studies from API
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
   // (Previously skipped this fetch during `next build` via a NEXT_PHASE check,
@@ -176,29 +314,61 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // now always runs.)
   let blogEntries: MetadataRoute.Sitemap = [];
   let cmsCaseStudyEntries: MetadataRoute.Sitemap = [];
+  let cmsConceptEntries: MetadataRoute.Sitemap = [];
+
+  // Concept pages with built-in content (screens/concepts/details.ts).
+  const staticConceptEntries: MetadataRoute.Sitemap = Object.keys(
+    CONCEPT_DETAILS,
+  ).map((slug) => ({
+    url: `${BASE_URL}/concepts/${slug}`,
+    lastModified: STATIC_LASTMOD,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
 
   try {
-    const { listPosts } = await import("@/lib/pirateCOS/public-client");
-    const posts = await fetchAllPosts(listPosts);
+    const { listPosts, SITEMAP_FIELDS } = await import(
+      "@/lib/cometCOS/public-client"
+    );
+    const posts = await fetchAllPosts(listPosts, SITEMAP_FIELDS);
 
     blogEntries = posts
-      .filter((post: any) => post.postType !== "case-study")
+      .filter(
+        (post: any) =>
+          post.postType !== "case-study" && post.postType !== "concept",
+      )
       .map((blog: any) => ({
         url: `${BASE_URL}/${blog.slug}`,
-        lastModified: blog.updatedAt
-          ? new Date(blog.updatedAt).toISOString()
-          : now,
+        lastModified: toLastMod(blog.updatedAt, blog.publishedAt, blog.createdAt),
         changeFrequency: "weekly" as const,
         priority: 0.7,
       }));
 
     cmsCaseStudyEntries = posts
       .filter((post: any) => post.postType === "case-study")
+      // Held/unreleased case studies must not appear in the sitemap.
+      .filter((study: any) => !HELD_DRAFT_SLUGS.has(study.slug))
       .map((study: any) => ({
         url: `${BASE_URL}/case-studies/${study.slug}`,
-        lastModified: study.updatedAt
-          ? new Date(study.updatedAt).toISOString()
-          : now,
+        lastModified: toLastMod(
+          study.updatedAt,
+          study.publishedAt,
+          study.createdAt,
+        ),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      }));
+
+    // Concepts live under /concepts, not /[slug]. Skip noindex posts.
+    cmsConceptEntries = posts
+      .filter((post: any) => post.postType === "concept" && !post.seo?.noIndex)
+      .map((concept: any) => ({
+        url: `${BASE_URL}/concepts/${concept.slug}`,
+        lastModified: toLastMod(
+          concept.updatedAt,
+          concept.publishedAt,
+          concept.createdAt,
+        ),
         changeFrequency: "monthly" as const,
         priority: 0.8,
       }));
@@ -212,9 +382,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...botEntries,
     ...serviceEntries,
+    ...componentLabEntries,
     ...cmsCaseStudyEntries,
+    ...staticConceptEntries,
+    ...cmsConceptEntries,
     ...blogEntries,
-    ...apps4saleEntries,
   ];
 
   const seenUrls = new Set<string>();

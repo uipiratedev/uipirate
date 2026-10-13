@@ -1,6 +1,4 @@
-import type { ReactNode } from "react";
-
-import React, { useLayoutEffect, useRef, useCallback } from "react";
+import React, { type ReactNode, useLayoutEffect, useRef, useCallback } from "react";
 import Lenis from "lenis";
 
 export interface ScrollStackItemProps {

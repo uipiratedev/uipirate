@@ -1,37 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 import AnimatedAnalyticsChart from "./AnimatedAnalyticsChart";
 
-// Animation variants for bento cards - smooth and buttery
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.08,
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1], // Custom ease-out expo for smooth deceleration
-    },
-  }),
-};
+import { CountUp, Reveal, RevealGroup } from "@/components/motion";
 
 const BentoGrid = () => {
   return (
-    <div className="section-container autoShowBottom">
-      {/* Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="section-container">
+      {/* Bento Grid — <Reveal> auto-degrades to opacity-only on mobile, so the
+          4 gradient-heavy card subtrees don't all transform at once there. */}
+      <RevealGroup className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* UX/UI Design Card - Tall */}
         <div className="premium-card md:row-span-2">
-          <motion.div
-            className="premium-card-inner rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden h-full"
-            custom={0}
-            initial="hidden"
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+          <Reveal
+            className="premium-card-inner group h-full overflow-hidden rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-lg"
+            distance="sm"
+            variant="bloom"
           >
             <div className="h-full flex flex-col justify-between">
               {/* Chart Visualization */}
@@ -54,17 +38,14 @@ const BentoGrid = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
         {/* Dashboards & SaaS UX Card */}
         <div className="premium-card md:col-span-2 h-[320px]">
-          <motion.div
-            className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[320px] overflow-hidden"
-            custom={2}
-            initial="hidden"
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+          <Reveal
+            className="premium-card-inner group h-[320px] overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+            distance="sm"
+            variant="bloom"
           >
             <div className="h-full flex flex-col">
               <div className="flex-1 mb-2 overflow-hidden">
@@ -97,7 +78,7 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="text-xs font-bold text-gray-900">
-                        $54k
+                        <CountUp value="$54k" />
                       </div>
                       {/* Dollar Sign SVG */}
                       <svg
@@ -130,7 +111,7 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="text-xs font-bold text-gray-900">
-                        12.8k
+                        <CountUp value="12.8k" />
                       </div>
                       {/* Users SVG */}
                       <svg
@@ -163,7 +144,7 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="text-xs font-bold text-gray-900">
-                        3.2%
+                        <CountUp value="3.2%" />
                       </div>
                       {/* Target/Conversion SVG */}
                       <svg
@@ -306,22 +287,19 @@ const BentoGrid = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
 
         {/* Websites & Landing Pages Card */}
         <div className="premium-card h-[320px]">
-          <motion.div
-            className="premium-card-inner rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[320px]"
-            custom={3}
-            initial="hidden"
+          <Reveal
+            className="premium-card-inner group relative h-[320px] overflow-hidden rounded-2xl border border-gray-200 p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+            distance="sm"
             style={{
               background:
                 "linear-gradient(184deg, rgba(255, 255, 255, 0.00) 30%, #FFF 70%), linear-gradient(90deg, rgba(255, 235, 210, 0.50) 0.07%, rgba(255, 220, 180, 0.40) 40.93%, rgba(255, 245, 230, 0.30) 97.76%), #FFF",
             }}
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+            variant="bloom"
           >
             <div className="h-full flex flex-col justify-between relative">
               {/* White Gradient Overlay */}
@@ -423,23 +401,20 @@ const BentoGrid = () => {
                   Websites & Landing Pages
                 </h3>
                 <p className="text-gray-600 font-medium text-sm md:text-sm leading-snug">
-                  Pages built to convert visitors into leads — not just to look
+                  Pages built to convert visitors into leads, not just to look
                   good on Awwwards.
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
 
         {/* Built With the Best Card */}
         <div className="premium-card h-[320px]">
-          <motion.div
-            className="premium-card-inner bg-gradient-to-br hover-arc-border from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[320px] overflow-hidden"
-            custom={4}
-            initial="hidden"
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+          <Reveal
+            className="premium-card-inner hover-arc-border group h-[320px] overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+            distance="sm"
+            variant="bloom"
           >
             <div className="h-full flex flex-col">
               {/* Content */}
@@ -448,7 +423,7 @@ const BentoGrid = () => {
                   Built With the Best
                 </h3>
                 <p className="text-gray-600 font-medium max-md:text-sm">
-                  React, Angular, Next.js, Figma, GSAP — we use what your
+                  React, Angular, Next.js, Figma, GSAP, we use what your
                   product actually needs, not what&apos;s trending.
                 </p>
               </div>
@@ -474,7 +449,7 @@ const BentoGrid = () => {
                     {/* OUTER CIRCLE - 8 icons (Perfect Octagon - 45° spacing) */}
                     {/* React */}
                     <div className="absolute top-[0%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="React"
                           className="w-8 h-8 object-contain"
@@ -485,7 +460,7 @@ const BentoGrid = () => {
 
                     {/* Next.js */}
                     <div className="absolute top-[15%] right-[15%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Next.js"
                           className="w-8 h-8 object-contain"
@@ -496,7 +471,7 @@ const BentoGrid = () => {
 
                     {/* TypeScript */}
                     <div className="absolute top-[50%] right-[0%] -translate-y-1/2 animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="TypeScript"
                           className="w-8 h-8 object-contain"
@@ -507,7 +482,7 @@ const BentoGrid = () => {
 
                     {/* Tailwind CSS */}
                     <div className="absolute bottom-[15%] right-[15%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Tailwind CSS"
                           className="w-8 h-8 object-contain"
@@ -518,7 +493,7 @@ const BentoGrid = () => {
 
                     {/* Figma */}
                     <div className="absolute bottom-[0%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Figma"
                           className="w-8 h-8 object-contain"
@@ -529,7 +504,7 @@ const BentoGrid = () => {
 
                     {/* Framer */}
                     <div className="absolute bottom-[15%] left-[15%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Framer"
                           className="w-8 h-8 object-contain"
@@ -540,7 +515,7 @@ const BentoGrid = () => {
 
                     {/* GSAP */}
                     <div className="absolute top-[50%] left-[0%] -translate-y-1/2 animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="GSAP"
                           className="w-8 h-8 object-contain"
@@ -551,7 +526,7 @@ const BentoGrid = () => {
 
                     {/* Vercel */}
                     <div className="absolute top-[15%] left-[15%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Vercel"
                           className="w-8 h-8 object-contain"
@@ -563,7 +538,7 @@ const BentoGrid = () => {
                     {/* MIDDLE CIRCLE - 6 icons (Perfect Hexagon - 60° spacing) */}
                     {/* Angular */}
                     <div className="absolute top-[18%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Angular"
                           className="w-8 h-8 object-contain"
@@ -574,7 +549,7 @@ const BentoGrid = () => {
 
                     {/* Three.js */}
                     <div className="absolute top-[32%] right-[18%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Three.js"
                           className="w-8 h-8 object-contain"
@@ -585,7 +560,7 @@ const BentoGrid = () => {
 
                     {/* GitHub */}
                     <div className="absolute bottom-[32%] right-[18%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="GitHub"
                           className="w-8 h-8 object-contain"
@@ -596,7 +571,7 @@ const BentoGrid = () => {
 
                     {/* Photoshop */}
                     <div className="absolute bottom-[18%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Adobe Photoshop"
                           className="w-8 h-8 object-contain"
@@ -607,7 +582,7 @@ const BentoGrid = () => {
 
                     {/* Illustrator */}
                     <div className="absolute bottom-[32%] left-[18%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Adobe Illustrator"
                           className="w-8 h-8 object-contain"
@@ -618,7 +593,7 @@ const BentoGrid = () => {
 
                     {/* Notion */}
                     <div className="absolute top-[32%] left-[18%] animate-[spin_25s_linear_infinite_reverse]">
-                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                      <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-[transform,box-shadow] duration-500 hover:scale-125 hover:shadow-xl">
                         <img
                           alt="Notion"
                           className="w-8 h-8 object-contain"
@@ -630,9 +605,9 @@ const BentoGrid = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
-      </div>
+      </RevealGroup>
     </div>
   );
 };

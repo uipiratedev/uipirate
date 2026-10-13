@@ -1,16 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import FaqsAccordion from "@/components/FaqsAccordion";
+import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
-import GlassBadge from "@/components/GlassBadge";
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const faqs: FAQItem[] = [
+export const CASE_STUDIES_FAQS = [
   {
     question: "How long does a typical project take?",
     answer:
@@ -43,86 +37,26 @@ const faqs: FAQItem[] = [
   },
 ];
 
+export const faqs = CASE_STUDIES_FAQS;
+
 const CaseStudiesFAQ = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <section className="py-16 max-md:py-12 -mt-52">
       <div className="section-container">
-        <motion.div
-          className="text-center mb-12 max-md:mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          whileInView={{ opacity: 1, y: 0 }}
-        >
-          <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">FAQ</GlassBadge>
-          </div>
-          <h2 className="heading-center">
+        <Reveal variant="up">
+          <SectionHeader
+            chip="FAQ"
+            subcopy="Everything you need to know about working with us"
+          >
             Common <span className="text-brand-orange">Questions</span>
-          </h2>
-          <p className="text-gray-500 max-w-2xl mx-auto mt-4">
-            Everything you need to know about working with us
-          </p>
-        </motion.div>
+          </SectionHeader>
+        </Reveal>
 
-        <div className="max-w-3xl mx-auto space-y-4">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={index}
-              className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-gray-300 transition-colors"
-              initial={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              viewport={{ once: true }}
-              whileInView={{ opacity: 1, y: 0 }}
-            >
-              <button
-                className="w-full px-6 py-5 max-md:px-4 max-md:py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
-                onClick={() => toggleFAQ(index)}
-              >
-                <span className="text-base max-md:text-sm font-semibold text-gray-900 pr-4">
-                  {faq.question}
-                </span>
-                <motion.svg
-                  animate={{ rotate: openIndex === index ? 180 : 0 }}
-                  className="w-5 h-5 text-brand-orange shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  transition={{ duration: 0.3 }}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M19 9l-7 7-7-7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                  />
-                </motion.svg>
-              </button>
-
-              {openIndex === index && (
-                <motion.div
-                  animate={{ height: "auto", opacity: 1 }}
-                  className="overflow-hidden"
-                  exit={{ height: 0, opacity: 0 }}
-                  initial={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="px-6 pb-5 max-md:px-4 max-md:pb-4">
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </motion.div>
-              )}
-            </motion.div>
-          ))}
-        </div>
+        <FaqsAccordion
+          defaultExpandedKeys={[]}
+          items={CASE_STUDIES_FAQS}
+          showCta={true}
+        />
       </div>
     </section>
   );

@@ -16,26 +16,30 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
-          description: "IA, user flows, and high-fidelity UI from first sketch to Figma handoff.",
+          description:
+            "IA, user flows, and high-fidelity UI from first sketch to Figma handoff.",
         },
         {
-          category: "Saas & AI Development",
+          category: "SaaS & AI Development",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334941/saasflip_rhxxax.svg",
           href: "/services/SaaS-&-AI-Development",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164139/ChatGPT_Image_Aug_27_2026_03_35_38_PM_1_uyvn6s.svg",
-          description: "React, Next.js, and Angular development with zero hand-off gaps.",
+          description:
+            "React, Next.js, and Angular development with zero hand-off gaps.",
         },
 
         {
           category: "Landing Pages & Business Websites",
+          shortCategory: "Landing Pages & Websites",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334378/landingflip_duapct.svg",
           href: "/services/Landing-Pages-&-Business-Websites",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164087/image_239_guz7zd.svg",
-          description: "Conversion-focused pages built where research dictates.",
+          description:
+            "Conversion-focused pages built where research dictates.",
         },
         {
           category: "UX Audits & Consultation",
@@ -44,13 +48,39 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164113/ChatGPT_Image_Aug_27_2026_03_37_27_PM_1_p1spkb.svg",
-          description: "Find where users drop off and get a prioritised, actionable fix list.",
+          description:
+            "Find where users drop off and get a prioritised, actionable fix list.",
         },
       ],
     },
     {
       label: "Works",
       href: "/case-studies",
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          category: "Case Studies",
+          shortCategory: "Case Studies",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/casestudyflip_p3vfp3.svg",
+          href: "/case-studies",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
+          description:
+            "50+ shipped client products, enterprise platforms, and deep-dive design stories.",
+        },
+        {
+          category: "Our Products",
+          shortCategory: "Our Products",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/toolsflip_n5bwmt.svg",
+          href: "/products",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181141/tools_q1fxyd.svg",
+          description:
+            "Proprietary platforms, AI systems, and production engines built and operated by UI Pirate.",
+        },
+      ],
     },
     {
       label: "Pricing",
@@ -72,16 +102,18 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670800/blog_v5hfmy.svg",
-          description: "Practical SaaS UX articles written by the team that ships the work.",
+          description:
+            "Practical SaaS UX articles written by the team that ships the work.",
         },
         {
-          category: "Case Studies",
+          category: "Concepts",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/casestudyflip_p3vfp3.svg",
-          href: "/case-studies",
+          href: "/concepts",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
-          description: "Real briefs, constraints, and shipped products with before & afters.",
+          description:
+            "Real concepts, ideas, and thoughts ",
         },
         // {
         //   category: "FAQs",
@@ -98,7 +130,8 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181141/tools_q1fxyd.svg",
-          description: "Free calculators and generators built for our own internal projects.",
+          description:
+            "Free calculators and generators built for our own internal projects.",
         },
         {
           category: "Component Lab",
@@ -107,7 +140,8 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181120/componentlab_warfka.svg",
-          description: "Interactive React components to copy, test, and drop into your projects.",
+          description:
+            "Interactive React components to copy, test, and drop into your projects.",
         },
         // {
         //   category: "3D Tactile Buttons",
@@ -125,6 +159,10 @@ export const siteConfig = {
     {
       label: "Works",
       href: "/case-studies",
+      subItems: [
+        { label: "Case Studies", href: "/case-studies" },
+        { label: "Our Products", href: "/products" },
+      ],
     },
     {
       label: "Pricing",
@@ -134,12 +172,11 @@ export const siteConfig = {
       label: "Resources",
       href: "#",
       subItems: [
-        { label: "Blog", href: "/blogs" },
+        { label: "Blog & Tutorials", href: "/blogs" },
         { label: "Case Studies", href: "/case-studies" },
-        { label: "FAQs", href: "/faqs" },
-        { label: "Free Tools", href: "/tools" },
+        { label: "Concepts & Proposals", href: "/concepts" },
+        { label: "Tools", href: "/tools" },
         { label: "Component Lab", href: "/componentlab" },
-        { label: "3D Buttons", href: "/buttons" },
       ],
     },
     {

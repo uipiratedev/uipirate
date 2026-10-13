@@ -3,7 +3,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
-export type SlideGrowTheme = "uipirate" | "pirate" | "silver" | "dark" | "cyberpunk" | "emerald" | "orange";
+export type SlideGrowTheme =
+  | "uipirate"
+  | "pirate"
+  | "silver"
+  | "dark"
+  | "cyberpunk"
+  | "emerald"
+  | "orange";
 export type SlideGrowStateMode = "interactive" | "standerd" | "hover" | "slid";
 export type SlideGrowInteractionMode = "both" | "drag" | "click" | "hover";
 export type SlideGrowSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -13,7 +20,7 @@ export interface SlideGrowButtonProps {
   startLabel?: string;
   /** Active label text revealed when slid (default: "Lets Grow!") */
   activeLabel?: string;
-  /** Visual theme preset (default: "silver" from Figma) */
+  /** Visual theme preset (default: "silver" from spec) */
   theme?: SlideGrowTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: SlideGrowSize;
@@ -32,7 +39,7 @@ export interface SlideGrowButtonProps {
 }
 
 /**
- * 1:1 Pixel-Accurate Implementation of Figma Nodes 17:1222 & 17:1240
+ * 1:1 Pixel-Accurate Implementation of Spec Nodes 17:1222 & 17:1240
  * Master Button Collection - Interactive Swipe to Grow / Slide to Unlock Slider Button
  */
 export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
@@ -47,17 +54,27 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   scale = 1,
   className = "",
 }) => {
-  const [isCompleted, setIsCompleted] = useState(stateMode === "slid" || stateMode === "hover");
+  const [isCompleted, setIsCompleted] = useState(
+    stateMode === "slid" || stateMode === "hover",
+  );
   const [isHovered, setIsHovered] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Scaled dimensions matching exact Figma 247x76px chassis & 48px knob
+  // Scaled dimensions matching exact spec 247x76px chassis & 48px knob
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -110,26 +127,86 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
     },
   }[__baseSize];
 
-  // Drag position motion value
-  const dragX = useMotionValue(stateMode === "slid" || stateMode === "hover" ? sizeConfig.maxDrag : 0);
+  // Measurement refs to dynamically grow chassis width when text is long
+  const startSizerRef = useRef<HTMLSpanElement>(null);
+  const activeSizerRef = useRef<HTMLSpanElement>(null);
+  const [measuredTextW, setMeasuredTextW] = useState(0);
 
-  // Sync forced stateMode changes
+  useEffect(() => {
+    const sW = startSizerRef.current?.getBoundingClientRect().width || 0;
+    const aW = activeSizerRef.current?.getBoundingClientRect().width || 0;
+    const maxW = Math.ceil(Math.max(sW, aW));
+
+    if (maxW > 0 && maxW !== measuredTextW) {
+      setMeasuredTextW(maxW);
+    }
+  }, [startLabel, activeLabel, sizeConfig.fontSize]);
+
+  // Compute character width estimation for instant SSR / initial paint
+  const fontCharWidth =
+    __baseSize === "sm" ? 8.5 : __baseSize === "lg" ? 13 : 10.5;
+  const estimatedTextW = Math.ceil(
+    Math.max((startLabel || "").length, (activeLabel || "").length) *
+      fontCharWidth,
+  );
+  const effectiveTextW = Math.max(measuredTextW, estimatedTextW);
+
+  // Default available text slot inside standard Spec track
+  // sm: 165 - 38 - 22 = 105; md: 204 - 48 - 28 = 128; lg: 248 - 58 - 34 = 156
+  const defaultTextSlot = {
+    sm: 105,
+    md: 128,
+    lg: 156,
+  }[__baseSize];
+
+  // Extra width needed if text exceeds default available slot
+  const extraWidthNeeded = Math.max(0, effectiveTextW - defaultTextSlot);
+
+  // Dynamically computed track & chassis dimensions
+  const computedTrackW = sizeConfig.trackW + extraWidthNeeded;
+  const computedWidth = sizeConfig.width + extraWidthNeeded;
+  const computedMaxDrag = sizeConfig.maxDrag + extraWidthNeeded;
+
+  // Drag position motion value
+  const dragX = useMotionValue(
+    stateMode === "slid" || stateMode === "hover" ? computedMaxDrag : 0,
+  );
+
+  // Sync forced stateMode changes or width updates
   useEffect(() => {
     if (stateMode === "slid" || stateMode === "hover") {
-      animate(dragX, sizeConfig.maxDrag, { type: "spring", stiffness: 400, damping: 30 });
+      animate(dragX, computedMaxDrag, {
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+      });
       setIsCompleted(true);
     } else if (stateMode === "standerd") {
       animate(dragX, 0, { type: "spring", stiffness: 400, damping: 30 });
       setIsCompleted(false);
+    } else if (isCompleted) {
+      dragX.set(computedMaxDrag);
     }
-  }, [stateMode, sizeConfig.maxDrag, dragX]);
+  }, [stateMode, computedMaxDrag, dragX]);
 
-  // Transform values based on drag progress (0 to maxDrag)
-  const startTextOpacity = useTransform(dragX, [0, sizeConfig.maxDrag * 0.4], [1, 0]);
-  const activeTextOpacity = useTransform(dragX, [sizeConfig.maxDrag * 0.4, sizeConfig.maxDrag], [0, 1]);
-  const beamOpacity = useTransform(dragX, [0, sizeConfig.maxDrag * 0.7], [0, 1]);
-  const dotOpacity = useTransform(dragX, [0, sizeConfig.maxDrag * 0.3], [1, 0]);
-  const arrowOpacity = useTransform(dragX, [sizeConfig.maxDrag * 0.3, sizeConfig.maxDrag], [0, 1]);
+  // Transform values based on drag progress (0 to computedMaxDrag)
+  const startTextOpacity = useTransform(
+    dragX,
+    [0, computedMaxDrag * 0.4],
+    [1, 0],
+  );
+  const activeTextOpacity = useTransform(
+    dragX,
+    [computedMaxDrag * 0.4, computedMaxDrag],
+    [0, 1],
+  );
+  const beamOpacity = useTransform(dragX, [0, computedMaxDrag * 0.7], [0, 1]);
+  const dotOpacity = useTransform(dragX, [0, computedMaxDrag * 0.3], [1, 0]);
+  const arrowOpacity = useTransform(
+    dragX,
+    [computedMaxDrag * 0.3, computedMaxDrag],
+    [0, 1],
+  );
 
   // Themes configurations
   const themeStyles = {
@@ -141,8 +218,10 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       activeTextColor: "#FF5B04",
       activeTextGlow: "0px 0px 8px rgba(255, 91, 4, 0.9)",
       beamBg: "#7C2D12",
-      beamShadow: "0px 0px 12px 0px #FF5B04, 0px 4px 44px 0px rgba(255,91,4,0.5), inset 0px 0px 10px 0px #FF5B04",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #FF5B04 0%, #C2410C 100%)",
+      beamShadow:
+        "0px 0px 12px 0px #FF5B04, 0px 4px 44px 0px rgba(255,91,4,0.5), inset 0px 0px 10px 0px #FF5B04",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #FF5B04 0%, #C2410C 100%)",
       knobBorder: "#FFA114",
       knobShadow:
         "0px 91px 76px rgba(255,91,4,0.4), 0px 38px 32px rgba(255,91,4,0.3), 0px 20px 17px rgba(255,91,4,0.2)",
@@ -157,8 +236,10 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       activeTextColor: "#FF5B04",
       activeTextGlow: "0px 0px 8px rgba(255, 91, 4, 0.9)",
       beamBg: "#7C2D12",
-      beamShadow: "0px 0px 12px 0px #FF5B04, 0px 4px 44px 0px rgba(255,91,4,0.5), inset 0px 0px 10px 0px #FF5B04",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #FF5B04 0%, #C2410C 100%)",
+      beamShadow:
+        "0px 0px 12px 0px #FF5B04, 0px 4px 44px 0px rgba(255,91,4,0.5), inset 0px 0px 10px 0px #FF5B04",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #FF5B04 0%, #C2410C 100%)",
       knobBorder: "#FFA114",
       knobShadow:
         "0px 91px 76px rgba(255,91,4,0.4), 0px 38px 32px rgba(255,91,4,0.3), 0px 20px 17px rgba(255,91,4,0.2)",
@@ -166,15 +247,18 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         "0px 80px 40px rgba(45,15,5,0.7), 0px 35px 20px rgba(45,15,5,0.5), 0px 10px 10px rgba(0,0,0,0.3)",
     },
     silver: {
-      chassisBg: "linear-gradient(180deg, rgba(200, 200, 200, 0.85) 0%, rgba(130, 130, 130, 0.85) 100%)",
+      chassisBg:
+        "linear-gradient(180deg, rgba(200, 200, 200, 0.85) 0%, rgba(130, 130, 130, 0.85) 100%)",
       chassisBorder: "rgba(255, 255, 255, 0.45)",
       trackBg: "rgba(0, 0, 0, 0.14)",
       startTextColor: "#FFFFFF",
       activeTextColor: "#468AFF",
       activeTextGlow: "0px 0px 4px #C1CCFF",
       beamBg: "#FFFFFF",
-      beamShadow: "0px 0px 7px 0px #A5C0FF, 0px 4px 44px 0px #A6ADFF, inset 0px 0px 10px 0px #95BEFF",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #001AFF 0%, #1500C9 100%)",
+      beamShadow:
+        "0px 0px 7px 0px #A5C0FF, 0px 4px 44px 0px #A6ADFF, inset 0px 0px 10px 0px #95BEFF",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #001AFF 0%, #1500C9 100%)",
       knobBorder: "#42D3FF",
       knobShadow:
         "0px 91px 76px rgba(0,20,255,0.33), 0px 38px 32px rgba(0,20,255,0.24), 0px 20px 17px rgba(0,20,255,0.2), 0px 11px 9.5px rgba(0,20,255,0.17), 0px 6px 5px rgba(0,20,255,0.13), 0px 2.5px 2px rgba(0,20,255,0.09)",
@@ -189,8 +273,10 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       activeTextColor: "#06B6D4",
       activeTextGlow: "0px 0px 6px rgba(6, 182, 212, 0.8)",
       beamBg: "#164E63",
-      beamShadow: "0px 0px 10px 0px #06B6D4, 0px 4px 44px 0px rgba(6,182,212,0.4), inset 0px 0px 10px 0px #06B6D4",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #0891B2 0%, #0E7490 100%)",
+      beamShadow:
+        "0px 0px 10px 0px #06B6D4, 0px 4px 44px 0px rgba(6,182,212,0.4), inset 0px 0px 10px 0px #06B6D4",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #0891B2 0%, #0E7490 100%)",
       knobBorder: "#67E8F9",
       knobShadow:
         "0px 91px 76px rgba(6,182,212,0.35), 0px 38px 32px rgba(6,182,212,0.25), 0px 20px 17px rgba(6,182,212,0.2)",
@@ -205,8 +291,10 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       activeTextColor: "#C084FC",
       activeTextGlow: "0px 0px 8px rgba(192, 132, 252, 0.9)",
       beamBg: "#3B0764",
-      beamShadow: "0px 0px 12px 0px #C084FC, 0px 4px 44px 0px rgba(192,132,252,0.5), inset 0px 0px 10px 0px #C084FC",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #9333EA 0%, #6B21A8 100%)",
+      beamShadow:
+        "0px 0px 12px 0px #C084FC, 0px 4px 44px 0px rgba(192,132,252,0.5), inset 0px 0px 10px 0px #C084FC",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #9333EA 0%, #6B21A8 100%)",
       knobBorder: "#F0ABFC",
       knobShadow:
         "0px 91px 76px rgba(168,85,247,0.4), 0px 38px 32px rgba(168,85,247,0.3), 0px 20px 17px rgba(168,85,247,0.2)",
@@ -221,8 +309,10 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       activeTextColor: "#34D399",
       activeTextGlow: "0px 0px 6px rgba(52, 211, 153, 0.8)",
       beamBg: "#064E3B",
-      beamShadow: "0px 0px 10px 0px #34D399, 0px 4px 44px 0px rgba(52,211,153,0.4), inset 0px 0px 10px 0px #34D399",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #059669 0%, #047857 100%)",
+      beamShadow:
+        "0px 0px 10px 0px #34D399, 0px 4px 44px 0px rgba(52,211,153,0.4), inset 0px 0px 10px 0px #34D399",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #059669 0%, #047857 100%)",
       knobBorder: "#6EE7B7",
       knobShadow:
         "0px 91px 76px rgba(16,185,129,0.35), 0px 38px 32px rgba(16,185,129,0.25), 0px 20px 17px rgba(16,185,129,0.2)",
@@ -237,8 +327,10 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       activeTextColor: "#FB923C",
       activeTextGlow: "0px 0px 6px rgba(251, 146, 60, 0.8)",
       beamBg: "#7C2D12",
-      beamShadow: "0px 0px 10px 0px #FB923C, 0px 4px 44px 0px rgba(251,146,60,0.4), inset 0px 0px 10px 0px #FB923C",
-      knobGradient: "radial-gradient(50% 50% at 50% 50%, #EA580C 0%, #C2410C 100%)",
+      beamShadow:
+        "0px 0px 10px 0px #FB923C, 0px 4px 44px 0px rgba(251,146,60,0.4), inset 0px 0px 10px 0px #FB923C",
+      knobGradient:
+        "radial-gradient(50% 50% at 50% 50%, #EA580C 0%, #C2410C 100%)",
       knobBorder: "#FDBA74",
       knobShadow:
         "0px 91px 76px rgba(249,115,22,0.35), 0px 38px 32px rgba(249,115,22,0.25), 0px 20px 17px rgba(249,115,22,0.2)",
@@ -247,15 +339,21 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
     },
   }[theme];
 
-  const canDrag = stateMode === "interactive" && (interactionMode === "both" || interactionMode === "drag");
-  const canClick = stateMode === "interactive" && (interactionMode === "both" || interactionMode === "click");
-  const isHoverMode = stateMode === "interactive" && interactionMode === "hover";
+  const canDrag =
+    stateMode === "interactive" &&
+    (interactionMode === "both" || interactionMode === "drag");
+  const canClick =
+    stateMode === "interactive" &&
+    (interactionMode === "both" || interactionMode === "click");
+  const isHoverMode =
+    stateMode === "interactive" && interactionMode === "hover";
 
   // Handle drag end snapping and callbacks
   const handleDragEnd = () => {
     const currentX = dragX.get();
-    if (currentX > sizeConfig.maxDrag * 0.5) {
-      animate(dragX, sizeConfig.maxDrag, {
+
+    if (currentX > computedMaxDrag * 0.5) {
+      animate(dragX, computedMaxDrag, {
         type: "spring",
         stiffness: 450,
         damping: 30,
@@ -291,7 +389,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         },
       });
     } else {
-      animate(dragX, sizeConfig.maxDrag, {
+      animate(dragX, computedMaxDrag, {
         type: "spring",
         stiffness: 400,
         damping: 30,
@@ -307,7 +405,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   const handleHoverStart = () => {
     setIsHovered(true);
     if (isHoverMode) {
-      animate(dragX, sizeConfig.maxDrag, {
+      animate(dragX, computedMaxDrag, {
         type: "spring",
         stiffness: 400,
         damping: 30,
@@ -342,34 +440,55 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         transformOrigin: "center center",
       }}
     >
+      {/* Hidden measurement container to dynamically scale button with text length */}
+      <div
+        aria-hidden="true"
+        className="fixed -top-[9999px] -left-[9999px] invisible opacity-0 pointer-events-none flex flex-col"
+        style={{ position: "fixed", left: -9999, top: -9999 }}
+      >
+        <span
+          ref={startSizerRef}
+          className={`font-['Figtree'],sans-serif font-normal capitalize whitespace-nowrap ${sizeConfig.fontSize}`}
+        >
+          {startLabel}
+        </span>
+        <span
+          ref={activeSizerRef}
+          className={`font-['Figtree'],sans-serif font-normal capitalize whitespace-nowrap ${sizeConfig.fontSize}`}
+        >
+          {activeLabel}
+        </span>
+      </div>
+
       {/* ─────────────────────────────────────────────────────────────
-          METALLIC CHASSIS CAPSULE (Figma Nodes 17:1226 / 17:1227)
+          METALLIC CHASSIS CAPSULE (Spec Nodes 17:1226 / 17:1227)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
-        onMouseEnter={handleHoverStart}
-        onMouseLeave={handleHoverEnd}
-        onClick={handleToggleClick}
-        whileHover={{ scale: 1.02 }}
-        whileTap={canClick ? { scale: 0.972, y: 1.5 } : undefined}
-        transition={{ type: "spring", stiffness: 500, damping: 28 }}
-        className={`relative flex items-center justify-center border-[1.5px] backdrop-blur-md ${sizeConfig.radius} overflow-hidden ${canClick ? "cursor-pointer" : ""
-          }`}
+        className={`relative flex items-center justify-center border-[1.5px] backdrop-blur-md ${sizeConfig.radius} overflow-hidden ${
+          canClick ? "cursor-pointer" : ""
+        }`}
         style={{
-          width: sizeConfig.width,
+          width: computedWidth,
           height: sizeConfig.height,
           backgroundImage: themeStyles.chassisBg,
           borderColor: themeStyles.chassisBorder,
           boxShadow: `${themeStyles.chassisDropShadow}, 0px 10px 10px rgba(0,0,0,0.14)`,
         }}
+        transition={{ type: "spring", stiffness: 500, damping: 28 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={canClick ? { scale: 0.972, y: 1.5 } : undefined}
+        onClick={handleToggleClick}
+        onMouseEnter={handleHoverStart}
+        onMouseLeave={handleHoverEnd}
       >
         {/* ─────────────────────────────────────────────────────────────
-            RECESSED TRACK CAVITY (Figma Nodes 17:1229 / 17:1258)
+            RECESSED TRACK CAVITY (Spec Nodes 17:1229 / 17:1258)
            ───────────────────────────────────────────────────────────── */}
         <div
           ref={trackRef}
           className={`relative flex items-center ${sizeConfig.trackRadius} overflow-hidden`}
           style={{
-            width: sizeConfig.trackW,
+            width: computedTrackW,
             height: sizeConfig.trackH,
             backgroundColor: themeStyles.trackBg,
             boxShadow: "inset 0px 2px 4px rgba(0,0,0,0.35)",
@@ -390,7 +509,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
           <motion.div
             className={`absolute inset-y-0 left-4 flex items-center justify-center font-['Figtree'],sans-serif font-normal capitalize whitespace-nowrap pointer-events-none ${sizeConfig.fontSize}`}
             style={{
-              right: sizeConfig.knobSize,
+              right: sizeConfig.knobSize + 8,
               color: themeStyles.activeTextColor,
               textShadow: themeStyles.activeTextGlow,
               opacity: activeTextOpacity,
@@ -403,7 +522,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
           <motion.div
             className={`absolute inset-y-0 right-4 flex items-center justify-center font-['Figtree'],sans-serif font-normal capitalize whitespace-nowrap pointer-events-none ${sizeConfig.fontSize}`}
             style={{
-              left: sizeConfig.knobSize,
+              left: sizeConfig.knobSize + 8,
               color: themeStyles.startTextColor,
               opacity: startTextOpacity,
             }}
@@ -413,20 +532,20 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            GLOWING BLUE SLIDER KNOB (Figma Nodes 17:1235 / 17:1263)
+            GLOWING BLUE SLIDER KNOB (Spec Nodes 17:1235 / 17:1263)
            ───────────────────────────────────────────────────────────── */}
         <motion.div
+          className={`absolute z-20 flex items-center justify-center rounded-full border-[0.5px] select-none ${
+            canDrag
+              ? "cursor-grab active:cursor-grabbing"
+              : canClick
+                ? "cursor-pointer"
+                : ""
+          }`}
           drag={canDrag ? "x" : false}
-          dragConstraints={{ left: 0, right: sizeConfig.maxDrag }}
+          dragConstraints={{ left: 0, right: computedMaxDrag }}
           dragElastic={0.08}
           dragMomentum={false}
-          onDragEnd={handleDragEnd}
-          onClick={(e) => {
-            if (canClick) {
-              e.stopPropagation();
-              handleToggleClick();
-            }
-          }}
           style={{
             x: dragX,
             left: sizeConfig.knobLeft,
@@ -439,8 +558,13 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.96 }}
-          className={`absolute z-20 flex items-center justify-center rounded-full border-[0.5px] select-none ${canDrag ? "cursor-grab active:cursor-grabbing" : canClick ? "cursor-pointer" : ""
-            }`}
+          onClick={(e) => {
+            if (canClick) {
+              e.stopPropagation();
+              handleToggleClick();
+            }
+          }}
+          onDragEnd={handleDragEnd}
         >
           {/* Resting State: Glowing Center White Dot (Node 17:1222) */}
           <motion.div
@@ -460,25 +584,25 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
             }}
           >
             <svg
-              width={sizeConfig.arrowSize}
-              height={sizeConfig.arrowSize}
-              viewBox="0 0 24 24"
               fill="none"
+              height={sizeConfig.arrowSize}
               stroke="white"
-              strokeWidth="2.8"
               strokeLinecap="round"
               strokeLinejoin="round"
+              strokeWidth="2.8"
               style={{
                 filter: "drop-shadow(0px 0px 4px rgba(255,255,255,0.9))",
               }}
+              viewBox="0 0 24 24"
+              width={sizeConfig.arrowSize}
             >
-              <line x1="5" y1="12" x2="19" y2="12" />
+              <line x1="5" x2="19" y1="12" y2="12" />
               <polyline points="12 5 19 12 12 19" />
             </svg>
           </motion.div>
         </motion.div>
       </motion.div>
-    </div>
+    </div>,
   );
 };
 

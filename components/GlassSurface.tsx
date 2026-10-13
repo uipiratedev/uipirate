@@ -149,6 +149,16 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   };
 
   const updateDisplacementMap = () => {
+    // Mobile (<=768px) uses the CSS backdrop-filter fallback, not the SVG
+    // displacement map. Regenerating the data-URI here on every resize is
+    // pure waste — and mobile fires `resize` constantly as the address bar
+    // shows/hides during scroll, turning it into scroll jank.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px)").matches
+    ) {
+      return;
+    }
     feImageRef.current?.setAttribute("href", generateDisplacementMap());
   };
 

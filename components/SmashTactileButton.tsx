@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
+export type SmashButtonVariant = "default" | "dark" | "orange" | "cyberpunk";
 export type SmashTactileButtonState = "interactive" | "standerd" | "hover";
 
 export interface SmashTactileButtonProps {
   /** Text label inside the button (default: "Smash the button") */
   label?: string;
-  /** Visual variant (default: "figma" matching Figma Node 17:1480) */
+  /** Visual variant (default: "default" matching Spec Node 17:1480) */
   variant?: SmashButtonVariant;
   /** Size scale (default: "md") */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
@@ -24,7 +24,7 @@ export interface SmashTactileButtonProps {
 }
 
 /**
- * 21-Dot Double Matrix Array matching Figma Node 17:1529 & 17:1572
+ * 21-Dot Double Matrix Array matching Spec Node 17:1529 & 17:1572
  */
 const DotMatrixRow: React.FC<{ count?: number; color?: string }> = ({
   count = 21,
@@ -53,28 +53,28 @@ const DotMatrixRow: React.FC<{ count?: number; color?: string }> = ({
 );
 
 /**
- * Exact mathematical continuous path from Figma Node 17:1702 normalized to 0 0 578 148
+ * Dynamic mathematical continuous path from Spec Node 17:1702 normalized to 0 0 w 148
  */
-const FIGMA_CORE_PATH =
-  "M 0 15 C 0 6.71573 6.71573 0 15 0 H 563 C 571.284 0 578 6.71573 578 15 V 133 C 578 141.284 571.284 148 563 148 H 53.2132 C 49.235 148 45.4196 146.42 42.6066 143.607 L 4.3934 105.393 C 1.5804 102.58 0 98.765 0 94.7868 V 15 Z";
+const getSpecCorePath = (w: number) =>
+  `M 0 15 C 0 6.71573 6.71573 0 15 0 H ${w - 15} C ${w - 6.716} 0 ${w} 6.71573 ${w} 15 V 133 C ${w} 141.284 ${w - 6.716} 148 ${w - 15} 148 H 53.2132 C 49.235 148 45.4196 146.42 42.6066 143.607 L 4.3934 105.393 C 1.5804 102.58 0 98.765 0 94.7868 V 15 Z`;
 
-const FIGMA_STROKE_PATH =
-  "M 15 1 H 563 C 570.732 1 577 7.26801 577 15 V 133 C 577 140.732 570.732 147 563 147 H 53.2129 C 49.5 147 45.9389 145.525 43.3135 142.899 L 5.1006 104.687 C 2.4751 102.061 1 98.5 1 94.7871 V 15 C 1 7.26801 7.268 1 15 1 Z";
+const getSpecStrokePath = (w: number) =>
+  `M 15 1 H ${w - 15} C ${w - 7.268} 1 ${w - 1} 7.26801 ${w - 1} 15 V 133 C ${w - 1} 140.732 ${w - 7.268} 147 ${w - 15} 147 H 53.2129 C 49.5 147 45.9389 145.525 43.3135 142.899 L 5.1006 104.687 C 2.4751 102.061 1 98.5 1 94.7871 V 15 C 1 7.26801 7.268 1 15 1 Z`;
 
 /**
  * SmashTactileButton
  *
- * 1:1 Pixel-Accurate 5-Tier Layer Architecture from Figma Master Button Collection (Node 17:1480):
+ * 1:1 Pixel-Accurate 5-Tier Layer Architecture from Master Button Collection (Node 17:1480):
  * - LAYER 1: Background Canvas (diagonal pinstripes)
  * - LAYER 2: Crystal Glass Deck (Frame 280, node 17:1481) - 100% transparent glass enclosure with #F3F3FE laser ticks & dots
  * - LAYER 3: Porcelain Cushion Tray (Frame 11, node 17:1527) - Lavender-white plate (#F3F3FE) with dot matrix arrays
  * - LAYER 3.5: Intermediate Cushion Cradle Plate (node 17:1701) - Lavender-blue plate (#D9DCF1) containing Layer 4 with perfectly EVEN padding
  * - LAYER 4: Exact Dark Tactile Core Cap (Node 17:1702/17:1703) with realistic soft Gaussian tactile shadow & glowing chamfer
- * - LIGHT FLARE (Node 17:1704) - Exact 45° rotated purplish (#D7B0FF) radial elliptical spotlight SVG from Figma
+ * - LIGHT FLARE (Node 17:1704) - Exact 45° rotated purplish (#D7B0FF) radial elliptical spotlight SVG from spec
  */
 export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   label = "Smash the button",
-  variant = "figma",
+  variant = "default",
   size = "md",
   stateMode = "interactive",
   onClick,
@@ -85,11 +85,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const [isPressed, setIsPressed] = useState(false);
 
   const activeHover =
-    stateMode === "hover"
-      ? true
-      : stateMode === "standerd"
-      ? false
-      : isHovered;
+    stateMode === "hover" ? true : stateMode === "standerd" ? false : isHovered;
   const activePressed = stateMode === "interactive" ? isPressed : false;
 
   // Scaled dimensions with uniform, perfectly even padding where Layer 3.5 evenly contains Layer 4
@@ -97,8 +93,16 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
   const __wrapSize = (node: React.ReactElement): React.ReactElement =>
-    __extraSizeScale === 1 ? node : (
-      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+    __extraSizeScale === 1 ? (
+      node
+    ) : (
+      <span
+        style={{
+          display: "inline-flex",
+          transform: `scale(${__extraSizeScale})`,
+          transformOrigin: "center center",
+        }}
+      >
         {node}
       </span>
     );
@@ -166,18 +170,52 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
     },
   }[__baseSize];
 
-  const dynamicFontSize =
-    label.length <= 16
-      ? `${sizeConfig.baseFontSizePx}px`
-      : `${Math.max(11, +(sizeConfig.baseFontSizePx * (16 / label.length)).toFixed(1))}px`;
+  // Measurement ref to dynamically expand button width when text is long
+  const textMeasureRef = React.useRef<HTMLSpanElement>(null);
+  const [measuredTextW, setMeasuredTextW] = useState(0);
 
-  // Derived cradle dimensions: core dimensions + 2 * even cradle padding
-  const cradleW = sizeConfig.coreW + sizeConfig.cradlePad * 2;
+  React.useEffect(() => {
+    if (textMeasureRef.current) {
+      const w = Math.ceil(textMeasureRef.current.getBoundingClientRect().width);
+
+      if (w > 0 && w !== measuredTextW) {
+        setMeasuredTextW(w);
+      }
+    }
+  }, [label, sizeConfig.baseFontSizePx]);
+
+  // Fallback char-width estimation for instant SSR / initial paint
+  const fontCharWidth = sizeConfig.baseFontSizePx * 0.54;
+  const estimatedTextW = Math.ceil((label || "").length * fontCharWidth);
+  const effectiveTextW = Math.max(measuredTextW, estimatedTextW);
+
+  // Available resting text slot before expansion is required
+  const defaultTextSlot = Math.round(sizeConfig.coreW * 0.58);
+  const extraW = Math.max(
+    0,
+    Math.ceil((effectiveTextW - defaultTextSlot) * 1.15),
+  );
+
+  // Computed dimensions:
+  const computedCoreW = sizeConfig.coreW + extraW;
+  const computedTrayW = sizeConfig.trayW + extraW;
+  const computedDeckW = sizeConfig.deckW + extraW;
+  const computedCradleW = computedCoreW + sizeConfig.cradlePad * 2;
   const cradleH = sizeConfig.coreH + sizeConfig.cradlePad * 2;
 
-  // Theme palettes matching Figma Node 17:1480 & variants
-  const themeStyles = {
-    figma: {
+  // SVG viewBox width (base normalized to 578)
+  const viewBoxW = 578 + extraW * (578 / sizeConfig.coreW);
+
+  // Expand dot matrix array count to span the wider tray nicely
+  const extraDots = Math.floor(extraW / 24) * 2;
+  const computedDotsCount = sizeConfig.dotsCount + extraDots;
+
+  const corePath = getSpecCorePath(viewBoxW);
+  const strokePath = getSpecStrokePath(viewBoxW);
+
+  // Theme palettes matching Spec Node 17:1480 & variants
+  const themeStylesMap = {
+    default: {
       deckBorder: "rgba(255, 255, 255, 0.85)",
       glassAccentColor: "#F3F3FE", // Glass deck ticks and dots matching #F3F3FE
       trayDotsColor: "#CEC9F1",
@@ -241,13 +279,33 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       softDropShadow:
         "drop-shadow(0px 3px 4px rgba(2,4,10,0.6)) drop-shadow(0px 8px 12px rgba(244,63,94,0.25)) drop-shadow(0px 16px 22px rgba(0,229,190,0.2))",
     },
-  }[variant];
+  };
 
-  const W = sizeConfig.coreW;
+  const themeStyles =
+    (variant && themeStylesMap[variant]) ||
+    ((variant as string) === "cyber" ? themeStylesMap.cyberpunk : null) ||
+    themeStylesMap.default;
+
+  const W = computedCoreW;
   const H = sizeConfig.coreH;
 
   return __wrapSize(
-    <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
+    <div
+      className={`relative inline-flex items-center justify-center select-none ${className}`}
+    >
+      {/* Offscreen Text Width Measurement Helper */}
+      <span
+        ref={textMeasureRef}
+        aria-hidden="true"
+        className="fixed -top-[9999px] -left-[9999px] invisible opacity-0 pointer-events-none font-medium tracking-tight whitespace-nowrap leading-none select-none"
+        style={{
+          fontSize: `${sizeConfig.baseFontSizePx}px`,
+          fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
+        }}
+      >
+        {label}
+      </span>
+
       {/* ─────────────────────────────────────────────────────────────
           LAYER 2: 100% Transparent Crystal Glass Deck (Frame 280 - 17:1481)
           Decorated with #F3F3FE laser ticks & corner dot arrays
@@ -255,7 +313,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       <div
         className="relative flex items-center justify-center transition-all duration-300"
         style={{
-          width: sizeConfig.deckW,
+          width: computedDeckW,
           height: sizeConfig.deckH,
           borderRadius: 30,
           border: `1.5px solid ${themeStyles.deckBorder}`,
@@ -310,16 +368,37 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
 
         {/* Bottom Left 4-Dot Array (Node 17:1512-17:1518) */}
         <div className="absolute bottom-[14px] left-[32px] flex items-center gap-[4px]">
-          <span className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
-          <span className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
-          <span className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
-          <span className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
+          <span
+            className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]"
+            style={{ backgroundColor: themeStyles.glassAccentColor }}
+          />
+          <span
+            className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]"
+            style={{ backgroundColor: themeStyles.glassAccentColor }}
+          />
+          <span
+            className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]"
+            style={{ backgroundColor: themeStyles.glassAccentColor }}
+          />
+          <span
+            className="w-[3px] h-[3px] rounded-full shadow-[0px_0.5px_0.5px_#FFFFFF]"
+            style={{ backgroundColor: themeStyles.glassAccentColor }}
+          />
         </div>
 
         {/* 4 Corner Pin Accents */}
-        <span className="absolute top-[14px] left-[14px] w-[3px] h-[3px] rounded-[1px] shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
-        <span className="absolute top-[14px] right-[14px] w-[3px] h-[3px] rounded-[1px] shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
-        <span className="absolute bottom-[14px] right-[14px] w-[3px] h-[3px] rounded-[1px] shadow-[0px_0.5px_0.5px_#FFFFFF]" style={{ backgroundColor: themeStyles.glassAccentColor }} />
+        <span
+          className="absolute top-[14px] left-[14px] w-[3px] h-[3px] rounded-[1px] shadow-[0px_0.5px_0.5px_#FFFFFF]"
+          style={{ backgroundColor: themeStyles.glassAccentColor }}
+        />
+        <span
+          className="absolute top-[14px] right-[14px] w-[3px] h-[3px] rounded-[1px] shadow-[0px_0.5px_0.5px_#FFFFFF]"
+          style={{ backgroundColor: themeStyles.glassAccentColor }}
+        />
+        <span
+          className="absolute bottom-[14px] right-[14px] w-[3px] h-[3px] rounded-[1px] shadow-[0px_0.5px_0.5px_#FFFFFF]"
+          style={{ backgroundColor: themeStyles.glassAccentColor }}
+        />
 
         {/* ─────────────────────────────────────────────────────────────
             LAYER 3: Porcelain Cushion Tray (Frame 11 - 17:1527)
@@ -328,7 +407,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
         <div
           className="relative flex flex-col items-center justify-between py-[16px] px-[16px]"
           style={{
-            width: sizeConfig.trayW,
+            width: computedTrayW,
             height: sizeConfig.trayH,
             borderRadius: 24,
             backgroundColor: themeStyles.trayBg,
@@ -337,7 +416,10 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
           }}
         >
           {/* Top Double-Row Dot Matrix Array */}
-          <DotMatrixRow count={sizeConfig.dotsCount} color={themeStyles.trayDotsColor} />
+          <DotMatrixRow
+            color={themeStyles.trayDotsColor}
+            count={computedDotsCount}
+          />
 
           {/* ─────────────────────────────────────────────────────────────
               LAYER 3.5: Intermediate Cushion Cradle Plate (Node 17:1701)
@@ -346,7 +428,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
           <div
             className="relative flex items-center justify-center my-auto"
             style={{
-              width: cradleW,
+              width: computedCradleW,
               height: cradleH,
               borderRadius: 24,
               backgroundColor: themeStyles.cradleBg,
@@ -355,7 +437,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
             }}
           >
             {/* ─────────────────────────────────────────────────────────────
-                EXACT FIGMA GLOW FLARE (Node 17:1704)
+                EXACT SPEC GLOW FLARE (Node 17:1704)
                 Purplish (#D7B0FF) 45° Rotated Elliptical Spotlight with Gaussian Blur
                ───────────────────────────────────────────────────────────── */}
             <motion.div
@@ -363,7 +445,6 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                 opacity: activeHover ? 1 : 0.85,
                 scale: activePressed ? 0.95 : activeHover ? 1.15 : 1,
               }}
-              transition={{ duration: 0.2 }}
               className="absolute pointer-events-none z-10"
               style={{
                 width: sizeConfig.flareSize,
@@ -372,40 +453,53 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                 bottom: sizeConfig.flareOffset,
                 mixBlendMode: "plus-lighter",
               }}
+              transition={{ duration: 0.2 }}
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="100%"
+                className="overflow-visible"
+                fill="none"
                 height="100%"
                 viewBox="0 0 103 103"
-                fill="none"
-                className="overflow-visible"
+                width="100%"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <defs>
                   <filter
+                    colorInterpolationFilters="sRGB"
+                    filterUnits="userSpaceOnUse"
+                    height="102.745"
                     id={`filter0_f_17_1704_${variant}`}
+                    width="102.745"
                     x="0"
                     y="0"
-                    width="102.745"
-                    height="102.745"
-                    filterUnits="userSpaceOnUse"
-                    colorInterpolationFilters="sRGB"
                   >
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                    <feGaussianBlur stdDeviation="7" result="effect1_foregroundBlur" />
+                    <feBlend
+                      in="SourceGraphic"
+                      in2="BackgroundImageFix"
+                      mode="normal"
+                      result="shape"
+                    />
+                    <feGaussianBlur
+                      result="effect1_foregroundBlur"
+                      stdDeviation="7"
+                    />
                   </filter>
 
                   <radialGradient
-                    id={`paint0_radial_17_1704_${variant}`}
                     cx="0"
                     cy="0"
-                    r="1"
-                    gradientUnits="userSpaceOnUse"
                     gradientTransform="translate(51.3725 23.1033) rotate(90) scale(69.5514 55.5978)"
+                    gradientUnits="userSpaceOnUse"
+                    id={`paint0_radial_17_1704_${variant}`}
+                    r="1"
                   >
                     <stop stopColor={themeStyles.flareColor} />
-                    <stop offset="1" stopColor={themeStyles.flareColor} stopOpacity="0" />
+                    <stop
+                      offset="1"
+                      stopColor={themeStyles.flareColor}
+                      stopOpacity="0"
+                    />
                   </radialGradient>
                 </defs>
 
@@ -413,38 +507,31 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                   <ellipse
                     cx="51.3726"
                     cy="51.3725"
+                    fill={`url(#paint0_radial_17_1704_${variant})`}
+                    fillOpacity="0.75"
                     rx="33"
                     ry="41.2821"
                     transform="rotate(45 51.3726 51.3725)"
-                    fill={`url(#paint0_radial_17_1704_${variant})`}
-                    fillOpacity="0.75"
                   />
                 </g>
               </svg>
             </motion.div>
 
             {/* ─────────────────────────────────────────────────────────────
-                LAYER 4: EXACT FIGMA CORE BUTTON CAP (Node 17:1702/17:1703)
+                LAYER 4: EXACT SPEC CORE BUTTON CAP (Node 17:1702/17:1703)
                 Clean continuous path with natural multi-tier tactile drop shadow
                ───────────────────────────────────────────────────────────── */}
             <motion.button
-              type="button"
-              disabled={disabled}
-              onClick={onClick}
-              onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
-              onMouseLeave={() => {
-                if (stateMode === "interactive") {
-                  setIsHovered(false);
-                  setIsPressed(false);
-                }
-              }}
-              onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
-              onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
-              onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
-              onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
               animate={{
                 y: activePressed ? 2 : activeHover ? sizeConfig.liftY : 0,
                 scale: activePressed ? 0.985 : 1,
+              }}
+              className="relative cursor-pointer focus:outline-none flex items-center justify-center select-none z-20"
+              disabled={disabled}
+              style={{
+                width: W,
+                height: H,
+                filter: themeStyles.softDropShadow,
               }}
               transition={{
                 type: "spring",
@@ -452,94 +539,137 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                 damping: 24,
                 mass: 0.65,
               }}
-              className="relative cursor-pointer focus:outline-none flex items-center justify-center select-none z-20"
-              style={{
-                width: W,
-                height: H,
-                filter: themeStyles.softDropShadow,
+              type="button"
+              onClick={onClick}
+              onMouseDown={() =>
+                stateMode === "interactive" && setIsPressed(true)
+              }
+              onMouseEnter={() =>
+                stateMode === "interactive" && setIsHovered(true)
+              }
+              onMouseLeave={() => {
+                if (stateMode === "interactive") {
+                  setIsHovered(false);
+                  setIsPressed(false);
+                }
               }}
+              onMouseUp={() =>
+                stateMode === "interactive" && setIsPressed(false)
+              }
+              onTouchEnd={() =>
+                stateMode === "interactive" && setIsPressed(false)
+              }
+              onTouchStart={() =>
+                stateMode === "interactive" && setIsPressed(true)
+              }
             >
               <svg
-                width={W}
-                height={H}
-                viewBox="0 0 578 148"
                 className="absolute inset-0 size-full pointer-events-none"
+                height={H}
+                viewBox={`0 0 ${viewBoxW} 148`}
+                width={W}
               >
                 <defs>
-                  {/* Ultra-Fine Stippled Noise Filter matching Figma pattern0_17_1702 */}
-                  <filter id={`stippleNoise-${variant}`} x="0" y="0" width="100%" height="100%">
-                    <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
-                    <feColorMatrix type="matrix" values="1 0 0 0 1   0 1 0 0 1   0 0 1 0 1  0 0 0 0.08 0" />
+                  {/* Ultra-Fine Stippled Noise Filter matching spec pattern0_17_1702 */}
+                  <filter
+                    height="100%"
+                    id={`stippleNoise-${variant}`}
+                    width="100%"
+                    x="0"
+                    y="0"
+                  >
+                    <feTurbulence
+                      baseFrequency="0.8"
+                      numOctaves="3"
+                      result="noise"
+                      type="fractalNoise"
+                    />
+                    <feColorMatrix
+                      type="matrix"
+                      values="1 0 0 0 1   0 1 0 0 1   0 0 1 0 1  0 0 0 0.08 0"
+                    />
                   </filter>
 
-                  {/* Exact Figma 17:1702 Radial Gradient */}
+                  {/* Exact spec 17:1702 Radial Gradient */}
                   <radialGradient
-                    id={`paint0_radial_17_1702_${variant}`}
                     cx="0"
                     cy="0"
-                    r="1"
                     gradientTransform="matrix(148 135.667 -299.77 51.0796 0 12.3333)"
                     gradientUnits="userSpaceOnUse"
+                    id={`paint0_radial_17_1702_${variant}`}
+                    r="1"
                   >
                     <stop stopColor={themeStyles.gradStart} />
                     <stop offset="1" stopColor={themeStyles.gradEnd} />
                   </radialGradient>
 
-                  {/* Exact Figma 17:1702 Chamfer Stroke Glow Gradient */}
+                  {/* Exact spec 17:1702 Chamfer Stroke Glow Gradient */}
                   <radialGradient
-                    id={`paint1_radial_17_1702_${variant}`}
                     cx="0"
                     cy="0"
-                    r="1"
-                    gradientUnits="userSpaceOnUse"
                     gradientTransform="translate(25.5 125.5) rotate(-39.9575) scale(48.2701 38.6161)"
+                    gradientUnits="userSpaceOnUse"
+                    id={`paint1_radial_17_1702_${variant}`}
+                    r="1"
                   >
                     <stop stopColor={themeStyles.strokeGlow} />
-                    <stop offset="0.7" stopColor={themeStyles.strokeGlow} stopOpacity="0.85" />
-                    <stop offset="1" stopColor={themeStyles.strokeGlow} stopOpacity="0" />
+                    <stop
+                      offset="0.7"
+                      stopColor={themeStyles.strokeGlow}
+                      stopOpacity="0.85"
+                    />
+                    <stop
+                      offset="1"
+                      stopColor={themeStyles.strokeGlow}
+                      stopOpacity="0"
+                    />
                   </radialGradient>
                 </defs>
 
-                {/* 1. Main Dark Button Cap Body with Exact Figma Radial Gradient */}
-                <path d={FIGMA_CORE_PATH} fill={`url(#paint0_radial_17_1702_${variant})`} />
+                {/* 1. Main Dark Button Cap Body with Exact spec Radial Gradient */}
+                <path
+                  d={corePath}
+                  fill={`url(#paint0_radial_17_1702_${variant})`}
+                />
 
                 {/* 2. Fine Stippled Grain Texture Overlay */}
                 <rect
-                  width="578"
-                  height="148"
-                  clipPath="url(#coreCapClipPath)"
+                  clipPath={`url(#coreCapClipPath-${variant})`}
                   filter={`url(#stippleNoise-${variant})`}
+                  height="148"
+                  width={viewBoxW}
                 />
 
-                <clipPath id="coreCapClipPath">
-                  <path d={FIGMA_CORE_PATH} />
+                <clipPath id={`coreCapClipPath-${variant}`}>
+                  <path d={corePath} />
                 </clipPath>
 
                 {/* 3. LIGHT GLOWING BORDER on the chamfer edge */}
                 <path
-                  d={FIGMA_STROKE_PATH}
+                  d={strokePath}
+                  fill="none"
                   stroke={`url(#paint1_radial_17_1702_${variant})`}
                   strokeWidth="2.5"
-                  fill="none"
                 />
 
                 {/* 4. Top subtle specular bevel */}
                 <path
-                  d="M 15 1 H 563"
+                  d={`M 15 1 H ${viewBoxW - 15}`}
+                  fill="none"
                   stroke="rgba(255, 255, 255, 0.22)"
                   strokeWidth="1"
-                  fill="none"
                 />
               </svg>
 
               {/* Typography Label (node 17:1703) */}
               <span
-                className="relative z-10 font-medium tracking-tight whitespace-nowrap leading-none select-none max-w-[92%] px-3 text-center overflow-hidden text-ellipsis"
+                className="relative z-10 font-medium tracking-tight whitespace-nowrap leading-none select-none px-3 text-center"
                 style={{
-                  fontSize: dynamicFontSize,
+                  fontSize: `${sizeConfig.baseFontSizePx}px`,
                   color: themeStyles.textColor,
                   textShadow: "0px 1px 2px rgba(0,0,0,0.8)",
-                  fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
+                  fontFamily:
+                    "var(--font-jakarta), var(--font-sans), sans-serif",
                 }}
               >
                 {label}
@@ -548,10 +678,13 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
           </div>
 
           {/* Bottom Double-Row Dot Matrix Array */}
-          <DotMatrixRow count={sizeConfig.dotsCount} color={themeStyles.trayDotsColor} />
+          <DotMatrixRow
+            color={themeStyles.trayDotsColor}
+            count={computedDotsCount}
+          />
         </div>
       </div>
-    </div>
+    </div>,
   );
 };
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+
 import SuggestedTools from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
 
@@ -22,7 +23,7 @@ interface BatchSiteResult {
 
 export default function BatchCheckerClient() {
   const [urlsInput, setUrlsInput] = useState(
-    "nytimes.com\nopenai.com\nanthropic.com\ngithub.com\napple.com"
+    "nytimes.com\nopenai.com\nanthropic.com\ngithub.com\napple.com",
   );
   const [isScanning, setIsScanning] = useState(false);
   const [results, setResults] = useState<BatchSiteResult[]>([]);
@@ -38,7 +39,11 @@ export default function BatchCheckerClient() {
 
     setIsScanning(true);
     const initial: BatchSiteResult[] = urls.map((u) => {
-      let domain = u.replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
+      let domain = u
+        .replace(/^https?:\/\//i, "")
+        .replace(/\/.*$/, "")
+        .toLowerCase();
+
       return {
         url: u,
         domain,
@@ -54,6 +59,7 @@ export default function BatchCheckerClient() {
         error: null,
       };
     });
+
     setResults(initial);
 
     // Run scans concurrently with a limit
@@ -66,15 +72,23 @@ export default function BatchCheckerClient() {
             body: JSON.stringify({ url: item.url }),
           });
           const data = await res.json();
+
           if (!res.ok || data.error) {
             setResults((prev) => {
               const copy = [...prev];
-              copy[idx] = { ...copy[idx], loading: false, error: data.error || "Failed" };
+
+              copy[idx] = {
+                ...copy[idx],
+                loading: false,
+                error: data.error || "Failed",
+              };
+
               return copy;
             });
           } else {
             setResults((prev) => {
               const copy = [...prev];
+
               copy[idx] = {
                 ...copy[idx],
                 score: data.summary.score,
@@ -88,17 +102,24 @@ export default function BatchCheckerClient() {
                 loading: false,
                 error: null,
               };
+
               return copy;
             });
           }
         } catch {
           setResults((prev) => {
             const copy = [...prev];
-            copy[idx] = { ...copy[idx], loading: false, error: "Network error" };
+
+            copy[idx] = {
+              ...copy[idx],
+              loading: false,
+              error: "Network error",
+            };
+
             return copy;
           });
         }
-      })
+      }),
     );
 
     setIsScanning(false);
@@ -115,8 +136,10 @@ export default function BatchCheckerClient() {
             linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
           `,
           backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
-          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          maskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
         }}
       />
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
@@ -124,19 +147,24 @@ export default function BatchCheckerClient() {
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
+          initial={{ opacity: 0, y: -12 }}
         >
           <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">BATCH GEO &amp; MULTI-DOMAIN AUDIT</GlassBadge>
+            <GlassBadge variant="gradient">
+              BATCH GEO &amp; MULTI-DOMAIN AUDIT
+            </GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
-            Batch AI <span className="text-[#FF5B04]">Crawler &amp; Score</span> Checker
+          <h1 className="hero-header">
+            Batch AI <span className="text-[#FF5B04]">Crawler &amp; Score</span>{" "}
+            Checker
           </h1>
           <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
-            Audit multiple competitor websites or client domains at once. Compare GEO Visibility Scores, robots.txt status, and blocked crawlers side-by-side.
+            Audit multiple competitor websites or client domains at once.
+            Compare GEO Visibility Scores, robots.txt status, and blocked
+            crawlers side-by-side.
           </p>
         </motion.div>
 
@@ -146,30 +174,55 @@ export default function BatchCheckerClient() {
             Enter URLs to audit (One per line, up to 10)
           </label>
           <textarea
+            className="w-full p-4 rounded-xl border border-gray-200 text-xs font-mono text-gray-800 outline-none focus:border-[#FF5B04]"
+            placeholder="domain1.com\ndomain2.com\ndomain3.com"
             rows={4}
             value={urlsInput}
             onChange={(e) => setUrlsInput(e.target.value)}
-            placeholder="domain1.com\ndomain2.com\ndomain3.com"
-            className="w-full p-4 rounded-xl border border-gray-200 text-xs font-mono text-gray-800 outline-none focus:border-[#FF5B04]"
           />
           <button
-            onClick={handleBatchScan}
-            disabled={isScanning}
             className="w-full py-3 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-sm font-semibold transition-colors disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#FF5B04]/15"
+            disabled={isScanning}
+            onClick={handleBatchScan}
           >
             {isScanning ? (
               <>
-                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                <svg
+                  className="w-4 h-4 animate-spin"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    fill="currentColor"
+                  />
                 </svg>
                 Auditing Multiple Domains…
               </>
             ) : (
               <>
                 <span>Run Batch Audit</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                  />
                 </svg>
               </>
             )}
@@ -198,18 +251,25 @@ export default function BatchCheckerClient() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {results.map((res, i) => (
-                    <tr key={i} className="hover:bg-gray-50/60 transition-colors">
+                    <tr
+                      key={i}
+                      className="hover:bg-gray-50/60 transition-colors"
+                    >
                       <td className="py-3.5 px-3 font-mono font-bold text-gray-900 truncate max-w-[180px]">
                         {res.domain}
                       </td>
                       <td className="py-3.5 px-3">
                         {res.loading ? (
-                          <span className="text-gray-400 italic">Checking…</span>
+                          <span className="text-gray-400 italic">
+                            Checking…
+                          </span>
                         ) : res.error ? (
                           <span className="text-red-500">{res.error}</span>
                         ) : (
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-sm font-geist text-gray-900">{res.score}</span>
+                            <span className="font-bold text-sm font-geist text-gray-900">
+                              {res.score}
+                            </span>
                             <span className="text-gray-400">/100</span>
                           </div>
                         )}
@@ -228,9 +288,10 @@ export default function BatchCheckerClient() {
                           "—"
                         ) : (
                           <span
-                            className={`font-semibold ${
-                              res.blockedCount > 0 ? "text-red-600" : "text-emerald-600"
-                            }`}
+                            className={`font-semibold ${res.blockedCount > 0
+                                ? "text-red-600"
+                                : "text-emerald-600"
+                              }`}
                           >
                             {res.blockedCount} blocked
                           </span>
@@ -240,16 +301,22 @@ export default function BatchCheckerClient() {
                         {res.loading ? (
                           "—"
                         ) : res.robotsFound ? (
-                          <span className="text-emerald-600 font-medium">✓ Found</span>
+                          <span className="text-emerald-600 font-medium">
+                            ✓ Found
+                          </span>
                         ) : (
-                          <span className="text-amber-500 font-medium">Missing</span>
+                          <span className="text-amber-500 font-medium">
+                            Missing
+                          </span>
                         )}
                       </td>
                       <td className="py-3.5 px-3">
                         {res.loading ? (
                           "—"
                         ) : res.llmsTxtFound ? (
-                          <span className="text-emerald-600 font-medium">✓ Active</span>
+                          <span className="text-emerald-600 font-medium">
+                            ✓ Active
+                          </span>
                         ) : (
                           <span className="text-gray-400">None</span>
                         )}
@@ -262,7 +329,9 @@ export default function BatchCheckerClient() {
                             {res.waf}
                           </span>
                         ) : (
-                          <span className="text-gray-400 font-mono text-[10px]">Direct</span>
+                          <span className="text-gray-400 font-mono text-[10px]">
+                            Direct
+                          </span>
                         )}
                       </td>
                     </tr>
@@ -283,32 +352,52 @@ export default function BatchCheckerClient() {
               Why Batch Competitor Auditing Matters for GEO
             </h2>
             <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-              Compare your website’s AI search visibility and firewall posture directly against up to 10 competitors or client portfolio domains in a single multi-threaded scan.
+              Compare your website’s AI search visibility and firewall posture
+              directly against up to 10 competitors or client portfolio domains
+              in a single multi-threaded scan.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Side-by-Side Scoring</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                01
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                Side-by-Side Scoring
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Benchmark your 0–100 GEO score against industry leaders. Discover if competitors are allowing AI citations while your firewall blocks them.
+                Benchmark your 0–100 GEO score against industry leaders.
+                Discover if competitors are allowing AI citations while your
+                firewall blocks them.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">llms.txt Adoption Tracking</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                02
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                llms.txt Adoption Tracking
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Quickly audit which competitor domains have published standard <code className="font-mono text-gray-800">/llms.txt</code> files to feed LLM knowledge graphs.
+                Quickly audit which competitor domains have published standard{" "}
+                <code className="font-mono text-gray-800">/llms.txt</code> files
+                to feed LLM knowledge graphs.
               </p>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
-              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">WAF Firewall Detection</h3>
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">
+                03
+              </span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">
+                WAF Firewall Detection
+              </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Identify whether Cloudflare, AWS CloudFront, or custom bot management firewalls are challenging AI crawlers with CAPTCHA barriers.
+                Identify whether Cloudflare, AWS CloudFront, or custom bot
+                management firewalls are challenging AI crawlers with CAPTCHA
+                barriers.
               </p>
             </div>
           </div>
@@ -320,15 +409,22 @@ export default function BatchCheckerClient() {
             </h3>
             <div className="space-y-4">
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">How many domains can I audit at once?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  How many domains can I audit at once?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  You can paste up to 10 URLs or domains simultaneously (one per line). All domains are queried in parallel.
+                  You can paste up to 10 URLs or domains simultaneously (one per
+                  line). All domains are queried in parallel.
                 </p>
               </div>
               <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">What does the GEO Grade mean?</h4>
+                <h4 className="text-xs font-bold text-gray-900 mb-1">
+                  What does the GEO Grade mean?
+                </h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Grades (A through F) evaluate bot accessibility. Sites with Grade A allow AI search citation bots, have valid robots.txt, provide llms.txt, and have zero WAF blocking.
+                  Grades (A through F) evaluate bot accessibility. Sites with
+                  Grade A allow AI search citation bots, have valid robots.txt,
+                  provide llms.txt, and have zero WAF blocking.
                 </p>
               </div>
             </div>
@@ -336,7 +432,7 @@ export default function BatchCheckerClient() {
         </section>
 
         {/* Suggested Tools */}
-        <SuggestedTools currentToolId="batch-checker" category="ai-geo" />
+        <SuggestedTools category="ai-geo" currentToolId="batch-checker" />
       </div>
     </div>
   );
