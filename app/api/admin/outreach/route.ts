@@ -36,6 +36,8 @@ function serialize(c: any) {
     lastWhatsappAt: c.lastWhatsappAt
       ? new Date(c.lastWhatsappAt).toISOString()
       : null,
+    emailSubjectDraft: c.emailSubjectDraft || "",
+    emailDraft: c.emailDraft || "",
     emailCount: c.emailCount || 0,
     lastEmailAt: c.lastEmailAt ? new Date(c.lastEmailAt).toISOString() : null,
     extra: c.extra || {},

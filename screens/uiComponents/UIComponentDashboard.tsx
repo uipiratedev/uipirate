@@ -567,6 +567,7 @@ export default function Example() {
       label="${customLabel}"
       dotColor="${customDotColor || "#54EAD8"}"
       variant="${customTheme}"
+      dotColor="${customDotColor}"
       size="${customSize}"
       onClick={() => console.log("Clicked")}
     />

@@ -1,6 +1,6 @@
 /**
- * Minimal CSV parser (RFC 4180 quoting) plus header → field mapping for the
- * marketing sheet upload. Runs in the browser; the API re-validates rows.
+ * CSV & TSV parser (RFC 4180 quoting) plus header/headerless mapping for
+ * marketing sheet upload and direct clipboard pasting.
  */
 export interface SheetRow {
   name: string;
@@ -16,7 +16,52 @@ export interface SheetRow {
   extra?: Record<string, string>;
 }
 
-export function parseCsv(text: string): string[][] {
+export type ContactField =
+  | "name"
+  | "phone"
+  | "email"
+  | "company"
+  | "category"
+  | "city"
+  | "state"
+  | "website"
+  | "hasWebsite"
+  | "pitch"
+  | "skip";
+
+export const FIELD_LABELS: Record<ContactField, string> = {
+  name: "Name",
+  phone: "Phone",
+  email: "Email",
+  company: "Company",
+  category: "Category",
+  city: "City",
+  state: "State",
+  website: "Website",
+  hasWebsite: "Has Website",
+  pitch: "Pitch",
+  skip: "— Skip / Ignore —",
+};
+
+/**
+ * Detect delimiter: Tab (\t) from Excel/Sheets clipboard, comma (,) from CSV,
+ * or semicolon (;) from European CSVs.
+ */
+export function detectDelimiter(text: string): string {
+  const firstLine = text.split(/\r?\n/)[0] || "";
+  const tabs = (firstLine.match(/\t/g) || []).length;
+  const commas = (firstLine.match(/,/g) || []).length;
+  const semis = (firstLine.match(/;/g) || []).length;
+
+  if (tabs > 0) return "\t";
+  if (commas >= semis) return ",";
+  if (semis > 0) return ";";
+
+  return ",";
+}
+
+export function parseDelimited(text: string, forcedDelimiter?: string): string[][] {
+  const delimiter = forcedDelimiter || detectDelimiter(text);
   const rows: string[][] = [];
   let row: string[] = [];
   let cell = "";
@@ -33,7 +78,7 @@ export function parseCsv(text: string): string[][] {
       } else if (ch === '"') quoted = false;
       else cell += ch;
     } else if (ch === '"') quoted = true;
-    else if (ch === ",") {
+    else if (ch === delimiter) {
       row.push(cell);
       cell = "";
     } else if (ch === "\n" || ch === "\r") {
@@ -50,6 +95,10 @@ export function parseCsv(text: string): string[][] {
   }
 
   return rows.filter((r) => r.some((c) => c.trim()));
+}
+
+export function parseCsv(text: string): string[][] {
+  return parseDelimited(text);
 }
 
 const ALIASES: Record<keyof Omit<SheetRow, "extra">, string[]> = {
@@ -72,51 +121,149 @@ const ALIASES: Record<keyof Omit<SheetRow, "extra">, string[]> = {
   pitch: ["pitch hook angle", "pitch", "pitch hook", "angle"],
 };
 
-export function sheetToRows(text: string): SheetRow[] {
-  const [header, ...body] = parseCsv(text);
+export function looksLikeHeader(row: string[]): boolean {
+  if (!row.length) return false;
+  const known = Object.values(ALIASES).flat();
+  const matches = row.filter((c) => {
+    const clean = c.trim().toLowerCase();
 
-  if (!header) return [];
+    return known.includes(clean);
+  });
 
-  const keys = header.map((h) => h.trim().toLowerCase());
-  const idx = (field: keyof typeof ALIASES) =>
-    keys.findIndex((k) => ALIASES[field].includes(k));
-  const cols = {
-    name: idx("name"),
-    phone: idx("phone"),
-    email: idx("email"),
-    company: idx("company"),
-    category: idx("category"),
-    city: idx("city"),
-    state: idx("state"),
-    website: idx("website"),
-    hasWebsite: idx("hasWebsite"),
-    pitch: idx("pitch"),
-  };
-  const mapped = new Set(Object.values(cols).filter((i) => i >= 0));
+  return matches.length >= 2 || (matches.length >= 1 && row.length <= 3);
+}
 
-  return body
-    .map((r): SheetRow => {
-      const get = (i: number) => (i >= 0 ? (r[i] ?? "").trim() : "");
-      const extra: Record<string, string> = {};
+/** Guess column types from data rows (e.g. for middle lines without header) */
+export function autoDetectColumns(
+  grid: string[][],
+  hasHeader: boolean,
+): Record<number, ContactField> {
+  const rows = hasHeader ? grid.slice(1) : grid;
+  const colCount = Math.max(...grid.map((r) => r.length), 0);
+  const mapping: Record<number, ContactField> = {};
+  const used = new Set<ContactField>();
 
-      r.forEach((v, i) => {
-        if (!mapped.has(i) && v.trim() && header[i]?.trim())
-          extra[header[i].trim()] = v.trim();
-      });
+  if (hasHeader && grid[0]) {
+    const header = grid[0].map((h) => h.trim().toLowerCase());
+
+    for (let c = 0; c < colCount; c++) {
+      const hName = header[c] || "";
+
+      for (const [field, aliases] of Object.entries(ALIASES) as [
+        ContactField,
+        string[],
+      ][]) {
+        if (!used.has(field) && aliases.includes(hName)) {
+          mapping[c] = field;
+          used.add(field);
+          break;
+        }
+      }
+      if (!mapping[c]) mapping[c] = "skip";
+    }
+
+    return mapping;
+  }
+
+  // Headerless detection (middle lines):
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^[\d\s+\-().]{7,25}$/;
+  const websiteRegex =
+    /^(https?:\/\/|www\.)|(\.(com|org|net|io|in|co|gov|edu|uk|us)\b)/i;
+
+  for (let c = 0; c < colCount; c++) {
+    const samples = rows
+      .map((r) => (r[c] || "").trim())
+      .filter(Boolean)
+      .slice(0, 10);
+
+    if (!samples.length) {
+      mapping[c] = "skip";
+      continue;
+    }
+
+    const emailMatches = samples.filter((s) => emailRegex.test(s)).length;
+    const phoneMatches = samples.filter(
+      (s) => phoneRegex.test(s) && (s.match(/\d/g) || []).length >= 7,
+    ).length;
+    const websiteMatches = samples.filter((s) => websiteRegex.test(s)).length;
+
+    if (!used.has("email") && emailMatches / samples.length >= 0.5) {
+      mapping[c] = "email";
+      used.add("email");
+    } else if (!used.has("phone") && phoneMatches / samples.length >= 0.5) {
+      mapping[c] = "phone";
+      used.add("phone");
+    } else if (!used.has("website") && websiteMatches / samples.length >= 0.5) {
+      mapping[c] = "website";
+      used.add("website");
+    }
+  }
+
+  // Pass 2: assign text columns (name, company, category, city, state)
+  const remainingFields: ContactField[] = [
+    "name",
+    "company",
+    "category",
+    "city",
+    "state",
+  ];
+
+  for (let c = 0; c < colCount; c++) {
+    if (!mapping[c]) {
+      const nextField = remainingFields.find((f) => !used.has(f));
+
+      if (nextField) {
+        mapping[c] = nextField;
+        used.add(nextField);
+      } else {
+        mapping[c] = "skip";
+      }
+    }
+  }
+
+  return mapping;
+}
+
+export function gridToRows(
+  grid: string[][],
+  mapping: Record<number, ContactField>,
+  hasHeader: boolean,
+): SheetRow[] {
+  const dataRows = hasHeader ? grid.slice(1) : grid;
+
+  return dataRows
+    .map((row) => {
+      const get = (field: ContactField) => {
+        const colIdx = Object.keys(mapping).find(
+          (k) => mapping[Number(k)] === field,
+        );
+
+        return colIdx !== undefined ? (row[Number(colIdx)] || "").trim() : "";
+      };
 
       return {
-        name: get(cols.name) || get(cols.company) || get(cols.email),
-        phone: get(cols.phone) || undefined,
-        email: get(cols.email) || undefined,
-        company: get(cols.company) || undefined,
-        category: get(cols.category) || undefined,
-        city: get(cols.city) || undefined,
-        state: get(cols.state) || undefined,
-        website: get(cols.website) || undefined,
-        hasWebsite: get(cols.hasWebsite) || undefined,
-        pitch: get(cols.pitch) || undefined,
-        extra: Object.keys(extra).length ? extra : undefined,
+        name: get("name") || get("company") || get("email"),
+        phone: get("phone") || undefined,
+        email: get("email") || undefined,
+        company: get("company") || undefined,
+        category: get("category") || undefined,
+        city: get("city") || undefined,
+        state: get("state") || undefined,
+        website: get("website") || undefined,
+        hasWebsite: get("hasWebsite") || undefined,
+        pitch: get("pitch") || undefined,
       };
     })
     .filter((r) => r.name && (r.phone || r.email));
+}
+
+export function sheetToRows(text: string): SheetRow[] {
+  const grid = parseDelimited(text);
+
+  if (!grid.length) return [];
+  const hasHeader = looksLikeHeader(grid[0]);
+  const mapping = autoDetectColumns(grid, hasHeader);
+
+  return gridToRows(grid, mapping, hasHeader);
 }
