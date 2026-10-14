@@ -27,9 +27,10 @@ export type ContactField =
   | "website"
   | "hasWebsite"
   | "pitch"
-  | "skip";
+  | "skip"
+  | (string & {});
 
-export const FIELD_LABELS: Record<ContactField, string> = {
+export const FIELD_LABELS: Record<string, string> = {
   name: "Name",
   phone: "Phone",
   email: "Email",
@@ -38,7 +39,7 @@ export const FIELD_LABELS: Record<ContactField, string> = {
   city: "City",
   state: "State",
   website: "Website",
-  hasWebsite: "Has Website",
+  hasWebsite: "Has Website / Remark",
   pitch: "Pitch",
   skip: "— Skip / Ignore —",
 };
@@ -117,7 +118,16 @@ const ALIASES: Record<keyof Omit<SheetRow, "extra">, string[]> = {
   city: ["city"],
   state: ["state"],
   website: ["website", "url", "site"],
-  hasWebsite: ["has website", "has web site", "website status"],
+  hasWebsite: [
+    "has website",
+    "has web site",
+    "website status",
+    "status",
+    "remark",
+    "remarks",
+    "comment",
+    "comments",
+  ],
   pitch: ["pitch hook angle", "pitch", "pitch hook", "angle"],
 };
 
@@ -231,16 +241,44 @@ export function gridToRows(
   hasHeader: boolean,
 ): SheetRow[] {
   const dataRows = hasHeader ? grid.slice(1) : grid;
+  const standardFields = new Set([
+    "name",
+    "phone",
+    "email",
+    "company",
+    "category",
+    "city",
+    "state",
+    "website",
+    "hasWebsite",
+    "pitch",
+    "skip",
+  ]);
 
   return dataRows
     .map((row) => {
-      const get = (field: ContactField) => {
+      const get = (field: string) => {
         const colIdx = Object.keys(mapping).find(
           (k) => mapping[Number(k)] === field,
         );
 
         return colIdx !== undefined ? (row[Number(colIdx)] || "").trim() : "";
       };
+
+      const extra: Record<string, string> = {};
+      for (const [colIdxStr, field] of Object.entries(mapping)) {
+        if (!field || field === "skip") continue;
+        if (field.startsWith("custom:")) {
+          const headerName = field.slice("custom:".length).trim();
+          const val = (row[Number(colIdxStr)] || "").trim();
+
+          if (headerName && val) extra[headerName] = val;
+        } else if (!standardFields.has(field)) {
+          const val = (row[Number(colIdxStr)] || "").trim();
+
+          if (val) extra[field] = val;
+        }
+      }
 
       return {
         name: get("name") || get("company") || get("email"),
@@ -253,6 +291,7 @@ export function gridToRows(
         website: get("website") || undefined,
         hasWebsite: get("hasWebsite") || undefined,
         pitch: get("pitch") || undefined,
+        extra: Object.keys(extra).length ? extra : undefined,
       };
     })
     .filter((r) => r.name && (r.phone || r.email));

@@ -52,18 +52,18 @@ export async function PATCH(
   )
     return NextResponse.json({ error: "Invalid status." }, { status: 400 });
 
-  if (
-    body.hasWebsite !== undefined &&
-    body.hasWebsite !== "" &&
-    !(WEBSITE_STATES as readonly string[]).includes(body.hasWebsite)
-  )
-    return NextResponse.json({ error: "Invalid value." }, { status: 400 });
+  if (typeof body.hasWebsite === "string" && body.hasWebsite.length > 100)
+    return NextResponse.json(
+      { error: "Status too long (max 100 characters)." },
+      { status: 400 },
+    );
 
   const update: Record<string, unknown> = {};
   const set: Record<string, unknown> = {};
 
   if (body.status) set.status = body.status;
-  if (body.hasWebsite !== undefined) set.hasWebsite = body.hasWebsite;
+  if (body.hasWebsite !== undefined)
+    set.hasWebsite = typeof body.hasWebsite === "string" ? body.hasWebsite.trim() : "";
   if (typeof body.sendToOutreach === "boolean") {
     if (body.sendToOutreach && !body.hasWebsite)
       return NextResponse.json(
@@ -130,7 +130,7 @@ export async function PATCH(
   const log = (type: string, summary: string) =>
     activities.push({ type, at: new Date(), byName: guard.user.name, summary });
   const websiteLabel = (v: string) =>
-    WEBSITE_LABELS[v as keyof typeof WEBSITE_LABELS] || "Not set";
+    WEBSITE_LABELS[v as keyof typeof WEBSITE_LABELS] || v || "Not set";
 
   if (body.status && body.status !== prev.status)
     log("status", `Status changed from ${prev.status} to ${body.status}`);
