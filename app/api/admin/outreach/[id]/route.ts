@@ -36,6 +36,8 @@ export async function PATCH(
     logTouch?: string;
     message?: string;
     whatsappDraft?: string;
+    emailSubjectDraft?: string;
+    emailDraft?: string;
   };
 
   try {
@@ -72,6 +74,10 @@ export async function PATCH(
   }
   if (typeof body.whatsappDraft === "string")
     set.whatsappDraft = body.whatsappDraft.trim().slice(0, 1000);
+  if (typeof body.emailSubjectDraft === "string")
+    set.emailSubjectDraft = body.emailSubjectDraft.trim().slice(0, 200);
+  if (typeof body.emailDraft === "string")
+    set.emailDraft = body.emailDraft.trim().slice(0, 3000);
 
   const channel = body.logCall ? "call" : body.logTouch;
 
@@ -90,8 +96,9 @@ export async function PATCH(
       channel,
       at: new Date(),
       byName: guard.user.name,
-      ...(channel === "whatsapp" && typeof body.message === "string"
-        ? { message: body.message.trim().slice(0, 1500) }
+      ...((channel === "whatsapp" || channel === "email") &&
+      typeof body.message === "string"
+        ? { message: body.message.trim().slice(0, 3000) }
         : {}),
     };
   if (body.note?.trim())
@@ -108,7 +115,7 @@ export async function PATCH(
 
   // Record every state change in the activity log.
   const prev = (await MarketingContact.findById(params.id)
-    .select("status hasWebsite inOutreach whatsappDraft")
+    .select("status hasWebsite inOutreach whatsappDraft emailSubjectDraft emailDraft")
     .lean()) as any;
 
   if (!prev)
@@ -148,6 +155,13 @@ export async function PATCH(
     body.whatsappDraft.trim() !== (prev.whatsappDraft || "")
   )
     log("draft", "WhatsApp message draft saved");
+  if (
+    (typeof body.emailSubjectDraft === "string" &&
+      body.emailSubjectDraft.trim() !== (prev.emailSubjectDraft || "")) ||
+    (typeof body.emailDraft === "string" &&
+      body.emailDraft.trim() !== (prev.emailDraft || ""))
+  )
+    log("draft", "Email message draft saved");
   if (activities.length) push.activities = { $each: activities };
 
   if (Object.keys(push).length) update.$push = push;

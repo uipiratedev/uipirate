@@ -15,6 +15,8 @@ import { FolderPicker, type FolderRef } from "./FolderPicker";
 import { OutreachDrawer } from "./OutreachDrawer";
 import {
   canWhatsapp,
+  emailBody,
+  emailSubject,
   mailHref,
   telHref,
   waHref,
@@ -23,7 +25,15 @@ import {
   type Contact,
 } from "./types";
 
-import { sheetToRows } from "@/lib/marketing/parseSheet";
+import {
+  sheetToRows,
+  parseDelimited,
+  looksLikeHeader,
+  autoDetectColumns,
+  gridToRows,
+  FIELD_LABELS,
+  type ContactField,
+} from "@/lib/marketing/parseSheet";
 import { useApi } from "@/lib/admin/useApi";
 import {
   PageHeader,
@@ -62,14 +72,24 @@ export default function MarketingClient({
   stage: "leads" | "outreach";
 }) {
   const [folder, setFolder] = useState<FolderRef | null>(null);
+  const [country, setCountry] = useState<FolderRef | null>(null);
 
   if (!folder)
-    return <FolderPicker canManage={canManage} stage={stage} onOpen={setFolder} />;
+    return (
+      <FolderPicker
+        canManage={canManage}
+        stage={stage}
+        selectedCountry={country}
+        onSelectCountry={setCountry}
+        onOpen={setFolder}
+      />
+    );
 
   return (
     <ContactList
       key={folder.id}
       canManage={canManage}
+      country={country}
       folder={folder}
       stage={stage}
       onBack={() => setFolder(null)}
@@ -81,11 +101,13 @@ function ContactList({
   canManage,
   stage,
   folder,
+  country,
   onBack,
 }: {
   canManage: boolean;
   stage: "leads" | "outreach";
   folder: FolderRef;
+  country?: FolderRef | null;
   onBack: () => void;
 }) {
   const [status, setStatus] = useState("");
@@ -123,7 +145,21 @@ function ContactList({
   }
 
   const [busy, setBusy] = useState(false);
+  const [showPasteModal, setShowPasteModal] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  function handlePasteSuccess(json: {
+    imported: number;
+    updated: number;
+    unchanged: number;
+    skipped?: number;
+  }) {
+    setMsg({
+      ok: true,
+      text: `${json.imported} new, ${json.updated} updated, ${json.unchanged} unchanged${json.skipped ? `, ${json.skipped} invalid skipped` : ""}.`,
+    });
+    refetch();
+  }
 
   async function onFile(file: File) {
     setMsg(null);
@@ -189,13 +225,15 @@ function ContactList({
         className="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs"
         disabled={!canManage}
         value={c.hasWebsite}
-        onChange={(e) =>
+        onChange={(e) => {
+          const val = e.target.value;
+
           setPending({
             contact: c,
-            value: e.target.value,
-            send: e.target.value !== "",
-          })
-        }
+            value: val,
+            send: val !== "" && val !== "has-website",
+          });
+        }}
       >
         <option value="">— Select —</option>
         {WEBSITE_STATES.map((w) => (
@@ -382,7 +420,14 @@ function ContactList({
             <a
               className="rounded-lg bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-blue-700"
               href={mailHref(c)}
-              onClick={() => canManage && touch(c, "email")}
+              onClick={() =>
+                canManage &&
+                touch(
+                  c,
+                  "email",
+                  `Subject: ${emailSubject(c)}\n\n${emailBody(c)}`,
+                )
+              }
             >
               Email
             </a>
@@ -409,7 +454,7 @@ function ContactList({
               className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
               onClick={onBack}
             >
-              ← All folders
+              ← {country ? country.name : "All folders"}
             </button>
             <button
               className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
@@ -436,11 +481,18 @@ function ContactList({
                 >
                   {busy ? "Uploading…" : "Upload sheet"}
                 </button>
+                <button
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50 disabled:opacity-60"
+                  disabled={busy}
+                  onClick={() => setShowPasteModal(true)}
+                >
+                  📋 Paste data
+                </button>
               </>
             ) : null}
           </>
         }
-        badge={`Marketing · ${folder.name}`}
+        badge={`Marketing · ${country ? `${country.name} / ` : ""}${folder.name}`}
         description={
           stage === "leads"
             ? "Upload a contact sheet into this folder, then set Has Website to move leads into Outreach."
@@ -621,17 +673,19 @@ function ContactList({
                   aria-label="Website status"
                   className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
                   value={pending?.value ?? ""}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const val = e.target.value;
+
                     setPending((p) =>
                       p
                         ? {
                             ...p,
-                            value: e.target.value,
-                            send: e.target.value ? p.send : false,
+                            value: val,
+                            send: val !== "" && val !== "has-website",
                           }
                         : p,
-                    )
-                  }
+                    );
+                  }}
                 >
                   <option value="">— Select —</option>
                   {WEBSITE_STATES.map((w) => (
@@ -676,6 +730,260 @@ function ContactList({
           )}
         </ModalContent>
       </Modal>
+      {canManage && stage === "leads" && folder.id !== "none" ? (
+        <PasteDataModal
+          folderId={folder.id}
+          isOpen={showPasteModal}
+          onClose={() => setShowPasteModal(false)}
+          onSuccess={handlePasteSuccess}
+        />
+      ) : null}
     </div>
+  );
+}
+
+const AVAILABLE_FIELDS: ContactField[] = [
+  "name",
+  "phone",
+  "email",
+  "company",
+  "category",
+  "city",
+  "state",
+  "website",
+  "hasWebsite",
+  "pitch",
+  "skip",
+];
+
+function PasteDataModal({
+  isOpen,
+  onClose,
+  folderId,
+  onSuccess,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  folderId: string;
+  onSuccess: (json: {
+    imported: number;
+    updated: number;
+    unchanged: number;
+    skipped?: number;
+  }) => void;
+}) {
+  const [text, setText] = useState("");
+  const [grid, setGrid] = useState<string[][]>([]);
+  const [hasHeader, setHasHeader] = useState(false);
+  const [mapping, setMapping] = useState<Record<number, ContactField>>({});
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+
+  function onTextChange(val: string) {
+    setText(val);
+    setErr("");
+
+    if (!val.trim()) {
+      setGrid([]);
+      setMapping({});
+
+      return;
+    }
+
+    const parsed = parseDelimited(val);
+
+    setGrid(parsed);
+    const isHeader = looksLikeHeader(parsed[0] || []);
+
+    setHasHeader(isHeader);
+    setMapping(autoDetectColumns(parsed, isHeader));
+  }
+
+  function toggleHeader(checked: boolean) {
+    setHasHeader(checked);
+
+    if (grid.length > 0) {
+      setMapping(autoDetectColumns(grid, checked));
+    }
+  }
+
+  const colCount = Math.max(...grid.map((r) => r.length), 0);
+  const dataRowsCount = hasHeader ? Math.max(0, grid.length - 1) : grid.length;
+  const previewRows = hasHeader ? grid.slice(1, 4) : grid.slice(0, 3);
+
+  async function handleImport() {
+    setErr("");
+    const rows = gridToRows(grid, mapping, hasHeader);
+
+    if (!rows.length) {
+      setErr("No valid contacts found. Rows need at least a Name plus a Phone or Email.");
+
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const res = await fetch("/api/admin/outreach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fileName: `Pasted data (${rows.length} rows)`,
+          rows,
+          folderId: folderId === "none" ? undefined : folderId,
+        }),
+      });
+      const json = await res.json();
+
+      if (!res.ok) throw new Error(json.error || "Import failed");
+
+      onSuccess(json);
+      setText("");
+      setGrid([]);
+      onClose();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      size="2xl"
+      onOpenChange={(open) => {
+        if (!open) {
+          setText("");
+          setGrid([]);
+          setErr("");
+          onClose();
+        }
+      }}
+    >
+      <ModalContent>
+        {() => (
+          <>
+            <ModalHeader>Paste contacts from Excel / Sheets</ModalHeader>
+            <ModalBody className="space-y-3">
+              <p className="text-xs text-gray-500">
+                Copy cells directly from Excel or Google Sheets (middle lines or with headers) and paste them below.
+              </p>
+              <div>
+                <label
+                  className="mb-1 block text-xs font-medium text-gray-700"
+                  htmlFor="paste-data-textarea"
+                >
+                  Clipboard content
+                </label>
+                <textarea
+                  className="w-full rounded-xl border border-gray-200 p-3 font-mono text-xs leading-relaxed focus:border-gray-400 focus:outline-none"
+                  id="paste-data-textarea"
+                  placeholder="Paste rows here (Ctrl+V)..."
+                  rows={5}
+                  value={text}
+                  onChange={(e) => onTextChange(e.target.value)}
+                />
+              </div>
+
+              {grid.length > 0 ? (
+                <>
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <span className="font-semibold text-gray-800">
+                      {fmtInt(dataRowsCount)} {dataRowsCount === 1 ? "contact row" : "contact rows"} detected
+                    </span>
+                    <label
+                      className="flex cursor-pointer items-center gap-1.5 text-xs text-gray-700 select-none"
+                      htmlFor="has-header-checkbox"
+                    >
+                      <input
+                        checked={hasHeader}
+                        className="rounded border-gray-300 text-gray-900 focus:ring-0"
+                        id="has-header-checkbox"
+                        type="checkbox"
+                        onChange={(e) => toggleHeader(e.target.checked)}
+                      />
+                      First row has column headers
+                    </label>
+                  </div>
+
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-medium uppercase tracking-wider text-gray-500">
+                      Column Mapping Preview (first {previewRows.length} rows)
+                    </span>
+                    <div className="max-h-48 overflow-x-auto rounded-xl border border-gray-200">
+                      <table className="w-full text-left text-xs">
+                        <thead className="border-b border-gray-200 bg-gray-50">
+                          <tr>
+                            {Array.from({ length: colCount }).map((_, cIdx) => (
+                              <th key={cIdx} className="min-w-[130px] p-2">
+                                <select
+                                  aria-label={`Mapping for column ${cIdx + 1}`}
+                                  className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs font-semibold text-gray-800 shadow-sm"
+                                  value={mapping[cIdx] || "skip"}
+                                  onChange={(e) =>
+                                    setMapping({
+                                      ...mapping,
+                                      [cIdx]: e.target.value as ContactField,
+                                    })
+                                  }
+                                >
+                                  {AVAILABLE_FIELDS.map((f) => (
+                                    <option key={f} value={f}>
+                                      {FIELD_LABELS[f]}
+                                    </option>
+                                  ))}
+                                </select>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 bg-white">
+                          {previewRows.map((row, rIdx) => (
+                            <tr key={rIdx} className="hover:bg-gray-50/50">
+                              {Array.from({ length: colCount }).map((_, cIdx) => (
+                                <td
+                                  key={cIdx}
+                                  className="max-w-[160px] truncate p-2 text-xs text-gray-600"
+                                  title={row[cIdx] || ""}
+                                >
+                                  {row[cIdx] || "—"}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              ) : null}
+
+              {err ? <p className="text-xs font-medium text-red-600">{err}</p> : null}
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                variant="light"
+                onPress={() => {
+                  setText("");
+                  setGrid([]);
+                  setErr("");
+                  onClose();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                color="primary"
+                disabled={!grid.length}
+                isLoading={busy}
+                onPress={handleImport}
+              >
+                {dataRowsCount > 0 ? `Import ${fmtInt(dataRowsCount)} leads` : "Import data"}
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 }

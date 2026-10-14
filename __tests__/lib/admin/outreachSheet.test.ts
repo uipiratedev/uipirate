@@ -30,6 +30,8 @@ describe("normalizeWebsiteState", () => {
     expect(normalizeWebsiteState("Has Website")).toBe("has-website");
     expect(normalizeWebsiteState("No website")).toBe("no-website");
     expect(normalizeWebsiteState("can need redesign")).toBe("needs-redesign");
+    expect(normalizeWebsiteState("Privacy error")).toBe("privacy-error");
+    expect(normalizeWebsiteState("SSL Error")).toBe("privacy-error");
     expect(normalizeWebsiteState("")).toBe("");
     expect(normalizeWebsiteState(undefined)).toBe("");
   });

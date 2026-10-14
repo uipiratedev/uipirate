@@ -10,8 +10,12 @@ import {
 } from "@heroui/react";
 
 import {
+  DEFAULT_EMAIL_DRAFT,
+  DEFAULT_EMAIL_SUBJECT,
   DEFAULT_WA_DRAFT,
   canWhatsapp,
+  emailBody,
+  emailSubject,
   fillDraft,
   mailHref,
   telHref,
@@ -148,6 +152,12 @@ export function OutreachDrawer({
   const [note, setNote] = useState("");
   const [saving, setSaving] = useState(false);
   const [draft, setDraft] = useState(contact.whatsappDraft || DEFAULT_WA_DRAFT);
+  const [emailSubj, setEmailSubj] = useState(
+    contact.emailSubjectDraft || DEFAULT_EMAIL_SUBJECT,
+  );
+  const [emailText, setEmailText] = useState(
+    contact.emailDraft || DEFAULT_EMAIL_DRAFT,
+  );
   const c = contact;
   const [tab, setTab] = useState<Tab>("details");
   const [filter, setFilter] = useState<ActivityKind | "all">("all");
@@ -295,8 +305,15 @@ export function OutreachDrawer({
                   {c.email ? (
                     <a
                       className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700"
-                      href={mailHref(c)}
-                      onClick={() => canManage && onTouch(c, "email")}
+                      href={mailHref(c, emailSubj, emailText)}
+                      onClick={() =>
+                        canManage &&
+                        onTouch(
+                          c,
+                          "email",
+                          `Subject: ${emailSubject(c, emailSubj)}\n\n${emailBody(c, emailText)}`,
+                        )
+                      }
                     >
                       Email
                     </a>
@@ -406,6 +423,102 @@ export function OutreachDrawer({
                           }}
                         >
                           Send on WhatsApp
+                        </a>
+                      </div>
+                    </section>
+                  ) : null}
+
+                  {showContact && c.email ? (
+                    <section>
+                      <h3 className="mb-2 text-sm font-semibold text-gray-900">
+                        Email message
+                      </h3>
+                      <div className="space-y-3">
+                        <div>
+                          <label
+                            className="mb-1 block text-xs font-medium text-gray-700"
+                            htmlFor="email-subject-draft-input"
+                          >
+                            Subject
+                          </label>
+                          <input
+                            id="email-subject-draft-input"
+                            aria-label="Email subject draft"
+                            className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-gray-400 focus:outline-none"
+                            readOnly={!canManage}
+                            value={emailSubj}
+                            onChange={(e) => setEmailSubj(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label
+                            className="mb-1 block text-xs font-medium text-gray-700"
+                            htmlFor="email-body-draft-textarea"
+                          >
+                            Body
+                          </label>
+                          <textarea
+                            id="email-body-draft-textarea"
+                            aria-label="Email body draft"
+                            className="min-h-[130px] w-full rounded-xl border border-gray-200 p-3 text-sm leading-relaxed focus:border-gray-400 focus:outline-none"
+                            readOnly={!canManage}
+                            value={emailText}
+                            onChange={(e) => setEmailText(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <p className="mt-1 text-[11px] text-gray-400">
+                        Placeholders: {"{{name}}"}, {"{{city}}"},{" "}
+                        {"{{company}}"}, {"{{website}}"}. Preview:{" "}
+                        <span className="text-gray-600">
+                          {emailSubject(c, emailSubj)} —{" "}
+                          {emailBody(c, emailText).slice(0, 100)}…
+                        </span>
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {canManage ? (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="flat"
+                              onPress={() =>
+                                onPatch(c.id, {
+                                  emailSubjectDraft: emailSubj,
+                                  emailDraft: emailText,
+                                })
+                              }
+                            >
+                              Save draft
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="light"
+                              onPress={() => {
+                                setEmailSubj(DEFAULT_EMAIL_SUBJECT);
+                                setEmailText(DEFAULT_EMAIL_DRAFT);
+                              }}
+                            >
+                              Reset
+                            </Button>
+                          </>
+                        ) : null}
+                        <a
+                          className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-700"
+                          href={mailHref(c, emailSubj, emailText)}
+                          onClick={() => {
+                            if (!canManage) return;
+                            onPatch(c.id, {
+                              emailSubjectDraft: emailSubj,
+                              emailDraft: emailText,
+                            });
+                            onTouch(
+                              c,
+                              "email",
+                              `Subject: ${emailSubject(c, emailSubj)}\n\n${emailBody(c, emailText)}`,
+                            );
+                          }}
+                        >
+                          Send Email
                         </a>
                       </div>
                     </section>

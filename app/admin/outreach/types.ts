@@ -10,6 +10,8 @@ export interface Contact {
   website: string;
   pitch: string;
   whatsappDraft: string;
+  emailSubjectDraft?: string;
+  emailDraft?: string;
   hasWebsite: string;
   batch: string;
   status: string;
@@ -45,11 +47,18 @@ export const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
 export const DEFAULT_WA_DRAFT =
   "Hi {{name}} team, this is UI Pirate. We build fast, modern websites for packaging companies and had an idea for you. Do you have a few minutes to chat?";
 
-/** Fill {{name}} / {{city}} placeholders. */
+export const DEFAULT_EMAIL_SUBJECT = "Quick idea for {{name}}";
+
+export const DEFAULT_EMAIL_DRAFT =
+  "Hi {{name}} team,\n\nI was looking at {{website}} and had a few ideas to help improve modern user experience and conversion.\n\nWould you have a few minutes this week to connect?\n\nBest regards,\nUI Pirate";
+
+/** Fill {{name}} / {{city}} / {{website}} / {{company}} placeholders. */
 export const fillDraft = (text: string, c: Contact) =>
-  text
-    .replace(/\{\{\s*name\s*\}\}/gi, c.name)
-    .replace(/\{\{\s*city\s*\}\}/gi, c.city);
+  (text || "")
+    .replace(/\{\{\s*name\s*\}\}/gi, c.name || "")
+    .replace(/\{\{\s*city\s*\}\}/gi, c.city || "")
+    .replace(/\{\{\s*company\s*\}\}/gi, c.company || c.name || "")
+    .replace(/\{\{\s*website\s*\}\}/gi, c.website || "");
 
 /** The WhatsApp text that will be sent (drafted, saved or default). */
 export const waMessage = (c: Contact, draft?: string) =>
@@ -59,7 +68,17 @@ export const waMessage = (c: Contact, draft?: string) =>
 export const waHref = (c: Contact, draft?: string) =>
   `https://wa.me/${digits(c.phone)}?text=${encodeURIComponent(waMessage(c, draft))}`;
 
-export const mailHref = (c: Contact) =>
-  `mailto:${c.email}?subject=${encodeURIComponent(`Quick idea for ${c.name}`)}`;
+export const emailSubject = (c: Contact, draft?: string) =>
+  fillDraft(draft?.trim() || c.emailSubjectDraft || DEFAULT_EMAIL_SUBJECT, c);
+
+export const emailBody = (c: Contact, draft?: string) =>
+  fillDraft(draft?.trim() || c.emailDraft || DEFAULT_EMAIL_DRAFT, c);
+
+export const mailHref = (c: Contact, subject?: string, body?: string) => {
+  const s = emailSubject(c, subject);
+  const b = emailBody(c, body);
+
+  return `mailto:${c.email}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;
+};
 
 export const canWhatsapp = (c: Contact) => digits(c.phone).length >= 8;

@@ -40,12 +40,16 @@ export interface IMarketingContact extends Document {
   lastWhatsappAt?: Date;
   emailCount: number;
   lastEmailAt?: Date;
+  /** Drafted Email subject; placeholders like {{name}} are filled in on send. */
+  emailSubjectDraft?: string;
+  /** Drafted Email body; placeholders like {{name}} / {{website}} are filled in on send. */
+  emailDraft?: string;
   /** Chronological log of every call / WhatsApp / email attempt. */
   touches: Array<{
     channel: "call" | "whatsapp" | "email";
     at: Date;
     byName?: string;
-    /** WhatsApp only: the exact message text that was sent. */
+    /** The exact message text that was sent (WhatsApp or Email). */
     message?: string;
   }>;
   notes: ILeadNote[];
@@ -95,6 +99,8 @@ const MarketingContactSchema = new Schema<IMarketingContact>(
     lastWhatsappAt: { type: Date },
     emailCount: { type: Number, default: 0 },
     lastEmailAt: { type: Date },
+    emailSubjectDraft: { type: String, trim: true },
+    emailDraft: { type: String, trim: true },
     touches: [
       {
         channel: {
