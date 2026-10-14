@@ -80,6 +80,11 @@ export async function GET(req: NextRequest) {
   if (stage === "leads") filter.inOutreach = { $ne: true };
   if (stage === "outreach") filter.inOutreach = true;
 
+  const folder = sp.get("folder");
+
+  if (folder === "none") filter.folder = { $in: [null, ""] };
+  else if (folder && /^[0-9a-f]{24}$/i.test(folder)) filter.folder = folder;
+
   if (status && (MARKETING_STATUSES as readonly string[]).includes(status))
     filter.status = status;
   if (q) {
@@ -136,7 +141,7 @@ export async function POST(req: NextRequest) {
 
   if (!guard.ok) return guard.response;
 
-  let body: { fileName?: string; rows?: any[] };
+  let body: { fileName?: string; rows?: any[]; folderId?: string };
 
   try {
     body = await req.json();
@@ -157,6 +162,11 @@ export async function POST(req: NextRequest) {
   const str = (v: unknown, max = 200) =>
     typeof v === "string" ? v.trim().slice(0, max) : "";
   const batch = `${str(body.fileName, 80) || "upload"} · ${new Date().toISOString().slice(0, 16).replace("T", " ")}`;
+
+  const folderId =
+    typeof body.folderId === "string" && /^[0-9a-f]{24}$/i.test(body.folderId)
+      ? body.folderId
+      : undefined;
 
   const docs = rows
     .map((r) => {
@@ -180,6 +190,7 @@ export async function POST(req: NextRequest) {
         hasWebsite: normalizeWebsiteState(r?.hasWebsite),
         extra: Object.keys(extra).length ? extra : undefined,
         batch,
+        folder: folderId,
       };
     })
     .filter((d) => d.name && (d.phone || d.email));
