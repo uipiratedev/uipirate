@@ -358,17 +358,28 @@ export function OutreachDrawer({
                           </a>
                         ) : null}
                       </Field>
-                      <Field label="Has Website">
+                      <Field label="Has Website / Remark">
                         {
                           WEBSITE_LABELS[
                             c.hasWebsite as keyof typeof WEBSITE_LABELS
-                          ]
+                          ] ||
+                          c.hasWebsite ||
+                          "—"
                         }
                       </Field>
                       <Field label="Category / Specialty">{c.category}</Field>
                       <Field label="City / State">
                         {[c.city, c.state].filter(Boolean).join(", ")}
                       </Field>
+                      {c.extra && Object.keys(c.extra).length > 0 ? (
+                        <>
+                          {Object.entries(c.extra).map(([k, v]) => (
+                            <Field key={k} label={k}>
+                              {v || "—"}
+                            </Field>
+                          ))}
+                        </>
+                      ) : null}
                     </dl>
                   </section>
 

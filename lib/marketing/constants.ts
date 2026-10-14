@@ -26,9 +26,10 @@ export const WEBSITE_LABELS: Record<(typeof WEBSITE_STATES)[number], string> = {
   "privacy-error": "Privacy error",
 };
 
-/** Map a sheet cell ("Has Website", "can need redesign", …) to a state. */
-export function normalizeWebsiteState(v: unknown): WebsiteState {
-  const t = typeof v === "string" ? v.trim().toLowerCase() : "";
+/** Map a sheet cell ("Has Website", "can need redesign", …) to a state or custom remark. */
+export function normalizeWebsiteState(v: unknown): string {
+  const raw = typeof v === "string" ? v.trim() : "";
+  const t = raw.toLowerCase();
 
   if (!t) return "";
   if (t.includes("privacy") || t.includes("ssl") || t.includes("cert"))
@@ -37,5 +38,6 @@ export function normalizeWebsiteState(v: unknown): WebsiteState {
   if (t.startsWith("no")) return "no-website";
   if (t.includes("website")) return "has-website";
 
-  return "";
+  // Preserve custom remarks/comments (e.g. "admin not available")
+  return raw.slice(0, 100);
 }

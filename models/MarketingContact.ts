@@ -23,7 +23,7 @@ export interface IMarketingContact extends Document {
   state?: string;
   website?: string;
   pitch?: string;
-  hasWebsite: WebsiteState;
+  hasWebsite: string;
   /** True once the contact was explicitly sent to Outreach. */
   inOutreach: boolean;
   /** Any extra sheet columns, kept verbatim. */
@@ -78,8 +78,8 @@ const MarketingContactSchema = new Schema<IMarketingContact>(
     pitch: { type: String, trim: true },
     hasWebsite: {
       type: String,
-      enum: ["", ...WEBSITE_STATES],
       default: "",
+      trim: true,
       index: true,
     },
     inOutreach: { type: Boolean, default: false, index: true },

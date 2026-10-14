@@ -116,6 +116,7 @@ function ContactList({
   const [pending, setPending] = useState<{
     contact: Contact;
     value: string;
+    customText?: string;
     send: boolean;
   } | null>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -219,30 +220,50 @@ function ContactList({
     key: "hasWebsite",
     header: "Has Website",
     sortValue: (c) => c.hasWebsite,
-    render: (c) => (
-      <select
-        aria-label={`Website status for ${c.name}`}
-        className="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs"
-        disabled={!canManage}
-        value={c.hasWebsite}
-        onChange={(e) => {
-          const val = e.target.value;
+    render: (c) => {
+      const isStandard = (WEBSITE_STATES as readonly string[]).includes(
+        c.hasWebsite,
+      );
 
-          setPending({
-            contact: c,
-            value: val,
-            send: val !== "" && val !== "has-website",
-          });
-        }}
-      >
-        <option value="">— Select —</option>
-        {WEBSITE_STATES.map((w) => (
-          <option key={w} value={w}>
-            {WEBSITE_LABELS[w]}
-          </option>
-        ))}
-      </select>
-    ),
+      return (
+        <select
+          aria-label={`Website status for ${c.name}`}
+          className="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs"
+          disabled={!canManage}
+          value={c.hasWebsite}
+          onChange={(e) => {
+            const val = e.target.value;
+
+            if (val === "__custom__") {
+              setPending({
+                contact: c,
+                value: "__custom__",
+                customText: !isStandard ? c.hasWebsite : "",
+                send: true,
+              });
+            } else {
+              setPending({
+                contact: c,
+                value: val,
+                customText: "",
+                send: val !== "" && val !== "has-website",
+              });
+            }
+          }}
+        >
+          <option value="">— Select —</option>
+          {WEBSITE_STATES.map((w) => (
+            <option key={w} value={w}>
+              {WEBSITE_LABELS[w]}
+            </option>
+          ))}
+          {c.hasWebsite && !isStandard ? (
+            <option value={c.hasWebsite}>{c.hasWebsite}</option>
+          ) : null}
+          <option value="__custom__">✏️ Custom remark...</option>
+        </select>
+      );
+    },
   };
 
   const toggle = (id: string) =>
@@ -660,74 +681,135 @@ function ContactList({
         onOpenChange={(open) => !open && setPending(null)}
       >
         <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-0.5">
-                Website status
-                <span className="text-xs font-normal text-gray-500">
-                  {pending?.contact.name}
-                </span>
-              </ModalHeader>
-              <ModalBody>
-                <select
-                  aria-label="Website status"
-                  className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
-                  value={pending?.value ?? ""}
-                  onChange={(e) => {
-                    const val = e.target.value;
+          {(onClose) => {
+            const isStandard = (WEBSITE_STATES as readonly string[]).includes(
+              pending?.value as any,
+            );
+            const isCustomMode =
+              pending?.value === "__custom__" ||
+              (Boolean(pending?.value) && !isStandard);
 
-                    setPending((p) =>
-                      p
-                        ? {
-                            ...p,
-                            value: val,
-                            send: val !== "" && val !== "has-website",
-                          }
-                        : p,
-                    );
-                  }}
-                >
-                  <option value="">— Select —</option>
-                  {WEBSITE_STATES.map((w) => (
-                    <option key={w} value={w}>
-                      {WEBSITE_LABELS[w]}
-                    </option>
-                  ))}
-                </select>
-                <Checkbox
-                  isDisabled={!pending?.value}
-                  isSelected={Boolean(pending?.send)}
-                  onValueChange={(send) =>
-                    setPending((p) => (p ? { ...p, send } : p))
-                  }
-                >
-                  Send to Outreach
-                </Checkbox>
-                <p className="text-xs text-gray-500">
-                  Checked: the lead moves to Outreach. Unchecked: only the
-                  website status is saved and the lead stays where it is.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button
-                  color="primary"
-                  onPress={async () => {
-                    if (!pending) return;
-                    await patch(pending.contact.id, {
-                      hasWebsite: pending.value,
-                      sendToOutreach: pending.send,
-                    });
-                    onClose();
-                  }}
-                >
-                  Save
-                </Button>
-              </ModalFooter>
-            </>
-          )}
+            return (
+              <>
+                <ModalHeader className="flex flex-col gap-0.5">
+                  Website status
+                  <span className="text-xs font-normal text-gray-500">
+                    {pending?.contact.name}
+                  </span>
+                </ModalHeader>
+                <ModalBody className="space-y-3">
+                  <select
+                    aria-label="Website status"
+                    className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
+                    value={isCustomMode ? "__custom__" : pending?.value ?? ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+
+                      setPending((p) =>
+                        p
+                          ? {
+                              ...p,
+                              value: val,
+                              customText:
+                                val === "__custom__"
+                                  ? p.customText ||
+                                    (!(WEBSITE_STATES as readonly string[]).includes(
+                                      p.contact.hasWebsite as any,
+                                    )
+                                      ? p.contact.hasWebsite
+                                      : "")
+                                  : "",
+                              send: val !== "" && val !== "has-website",
+                            }
+                          : p,
+                      );
+                    }}
+                  >
+                    <option value="">— Select —</option>
+                    {WEBSITE_STATES.map((w) => (
+                      <option key={w} value={w}>
+                        {WEBSITE_LABELS[w]}
+                      </option>
+                    ))}
+                    <option value="__custom__">✏️ Custom remark...</option>
+                  </select>
+
+                  {isCustomMode ? (
+                    <div className="space-y-1">
+                      <label
+                        className="block text-xs font-medium text-gray-700"
+                        htmlFor="custom-remark-modal-input"
+                      >
+                        Custom remark / comment
+                      </label>
+                      <input
+                        id="custom-remark-modal-input"
+                        className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm focus:border-gray-400 focus:outline-none"
+                        placeholder="e.g. admin not available"
+                        value={
+                          pending?.customText !== undefined
+                            ? pending.customText
+                            : !isStandard
+                              ? pending?.value ?? ""
+                              : ""
+                        }
+                        onChange={(e) => {
+                          const txt = e.target.value;
+
+                          setPending((p) =>
+                            p ? { ...p, customText: txt } : p,
+                          );
+                        }}
+                      />
+                    </div>
+                  ) : null}
+
+                  <Checkbox
+                    isDisabled={
+                      !pending?.value ||
+                      (isCustomMode && !(pending?.customText ?? "").trim())
+                    }
+                    isSelected={Boolean(pending?.send)}
+                    onValueChange={(send) =>
+                      setPending((p) => (p ? { ...p, send } : p))
+                    }
+                  >
+                    Send to Outreach
+                  </Checkbox>
+                  <p className="text-xs text-gray-500">
+                    Checked: the lead moves to Outreach. Unchecked: only the
+                    website status is saved and the lead stays where it is.
+                  </p>
+                </ModalBody>
+                <ModalFooter>
+                  <Button variant="light" onPress={onClose}>
+                    Cancel
+                  </Button>
+                  <Button
+                    color="primary"
+                    isDisabled={
+                      !pending?.value ||
+                      (isCustomMode && !(pending?.customText ?? "").trim())
+                    }
+                    onPress={async () => {
+                      if (!pending) return;
+                      const finalValue = isCustomMode
+                        ? (pending.customText ?? "").trim()
+                        : pending.value;
+
+                      await patch(pending.contact.id, {
+                        hasWebsite: finalValue,
+                        sendToOutreach: pending.send,
+                      });
+                      onClose();
+                    }}
+                  >
+                    Save
+                  </Button>
+                </ModalFooter>
+              </>
+            );
+          }}
         </ModalContent>
       </Modal>
       {canManage && stage === "leads" && folder.id !== "none" ? (
@@ -776,6 +858,7 @@ function PasteDataModal({
   const [grid, setGrid] = useState<string[][]>([]);
   const [hasHeader, setHasHeader] = useState(false);
   const [mapping, setMapping] = useState<Record<number, ContactField>>({});
+  const [customCols, setCustomCols] = useState<Record<number, boolean>>({});
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
@@ -786,6 +869,7 @@ function PasteDataModal({
     if (!val.trim()) {
       setGrid([]);
       setMapping({});
+      setCustomCols({});
 
       return;
     }
@@ -797,6 +881,7 @@ function PasteDataModal({
 
     setHasHeader(isHeader);
     setMapping(autoDetectColumns(parsed, isHeader));
+    setCustomCols({});
   }
 
   function toggleHeader(checked: boolean) {
@@ -804,6 +889,7 @@ function PasteDataModal({
 
     if (grid.length > 0) {
       setMapping(autoDetectColumns(grid, checked));
+      setCustomCols({});
     }
   }
 
@@ -855,6 +941,7 @@ function PasteDataModal({
         if (!open) {
           setText("");
           setGrid([]);
+          setCustomCols({});
           setErr("");
           onClose();
         }
@@ -914,27 +1001,88 @@ function PasteDataModal({
                       <table className="w-full text-left text-xs">
                         <thead className="border-b border-gray-200 bg-gray-50">
                           <tr>
-                            {Array.from({ length: colCount }).map((_, cIdx) => (
-                              <th key={cIdx} className="min-w-[130px] p-2">
-                                <select
-                                  aria-label={`Mapping for column ${cIdx + 1}`}
-                                  className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs font-semibold text-gray-800 shadow-sm"
-                                  value={mapping[cIdx] || "skip"}
-                                  onChange={(e) =>
-                                    setMapping({
-                                      ...mapping,
-                                      [cIdx]: e.target.value as ContactField,
-                                    })
-                                  }
-                                >
-                                  {AVAILABLE_FIELDS.map((f) => (
-                                    <option key={f} value={f}>
-                                      {FIELD_LABELS[f]}
-                                    </option>
-                                  ))}
-                                </select>
-                              </th>
-                            ))}
+                            {Array.from({ length: colCount }).map((_, cIdx) => {
+                              const isCustom =
+                                Boolean(customCols[cIdx]) ||
+                                mapping[cIdx]?.startsWith("custom:");
+                              const customVal = mapping[cIdx]?.startsWith(
+                                "custom:",
+                              )
+                                ? mapping[cIdx].slice("custom:".length)
+                                : "";
+
+                              return (
+                                <th key={cIdx} className="min-w-[140px] p-2">
+                                  {isCustom ? (
+                                    <div className="flex items-center gap-1">
+                                      <input
+                                        aria-label={`Custom header for column ${cIdx + 1}`}
+                                        className="w-full rounded-lg border border-blue-400 bg-white px-2 py-1 text-xs font-semibold text-gray-800 shadow-sm focus:border-blue-500 focus:outline-none"
+                                        placeholder="Header name..."
+                                        value={customVal}
+                                        onChange={(e) =>
+                                          setMapping((prev) => ({
+                                            ...prev,
+                                            [cIdx]: `custom:${e.target.value}`,
+                                          }))
+                                        }
+                                      />
+                                      <button
+                                        className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                                        title="Switch back to dropdown"
+                                        type="button"
+                                        onClick={() => {
+                                          setCustomCols((prev) => ({
+                                            ...prev,
+                                            [cIdx]: false,
+                                          }));
+                                          setMapping((prev) => ({
+                                            ...prev,
+                                            [cIdx]: "skip",
+                                          }));
+                                        }}
+                                      >
+                                        ✕
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <select
+                                      aria-label={`Mapping for column ${cIdx + 1}`}
+                                      className="w-full rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs font-semibold text-gray-800 shadow-sm"
+                                      value={mapping[cIdx] || "skip"}
+                                      onChange={(e) => {
+                                        const val = e.target.value;
+
+                                        if (val === "__custom__") {
+                                          setCustomCols((prev) => ({
+                                            ...prev,
+                                            [cIdx]: true,
+                                          }));
+                                          setMapping((prev) => ({
+                                            ...prev,
+                                            [cIdx]: "custom:",
+                                          }));
+                                        } else {
+                                          setMapping((prev) => ({
+                                            ...prev,
+                                            [cIdx]: val as ContactField,
+                                          }));
+                                        }
+                                      }}
+                                    >
+                                      {AVAILABLE_FIELDS.map((f) => (
+                                        <option key={f} value={f}>
+                                          {FIELD_LABELS[f] || f}
+                                        </option>
+                                      ))}
+                                      <option value="__custom__">
+                                        ✏️ Custom header...
+                                      </option>
+                                    </select>
+                                  )}
+                                </th>
+                              );
+                            })}
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 bg-white">
